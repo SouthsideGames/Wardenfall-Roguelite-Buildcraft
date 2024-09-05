@@ -9,26 +9,28 @@ public class EnemyMovement : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField] private float moveSpeed;
+
     
-    // Start is called before the first frame update
-    void Start()
-    {
-        player = FindFirstObjectByType<Player>();
-
-        if(player == null)
-        {
-            Debug.LogWarning("No player found");
-            Destroy(gameObject);    
-        }
-    }
-
     // Update is called once per frame
     void Update()
+    {
+        if(player != null)
+            FollowPlayer();
+    }
+
+    public void StorePlayer(Player _player)
+    {
+        this.player = _player;   
+    }
+
+    private void FollowPlayer()
     {
         Vector2 direction = (player.transform.position - transform.position).normalized;
 
         Vector2 targetPosition = (Vector2)transform.position + direction * moveSpeed * Time.deltaTime;
 
-        transform.position = targetPosition;    
+        transform.position = targetPosition;
     }
+
+
 }
