@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(EnemyMovement))]
 public class Enemy : MonoBehaviour
 {
     [Header("Elements")]
@@ -9,6 +10,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private SpriteRenderer _sr;
     [SerializeField] private SpriteRenderer spawnIndicator;
     private bool hasSpawned = false;
+    private EnemyMovement movement;
     
     [Header("Spawn Values")]
     [SerializeField] private float spawnSize = 1.2f;
@@ -31,6 +33,7 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        movement = GetComponent<EnemyMovement>();   
         player = FindFirstObjectByType<Player>();
 
         if(player == null)
@@ -55,8 +58,7 @@ public class Enemy : MonoBehaviour
 
     private void Spawn()
     {
-        _sr.enabled = false;
-        spawnIndicator.enabled = true;
+        SetRenderersVisibility(false);
 
         Vector3 targetScale = spawnIndicator.transform.localScale * spawnSize;
         LeanTween.scale(spawnIndicator.gameObject, targetScale, spawnTime)
@@ -67,10 +69,10 @@ public class Enemy : MonoBehaviour
 
     private void ShowEnemy()
     {
-        _sr.enabled = true;
-        spawnIndicator.enabled = false;
-
+        SetRenderersVisibility(true);
         hasSpawned = true;
+
+        movement.StorePlayer(player);
     }
 
     private void Wait()
@@ -86,13 +88,19 @@ public class Enemy : MonoBehaviour
             Attack();
     }
 
+    private void SetRenderersVisibility(bool visibility)
+    {
+        _sr.enabled = visibility;
+        spawnIndicator.enabled = !visibility;
+    }
+
     private void Attack()
     {
-        Debug.Log("Dealing " + damage + " damage to the player...");
+
         attackTimer = 0;
     }
 
-        private void OnDrawGizmos()
+    private void OnDrawGizmos()
     {
         if(!showGizmos)
             return;
