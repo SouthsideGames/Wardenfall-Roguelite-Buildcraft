@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3108819421424067718}
   - component: {fileID: 482209723644523875}
   - component: {fileID: 6615229185647896846}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: DeathFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4900,7 +4900,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3870731570974628253}
   - component: {fileID: 9109697679892941901}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: CharacterRenderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4986,7 +4986,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7435607206804301716}
   - component: {fileID: 8016728417625361805}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SpawnIndicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5073,7 +5073,8 @@ GameObject:
   - component: {fileID: 4041176825780023014}
   - component: {fileID: 1318361646915444988}
   - component: {fileID: 4631851359948926261}
-  m_Layer: 0
+  - component: {fileID: 951805749075738495}
+  m_Layer: 6
   m_Name: Ghost
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5133,3 +5134,39 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 1
+--- !u!58 &951805749075738495
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5829535922412643463}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: -0.03999999, y: 0.33399773}
+  m_Radius: 0.45600224
