@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnemyMovement : MonoBehaviour
 {
     [Header("Elements")]
-    private Player player;
+    private PlayerManager player;
 
     [Header("Settings")]
     [SerializeField] private float moveSpeed;
@@ -18,7 +18,7 @@ public class EnemyMovement : MonoBehaviour
             FollowPlayer();
     }
 
-    public void StorePlayer(Player _player)
+    public void StorePlayer(PlayerManager _player)
     {
         this.player = _player;   
     }

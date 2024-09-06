@@ -6,7 +6,7 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     [Header("Elements")]
-    private Player player;
+    private PlayerManager player;
     [SerializeField] private SpriteRenderer _sr;
     [SerializeField] private SpriteRenderer spawnIndicator;
     private bool hasSpawned = false;
@@ -34,7 +34,7 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         movement = GetComponent<EnemyMovement>();   
-        player = FindFirstObjectByType<Player>();
+        player = FindFirstObjectByType<PlayerManager>();
 
         if(player == null)
         {
@@ -98,6 +98,7 @@ public class Enemy : MonoBehaviour
     {
 
         attackTimer = 0;
+        player.TakeDamage(damage);
     }
 
     private void OnDrawGizmos()
