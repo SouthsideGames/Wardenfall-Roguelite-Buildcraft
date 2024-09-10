@@ -1,15 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using TMPro;
 using UnityEngine;
 
 [RequireComponent(typeof(EnemyMovement))]
 public class Enemy : MonoBehaviour
 {
+    [Header("Actions")]
+    public static Action<int, Vector2> onDamageTaken;
+
     [Header("Elements")]
     private PlayerManager player;
     [SerializeField] private SpriteRenderer _sr;
     [SerializeField] private SpriteRenderer spawnIndicator;
+    [SerializeField] private Collider2D _col;
     private bool hasSpawned = false;
     private EnemyMovement movement;
 
@@ -79,7 +82,7 @@ public class Enemy : MonoBehaviour
     {
         SetRenderersVisibility(true);
         hasSpawned = true;
-
+        _col.enabled = true;
         movement.StorePlayer(player);
     }
 
@@ -115,6 +118,9 @@ public class Enemy : MonoBehaviour
         health -= realDamage;  
 
         healthText.text = health.ToString();
+
+        onDamageTaken?.Invoke(_damage, transform.position);
+
 
         if(health <= 0)
             Die();

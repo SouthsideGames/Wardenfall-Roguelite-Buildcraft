@@ -9,8 +9,9 @@ public class DamageText : MonoBehaviour
     [SerializeField] private Animator anim;
     [SerializeField] private TextMeshPro damageText; 
 
-    public void PlayAnimation()
+    public void PlayAnimation(int _damage)
     {
+        damageText.text = _damage.ToString();   
         anim.Play("Animate");
     }
 }

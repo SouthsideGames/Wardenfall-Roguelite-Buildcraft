@@ -14,6 +14,7 @@ public class Weapon : MonoBehaviour
 
     [Header("Elements")]
     [SerializeField] private Transform hitpoint;
+    [SerializeField] private BoxCollider2D hitCollider;
     [SerializeField] private float hitDetectionRadius;
     private List<Enemy> damagedEnemies = new List<Enemy>();
 
@@ -62,8 +63,9 @@ public class Weapon : MonoBehaviour
 
         if(closestEnemy != null)
         {
-            ManageAttackTimer();
             targetUpVector = (closestEnemy.transform.position - transform.position).normalized;
+            transform.up = targetUpVector;  
+            ManageAttackTimer();
         }
 
         transform.up = Vector3.Lerp(transform.up, targetUpVector, Time.deltaTime * aimLerp);
@@ -133,7 +135,13 @@ public class Weapon : MonoBehaviour
 
     private void AttackLogic()
     {
-        Collider2D[] enemies = Physics2D.OverlapCircleAll(hitpoint.position, hitDetectionRadius, enemyMask);
+        Collider2D[] enemies = Physics2D.OverlapBoxAll
+        (
+            hitpoint.position, 
+            hitCollider.bounds.size, 
+            hitpoint.localEulerAngles.z, 
+            enemyMask
+        );
 
         for (int i = 0; i < enemies.Length; i++)
         {

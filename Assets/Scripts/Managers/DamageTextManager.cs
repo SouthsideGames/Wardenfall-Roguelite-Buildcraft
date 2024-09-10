@@ -1,31 +1,62 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Pool;
 
 public class DamageTextManager : MonoBehaviour
 {
     [Header("Elements")]
     [SerializeField] private DamageText damageTextPrefab;
 
-    // Start is called before the first frame update
-    void Start()
+    [Header("Pooling")]
+    private ObjectPool<DamageText> damageTextPool;  
+
+    private void Awake()
     {
-        
+        Enemy.onDamageTaken += EnemyHitCallback;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        
+        damageTextPool = new ObjectPool<DamageText>(CreateFunction, ActionOnGet, ActionOnRelease, ActionOnDestroy);
     }
 
-    [NaughtyAttributes.Button]
-    private void InstantiateDamageText()
+    private DamageText CreateFunction()
     {
-        Vector3 spawnPosition = Random.insideUnitCircle * Random.Range(1f, 5f);
-        DamageText _damageText = Instantiate(damageTextPrefab, spawnPosition, Quaternion.identity, transform);
+        return Instantiate(damageTextPrefab, transform);
+    }
 
-        _damageText.PlayAnimation();
+    private void ActionOnGet(DamageText _damageText)
+    {   
+        _damageText.gameObject.SetActive(true);
+    }
+
+    private void ActionOnRelease(DamageText _damageText)
+    {
+        _damageText.gameObject.SetActive(false);
+    }
+
+    private void ActionOnDestroy(DamageText _damageText)
+    {
+        Destroy(_damageText.gameObject);
+    }
+
+    private void OnDestroy()
+    {
+        Enemy.onDamageTaken -= EnemyHitCallback;
+    }
+
+    private void EnemyHitCallback(int _damage, Vector2 enemyPos)
+    {
+        DamageText _damageText = damageTextPool.Get();
+
+        Vector3 spawnPosition = enemyPos + Vector2.up * 1.5f;
+        _damageText.transform.position = spawnPosition;
+
+        _damageText.PlayAnimation(_damage);
+
+        LeanTween.delayedCall(1, () => damageTextPool.Release(_damageText));
     }
 }
 
