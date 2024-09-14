@@ -1,35 +1,32 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(EnemyMovement))]
-public class Enemy : MonoBehaviour
+public abstract class Enemy : MonoBehaviour
 {
     [Header("Actions")]
     public static Action<int, Vector2> onDamageTaken;
 
     [Header("Elements")]
-    private PlayerManager player;
-    [SerializeField] private SpriteRenderer _sr;
-    [SerializeField] private SpriteRenderer spawnIndicator;
-    [SerializeField] private Collider2D _col;
-    private bool hasSpawned = false;
-    private EnemyMovement movement;
+    protected PlayerManager player;
+    protected EnemyMovement movement;
+    [SerializeField] protected SpriteRenderer _sr;
+    [SerializeField] protected SpriteRenderer spawnIndicator;
+    [SerializeField] protected Collider2D _col;
+    protected bool hasSpawned = false;
+
+    [Header("Attack")]
+    [SerializeField] protected float playerDetectionRadius;
 
     [Header("Health")]
     [SerializeField] private int maxHealth;
     private int health;
-    
-    [Header("Spawn Values")]
-    [SerializeField] private float spawnSize = 1.2f;
-    [SerializeField] private float spawnTime = .3f;
-    [SerializeField] private int numberOfLoops = 4;
 
-    [Header("Attack")]
-    [SerializeField] private float playerDetectionRadius;
-    [SerializeField] private int damage;
-    [SerializeField] private float attackRate;
-    private float attackDelay;
-    private float attackTimer;
+    [Header("Spawn Values")]
+    [SerializeField] protected float spawnSize = 1.2f;
+    [SerializeField] protected float spawnTime = .3f;
+    [SerializeField] protected int numberOfLoops = 4;
 
     [Header("Effects")]
     [SerializeField] private ParticleSystem deathParticles;
@@ -41,32 +38,56 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         health = maxHealth;
-        movement = GetComponent<EnemyMovement>();   
+
+        movement = GetComponent<EnemyMovement>();
         player = FindFirstObjectByType<PlayerManager>();
 
-        if(player == null)
+        if (player == null)
         {
             Debug.LogWarning("No player found");
-            Destroy(gameObject);    
+            Destroy(gameObject);
         }
 
         Spawn();
 
-        attackDelay = 1f / attackRate;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+         if(!_sr.enabled)
+            return;
+    }
+
+    public void TakeDamage(int _damage)
+    {
+        int realDamage = Mathf.Min(_damage, health);
+        health -= realDamage;
+
+        onDamageTaken?.Invoke(_damage, transform.position);
+
+
+        if (health <= 0)
+            Die();
 
     }
 
-    void Update()
+
+    private void Die()
     {
-        if(!_sr.enabled)
+        deathParticles.transform.SetParent(null);
+        deathParticles.Play();
+
+        Destroy(gameObject);
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (!showGizmos)
             return;
 
-        if(attackTimer >= attackDelay)    
-            TryAttack();
-        else
-            Wait();
-
-        movement.FollowPlayer();
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, playerDetectionRadius);
     }
 
     private void Spawn()
@@ -88,60 +109,11 @@ public class Enemy : MonoBehaviour
         movement.StorePlayer(player);
     }
 
-    private void Wait()
-    {
-        attackTimer += Time.deltaTime;
-    }
-
-    private void TryAttack()
-    {
-        float distanceToPlayer = Vector2.Distance(transform.position, player.transform.position);
-
-        if(distanceToPlayer <= playerDetectionRadius)
-            Attack();
-    }
-
     private void SetRenderersVisibility(bool visibility)
     {
         _sr.enabled = visibility;
         spawnIndicator.enabled = !visibility;
     }
 
-    private void Attack()
-    {
-
-        attackTimer = 0;
-        player.TakeDamage(damage);
-    }
-
-    public void TakeDamage(int _damage)
-    {
-        int realDamage = Mathf.Min(_damage, health);    
-        health -= realDamage;  
-
-        onDamageTaken?.Invoke(_damage, transform.position);
-
-
-        if(health <= 0)
-            Die();
-
-    }
-
-    private void OnDrawGizmos()
-    {
-        if(!showGizmos)
-            return;
-
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, playerDetectionRadius);
-    }
-
-    private void Die()
-    {
-        deathParticles.transform.SetParent(null);
-        deathParticles.Play();
-
-        Destroy(gameObject);
-    }
 
 }

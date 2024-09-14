@@ -12,7 +12,7 @@ public class DamageTextManager : MonoBehaviour
     [Header("Pooling")]
     private ObjectPool<DamageText> damageTextPool;  
 
-    private void Awake() => Enemy.onDamageTaken += EnemyHitCallback;
+    private void Awake() => MeleeEnemy.onDamageTaken += EnemyHitCallback;
 
     private void Start() => damageTextPool = new ObjectPool<DamageText>(CreateFunction, ActionOnGet, ActionOnRelease, ActionOnDestroy);
 
@@ -26,7 +26,7 @@ public class DamageTextManager : MonoBehaviour
     private void ActionOnRelease(DamageText _damageText) =>  _damageText.gameObject.SetActive(false);
     private void ActionOnDestroy(DamageText _damageText) => Destroy(_damageText.gameObject);
 
-    private void OnDestroy() => Enemy.onDamageTaken -= EnemyHitCallback;
+    private void OnDestroy() => MeleeEnemy.onDamageTaken -= EnemyHitCallback;
 
     private void EnemyHitCallback(int _damage, Vector2 enemyPos)
     {
