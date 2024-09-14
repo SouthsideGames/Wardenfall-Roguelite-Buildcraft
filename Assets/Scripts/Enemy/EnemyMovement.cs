@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour
@@ -9,21 +10,13 @@ public class EnemyMovement : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField] private float moveSpeed;
-
     
-    // Update is called once per frame
-    void Update()
-    {
-        if(player != null)
-            FollowPlayer();
-    }
-
     public void StorePlayer(PlayerManager _player)
     {
         this.player = _player;   
     }
 
-    private void FollowPlayer()
+    public void FollowPlayer()
     {
         Vector2 direction = (player.transform.position - transform.position).normalized;
 

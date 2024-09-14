@@ -12,40 +12,21 @@ public class DamageTextManager : MonoBehaviour
     [Header("Pooling")]
     private ObjectPool<DamageText> damageTextPool;  
 
-    private void Awake()
-    {
-        Enemy.onDamageTaken += EnemyHitCallback;
-    }
+    private void Awake() => Enemy.onDamageTaken += EnemyHitCallback;
 
-    private void Start()
-    {
-        damageTextPool = new ObjectPool<DamageText>(CreateFunction, ActionOnGet, ActionOnRelease, ActionOnDestroy);
-    }
+    private void Start() => damageTextPool = new ObjectPool<DamageText>(CreateFunction, ActionOnGet, ActionOnRelease, ActionOnDestroy);
 
     private DamageText CreateFunction()
     {
         return Instantiate(damageTextPrefab, transform);
     }
 
-    private void ActionOnGet(DamageText _damageText)
-    {   
-        _damageText.gameObject.SetActive(true);
-    }
+    private void ActionOnGet(DamageText _damageText) =>  _damageText.gameObject.SetActive(true);
 
-    private void ActionOnRelease(DamageText _damageText)
-    {
-        _damageText.gameObject.SetActive(false);
-    }
+    private void ActionOnRelease(DamageText _damageText) =>  _damageText.gameObject.SetActive(false);
+    private void ActionOnDestroy(DamageText _damageText) => Destroy(_damageText.gameObject);
 
-    private void ActionOnDestroy(DamageText _damageText)
-    {
-        Destroy(_damageText.gameObject);
-    }
-
-    private void OnDestroy()
-    {
-        Enemy.onDamageTaken -= EnemyHitCallback;
-    }
+    private void OnDestroy() => Enemy.onDamageTaken -= EnemyHitCallback;
 
     private void EnemyHitCallback(int _damage, Vector2 enemyPos)
     {

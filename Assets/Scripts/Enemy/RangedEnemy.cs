@@ -2,7 +2,8 @@ using System;
 using UnityEngine;
 
 [RequireComponent(typeof(EnemyMovement))]
-public class Enemy : MonoBehaviour
+[RequireComponent(typeof(RangedEnemyAttack))]
+public class RangedEnemy : MonoBehaviour
 {
     [Header("Actions")]
     public static Action<int, Vector2> onDamageTaken;
@@ -14,6 +15,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private Collider2D _col;
     private bool hasSpawned = false;
     private EnemyMovement movement;
+    private RangedEnemyAttack attack;
 
     [Header("Health")]
     [SerializeField] private int maxHealth;
@@ -26,23 +28,21 @@ public class Enemy : MonoBehaviour
 
     [Header("Attack")]
     [SerializeField] private float playerDetectionRadius;
-    [SerializeField] private int damage;
-    [SerializeField] private float attackRate;
-    private float attackDelay;
-    private float attackTimer;
 
     [Header("Effects")]
     [SerializeField] private ParticleSystem deathParticles;
 
     [Header("Debug")]
     [SerializeField] private bool showGizmos;
-
     // Start is called before the first frame update
     void Start()
     {
         health = maxHealth;
         movement = GetComponent<EnemyMovement>();   
+        attack = GetComponent<RangedEnemyAttack>(); 
         player = FindFirstObjectByType<PlayerManager>();
+
+        attack.StorePlayer(player);
 
         if(player == null)
         {
@@ -52,8 +52,6 @@ public class Enemy : MonoBehaviour
 
         Spawn();
 
-        attackDelay = 1f / attackRate;
-
     }
 
     void Update()
@@ -61,12 +59,18 @@ public class Enemy : MonoBehaviour
         if(!_sr.enabled)
             return;
 
-        if(attackTimer >= attackDelay)    
+        AttackLogic();
+
+    }
+
+    private void AttackLogic()
+    {
+        float distanceToPlayer = Vector2.Distance(transform.position, player.transform.position);
+
+        if(distanceToPlayer <= playerDetectionRadius)
             TryAttack();
         else
-            Wait();
-
-        movement.FollowPlayer();
+            movement.FollowPlayer();
     }
 
     private void Spawn()
@@ -88,17 +92,11 @@ public class Enemy : MonoBehaviour
         movement.StorePlayer(player);
     }
 
-    private void Wait()
-    {
-        attackTimer += Time.deltaTime;
-    }
+
 
     private void TryAttack()
     {
-        float distanceToPlayer = Vector2.Distance(transform.position, player.transform.position);
-
-        if(distanceToPlayer <= playerDetectionRadius)
-            Attack();
+       attack.AutoAim();
     }
 
     private void SetRenderersVisibility(bool visibility)
@@ -107,12 +105,6 @@ public class Enemy : MonoBehaviour
         spawnIndicator.enabled = !visibility;
     }
 
-    private void Attack()
-    {
-
-        attackTimer = 0;
-        player.TakeDamage(damage);
-    }
 
     public void TakeDamage(int _damage)
     {

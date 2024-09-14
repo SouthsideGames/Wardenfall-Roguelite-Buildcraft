@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterHealth))]
@@ -7,6 +8,7 @@ public class PlayerManager : MonoBehaviour
 {
     [Header("Components")]
     private CharacterHealth characterHealth;
+    [SerializeField] private CircleCollider2D _col;
     
 
     private void Awake()
@@ -18,5 +20,10 @@ public class PlayerManager : MonoBehaviour
     public void TakeDamage(int _damage)
     {
         characterHealth.TakeDamage(_damage);    
+    }
+
+    public Vector2 GetColliderCenter()
+    {
+        return (Vector2)transform.position + _col.offset;
     }
 }
