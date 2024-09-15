@@ -11,9 +11,9 @@ public abstract class Enemy : MonoBehaviour
     [Header("Elements")]
     protected PlayerManager player;
     protected EnemyMovement movement;
-    [SerializeField] protected SpriteRenderer _sr;
-    [SerializeField] protected SpriteRenderer spawnIndicator;
-    [SerializeField] protected Collider2D _col;
+    [SerializeField] private SpriteRenderer _sr;
+    [SerializeField] private SpriteRenderer spawnIndicator;
+    [SerializeField] private Collider2D _col;
     protected bool hasSpawned = false;
 
     [Header("Attack")]
@@ -24,9 +24,9 @@ public abstract class Enemy : MonoBehaviour
     private int health;
 
     [Header("Spawn Values")]
-    [SerializeField] protected float spawnSize = 1.2f;
-    [SerializeField] protected float spawnTime = .3f;
-    [SerializeField] protected int numberOfLoops = 4;
+    [SerializeField] private float spawnSize = 1.2f;
+    [SerializeField] private float spawnTime = .3f;
+    [SerializeField] private int numberOfLoops = 4;
 
     [Header("Effects")]
     [SerializeField] private ParticleSystem deathParticles;
@@ -35,7 +35,7 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] private bool showGizmos;
 
     // Start is called before the first frame update
-    void Start()
+    protected virtual void Start()
     {
         health = maxHealth;
 
@@ -53,10 +53,9 @@ public abstract class Enemy : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    protected bool CanAttack()
     {
-         if(!_sr.enabled)
-            return;
+        return _sr.enabled;
     }
 
     public void TakeDamage(int _damage)

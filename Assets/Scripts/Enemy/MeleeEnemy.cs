@@ -12,14 +12,19 @@ public class MeleeEnemy : Enemy
     private float attackTimer;
 
     // Start is called before the first frame update
-    void Start()
-    { 
+    protected override void Start()
+    {
+        base.Start();
+
         attackDelay = 1f / attackRate;
 
     }
 
     void Update()
     {
+        if (!CanAttack())
+            return;
+
         if(attackTimer >= attackDelay)    
             TryAttack();
         else
