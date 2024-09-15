@@ -3,89 +3,28 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Weapon : MonoBehaviour
+public abstract class Weapon : MonoBehaviour
 {
-    enum State 
-    {
-        Idle,
-        Attack
-    }
-    private State state;
 
-    [Header("Elements")]
-    [SerializeField] private Transform hitpoint;
-    [SerializeField] private BoxCollider2D hitCollider;
-    [SerializeField] private float hitDetectionRadius;
-    private List<Enemy> damagedEnemies = new List<Enemy>();
-
-    [Header("Attack")]
-    [SerializeField] private float attackDelay;
-    private float attackTimer;
-    [SerializeField] private int damage;
-    
     [Header("Settings")]
     [SerializeField] private float range;
-    [SerializeField] private LayerMask enemyMask;
+    [SerializeField] protected LayerMask enemyMask;
 
-    [Header("Animations")]
-    [SerializeField] private Animator anim;
-    [SerializeField] private float aimLerp;
+
+    [Header("Attack")]
+    [SerializeField] protected float attackDelay;
+    protected float attackTimer;
+    [SerializeField] protected int damage;
     
-    [Header("Debug")]
-    [SerializeField] private bool showGizmos;
+    [Header("Animations")]
+    [SerializeField] protected Animator anim;
+    [SerializeField] protected float aimLerp;
 
-    void Start()
-    {
-        state = State.Idle;
-    }
+    protected Enemy closestEnemy;
+    protected Vector2 targetUpVector;
+    
 
-    // Update is called once per frame
-    void Update()
-    {
-       switch(state)
-       {
-            case State.Idle:
-                AutoAim();
-                break;
-            case State.Attack:
-                AttackState();
-                break;
-            default:
-                break;
-       }
-    }
-
-    private void AutoAim()
-    {
-        Enemy closestEnemy = GetClosestEnemy();
-
-        Vector2 targetUpVector = Vector3.up;
-
-        if(closestEnemy != null)
-        {
-            targetUpVector = (closestEnemy.transform.position - transform.position).normalized;
-            transform.up = targetUpVector;  
-            ManageAttackTimer();
-        }
-
-        transform.up = Vector3.Lerp(transform.up, targetUpVector, Time.deltaTime * aimLerp);
-
-        Wait();
-
-    }
-
-    private void ManageAttackTimer()
-    {
-        if(attackTimer >= attackDelay)
-        {
-            attackTimer = 0;
-            StartAttack();
-        }
-    }
-
-    private void Wait() => attackTimer += Time.deltaTime;
-
-    private Enemy GetClosestEnemy()
+   protected Enemy GetClosestEnemy()
     {
         Enemy closestEnemy = null;
         Collider2D[] enemies = Physics2D.OverlapCircleAll(transform.position, range, enemyMask);
@@ -112,59 +51,19 @@ public class Weapon : MonoBehaviour
         return closestEnemy;
     }
 
-    private void AttackState()
+    protected virtual void AutoAim()
     {
-        AttackLogic();
-    }
+        closestEnemy = GetClosestEnemy();
 
-    private void StartAttack()
-    {
-        anim.Play("Attack");
-        state = State.Attack;   
+        targetUpVector = Vector3.up;
 
-        damagedEnemies.Clear(); 
-
-        anim.speed = 1f / attackDelay;
-    }
-
-    private void EndAttack()
-    {
-        state = State.Idle;
-        damagedEnemies.Clear(); 
-    }
-
-    private void AttackLogic()
-    {
-        Collider2D[] enemies = Physics2D.OverlapBoxAll
-        (
-            hitpoint.position, 
-            hitCollider.bounds.size, 
-            hitpoint.localEulerAngles.z, 
-            enemyMask
-        );
-
-        for (int i = 0; i < enemies.Length; i++)
-        {
-            Enemy enemy = enemies[i].GetComponent<Enemy>();
-
-            if(!damagedEnemies.Contains(enemy))
-            {
-                enemy.TakeDamage(damage);
-                damagedEnemies.Add(enemy);
-            }
-           
-        }
     }
 
     private void OnDrawGizmos()
     {
-        if(!showGizmos)
-            return;
 
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, range);
-
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(hitpoint.position, hitDetectionRadius);
     }
+
 }

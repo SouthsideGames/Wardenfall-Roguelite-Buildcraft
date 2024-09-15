@@ -1,17 +1,17 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Collider2D))]
-public class EnemyBullet : MonoBehaviour
+public class Bullet : MonoBehaviour
 {
-
     [Header("Element")]
     private Rigidbody2D rb;
     private Collider2D col;
-    private RangedEnemyAttack rangedEnemyAttack;
-
 
     [Header("Setting")]
+    [SerializeField] private LayerMask enemyMask;
     [SerializeField] private float moveSpeed;
     private int damage;
 
@@ -20,10 +20,8 @@ public class EnemyBullet : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<Collider2D>();   
 
-        LeanTween.delayedCall(gameObject, 5, () => rangedEnemyAttack.ReleaseBullet(this));
+        //LeanTween.delayedCall(gameObject, 5, () => rangedEnemyAttack.ReleaseBullet(this));
     }
-
-    public void Configure(RangedEnemyAttack _rangedEnemyAttack) => rangedEnemyAttack = _rangedEnemyAttack;
 
     public void Shoot(int _damage, Vector2 _direction)
     {
@@ -36,23 +34,24 @@ public class EnemyBullet : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collider)
     {
         // Check if the bullet hits the player
-        if (collider.TryGetComponent(out PlayerManager player))
+        if (IsInLayerMask(collider.gameObject.layer, enemyMask))
         {
+            Attack(collider.GetComponent<Enemy>());
+            Destroy(gameObject);
 
-            LeanTween.cancel(gameObject);
-
-            player.TakeDamage(damage);
-            col.enabled = false;    
-            rangedEnemyAttack.ReleaseBullet(this);
         }
         
     }
 
-    public void Reload()
+    private void Attack(Enemy _enemy)
     {
-        rb.velocity = Vector2.zero;
-
-        col.enabled = true; 
-
+        _enemy.TakeDamage(damage);
     }
+
+    private bool IsInLayerMask(int _layer, LayerMask _layerMask)
+    {
+        return (_layerMask.value & (1 << _layer)) != 0; 
+    }
+
+
 }

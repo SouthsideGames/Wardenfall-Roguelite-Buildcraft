@@ -21,7 +21,7 @@ public abstract class Enemy : MonoBehaviour
 
     [Header("Health")]
     [SerializeField] private int maxHealth;
-    private int health;
+    protected int health;
 
     [Header("Spawn Values")]
     [SerializeField] private float spawnSize = 1.2f;
@@ -72,7 +72,7 @@ public abstract class Enemy : MonoBehaviour
     }
 
 
-    private void Die()
+    protected void Die()
     {
         deathParticles.transform.SetParent(null);
         deathParticles.Play();
