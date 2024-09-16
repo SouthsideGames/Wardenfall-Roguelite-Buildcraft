@@ -105,7 +105,7 @@ public abstract class Enemy : MonoBehaviour
 
     }
 
-    private void ShowEnemy()
+    protected virtual void ShowEnemy()
     {
         SetRenderersVisibility(true);
         hasSpawned = true;
