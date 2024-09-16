@@ -31,7 +31,7 @@ public class RangedEnemyAttack : MonoBehaviour
     {
         attackDelay = 1f / fireRate;
 
-        RangeEnemyType();
+        attackTimer = attackDelay;
 
         bulletPool = new ObjectPool<EnemyBullet>(CreateFunction, ActionOnGet, ActionOnRelease, ActionOnDestroy);
     }
@@ -42,20 +42,6 @@ public class RangedEnemyAttack : MonoBehaviour
         
     }
 
-    private void RangeEnemyType()
-    {
-        switch(shooterType)
-        {
-            case 0:
-                attackTimer = attackDelay;
-                break;
-            case 1:
-                attackTimer = 0f;
-                break;
-            default:
-                break;
-        }
-    }
 
     public void StorePlayer(PlayerManager _player) =>  player = _player;
 

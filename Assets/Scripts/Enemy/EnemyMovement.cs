@@ -26,4 +26,17 @@ public class EnemyMovement : MonoBehaviour
     }
 
 
+    public void MoveAwayFromPlayer()
+    {
+        // Calculate the direction away from the player
+        Vector2 direction = (transform.position - player.transform.position).normalized;
+
+        // Calculate the target position by moving away from the player
+        Vector2 targetPosition = (Vector2)transform.position + direction * moveSpeed * Time.deltaTime;
+
+        // Move the enemy to the target position
+        transform.position = targetPosition;
+    }
+
+
 }

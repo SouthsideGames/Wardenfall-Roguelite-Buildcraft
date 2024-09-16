@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ExplodeEnemy : Enemy
@@ -8,15 +6,7 @@ public class ExplodeEnemy : Enemy
     [SerializeField] private float explosionRadius = 3f; // Radius of the explosion
     [SerializeField] private int explosionDamage = 10; // Damage dealt by the explosion
     [SerializeField] private ParticleSystem explosionEffect; // Particle effect for explosion
-    [SerializeField] private float explosionTriggerDistance = 1.5f; // Distance at which the enemy will explode
-
     private bool isExploding = false; // Flag to prevent multiple explosions
-
-    protected override void Start()
-    {
-        base.Start();
-        // Additional initialization if needed
-    }
 
     void Update()
     {
@@ -40,7 +30,7 @@ public class ExplodeEnemy : Enemy
     private bool IsPlayerTooClose()
     {
         // Check if the player is within the trigger distance for explosion
-        return Vector2.Distance(transform.position, player.transform.position) <= explosionTriggerDistance;
+        return Vector2.Distance(transform.position, player.transform.position) <= playerDetectionRadius;
     }
 
     private void Explode()
@@ -73,17 +63,12 @@ public class ExplodeEnemy : Enemy
             }
         }
 
-        Debug.Log($"{gameObject.name} exploded.");
-
         // Destroy the enemy after exploding
         Die();
     }
 
     private void OnDrawGizmosSelected()
     {
-        // Draw explosion radius and trigger distance for visualization in the editor
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, explosionTriggerDistance);
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, explosionRadius);
     }

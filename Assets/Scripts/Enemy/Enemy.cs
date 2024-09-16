@@ -11,7 +11,7 @@ public abstract class Enemy : MonoBehaviour
     [Header("Elements")]
     protected PlayerManager player;
     protected EnemyMovement movement;
-    [SerializeField] private SpriteRenderer _sr;
+    [SerializeField] protected SpriteRenderer _sr;
     [SerializeField] private SpriteRenderer spawnIndicator;
     [SerializeField] private Collider2D _col;
     protected bool hasSpawned = false;
@@ -20,8 +20,9 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] protected float playerDetectionRadius;
 
     [Header("Health")]
-    [SerializeField] private int maxHealth;
-    protected int health;
+    public int maxHealth;
+    [HideInInspector] public int health;
+    [HideInInspector] public bool isInvincible = false;
 
     [Header("Spawn Values")]
     [SerializeField] private float spawnSize = 1.2f;
@@ -29,7 +30,7 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] private int numberOfLoops = 4;
 
     [Header("Effects")]
-    [SerializeField] private ParticleSystem deathParticles;
+    [SerializeField] protected ParticleSystem deathParticles;
 
     [Header("Debug")]
     [SerializeField] private bool showGizmos;
@@ -60,6 +61,10 @@ public abstract class Enemy : MonoBehaviour
 
     public void TakeDamage(int _damage)
     {
+    
+        if (isInvincible)
+            return;
+
         int realDamage = Mathf.Min(_damage, health);
         health -= realDamage;
 
@@ -72,7 +77,7 @@ public abstract class Enemy : MonoBehaviour
     }
 
 
-    protected void Die()
+    protected virtual void Die()
     {
         deathParticles.transform.SetParent(null);
         deathParticles.Play();
