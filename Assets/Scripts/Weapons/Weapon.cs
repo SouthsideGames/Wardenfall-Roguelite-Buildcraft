@@ -24,7 +24,7 @@ public abstract class Weapon : MonoBehaviour
     protected Vector2 targetUpVector;
     
 
-   protected Enemy GetClosestEnemy()
+    protected Enemy GetClosestEnemy()
     {
         Enemy closestEnemy = null;
         Collider2D[] enemies = Physics2D.OverlapCircleAll(transform.position, range, enemyMask);
@@ -49,6 +49,19 @@ public abstract class Weapon : MonoBehaviour
 
 
         return closestEnemy;
+    }
+
+    protected int GetDamage(out bool isCriticalHit)
+    {
+        isCriticalHit = false;
+
+        if(Random.Range(0, 101) <= 50)
+        {
+            isCriticalHit = true;
+            return damage * 2;
+        }
+
+        return damage;
     }
 
     protected virtual void AutoAim()

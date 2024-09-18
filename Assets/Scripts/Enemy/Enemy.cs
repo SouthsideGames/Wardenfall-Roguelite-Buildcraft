@@ -6,7 +6,7 @@ using UnityEngine;
 public abstract class Enemy : MonoBehaviour
 {
     [Header("Actions")]
-    public static Action<int, Vector2> onDamageTaken;
+    public static Action<int, Vector2, bool> onDamageTaken;
 
     [Header("Elements")]
     protected PlayerManager player;
@@ -59,7 +59,7 @@ public abstract class Enemy : MonoBehaviour
         return _sr.enabled;
     }
 
-    public void TakeDamage(int _damage)
+    public void TakeDamage(int _damage, bool _isCriticalHit)
     {
     
         if (isInvincible)
@@ -68,7 +68,7 @@ public abstract class Enemy : MonoBehaviour
         int realDamage = Mathf.Min(_damage, health);
         health -= realDamage;
 
-        onDamageTaken?.Invoke(_damage, transform.position);
+        onDamageTaken?.Invoke(_damage, transform.position, _isCriticalHit);
 
 
         if (health <= 0)

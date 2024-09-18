@@ -28,14 +28,14 @@ public class DamageTextManager : MonoBehaviour
 
     private void OnDestroy() => MeleeEnemy.onDamageTaken -= EnemyHitCallback;
 
-    private void EnemyHitCallback(int _damage, Vector2 enemyPos)
+    private void EnemyHitCallback(int _damage, Vector2 enemyPos, bool _isCriticalHit)
     {
         DamageText _damageText = damageTextPool.Get();
 
         Vector3 spawnPosition = enemyPos + Vector2.up * 1.5f;
         _damageText.transform.position = spawnPosition;
 
-        _damageText.PlayAnimation(_damage);
+        _damageText.PlayAnimation(_damage, _isCriticalHit);
 
         LeanTween.delayedCall(1, () => damageTextPool.Release(_damageText));
     }

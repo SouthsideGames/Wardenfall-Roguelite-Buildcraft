@@ -53,7 +53,7 @@ public class ExplodeEnemy : Enemy
             // Check if the hit object can take damage
             if (hit.TryGetComponent<Enemy>(out Enemy enemy) && enemy != this)
             {
-                enemy.TakeDamage(explosionDamage);
+                enemy.TakeDamage(explosionDamage, false);
             }
 
             // Damage the player if within range
