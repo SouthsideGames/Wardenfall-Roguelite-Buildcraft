@@ -1,10 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterHealth))]
-public class PlayerManager : MonoBehaviour
+[RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(CharacterDetection))]
+public class CharacterManager : MonoBehaviour
 {
     [Header("Components")]
     private CharacterHealth characterHealth;

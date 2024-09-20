@@ -10,7 +10,7 @@ public class RangedEnemyAttack : MonoBehaviour
     [Header("Elements")]
     [SerializeField] private Transform firePoint;
     [SerializeField] private EnemyBullet bulletPrefab;
-    private PlayerManager player;
+    private CharacterManager player;
 
 
     [Header("Setting")]
@@ -43,7 +43,7 @@ public class RangedEnemyAttack : MonoBehaviour
     }
 
 
-    public void StorePlayer(PlayerManager _player) =>  player = _player;
+    public void StorePlayer(CharacterManager _player) =>  player = _player;
 
     public void AutoAim() => ShootLogic();
     private void ShootLogic()

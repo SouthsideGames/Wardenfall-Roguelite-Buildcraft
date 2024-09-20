@@ -36,7 +36,7 @@ public class EnemyBullet : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collider)
     {
         // Check if the bullet hits the player
-        if (collider.TryGetComponent(out PlayerManager player))
+        if (collider.TryGetComponent(out CharacterManager player))
         {
 
             LeanTween.cancel(gameObject);

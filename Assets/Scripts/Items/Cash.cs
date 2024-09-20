@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class Candy : Item
+public class Cash : Item
 {
-     [Header("Actions")]
-    public static Action<Candy> onCollected;
+    [Header("Actions")]
+    public static Action<Cash> onCollected;
     
     protected override void Collected()
     {

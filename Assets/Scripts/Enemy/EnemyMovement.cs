@@ -6,12 +6,12 @@ using UnityEngine;
 public class EnemyMovement : MonoBehaviour
 {
     [Header("Elements")]
-    private PlayerManager player;
+    private CharacterManager player;
 
     [Header("Settings")]
     [SerializeField] private float moveSpeed;
     
-    public void StorePlayer(PlayerManager _player)
+    public void StorePlayer(CharacterManager _player)
     {
         this.player = _player;   
     }

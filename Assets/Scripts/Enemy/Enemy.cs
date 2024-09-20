@@ -7,14 +7,18 @@ public abstract class Enemy : MonoBehaviour
 {
     [Header("Actions")]
     public static Action<int, Vector2, bool> onDamageTaken;
+    public static Action<Vector2, int> onDeathTaken;
 
     [Header("Elements")]
-    protected PlayerManager player;
+    protected CharacterManager player;
     protected EnemyMovement movement;
     [SerializeField] protected SpriteRenderer _sr;
     [SerializeField] private SpriteRenderer spawnIndicator;
     [SerializeField] private Collider2D _col;
     protected bool hasSpawned = false;
+
+    [Header("Levels")]
+    [SerializeField] private int level;
 
     [Header("Attack")]
     [SerializeField] protected float playerDetectionRadius;
@@ -41,7 +45,7 @@ public abstract class Enemy : MonoBehaviour
         health = maxHealth;
 
         movement = GetComponent<EnemyMovement>();
-        player = FindFirstObjectByType<PlayerManager>();
+        player = FindFirstObjectByType<CharacterManager>();
 
         if (player == null)
         {
@@ -79,6 +83,8 @@ public abstract class Enemy : MonoBehaviour
 
     protected virtual void Die()
     {
+        onDeathTaken?.Invoke(transform.position, level);
+
         deathParticles.transform.SetParent(null);
         deathParticles.Play();
 

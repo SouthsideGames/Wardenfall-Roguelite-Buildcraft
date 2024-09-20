@@ -57,7 +57,7 @@ public class ExplodeEnemy : Enemy
             }
 
             // Damage the player if within range
-            if (hit.TryGetComponent<PlayerManager>(out PlayerManager player))
+            if (hit.TryGetComponent<CharacterManager>(out CharacterManager player))
             {
                 player.TakeDamage(explosionDamage);
             }
