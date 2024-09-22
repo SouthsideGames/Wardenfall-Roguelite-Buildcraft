@@ -2,6 +2,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(CharacterHealth))]
 [RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(CharacterLevel))]
 [RequireComponent(typeof(CharacterDetection))]
 public class CharacterManager : MonoBehaviour
 {
