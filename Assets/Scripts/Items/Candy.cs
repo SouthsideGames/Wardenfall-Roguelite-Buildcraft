@@ -5,7 +5,7 @@ using System;
 
 public class Candy : Item
 {
-     [Header("Actions")]
+     [Header("ACTIONS:")]
     public static Action<Candy> onCollected;
     
     protected override void Collected()

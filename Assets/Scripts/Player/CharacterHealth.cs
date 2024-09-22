@@ -5,13 +5,14 @@ using UnityEngine.UI;
 
 public class CharacterHealth : MonoBehaviour
 {
-    [Header("Settings")]
-    [SerializeField] private int maxHealth;
-    private int health;
-
-    [Header("Elements")]
+    [Header("ELEMENTS:")]
     [SerializeField] private Slider healthBar;
     [SerializeField] private TextMeshProUGUI healthText;
+
+
+    [Header("SETTINGS:")]
+    [SerializeField] private int maxHealth;
+    private int health;
 
     private void Start()
     {

@@ -16,7 +16,7 @@ public abstract class Weapon : MonoBehaviour
     protected float attackTimer;
     [SerializeField] protected int damage;
     
-    [Header("Animations")]
+    [Header("ANIMATIONS:")]
     [SerializeField] protected Animator anim;
     [SerializeField] protected float aimLerp;
 

@@ -5,10 +5,10 @@ using System;
 
 public class Chest : Item
 {
-    [Header("Actions")]
+    [Header("ACTIONS:")]
     public static Action<Chest> onCollected;
 
-    [Header("Settings")]
+    [Header("SETTINGS:")]
     [SerializeField] private Animator anim;
 
     protected override void Collected()

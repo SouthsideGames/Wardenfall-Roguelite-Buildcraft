@@ -12,7 +12,7 @@ public class MeleeWeapon : Weapon
 
     private State state;
 
-    [Header("Elements")]
+    [Header("ELEMENTS:")]
     [SerializeField] private Transform hitpoint;
     [SerializeField] private BoxCollider2D hitCollider;
     private List<Enemy> damagedEnemies = new List<Enemy>();

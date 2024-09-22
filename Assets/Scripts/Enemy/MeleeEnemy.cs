@@ -5,7 +5,7 @@ using UnityEngine;
 public class MeleeEnemy : Enemy
 {
 
-    [Header("Attack")]
+    [Header("MELEE SPECIFICS:")]
     [SerializeField] private int damage;
     [SerializeField] private float attackRate;
     private float attackDelay;

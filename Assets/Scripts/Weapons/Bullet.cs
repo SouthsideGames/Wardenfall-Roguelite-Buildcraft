@@ -6,12 +6,12 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 public class Bullet : MonoBehaviour
 {
-    [Header("Element")]
+    [Header("ELEMENTS:")]
     private Rigidbody2D rb;
     private Collider2D col;
     private RangedWeapon rangedWeapon;
 
-    [Header("Setting")]
+    [Header("SETTINGS:")]
     [SerializeField] private LayerMask enemyMask;
     [SerializeField] private float moveSpeed;
     private int damage;

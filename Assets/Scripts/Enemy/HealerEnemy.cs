@@ -5,7 +5,7 @@ using UnityEngine;
 //TODO: Add visual effect for the tethered enemies
 public class HealerEnemy : Enemy
 {
-    [Header("Healer Specific")]
+    [Header("HEALER SPECIFICS:")]
     [SerializeField] private float tetherRadius = 5f; // Radius within which the totem will search for enemies to tether
     [SerializeField] private int maxTetheredEnemies = 4; // Maximum number of enemies that can be tethered
     [SerializeField] private LayerMask enemyLayer; // Layer mask to ensure only enemies are detected

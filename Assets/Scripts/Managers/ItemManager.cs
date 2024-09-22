@@ -5,13 +5,13 @@ using UnityEngine.Pool;
 
 public class ItemManager : MonoBehaviour
 {
-    [Header("Element")]
+    [Header("ELEMENTS:")]
     [SerializeField] private Candy candyPrefab;
     [SerializeField] private Cash cashPrefab;
     [SerializeField] private Chest chestPrefab;
 
     
-    [Header("Setting")]
+    [Header("SETTINGS:")]
     [Range(0,100)]
     [SerializeField] private int cashDropChance;
     [Range(0,100)]

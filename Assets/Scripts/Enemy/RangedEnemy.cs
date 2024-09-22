@@ -6,7 +6,7 @@ using UnityEngine;
 public class RangedEnemy : Enemy
 {
 
-    [Header("Elements")]
+    [Header("RANGED SPECIFICS:")]
     private RangedEnemyAttack attack;
 
     // Start is called before the first frame update

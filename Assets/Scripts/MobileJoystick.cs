@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class MobileJoystick : MonoBehaviour
 {
-    [Header(" Elements ")]
+    [Header("ELEMENTS:")]
     [SerializeField] private RectTransform joystickOutline;
     [SerializeField] private RectTransform joystickKnob;
 
-    [Header(" Settings ")]
+    [Header("SETTINGS:")]
     [SerializeField] private float moveFactor;
     private Vector3 clickedPosition;
     private Vector3 move;

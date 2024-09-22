@@ -5,13 +5,13 @@ using UnityEngine;
 public class EnemyBullet : MonoBehaviour
 {
 
-    [Header("Element")]
+    [Header("ELEMENTS:")]
     private Rigidbody2D rb;
     private Collider2D col;
     private RangedEnemyAttack rangedEnemyAttack;
 
 
-    [Header("Setting")]
+    [Header("SETTINGS:")]
     [SerializeField] private float moveSpeed;
     private int damage;
 

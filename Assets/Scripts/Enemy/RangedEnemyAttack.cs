@@ -7,23 +7,23 @@ using UnityEngine.Pool;
 
 public class RangedEnemyAttack : MonoBehaviour
 {
-    [Header("Elements")]
+    [Header("ELLEMENTS:")]
     [SerializeField] private Transform firePoint;
     [SerializeField] private EnemyBullet bulletPrefab;
     private CharacterManager player;
 
 
-    [Header("Setting")]
+    [Header("SETTINGS:")]
     [SerializeField] private int damage;
     [SerializeField] private float fireRate;
     [SerializeField] private float attackDelay;
     [SerializeField] private float bulletSpeed;
     private float attackTimer;
 
-    [Header("Type")]
+    [Header("TYPE:")]
     [SerializeField] private int shooterType;
 
-    [Header("Pool")]
+    [Header("POOL:")]
     private ObjectPool<EnemyBullet> bulletPool;
 
     // Start is called before the first frame update
@@ -35,13 +35,6 @@ public class RangedEnemyAttack : MonoBehaviour
 
         bulletPool = new ObjectPool<EnemyBullet>(CreateFunction, ActionOnGet, ActionOnRelease, ActionOnDestroy);
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
 
     public void StorePlayer(CharacterManager _player) =>  player = _player;
 

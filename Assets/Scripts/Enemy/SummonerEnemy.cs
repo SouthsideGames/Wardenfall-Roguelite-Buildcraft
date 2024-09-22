@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class SummonerEnemy : Enemy
 {
-    [Header("Summoner Specific")]
+    [Header("SUMMONER SPECIFICS:")]
     [SerializeField] private GameObject[] summonableEnemies; // Array of enemy prefabs that can be summoned
     [SerializeField] private Transform[] summonPoints; // Points around the summoner where enemies will be spawned
     [SerializeField] private float summonCooldown = 5f; // Time between summoning enemies

@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class CameraManager : MonoBehaviour
 {
-    [Header("Elements")]
+    [Header("ELEMENTS:")]
     [SerializeField] private Transform target;
 
-    [Header("Settings")]
+    [Header("SETTINGS:")]
     [SerializeField] private Vector2 minMaxXY;
 
     private void LateUpdate()

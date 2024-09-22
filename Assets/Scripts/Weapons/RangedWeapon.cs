@@ -6,11 +6,11 @@ using UnityEngine.Pool;
 public class RangedWeapon : Weapon
 {
 
-    [Header("Elements")]
+    [Header("ELEMENTS:")]
     [SerializeField] private Transform firePoint;
     [SerializeField] private Bullet bulletPrefab;
 
-    [Header("Pooling")]
+    [Header("POOL:")]
     private ObjectPool<Bullet> bulletPool;
 
     // Start is called before the first frame update

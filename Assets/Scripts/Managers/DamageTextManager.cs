@@ -6,10 +6,10 @@ using UnityEngine.Pool;
 
 public class DamageTextManager : MonoBehaviour
 {
-    [Header("Elements")]
+    [Header("ELEMENTS:")]
     [SerializeField] private DamageText damageTextPrefab;
 
-    [Header("Pooling")]
+    [Header("POOL:")]
     private ObjectPool<DamageText> damageTextPool;  
 
     private void Awake() => MeleeEnemy.onDamageTaken += EnemyHitCallback;

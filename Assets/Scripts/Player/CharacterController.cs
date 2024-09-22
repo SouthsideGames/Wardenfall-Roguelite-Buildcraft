@@ -3,11 +3,11 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class CharacterController : MonoBehaviour
 {
-    [Header("Elements")]
+    [Header("ELEMENTS:")]
     [SerializeField] private MobileJoystick joystick;
     private Rigidbody2D _rb;
 
-    [Header("Settings")]
+    [Header("SETTINGS:")]
     [SerializeField] private float moveSpeed;
 
     // Start is called before the first frame update

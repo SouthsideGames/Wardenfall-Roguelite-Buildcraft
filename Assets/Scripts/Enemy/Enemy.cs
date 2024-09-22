@@ -5,11 +5,11 @@ using UnityEngine;
 
 public abstract class Enemy : MonoBehaviour
 {
-    [Header("Actions")]
+    [Header("ACTIONS:")]
     public static Action<int, Vector2, bool> onDamageTaken;
     public static Action<Vector2, int> onDeathTaken;
 
-    [Header("Elements")]
+    [Header("ELEMENTS:")]
     protected CharacterManager player;
     protected EnemyMovement movement;
     [SerializeField] protected SpriteRenderer _sr;
@@ -17,26 +17,26 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] private Collider2D _col;
     protected bool hasSpawned = false;
 
-    [Header("Levels")]
+    [Header("LEVELS:")]
     [SerializeField] private int level;
 
-    [Header("Attack")]
+    [Header("ATTACK:")]
     [SerializeField] protected float playerDetectionRadius;
 
-    [Header("Health")]
+    [Header("HEALTH:")]
     public int maxHealth;
     [HideInInspector] public int health;
     [HideInInspector] public bool isInvincible = false;
 
-    [Header("Spawn Values")]
+    [Header("SPAWN VALUES:")]
     [SerializeField] private float spawnSize = 1.2f;
     [SerializeField] private float spawnTime = .3f;
     [SerializeField] private int numberOfLoops = 4;
 
-    [Header("Effects")]
+    [Header("EFFECTS:")]
     [SerializeField] protected ParticleSystem deathParticles;
 
-    [Header("Debug")]
+    [Header("DEBUG:")]
     [SerializeField] private bool showGizmos;
 
     // Start is called before the first frame update

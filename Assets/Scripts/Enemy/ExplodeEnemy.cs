@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ExplodeEnemy : Enemy
 {
-    [Header("Exploder Specific")]
+    [Header("EXPLODER SPECIFICS:")]
     [SerializeField] private float explosionRadius = 3f; // Radius of the explosion
     [SerializeField] private int explosionDamage = 10; // Damage dealt by the explosion
     [SerializeField] private ParticleSystem explosionEffect; // Particle effect for explosion

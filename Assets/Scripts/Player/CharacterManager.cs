@@ -6,7 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterDetection))]
 public class CharacterManager : MonoBehaviour
 {
-    [Header("Components")]
+    [Header("COMPONENTS:")]
     private CharacterHealth characterHealth;
     [SerializeField] private CircleCollider2D _col;
     

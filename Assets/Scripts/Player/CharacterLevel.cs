@@ -4,11 +4,11 @@ using TMPro;
 
 public class CharacterLevel : MonoBehaviour
 {   
-    [Header("Elements")]
+    [Header("ELEMENTS:")]
     [SerializeField] private Slider xpBar;
     [SerializeField] private TextMeshProUGUI levelText;
 
-    [Header("Settings")]
+    [Header("SETTINGS:")]
     private int requiredXp;
     private int currentXp;
     private int level = 1;

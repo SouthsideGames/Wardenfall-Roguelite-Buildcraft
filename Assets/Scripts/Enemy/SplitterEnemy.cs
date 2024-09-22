@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class SplitterEnemy : Enemy
 {
-    [Header("Splitter Specific")]
+    [Header("SPLITTER SPECIFIC:")]
     [SerializeField] private int maxSplits = 3; // Maximum number of times the enemy can split
     [SerializeField] private GameObject smallerVersionPrefab; // Prefab for the smaller version of the enemy
     [SerializeField] private float splitScaleFactor = 0.5f; // Scale reduction factor for each split
     [SerializeField] private int splitHealthFactor = 2; // Health reduction factor for each split
 
-    [Header("Attack")]
+    [Header("ATTACK:")]
     [SerializeField] private int damage;
     [SerializeField] private float attackRate;
     private float attackDelay;

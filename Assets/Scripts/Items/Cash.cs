@@ -5,7 +5,7 @@ using System;
 
 public class Cash : Item
 {
-    [Header("Actions")]
+    [Header("ACTIONS:")]
     public static Action<Cash> onCollected;
     
     protected override void Collected()

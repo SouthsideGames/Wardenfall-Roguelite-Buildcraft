@@ -5,15 +5,15 @@ using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour
 {
-    [Header("Elements")]
+    [Header("ELEMENTS:")]
     private CharacterManager player;
 
-    [Header("Settings")]
+    [Header("SETTINGS:")]
     [SerializeField] private float moveSpeed;
     
     public void StorePlayer(CharacterManager _player)
     {
-        this.player = _player;   
+        player = _player;   
     }
 
     public void FollowPlayer()
