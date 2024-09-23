@@ -5,25 +5,70 @@ using NaughtyAttributes;
 
 public class WaveManager : MonoBehaviour
 {
+    [Header("ELEMENTS:")]
+    [SerializeField] private CharacterManager character;
     
     [Header("SETTINGS:")]
     [SerializeField] private float waveDuration;
+    private float timer;
 
     [Header("WAVES SETTINGS:")]
     [SerializeField] private Wave[] wave;
+    private List<float> localCounters = new List<float>();
 
-    // Start is called before the first frame update
     void Start()
     {
-        
+        localCounters.Add(1);
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(timer < waveDuration)
+            ManageCurrentWave();
+    }
+    
+    private void ManageCurrentWave()
+    {
+        Wave currentWave = wave[0];
+
+        for(int i = 0; i < currentWave.segments.Count; i++)
+        {   
+            WaveSegment segment = currentWave.segments[i];  
+
+            float tStart = segment.spawnPercentage.x / 100 * waveDuration;
+            float tEnd = segment.spawnPercentage.y / 100 * waveDuration;    
+
+            if(timer < tStart || timer > tEnd)
+               continue;
+
+            float timeSinceSegmentStart = timer - tStart;
+            float spawnDelay = 1f / segment.spawnFrequency;
+
+            if(timeSinceSegmentStart / spawnDelay > localCounters[i])
+            {
+                Instantiate(segment.prefab, GetSpawnPosition(), Quaternion.identity, transform);
+                localCounters[i]++;
+            }
+        }
+
+        timer += Time.deltaTime;    
+
+    }
+
+    private Vector2 GetSpawnPosition()
+    {
+        Vector2 direction = UnityEngine.Random.onUnitSphere;
+        Vector2 offset = direction.normalized * UnityEngine.Random.Range(6, 10);
+        Vector2 targetPosition = (Vector2)character.transform.position + offset;
+
+        targetPosition.x = Mathf.Clamp(targetPosition.x, -18, 18);
+        targetPosition.y = Mathf.Clamp(targetPosition.y, -8, 8);
         
+        return targetPosition;
     }
 }
+
 
 [Serializable]
 public struct Wave
