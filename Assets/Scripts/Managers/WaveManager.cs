@@ -66,8 +66,13 @@ public class WaveManager : MonoBehaviour
 
     private void ManageWaveTransition()
     {
+        hasWaveStarted = false;
         currentWaveIndex++;
-        StartWave(currentWaveIndex);
+
+        if (currentWaveIndex >= wave.Length)
+            Debug.Log("Waves Completed");
+        else
+            StartWave(currentWaveIndex);
     }
 
     private Vector2 GetSpawnPosition()
