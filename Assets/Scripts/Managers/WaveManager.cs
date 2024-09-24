@@ -11,6 +11,8 @@ public class WaveManager : MonoBehaviour
     [Header("SETTINGS:")]
     [SerializeField] private float waveDuration;
     private float timer;
+    private bool hasWaveStarted;
+    private int currentWaveIndex;
 
     [Header("WAVES SETTINGS:")]
     [SerializeField] private Wave[] wave;
@@ -18,19 +20,25 @@ public class WaveManager : MonoBehaviour
 
     void Start()
     {
-        localCounters.Add(1);
+        
+        StartWave(currentWaveIndex);
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(!hasWaveStarted)
+           return;
+
         if(timer < waveDuration)
             ManageCurrentWave();
+        else
+            ManageWaveTransition();
     }
     
     private void ManageCurrentWave()
     {
-        Wave currentWave = wave[0];
+        Wave currentWave = wave[currentWaveIndex];
 
         for(int i = 0; i < currentWave.segments.Count; i++)
         {   
@@ -56,6 +64,12 @@ public class WaveManager : MonoBehaviour
 
     }
 
+    private void ManageWaveTransition()
+    {
+        currentWaveIndex++;
+        StartWave(currentWaveIndex);
+    }
+
     private Vector2 GetSpawnPosition()
     {
         Vector2 direction = UnityEngine.Random.onUnitSphere;
@@ -66,6 +80,19 @@ public class WaveManager : MonoBehaviour
         targetPosition.y = Mathf.Clamp(targetPosition.y, -8, 8);
         
         return targetPosition;
+    }
+
+    private void StartWave(int _waveIndex)
+    {
+        Debug.Log("Starting Wave " + _waveIndex);
+
+        localCounters.Clear();
+
+        foreach(WaveSegment segment in wave[_waveIndex ].segments)
+            localCounters.Add(1);
+
+        timer = 0;
+        hasWaveStarted = true;
     }
 }
 
