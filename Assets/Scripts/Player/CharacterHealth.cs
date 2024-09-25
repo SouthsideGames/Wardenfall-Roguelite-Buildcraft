@@ -32,7 +32,7 @@ public class CharacterHealth : MonoBehaviour
 
     }
 
-    private void Die() => SceneManager.LoadScene(0);
+    private void Die() => GameManager.Instance.SetGameState(GameState.GAMEOVER);
 
     private void UpdateHealthUI()
     {

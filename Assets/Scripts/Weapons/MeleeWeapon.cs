@@ -4,13 +4,8 @@ using UnityEngine;
 
 public class MeleeWeapon : Weapon
 {
-    enum State 
-    {
-        Idle,
-        Attack
-    }
-
-    private State state;
+  
+    private MeleeWeaponState state;
 
     [Header("ELEMENTS:")]
     [SerializeField] private Transform hitpoint;
@@ -20,7 +15,7 @@ public class MeleeWeapon : Weapon
     // Start is called before the first frame update
     void Start()
     {
-         state = State.Idle;
+         state = MeleeWeaponState.IDLE;
     }
 
     // Update is called once per frame
@@ -28,10 +23,10 @@ public class MeleeWeapon : Weapon
     {
         switch(state)
        {
-            case State.Idle:
+            case MeleeWeaponState.IDLE:
                 AutoAim();
                 break;
-            case State.Attack:
+            case MeleeWeaponState.ATTACK:
                 AttackState();
                 break;
             default:
@@ -47,7 +42,7 @@ public class MeleeWeapon : Weapon
     private void StartAttack()
     {
         anim.Play("Attack");
-        state = State.Attack;   
+        state = MeleeWeaponState.ATTACK;   
 
         damagedEnemies.Clear(); 
 
@@ -56,7 +51,7 @@ public class MeleeWeapon : Weapon
 
     private void EndAttack()
     {
-        state = State.Idle;
+        state = MeleeWeaponState.IDLE;
         damagedEnemies.Clear(); 
     }
 

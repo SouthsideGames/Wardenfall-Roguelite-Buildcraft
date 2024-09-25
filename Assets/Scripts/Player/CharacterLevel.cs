@@ -12,6 +12,7 @@ public class CharacterLevel : MonoBehaviour
     private int requiredXp;
     private int currentXp;
     private int level = 1;
+    private int levelsEarned;
 
     private void Awake()
     {
@@ -52,6 +53,18 @@ public class CharacterLevel : MonoBehaviour
     {
         level++;
         currentXp = 0;
+        levelsEarned++;
         UpdateRequiredXP();
+    }
+
+    public bool HasLeveledUp()
+    {
+        if(levelsEarned > 0)
+        {
+            levelsEarned--;
+            return true;
+        }
+
+        return false;   
     }
 }

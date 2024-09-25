@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using NaughtyAttributes;
 
-public class WaveManager : MonoBehaviour
+[RequireComponent(typeof(WaveUI))]
+public class WaveManager : MonoBehaviour, IGameStateListener
 {
     [Header("ELEMENTS:")]
     [SerializeField] private CharacterManager character;
+    private WaveUI ui;
     
     [Header("SETTINGS:")]
     [SerializeField] private float waveDuration;
@@ -18,10 +20,10 @@ public class WaveManager : MonoBehaviour
     [SerializeField] private Wave[] wave;
     private List<float> localCounters = new List<float>();
 
-    void Start()
+    
+    private void Awake()
     {
-        
-        StartWave(currentWaveIndex);
+        ui = GetComponent<WaveUI>(); 
     }
 
     // Update is called once per frame
@@ -31,9 +33,17 @@ public class WaveManager : MonoBehaviour
            return;
 
         if(timer < waveDuration)
+        {
             ManageCurrentWave();
+
+            string timerString = ((int)(waveDuration - timer)).ToString();
+
+            ui.UpdateTimerText(timerString);
+        }
         else
             ManageWaveTransition();
+
+            
     }
     
     private void ManageCurrentWave()
@@ -67,12 +77,17 @@ public class WaveManager : MonoBehaviour
     private void ManageWaveTransition()
     {
         hasWaveStarted = false;
+
         currentWaveIndex++;
 
         if (currentWaveIndex >= wave.Length)
-            Debug.Log("Waves Completed");
+        {
+            ui.StageCompleted();
+
+            GameManager.Instance.SetGameState(GameState.STAGECOMPLETED);
+        }
         else
-            StartWave(currentWaveIndex);
+            GameManager.Instance.WaveCompletedCallback();
     }
 
     private Vector2 GetSpawnPosition()
@@ -87,9 +102,25 @@ public class WaveManager : MonoBehaviour
         return targetPosition;
     }
 
+    public void GameStateChangedCallback(GameState _gameState)
+    {
+        switch(_gameState)
+        {
+            case GameState.GAME:
+                StartNextWave();
+                break;
+            case GameState.GAMEOVER:
+                hasWaveStarted = false;
+                DefeatAllEnemies();
+                break;
+        }
+    }
+
     private void StartWave(int _waveIndex)
     {
         Debug.Log("Starting Wave " + _waveIndex);
+
+        ui.UpdateWaveText("Wave " + (currentWaveIndex + 1) + " / " + wave.Length);
 
         localCounters.Clear();
 
@@ -98,6 +129,16 @@ public class WaveManager : MonoBehaviour
 
         timer = 0;
         hasWaveStarted = true;
+    }
+
+    private void StartNextWave()
+    {
+        StartWave(currentWaveIndex);
+    }
+
+    private void DefeatAllEnemies()
+    {
+        transform.Clear();  
     }
 }
 
