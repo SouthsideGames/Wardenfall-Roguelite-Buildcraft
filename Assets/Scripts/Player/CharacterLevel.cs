@@ -14,6 +14,9 @@ public class CharacterLevel : MonoBehaviour
     private int level = 1;
     private int levelsEarned;
 
+    [Header("DEBUG:")]
+    [SerializeField] private bool debug;
+
     private void Awake()
     {
         Candy.onCollected += CandyCollectedCallback;
@@ -59,6 +62,10 @@ public class CharacterLevel : MonoBehaviour
 
     public bool HasLeveledUp()
     {
+        if(debug)
+          return true;
+
+          
         if(levelsEarned > 0)
         {
             levelsEarned--;

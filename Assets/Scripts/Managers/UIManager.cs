@@ -50,7 +50,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
                 ShowPanel(stageCompletePanel);
                 break;
             case GameState.WAVETRANSITION:
-                ShowPanel(waveTransitionPanel, false);
+                ShowPanel(waveTransitionPanel);
                 break;
             case GameState.SHOP:
                 ShowPanel(shopPanel);
