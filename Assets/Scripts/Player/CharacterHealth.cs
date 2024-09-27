@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class CharacterHealth : MonoBehaviour
+public class CharacterHealth : MonoBehaviour, ICharacterStats
 {
     [Header("ELEMENTS:")]
     [SerializeField] private Slider healthBar;
@@ -11,14 +11,9 @@ public class CharacterHealth : MonoBehaviour
 
 
     [Header("SETTINGS:")]
-    [SerializeField] private int maxHealth;
+    [SerializeField] private int baseMaxHealth;
+    private int maxHealth;
     private int health;
-
-    private void Start()
-    {
-        health = maxHealth;
-        UpdateHealthUI();
-    }
 
     public void TakeDamage(int _damage)
     {
@@ -39,5 +34,16 @@ public class CharacterHealth : MonoBehaviour
         float healthBarValue = (float)health / maxHealth;
         healthBar.value = healthBarValue;   
         healthText.text = health + " / " + maxHealth;
-    } 
+    }
+
+    public void UpdateStats(CharacterStatsManager _characterStatsManager)
+    {
+        float addedHealth = _characterStatsManager.GetStatValue(CharacterStat.MaxHealth);
+        maxHealth = baseMaxHealth + (int)addedHealth;
+        maxHealth = Mathf.Max(maxHealth, 1);
+
+        health = maxHealth;
+        UpdateHealthUI();
+
+    }
 }

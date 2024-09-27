@@ -19,7 +19,7 @@ public  enum MeleeWeaponState
     ATTACK
 }
 
-public enum PlayerStat
+public enum CharacterStat
 {
     Attack,
     AttackSpeed,
@@ -34,17 +34,16 @@ public enum PlayerStat
     Dodge,
     LifeSteal,
     CriticalResistance,
-    PickupRange,
-    ElementalDamage
+    PickupRange
     
 }
 
 public static class Enums
 {
-    public static string FormatStatName(PlayerStat _playerStat)
+    public static string FormatStatName(CharacterStat _characterStat)
     {
         string formated = "";
-        string unformatedString = _playerStat.ToString();
+        string unformatedString = _characterStat.ToString();
 
         if(unformatedString.Length <= 0)
             return "Unvalid Stat Name";
