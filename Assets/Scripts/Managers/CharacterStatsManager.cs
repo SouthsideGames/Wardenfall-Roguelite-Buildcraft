@@ -2,13 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.TextCore.Text;
 
 public class CharacterStatsManager : MonoBehaviour
 {
     public static CharacterStatsManager Instance;
 
+    [Header("DATA:")]
+    [SerializeField] private CharacterDataSO characterData;
+
     [Header("SETTINGS:")]
     private Dictionary<CharacterStat, float> addends = new Dictionary<CharacterStat, float>();  
+    private Dictionary<CharacterStat, float> characterStats = new Dictionary<CharacterStat, float>();  
 
     private void Awake()
     {
@@ -16,20 +21,19 @@ public class CharacterStatsManager : MonoBehaviour
             Instance = this;
         else
             Destroy(gameObject);
+
+        characterStats = characterData.BaseStats;
+
+        foreach(KeyValuePair<CharacterStat, float> kvp in characterStats)
+            addends.Add(kvp.Key,0);
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        addends.Add(CharacterStat.MaxHealth, 10);
         UpdateCharacterStats();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void AddCharacterStat(CharacterStat _characterStat, float _value)
     {
@@ -58,6 +62,7 @@ public class CharacterStatsManager : MonoBehaviour
 
     public float GetStatValue(CharacterStat _characterStat)
     {
-        return addends[_characterStat];
+        float value = characterStats[_characterStat] + addends[_characterStat];
+        return value;
     }
 }

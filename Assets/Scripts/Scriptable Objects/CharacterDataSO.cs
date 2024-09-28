@@ -27,4 +27,30 @@ public class CharacterDataSO : ScriptableObject
     [SerializeField] private float criticalResistance;
     [SerializeField] private float pickupRange;
 
+    public Dictionary<CharacterStat, float> BaseStats
+    {
+        get 
+        {
+            return new Dictionary<CharacterStat, float>
+            {
+                {CharacterStat.Attack, attack},
+                {CharacterStat.AttackSpeed, attackSeed},
+                {CharacterStat.CriticalChance, criticalChance},
+                {CharacterStat.CriticalPercent, criticalPercent},
+                {CharacterStat.MoveSpeed, moveSpeed},
+                {CharacterStat.MaxHealth, maxHealth},
+                {CharacterStat.Range, range},
+                {CharacterStat.HealthRecoverySpeed, healthRecoverySpeed},
+                {CharacterStat.Armor, armor},
+                {CharacterStat.Luck, luck},
+                {CharacterStat.Dodge, dodge},
+                {CharacterStat.LifeSteal, lifeSteal},
+                {CharacterStat.CriticalResistance, criticalResistance},
+                {CharacterStat.PickupRange, pickupRange},   
+
+            };
+        }
+
+        private set{}
+    }
 }
