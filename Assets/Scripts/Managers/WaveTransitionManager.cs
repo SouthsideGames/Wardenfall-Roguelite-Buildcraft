@@ -56,20 +56,22 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
         float value;
 
         value = Random.Range(1, 10);
-        _buttonString = "+" + value.ToString() + "%";
 
         switch (_characterStat)
         {
             case CharacterStat.Attack:
                 value = Random.Range(1, 10);
+                _buttonString = "+" + value.ToString() + "%";
                 break;
 
             case CharacterStat.AttackSpeed:
                 value = Random.Range(1, 10);
+                _buttonString = "+" + value.ToString() + "%";
                 break;
 
             case CharacterStat.CriticalChance:
                 value = Random.Range(1, 10);
+                _buttonString = "+" + value.ToString() + "%";
                 break;
 
             case CharacterStat.CriticalPercent:
@@ -79,6 +81,7 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
 
             case CharacterStat.MoveSpeed:
                 value = Random.Range(1, 10);
+                _buttonString = "+" + value.ToString() + "%";
                 break;
 
             case CharacterStat.MaxHealth:
@@ -88,31 +91,37 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
 
             case CharacterStat.Range:
                 value = Random.Range(1f, 5f);
-                _buttonString = "+" + value.ToString();
+                _buttonString = "+" + value.ToString("F2");
                 break;
 
             case CharacterStat.HealthRecoverySpeed:
                 value = Random.Range(1, 10);
+                _buttonString = "+" + value.ToString() + "%";
                 break;
 
             case CharacterStat.Armor:
                 value = Random.Range(1, 10);
+                _buttonString = "+" + value.ToString() + "%";
                 break;
 
             case CharacterStat.Luck:
                 value = Random.Range(1, 10);
+                _buttonString = "+" + value.ToString() + "%";
                 break;
 
             case CharacterStat.Dodge:
                 value = Random.Range(1, 10);
+                _buttonString = "+" + value.ToString() + "%";
                 break;
 
             case CharacterStat.LifeSteal:
                 value = Random.Range(1, 10);
+                _buttonString = "+" + value.ToString() + "%";
                 break;
 
-            case CharacterStat.CriticalResistance:
+            case CharacterStat.CriticalResistancePercent:
                 value = Random.Range(1, 10);
+                _buttonString = "+" + value.ToString("F2") + "%";
                 break;
 
             case CharacterStat.PickupRange:

@@ -78,9 +78,9 @@ public class ChargeEnemy : Enemy
 
     private void LocatePlayer()
     {
-        if (player != null)
+        if (character != null)
         {
-            chargeDirection = (player.transform.position - transform.position).normalized; // Calculate the direction towards the player
+            chargeDirection = (character.transform.position - transform.position).normalized; // Calculate the direction towards the player
         }
         else
         {
@@ -127,7 +127,7 @@ public class ChargeEnemy : Enemy
     private void TryAttack()
     {
         // Check if the enemy is close enough to the player to attack and hasn't attacked yet
-        float distanceToPlayer = Vector2.Distance(transform.position, player.transform.position);
+        float distanceToPlayer = Vector2.Distance(transform.position, character.transform.position);
 
         if (distanceToPlayer <= playerDetectionRadius && !attackPerformed)
         {
@@ -138,14 +138,14 @@ public class ChargeEnemy : Enemy
     private void Attack()
     {
         attackPerformed = true; // Set the flag to true to prevent further attacks during this charge
-        player.TakeDamage(damage); // Inflict damage on the player
+        character.TakeDamage(damage); // Inflict damage on the player
         Debug.Log("ChargeEnemy attacked the player!");
     }
 
     private void OnDrawGizmosSelected()
     {
         // Visualize the charge direction and potential distance in the editor
-        if (player != null)
+        if (character != null)
         {
             Gizmos.color = Color.red;
             Gizmos.DrawLine(transform.position, transform.position + (Vector3)chargeDirection * chargeDistance);

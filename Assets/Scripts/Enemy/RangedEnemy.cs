@@ -15,7 +15,7 @@ public class RangedEnemy : Enemy
         base.Start();
 
         attack = GetComponent<RangedEnemyAttack>(); 
-        attack.StorePlayer(player);
+        attack.StorePlayer(character);
     }
 
     void Update()
@@ -25,14 +25,14 @@ public class RangedEnemy : Enemy
 
         AttackLogic();
 
-        transform.localScale = player.transform.position.x >
+        transform.localScale = character.transform.position.x >
             transform.position.x ? Vector3.one : Vector3.one.With(x: -1);
 
     }
 
     private void AttackLogic()
     {
-        float distanceToPlayer = Vector2.Distance(transform.position, player.transform.position);
+        float distanceToPlayer = Vector2.Distance(transform.position, character.transform.position);
 
         if(distanceToPlayer <= playerDetectionRadius)
             TryAttack();

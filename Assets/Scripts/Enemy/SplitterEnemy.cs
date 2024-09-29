@@ -82,7 +82,7 @@ public class SplitterEnemy : Enemy
 
     private void TryAttack()
     {
-        float distanceToPlayer = Vector2.Distance(transform.position, player.transform.position);
+        float distanceToPlayer = Vector2.Distance(transform.position, character.transform.position);
 
         if(distanceToPlayer <= playerDetectionRadius)
             Attack();
@@ -92,7 +92,7 @@ public class SplitterEnemy : Enemy
     {
 
         attackTimer = 0;
-        player.TakeDamage(damage);
+        character.TakeDamage(damage);
     }
 
    

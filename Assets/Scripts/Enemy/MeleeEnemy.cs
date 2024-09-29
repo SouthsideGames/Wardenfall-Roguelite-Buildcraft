@@ -6,10 +6,8 @@ public class MeleeEnemy : Enemy
 {
 
     [Header("MELEE SPECIFICS:")]
-    [SerializeField] private int damage;
     [SerializeField] private float attackRate;
     private float attackDelay;
-    private float attackTimer;
 
     // Start is called before the first frame update
     protected override void Start()
@@ -42,17 +40,10 @@ public class MeleeEnemy : Enemy
 
     private void TryAttack()
     {
-        float distanceToPlayer = Vector2.Distance(transform.position, player.transform.position);
+        float distanceToPlayer = Vector2.Distance(transform.position, character.transform.position);
 
         if(distanceToPlayer <= playerDetectionRadius)
             Attack();
-    }
-
-    private void Attack()
-    {
-
-        attackTimer = 0;
-        player.TakeDamage(damage);
     }
 
 

@@ -10,7 +10,7 @@ public abstract class Enemy : MonoBehaviour
     public static Action<Vector2, int> onDeathTaken;
 
     [Header("ELEMENTS:")]
-    protected CharacterManager player;
+    protected CharacterManager character;
     protected EnemyMovement movement;
     [SerializeField] protected SpriteRenderer _sr;
     [SerializeField] private SpriteRenderer spawnIndicator;
@@ -21,7 +21,10 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] private int level;
 
     [Header("ATTACK:")]
+    [SerializeField] protected int damage;
     [SerializeField] protected float playerDetectionRadius;
+    protected float attackTimer;
+    private bool isCriticalHit;
 
     [Header("HEALTH:")]
     public int maxHealth;
@@ -45,9 +48,9 @@ public abstract class Enemy : MonoBehaviour
         health = maxHealth;
 
         movement = GetComponent<EnemyMovement>();
-        player = FindFirstObjectByType<CharacterManager>();
+        character = FindFirstObjectByType<CharacterManager>();
 
-        if (player == null)
+        if (character == null)
         {
             Debug.LogWarning("No player found");
             Destroy(gameObject);
@@ -116,7 +119,7 @@ public abstract class Enemy : MonoBehaviour
         SetRenderersVisibility(true);
         hasSpawned = true;
         _col.enabled = true;
-        movement.StorePlayer(player);
+        movement.StorePlayer(character);
     }
 
     private void SetRenderersVisibility(bool visibility)
@@ -125,5 +128,30 @@ public abstract class Enemy : MonoBehaviour
         spawnIndicator.enabled = !visibility;
     }
 
+    protected virtual void Attack()
+    {
+        isCriticalHit = false;
+        attackTimer = 0;
+        float enemyCriticalHitPercent = UnityEngine.Random.Range(0, 5) / 100;
+
+        if (enemyCriticalHitPercent >= CharacterStatsManager.Instance.GetStatValue(CharacterStat.CriticalResistancePercent))
+        {
+            isCriticalHit = true;
+
+            if (isCriticalHit)
+            {
+                character.TakeDamage(damage * 2);
+            }
+           
+        }
+        else
+        {
+            character.TakeDamage(damage);
+        }
+
+    }
+
+   
+  
 
 }

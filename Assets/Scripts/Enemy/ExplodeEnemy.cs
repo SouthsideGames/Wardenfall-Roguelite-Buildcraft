@@ -30,7 +30,7 @@ public class ExplodeEnemy : Enemy
     private bool IsPlayerTooClose()
     {
         // Check if the player is within the trigger distance for explosion
-        return Vector2.Distance(transform.position, player.transform.position) <= playerDetectionRadius;
+        return Vector2.Distance(transform.position, character.transform.position) <= playerDetectionRadius;
     }
 
     private void Explode()

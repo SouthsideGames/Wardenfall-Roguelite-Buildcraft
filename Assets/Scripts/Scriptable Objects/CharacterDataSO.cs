@@ -24,7 +24,7 @@ public class CharacterDataSO : ScriptableObject
     [SerializeField] private float luck;
     [SerializeField] private float dodge;
     [SerializeField] private float lifeSteal;
-    [SerializeField] private float criticalResistance;
+    [SerializeField] private float criticalResistancePercent;
     [SerializeField] private float pickupRange;
 
     public Dictionary<CharacterStat, float> BaseStats
@@ -45,7 +45,7 @@ public class CharacterDataSO : ScriptableObject
                 {CharacterStat.Luck, luck},
                 {CharacterStat.Dodge, dodge},
                 {CharacterStat.LifeSteal, lifeSteal},
-                {CharacterStat.CriticalResistance, criticalResistance},
+                {CharacterStat.CriticalResistancePercent, criticalResistancePercent},
                 {CharacterStat.PickupRange, pickupRange},   
 
             };
