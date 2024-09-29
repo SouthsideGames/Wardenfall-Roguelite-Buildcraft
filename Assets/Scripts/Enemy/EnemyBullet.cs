@@ -27,7 +27,7 @@ public class EnemyBullet : MonoBehaviour
 
     public void Shoot(int _damage, Vector2 _direction)
     {
-        this.damage = _damage;  
+        damage = _damage;  
 
         transform.right = _direction;
         rb.velocity = _direction * moveSpeed;

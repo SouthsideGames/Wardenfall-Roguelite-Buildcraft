@@ -36,6 +36,9 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] private float spawnTime = .3f;
     [SerializeField] private int numberOfLoops = 4;
 
+    [Header("MODIFIER:")]
+    [SerializeField] private bool canPerformCriticalHit;
+
     [Header("EFFECTS:")]
     [SerializeField] protected ParticleSystem deathParticles;
 
@@ -132,17 +135,25 @@ public abstract class Enemy : MonoBehaviour
     {
         isCriticalHit = false;
         attackTimer = 0;
-        float enemyCriticalHitPercent = UnityEngine.Random.Range(0, 5) / 100;
 
-        if (enemyCriticalHitPercent >= CharacterStatsManager.Instance.GetStatValue(CharacterStat.CriticalResistancePercent))
+        if(canPerformCriticalHit)
         {
-            isCriticalHit = true;
+            float enemyCriticalHitPercent = UnityEngine.Random.Range(0, 5) / 100;
 
-            if (isCriticalHit)
+            if (enemyCriticalHitPercent >= CharacterStatsManager.Instance.GetStatValue(CharacterStat.CriticalResistancePercent))
             {
-                character.TakeDamage(damage * 2);
-            }
+                isCriticalHit = true;
+
+                if (isCriticalHit)
+                {
+                    character.TakeDamage(damage * 2);
+                }
            
+            }
+            else
+            {
+                character.TakeDamage(damage);
+            }
         }
         else
         {
@@ -152,6 +163,5 @@ public abstract class Enemy : MonoBehaviour
     }
 
    
-  
 
 }

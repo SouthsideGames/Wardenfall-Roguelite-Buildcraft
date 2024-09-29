@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 
+//Range Enemies can not do critical damage
 [RequireComponent(typeof(EnemyMovement))]
 [RequireComponent(typeof(RangedEnemyAttack))]
 public class RangedEnemy : Enemy

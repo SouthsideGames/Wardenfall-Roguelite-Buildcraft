@@ -125,8 +125,8 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
                 break;
 
             case CharacterStat.PickupRange:
-                value = Random.Range(1f, 2.5f);
-                 _buttonString = "+" + value.ToString("F2") + "%";
+                value = Random.Range(1, 8);
+                _buttonString = "+" + value.ToString() + "%";
                 break;
 
             default:
