@@ -12,20 +12,20 @@ public class CharacterDataSO : ScriptableObject
     [field: SerializeField] public int PurchasePrice { get; private set; }   
 
     [HorizontalLine]
-    [SerializeField] private float attack;
-    [SerializeField] private float attackSeed;
-    [SerializeField] private float criticalChance;
-    [SerializeField] private float criticalPercent;
-    [SerializeField] private float moveSpeed;
-    [SerializeField] private float maxHealth;
-    [SerializeField] private float range;
-    [SerializeField] private float healthRecoverySpeed;
-    [SerializeField] private float armor;
-    [SerializeField] private float luck;
-    [SerializeField] private float dodge;
-    [SerializeField] private float lifeSteal;
-    [SerializeField] private float criticalResistancePercent;
-    [SerializeField] private float pickupRange;
+    [SerializeField, Tooltip("Base attack damage.")] private float attack;
+    [SerializeField,  Tooltip("Attack speed of the character.")] private float attackSpeed;
+    [SerializeField,  Tooltip("Chance to hit critically (%).")] private float criticalChance;
+    [SerializeField,  Tooltip("Extra damage for critical hits (%).")] private float criticalPercent;
+    [SerializeField, Tooltip("Character movement speed.")] private float moveSpeed;
+    [SerializeField, Tooltip("Maximum health points.")] private float maxHealth;
+    [SerializeField, Tooltip("Attack or ability range.")] private float range;
+    [SerializeField, Tooltip("Health regenerated per second.")] private float healthRecoverySpeed;
+    [SerializeField, Tooltip("Damage reduction value.")] private float armor;
+    [SerializeField, Tooltip("Chance-based event modifier.")] private float luck;
+    [SerializeField, Tooltip("Chance to dodge attacks (%).")] private float dodge;
+    [SerializeField, Tooltip("Damage converted to health (%).")] private float lifeSteal;
+    [SerializeField, Tooltip("Reduces enemy crit (%).")] private float criticalResistancePercent;
+    [SerializeField, Tooltip("Radius for auto item pickup.")] private float pickupRange;
 
     public Dictionary<CharacterStat, float> BaseStats
     {
@@ -34,7 +34,7 @@ public class CharacterDataSO : ScriptableObject
             return new Dictionary<CharacterStat, float>
             {
                 {CharacterStat.Attack, attack},
-                {CharacterStat.AttackSpeed, attackSeed},
+                {CharacterStat.AttackSpeed, attackSpeed},
                 {CharacterStat.CriticalChance, criticalChance},
                 {CharacterStat.CriticalPercent, criticalPercent},
                 {CharacterStat.MoveSpeed, moveSpeed},

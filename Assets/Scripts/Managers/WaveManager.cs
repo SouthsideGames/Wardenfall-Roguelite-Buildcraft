@@ -76,6 +76,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 
     private void ManageWaveTransition()
     {
+        DefeatAllEnemies();
         hasWaveStarted = false;
 
         currentWaveIndex++;
@@ -118,8 +119,6 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 
     private void StartWave(int _waveIndex)
     {
-        Debug.Log("Starting Wave " + _waveIndex);
-
         ui.UpdateWaveText("Wave " + (currentWaveIndex + 1) + " / " + wave.Length);
 
         localCounters.Clear();
@@ -138,7 +137,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 
     private void DefeatAllEnemies()
     {
-        transform.Clear();  
+        transform.Clear();
     }
 }
 

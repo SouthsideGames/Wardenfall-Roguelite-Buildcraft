@@ -1,6 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
+
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -12,7 +10,19 @@ public class DamageTextManager : MonoBehaviour
     [Header("POOL:")]
     private ObjectPool<DamageText> damageTextPool;  
 
-    private void Awake() => MeleeEnemy.onDamageTaken += EnemyHitCallback;
+    private void Awake()
+    {
+        Enemy.onDamageTaken += EnemyHitCallback;
+        CharacterHealth.OnDodge += CharacterDodgeCallback;
+    } 
+
+    private void OnDestroy()
+    {
+        Enemy.onDamageTaken -= EnemyHitCallback;
+        CharacterHealth.OnDodge -= CharacterDodgeCallback;
+    }
+   
+        
 
     private void Start() => damageTextPool = new ObjectPool<DamageText>(CreateFunction, ActionOnGet, ActionOnRelease, ActionOnDestroy);
 
@@ -26,8 +36,6 @@ public class DamageTextManager : MonoBehaviour
     private void ActionOnRelease(DamageText _damageText) =>  _damageText.gameObject.SetActive(false);
     private void ActionOnDestroy(DamageText _damageText) => Destroy(_damageText.gameObject);
 
-    private void OnDestroy() => MeleeEnemy.onDamageTaken -= EnemyHitCallback;
-
     private void EnemyHitCallback(int _damage, Vector2 enemyPos, bool _isCriticalHit)
     {
         DamageText _damageText = damageTextPool.Get();
@@ -35,7 +43,19 @@ public class DamageTextManager : MonoBehaviour
         Vector3 spawnPosition = enemyPos + Vector2.up * 1.5f;
         _damageText.transform.position = spawnPosition;
 
-        _damageText.PlayAnimation(_damage, _isCriticalHit);
+        _damageText.PlayAnimation(_damage.ToString(), _isCriticalHit);
+
+        LeanTween.delayedCall(1, () => damageTextPool.Release(_damageText));
+    }
+
+    private void CharacterDodgeCallback(Vector2 _characterPosition)
+    {   
+        DamageText _damageText = damageTextPool.Get();
+
+        Vector3 spawnPosition = _characterPosition + Vector2.up * 1.5f;
+        _damageText.transform.position = spawnPosition;
+
+        _damageText.PlayAnimation("Dodged", false);
 
         LeanTween.delayedCall(1, () => damageTextPool.Release(_damageText));
     }
