@@ -23,6 +23,9 @@ public class CharacterHealth : MonoBehaviour, ICharacterStats
     private float armor;
     private float lifeSteal;
     private float dodge;
+    private float healthRecoverySpeed;
+    private float healthRecoveryTimer;
+    private float healthRecoveryDuration;
 
     private void Awake()
     {
@@ -77,11 +80,18 @@ public class CharacterHealth : MonoBehaviour, ICharacterStats
         healthText.text = (int)health + " / " + maxHealth;
     }
 
+    private bool ShouldDodge()
+    {
+        float clampedDodge = Mathf.Clamp(dodge, 0f, 50f);
+        return UnityEngine.Random.Range(0f, 100f) < clampedDodge;
+    }
+
     public void UpdateStats(CharacterStatsManager _characterStatsManager)
     {
+        // Retrieve the MaxHealth value from the character stats manager and add it to baseMaxHealth
         float addedHealth = _characterStatsManager.GetStatValue(CharacterStat.MaxHealth);
         maxHealth = baseMaxHealth + (int)addedHealth;
-        maxHealth = Mathf.Max(maxHealth, 1);
+        maxHealth = Mathf.Max(maxHealth, 1); // Calculate the new max health and ensure it is not less than 1
 
         health = maxHealth;
         UpdateHealthUI();
@@ -90,11 +100,10 @@ public class CharacterHealth : MonoBehaviour, ICharacterStats
         lifeSteal = _characterStatsManager.GetStatValue(CharacterStat.LifeSteal) / 100;
         dodge = _characterStatsManager.GetStatValue(CharacterStat.Dodge);
 
+        // Calculate Health Recovery Speed and ensure it is not zero (minimum of .0001f)
+        healthRecoverySpeed = MathF.Max(.0001f, _characterStatsManager.GetStatValue(CharacterStat.HealthRecoverySpeed));
+        healthRecoveryDuration = 1f / healthRecoverySpeed;
+
     }
 
-    private bool ShouldDodge()
-    {
-        float clampedDodge = Mathf.Clamp(dodge, 0f, 50f);
-        return UnityEngine.Random.Range(0f, 100f) < clampedDodge;
-    }
 }
