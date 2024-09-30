@@ -91,7 +91,7 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
 
             case CharacterStat.Range:
                 value = Random.Range(1f, 5f);
-                _buttonString = "+" + value.ToString("F2");
+                _buttonString = "+" + value.ToString();
                 break;
 
             case CharacterStat.HealthRecoverySpeed:
@@ -121,7 +121,7 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
 
             case CharacterStat.CriticalResistancePercent:
                 value = Random.Range(1, 10);
-                _buttonString = "+" + value.ToString("F2") + "%";
+                _buttonString = "+" + value.ToString("F2") + "x";
                 break;
 
             case CharacterStat.PickupRange:
