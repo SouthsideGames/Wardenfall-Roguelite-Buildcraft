@@ -15,7 +15,7 @@ public class MeleeWeapon : Weapon
     // Start is called before the first frame update
     void Start()
     {
-         state = MeleeWeaponState.IDLE;
+         state = MeleeWeaponState.Idle;
     }
 
     // Update is called once per frame
@@ -23,10 +23,10 @@ public class MeleeWeapon : Weapon
     {
         switch(state)
        {
-            case MeleeWeaponState.IDLE:
+            case MeleeWeaponState.Idle:
                 AutoAim();
                 break;
-            case MeleeWeaponState.ATTACK:
+            case MeleeWeaponState.Attack:
                 AttackState();
                 break;
             default:
@@ -42,7 +42,7 @@ public class MeleeWeapon : Weapon
     private void StartAttack()
     {
         anim.Play("Attack");
-        state = MeleeWeaponState.ATTACK;   
+        state = MeleeWeaponState.Attack;   
 
         damagedEnemies.Clear(); 
 
@@ -51,7 +51,7 @@ public class MeleeWeapon : Weapon
 
     private void EndAttack()
     {
-        state = MeleeWeaponState.IDLE;
+        state = MeleeWeaponState.Idle;
         damagedEnemies.Clear(); 
     }
 

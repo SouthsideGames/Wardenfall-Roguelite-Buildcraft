@@ -34,25 +34,25 @@ public class UIManager : MonoBehaviour, IGameStateListener
     {
         switch(_gameState)
         {
-            case GameState.MENU:
+            case GameState.Menu:
                 ShowPanel(menuPanel);
                 break;
-            case GameState.WEAPONSELECT:
+            case GameState.WeaponSelect:
                 ShowPanel(weaponSelectPanel);
                 break;
-            case GameState.GAME:
+            case GameState.Game:
                 ShowPanel(gamePanel);
                 break;
-            case GameState.GAMEOVER:
+            case GameState.GameOver:
                 ShowPanel(gameoverPanel);
                 break;
-            case GameState.STAGECOMPLETED:
+            case GameState.StageCompleted:
                 ShowPanel(stageCompletePanel);
                 break;
-            case GameState.WAVETRANSITION:
+            case GameState.WaveTransition:
                 ShowPanel(waveTransitionPanel);
                 break;
-            case GameState.SHOP:
+            case GameState.Shop:
                 ShowPanel(shopPanel);
                 break;
 

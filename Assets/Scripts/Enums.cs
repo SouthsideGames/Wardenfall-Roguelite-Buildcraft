@@ -4,19 +4,19 @@ using UnityEngine;
 
 public enum GameState
 {
-    MENU,
-    WEAPONSELECT,
-    GAME,
-    GAMEOVER,
-    STAGECOMPLETED,
-    WAVETRANSITION,
-    SHOP
+    Menu,
+    WeaponSelect,
+    Game,
+    GameOver,
+    StageCompleted,
+    WaveTransition,
+    Shop
 }
 
 public  enum MeleeWeaponState 
 {
-    IDLE,
-    ATTACK
+    Idle,
+    Attack
 }
 
 public enum CharacterStat
@@ -29,6 +29,7 @@ public enum CharacterStat
     MaxHealth,
     Range,
     HealthRecoverySpeed,
+    HealthRecoveryValue,
     Armor,
     Luck,
     Dodge,

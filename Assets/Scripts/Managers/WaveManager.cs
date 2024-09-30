@@ -85,7 +85,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         {
             ui.StageCompleted();
 
-            GameManager.Instance.SetGameState(GameState.STAGECOMPLETED);
+            GameManager.Instance.SetGameState(GameState.StageCompleted);
         }
         else
             GameManager.Instance.WaveCompletedCallback();
@@ -107,10 +107,10 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     {
         switch(_gameState)
         {
-            case GameState.GAME:
+            case GameState.Game:
                 StartNextWave();
                 break;
-            case GameState.GAMEOVER:
+            case GameState.GameOver:
                 hasWaveStarted = false;
                 DefeatAllEnemies();
                 break;

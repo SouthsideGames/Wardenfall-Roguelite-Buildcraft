@@ -16,7 +16,7 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
     {
         switch (_gameState)
         {
-            case GameState.WAVETRANSITION:
+            case GameState.WaveTransition:
                 ConfigureUpgradeContainers();
                 break;
         }
@@ -96,6 +96,11 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
 
             case CharacterStat.HealthRecoverySpeed:
                 value = Random.Range(1, 10);
+                _buttonString = "+" + value.ToString() + "%";
+                break;
+
+            case CharacterStat.HealthRecoveryValue:
+                value = Random.Range(1, 5);
                 _buttonString = "+" + value.ToString() + "%";
                 break;
 

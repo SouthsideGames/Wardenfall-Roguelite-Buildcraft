@@ -24,6 +24,7 @@ public class CharacterHealth : MonoBehaviour, ICharacterStats
     private float lifeSteal;
     private float dodge;
     private float healthRecoverySpeed;
+    private float healthRecoveryValue;
     private float healthRecoveryTimer;
     private float healthRecoveryDuration;
 
@@ -35,6 +36,12 @@ public class CharacterHealth : MonoBehaviour, ICharacterStats
     private void OnDestroy() 
     {
         Enemy.onDamageTaken -= EnemyDamageCallback;
+    }
+
+    private void Update()
+    {
+        if(health < maxHealth)
+           RecoverHealth();
     }
 
     public void TakeDamage(int _damage)
@@ -71,7 +78,7 @@ public class CharacterHealth : MonoBehaviour, ICharacterStats
         UpdateHealthUI();
     }
 
-    private void Die() => GameManager.Instance.SetGameState(GameState.GAMEOVER);
+    private void Die() => GameManager.Instance.SetGameState(GameState.GameOver);
 
     private void UpdateHealthUI()
     {
@@ -84,6 +91,21 @@ public class CharacterHealth : MonoBehaviour, ICharacterStats
     {
         float clampedDodge = Mathf.Clamp(dodge, 0f, 50f);
         return UnityEngine.Random.Range(0f, 100f) < clampedDodge;
+    }
+
+    private void RecoverHealth()
+    {
+        healthRecoveryTimer += Time.deltaTime;
+
+        if(healthRecoveryTimer >= healthRecoveryDuration)
+        {
+            healthRecoveryTimer = 0;
+
+            float healthToAdd = Mathf.Min(.1f, maxHealth - health);
+            health += healthToAdd;
+
+            UpdateHealthUI();
+        }
     }
 
     public void UpdateStats(CharacterStatsManager _characterStatsManager)

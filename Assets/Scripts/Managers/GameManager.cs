@@ -21,13 +21,13 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         Application.targetFrameRate = 60;
-        SetGameState(GameState.MENU);
+        SetGameState(GameState.Menu);
     }
 
-    public void StartGame() => SetGameState(GameState.GAME);    
-    public void StartWeaponSelect() => SetGameState(GameState.WEAPONSELECT);
-    public void StartShop() => SetGameState(GameState.SHOP);    
-    public void StartGameOver() => SetGameState(GameState.GAMEOVER);  
+    public void StartGame() => SetGameState(GameState.Game);    
+    public void StartWeaponSelect() => SetGameState(GameState.WeaponSelect);
+    public void StartShop() => SetGameState(GameState.Shop);    
+    public void StartGameOver() => SetGameState(GameState.GameOver);  
 
     public void SetGameState(GameState _gameState)
     {
@@ -44,11 +44,11 @@ public class GameManager : MonoBehaviour
     {
         if(CharacterManager.Instance.HasLeveledUp())
         {
-            SetGameState(GameState.WAVETRANSITION);
+            SetGameState(GameState.WaveTransition);
         }
         else
         {
-            SetGameState(GameState.SHOP);
+            SetGameState(GameState.Shop);
         }
     }
 
