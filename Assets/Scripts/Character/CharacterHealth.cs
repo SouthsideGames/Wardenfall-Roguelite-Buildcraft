@@ -101,7 +101,7 @@ public class CharacterHealth : MonoBehaviour, ICharacterStats
         {
             healthRecoveryTimer = 0;
 
-            float healthToAdd = Mathf.Min(.1f, maxHealth - health);
+            float healthToAdd = Mathf.Min(healthRecoveryValue, maxHealth - health);
             health += healthToAdd;
 
             UpdateHealthUI();
@@ -125,6 +125,7 @@ public class CharacterHealth : MonoBehaviour, ICharacterStats
         // Calculate Health Recovery Speed and ensure it is not zero (minimum of .0001f)
         healthRecoverySpeed = MathF.Max(.0001f, _characterStatsManager.GetStatValue(CharacterStat.HealthRecoverySpeed));
         healthRecoveryDuration = 1f / healthRecoverySpeed;
+        healthRecoveryValue = _characterStatsManager.GetStatValue(CharacterStat.HealthRecoveryValue);
 
     }
 

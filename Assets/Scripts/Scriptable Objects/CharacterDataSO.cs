@@ -20,8 +20,9 @@ public class CharacterDataSO : ScriptableObject
     [SerializeField, Tooltip("Maximum health points.")] private float maxHealth;
     [SerializeField, Tooltip("Attack or ability range.")] private float range;
     [SerializeField, Tooltip("Health regenerated per second.")] private float healthRecoverySpeed;
+    [SerializeField, Tooltip("Amount of health to regenerate.")] private float healthRecoveryValue;
     [SerializeField, Tooltip("Damage reduction value.")] private float armor;
-    [SerializeField, Tooltip("Chance-based event modifier.")] private float luck;
+    [SerializeField, Tooltip("Increase the chance of chest spawning.")] private float luck;
     [SerializeField, Tooltip("Chance to dodge attacks (%).")] private float dodge;
     [SerializeField, Tooltip("Damage converted to health (%).")] private float lifeSteal;
     [SerializeField, Tooltip("Reduces enemy crit (%).")] private float criticalResistancePercent;
@@ -41,6 +42,7 @@ public class CharacterDataSO : ScriptableObject
                 {CharacterStat.MaxHealth, maxHealth},
                 {CharacterStat.Range, range},
                 {CharacterStat.HealthRecoverySpeed, healthRecoverySpeed},
+                {CharacterStat.HealthRecoveryValue, healthRecoveryValue},
                 {CharacterStat.Armor, armor},
                 {CharacterStat.Luck, luck},
                 {CharacterStat.Dodge, dodge},

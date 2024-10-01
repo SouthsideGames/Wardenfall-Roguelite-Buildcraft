@@ -95,7 +95,7 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
                 break;
 
             case CharacterStat.HealthRecoverySpeed:
-                value = Random.Range(1, 10);
+                value = Random.Range(1, 3);
                 _buttonString = "+" + value.ToString() + "%";
                 break;
 
