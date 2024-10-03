@@ -28,27 +28,27 @@ public class CharacterDataSO : ScriptableObject
     [SerializeField, Tooltip("Reduces enemy crit (%).")] private float criticalResistancePercent;
     [SerializeField, Tooltip("Radius for auto item pickup.")] private float pickupRange;
 
-    public Dictionary<CharacterStat, float> BaseStats
+    public Dictionary<Stat, float> BaseStats
     {
         get 
         {
-            return new Dictionary<CharacterStat, float>
+            return new Dictionary<Stat, float>
             {
-                {CharacterStat.Attack, attack},
-                {CharacterStat.AttackSpeed, attackSpeed},
-                {CharacterStat.CriticalChance, criticalChance},
-                {CharacterStat.CriticalPercent, criticalPercent},
-                {CharacterStat.MoveSpeed, moveSpeed},
-                {CharacterStat.MaxHealth, maxHealth},
-                {CharacterStat.Range, range},
-                {CharacterStat.HealthRecoverySpeed, healthRecoverySpeed},
-                {CharacterStat.HealthRecoveryValue, healthRecoveryValue},
-                {CharacterStat.Armor, armor},
-                {CharacterStat.Luck, luck},
-                {CharacterStat.Dodge, dodge},
-                {CharacterStat.LifeSteal, lifeSteal},
-                {CharacterStat.CriticalResistancePercent, criticalResistancePercent},
-                {CharacterStat.PickupRange, pickupRange},   
+                {Stat.Attack, attack},
+                {Stat.AttackSpeed, attackSpeed},
+                {Stat.CriticalChance, criticalChance},
+                {Stat.CriticalPercent, criticalPercent},
+                {Stat.MoveSpeed, moveSpeed},
+                {Stat.MaxHealth, maxHealth},
+                {Stat.Range, range},
+                {Stat.HealthRecoverySpeed, healthRecoverySpeed},
+                {Stat.HealthRecoveryValue, healthRecoveryValue},
+                {Stat.Armor, armor},
+                {Stat.Luck, luck},
+                {Stat.Dodge, dodge},
+                {Stat.LifeSteal, lifeSteal},
+                {Stat.CriticalResistancePercent, criticalResistancePercent},
+                {Stat.PickupRange, pickupRange},   
 
             };
         }

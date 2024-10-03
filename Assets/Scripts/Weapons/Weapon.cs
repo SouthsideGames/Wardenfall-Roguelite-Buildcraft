@@ -3,26 +3,33 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public abstract class Weapon : MonoBehaviour
+public abstract class Weapon : MonoBehaviour, IStats
 {
+    [field: SerializeField] public WeaponDataSO WeaponData {get; private set;}  
 
-    [Header("Settings")]
-    [SerializeField] private float range;
+    [Header("ELEMENTS:")]
+    [SerializeField] protected float range;
     [SerializeField] protected LayerMask enemyMask;
 
 
-    [Header("Attack")]
+    [Header("SETTINGS:")]
+    [SerializeField] protected int damage;
     [SerializeField] protected float attackDelay;
     protected float attackTimer;
-    [SerializeField] protected int damage;
+    protected int criticalChance;
+    protected float criticalPercent;
+
     
     [Header("ANIMATIONS:")]
     [SerializeField] protected Animator anim;
     [SerializeField] protected float aimLerp;
 
+    [Header("LEVELS:")]
+    public int level { get; private set; }
+
     protected Enemy closestEnemy;
     protected Vector2 targetUpVector;
-    
+
 
     protected Enemy GetClosestEnemy()
     {
@@ -55,10 +62,10 @@ public abstract class Weapon : MonoBehaviour
     {
         isCriticalHit = false;
 
-        if(Random.Range(0, 101) <= 50)
+        if(Random.Range(0, 101) <= criticalChance)
         {
             isCriticalHit = true;
-            return damage * 2;
+            return Mathf.RoundToInt(damage * criticalPercent);
         }
 
         return damage;
@@ -79,4 +86,19 @@ public abstract class Weapon : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, range);
     }
 
+    public abstract void UpdateStats(StatsManager _statsManager);
+
+    protected void ConfigureStats()
+    {
+        float multiplier = 1 + (float)level / 3;
+
+        damage = Mathf.RoundToInt(WeaponData.GetStatValue(Stat.Attack));
+        attackDelay = 1f / (WeaponData.GetStatValue(Stat.AttackSpeed) * multiplier);
+
+        criticalChance = Mathf.RoundToInt(WeaponData.GetStatValue(Stat.CriticalChance) * multiplier);
+        criticalPercent = WeaponData.GetStatValue(Stat.CriticalPercent) * multiplier;
+
+        if(WeaponData.Prefab.GetType() == typeof(RangedWeapon))
+            range = WeaponData.GetStatValue(Stat.Range) * multiplier;   
+    }
 }

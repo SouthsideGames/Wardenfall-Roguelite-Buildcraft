@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;   
 using System.Collections.Generic;   
 
-public class CharacterDetection : MonoBehaviour, ICharacterStats
+public class CharacterDetection : MonoBehaviour, IStats
 {
     [Header("COLLIDERS:")]
     [SerializeField] private CircleCollider2D collectableCollider;
@@ -22,9 +22,9 @@ public class CharacterDetection : MonoBehaviour, ICharacterStats
         }
     }
 
-    public void UpdateStats(CharacterStatsManager _characterStatsManager)
+    public void UpdateStats(StatsManager _statsManager)
     {
-        float pickUpRangePercent = _characterStatsManager.GetStatValue(CharacterStat.PickupRange) / 100;
+        float pickUpRangePercent = _statsManager.GetStatValue(Stat.PickupRange) / 100;
         pickupRange = basePickupRange * (1 + pickUpRangePercent);
 
         IncreaseColliderRadius();

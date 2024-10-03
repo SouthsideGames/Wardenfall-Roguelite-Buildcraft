@@ -28,9 +28,9 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
         for (int i = 0; i < upgradeContainers.Length; i++)
         {
 
-            int randomStat = Random.Range(0, Enum.GetValues(typeof(CharacterStat)).Length);
+            int randomStat = Random.Range(0, Enum.GetValues(typeof(Stat)).Length);
 
-            CharacterStat characterStat = (CharacterStat)Enum.GetValues(typeof(CharacterStat)).GetValue(randomStat);
+            Stat characterStat = (Stat)Enum.GetValues(typeof(Stat)).GetValue(randomStat);
 
             string randomStatString = Enums.FormatStatName(characterStat);
 
@@ -50,7 +50,7 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
         GameManager.Instance.WaveCompletedCallback();
     }
 
-    private Action GetActionToPeform(CharacterStat _characterStat, out string _buttonString)    
+    private Action GetActionToPeform(Stat _characterStat, out string _buttonString)    
     {
         _buttonString = "";
         float value;
@@ -59,77 +59,77 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
 
         switch (_characterStat)
         {
-            case CharacterStat.Attack:
+            case Stat.Attack:
                 value = Random.Range(1, 10);
                 _buttonString = "+" + value.ToString() + "%";
                 break;
 
-            case CharacterStat.AttackSpeed:
+            case Stat.AttackSpeed:
                 value = Random.Range(1, 10);
                 _buttonString = "+" + value.ToString() + "%";
                 break;
 
-            case CharacterStat.CriticalChance:
+            case Stat.CriticalChance:
                 value = Random.Range(1, 10);
                 _buttonString = "+" + value.ToString() + "%";
                 break;
 
-            case CharacterStat.CriticalPercent:
+            case Stat.CriticalPercent:
                 value = Random.Range(1f, 2.5f);
                 _buttonString = "+" + value.ToString("F2") + "x";
                 break;
 
-            case CharacterStat.MoveSpeed:
+            case Stat.MoveSpeed:
                 value = Random.Range(1, 10);
                 _buttonString = "+" + value.ToString() + "%";
                 break;
 
-            case CharacterStat.MaxHealth:
+            case Stat.MaxHealth:
                 value = Random.Range(1, 5);
                 _buttonString = "+" + value;
                 break;
 
-            case CharacterStat.Range:
+            case Stat.Range:
                 value = Random.Range(1f, 5f);
                 _buttonString = "+" + value.ToString();
                 break;
 
-            case CharacterStat.HealthRecoverySpeed:
+            case Stat.HealthRecoverySpeed:
                 value = Random.Range(1, 3);
                 _buttonString = "+" + value.ToString() + "%";
                 break;
 
-            case CharacterStat.HealthRecoveryValue:
+            case Stat.HealthRecoveryValue:
                 value = Random.Range(1, 5);
                 _buttonString = "+" + value.ToString() + "%";
                 break;
 
-            case CharacterStat.Armor:
+            case Stat.Armor:
                 value = Random.Range(1, 10);
                 _buttonString = "+" + value.ToString() + "%";
                 break;
 
-            case CharacterStat.Luck:
+            case Stat.Luck:
                 value = Random.Range(1, 10);
                 _buttonString = "+" + value.ToString() + "%";
                 break;
 
-            case CharacterStat.Dodge:
+            case Stat.Dodge:
                 value = Random.Range(1, 10);
                 _buttonString = "+" + value.ToString() + "%";
                 break;
 
-            case CharacterStat.LifeSteal:
+            case Stat.LifeSteal:
                 value = Random.Range(1, 10);
                 _buttonString = "+" + value.ToString() + "%";
                 break;
 
-            case CharacterStat.CriticalResistancePercent:
+            case Stat.CriticalResistancePercent:
                 value = Random.Range(1, 10);
                 _buttonString = "+" + value.ToString("F2") + "x";
                 break;
 
-            case CharacterStat.PickupRange:
+            case Stat.PickupRange:
                 value = Random.Range(1, 8);
                 _buttonString = "+" + value.ToString() + "%";
                 break;
@@ -138,7 +138,7 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
                 return () => Debug.Log("Invalid Stat");
         }
 
-        return () => CharacterStatsManager.Instance.AddCharacterStat(_characterStat, value);    
+        return () => StatsManager.Instance.AddStat(_characterStat, value);    
     }
 
 }

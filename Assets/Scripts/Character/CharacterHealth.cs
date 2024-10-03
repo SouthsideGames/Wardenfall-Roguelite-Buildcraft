@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class CharacterHealth : MonoBehaviour, ICharacterStats
+public class CharacterHealth : MonoBehaviour, IStats
 {
     [Header("ACTIONS:")]
     public static Action<Vector2> OnDodge;
@@ -108,24 +108,24 @@ public class CharacterHealth : MonoBehaviour, ICharacterStats
         }
     }
 
-    public void UpdateStats(CharacterStatsManager _characterStatsManager)
+    public void UpdateStats(StatsManager _statsManager)
     {
         // Retrieve the MaxHealth value from the character stats manager and add it to baseMaxHealth
-        float addedHealth = _characterStatsManager.GetStatValue(CharacterStat.MaxHealth);
+        float addedHealth = _statsManager.GetStatValue(Stat.MaxHealth);
         maxHealth = baseMaxHealth + (int)addedHealth;
         maxHealth = Mathf.Max(maxHealth, 1); // Calculate the new max health and ensure it is not less than 1
 
         health = maxHealth;
         UpdateHealthUI();
 
-        armor = _characterStatsManager.GetStatValue(CharacterStat.Armor);
-        lifeSteal = _characterStatsManager.GetStatValue(CharacterStat.LifeSteal) / 100;
-        dodge = _characterStatsManager.GetStatValue(CharacterStat.Dodge);
+        armor = _statsManager.GetStatValue(Stat.Armor);
+        lifeSteal = _statsManager.GetStatValue(Stat.LifeSteal) / 100;
+        dodge = _statsManager.GetStatValue(Stat.Dodge);
 
         // Calculate Health Recovery Speed and ensure it is not zero (minimum of .0001f)
-        healthRecoverySpeed = MathF.Max(.0001f, _characterStatsManager.GetStatValue(CharacterStat.HealthRecoverySpeed));
+        healthRecoverySpeed = MathF.Max(.0001f, _statsManager.GetStatValue(Stat.HealthRecoverySpeed));
         healthRecoveryDuration = 1f / healthRecoverySpeed;
-        healthRecoveryValue = _characterStatsManager.GetStatValue(CharacterStat.HealthRecoveryValue);
+        healthRecoveryValue = _statsManager.GetStatValue(Stat.HealthRecoveryValue);
 
     }
 

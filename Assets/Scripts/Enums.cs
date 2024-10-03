@@ -19,7 +19,7 @@ public  enum MeleeWeaponState
     Attack
 }
 
-public enum CharacterStat
+public enum Stat
 {
     Attack,
     AttackSpeed,
@@ -41,10 +41,10 @@ public enum CharacterStat
 
 public static class Enums
 {
-    public static string FormatStatName(CharacterStat _characterStat)
+    public static string FormatStatName(Stat _stat)
     {
         string formated = "";
-        string unformatedString = _characterStat.ToString();
+        string unformatedString = _stat.ToString();
 
         if(unformatedString.Length <= 0)
             return "Unvalid Stat Name";

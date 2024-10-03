@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class CharacterController : MonoBehaviour, ICharacterStats
+public class CharacterController : MonoBehaviour, IStats
 {
     [Header("ELEMENTS:")]
     [SerializeField] private MobileJoystick joystick;
@@ -22,9 +22,9 @@ public class CharacterController : MonoBehaviour, ICharacterStats
         _rb.velocity = joystick.GetMoveVector() * moveSpeed * Time.deltaTime;
     }
 
-    public void UpdateStats(CharacterStatsManager _characterStatsManager)
+    public void UpdateStats(StatsManager _statsManager)
     {
-        float moveSpeedPercent = _characterStatsManager.GetStatValue(CharacterStat.MoveSpeed) / 100;
+        float moveSpeedPercent = _statsManager.GetStatValue(Stat.MoveSpeed) / 100;
         moveSpeed = baseMoveSpeed * (1 + moveSpeedPercent);
     }
 }

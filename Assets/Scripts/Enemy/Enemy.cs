@@ -140,7 +140,7 @@ public abstract class Enemy : MonoBehaviour
         {
             float enemyCriticalHitPercent = UnityEngine.Random.Range(0, 5) / 100;
 
-            if (enemyCriticalHitPercent >= CharacterStatsManager.Instance.GetStatValue(CharacterStat.CriticalResistancePercent))
+            if (enemyCriticalHitPercent >= StatsManager.Instance.GetStatValue(Stat.CriticalResistancePercent))
             {
                 isCriticalHit = true;
 

@@ -80,6 +80,20 @@ public class RangedWeapon : Weapon
 
     public void ReleaseBullet(Bullet _bullet) => bulletPool.Release(_bullet);
 
-#endregion
+    #endregion
+
+    public override void UpdateStats(StatsManager _statsManager)
+    {
+        ConfigureStats();
+
+        damage = Mathf.RoundToInt(damage * (1 + _statsManager.GetStatValue(Stat.Attack) / 100));
+        attackDelay  /= 1 + (_statsManager.GetStatValue(Stat.AttackSpeed) / 100); 
+
+        criticalChance = Mathf.RoundToInt(criticalChance * 91 + _statsManager.GetStatValue(Stat.CriticalChance) / 100); 
+        criticalPercent += _statsManager.GetStatValue(Stat.CriticalPercent); //Deal times additional damage
+
+        range += _statsManager.GetStatValue(Stat.Range) / 10;
+
+    }
 
 }
