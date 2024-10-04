@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class WeaponSelectionManager : MonoBehaviour, IGameStateListener
 {
@@ -35,7 +36,24 @@ public class WeaponSelectionManager : MonoBehaviour, IGameStateListener
 
         WeaponDataSO weaponData = starterWeapons[Random.Range(0, starterWeapons.Length)];   
 
-        containerInstance.Configure(weaponData.Icon, weaponData.Name);  
+        containerInstance.Configure(weaponData.Icon, weaponData.Name);
+
+        containerInstance.Button.onClick.RemoveAllListeners();
+        containerInstance.Button.onClick.AddListener(() => WeaponSelectedCallback(containerInstance, weaponData));
     }
+
+    private void WeaponSelectedCallback(WeaponSelectionContainerUI _weaponContainer, WeaponDataSO _weaponData)
+    {
+
+        foreach (WeaponSelectionContainerUI container in containersParent.GetComponentsInChildren<WeaponSelectionContainerUI>())
+        {
+            if (container == _weaponContainer)
+                container.Select();
+            else
+                container.Deselect();
+        }
+    }
+
+
     
 }
