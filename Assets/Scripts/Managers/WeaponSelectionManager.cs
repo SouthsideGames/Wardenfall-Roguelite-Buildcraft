@@ -1,7 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using NaughtyAttributes;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class WeaponSelectionManager : MonoBehaviour, IGameStateListener
 {
@@ -22,38 +23,41 @@ public class WeaponSelectionManager : MonoBehaviour, IGameStateListener
         }
     }
 
+    [Button]
     private void Configure()
     {
         containersParent.Clear();
 
         for (int i = 0; i < 3; i++)
             GenerateWeaponsContainer();
+
     }
+
 
     private void GenerateWeaponsContainer()
     {
         WeaponSelectionContainerUI containerInstance = Instantiate(weaponContainerPrefab, containersParent);
 
-        WeaponDataSO weaponData = starterWeapons[Random.Range(0, starterWeapons.Length)];   
+        WeaponDataSO weaponData = starterWeapons[UnityEngine.Random.Range(0, starterWeapons.Length)];   
 
-        containerInstance.Configure(weaponData.Icon, weaponData.Name);
+        int level = UnityEngine.Random.Range(0,2);
+
+        containerInstance.Configure(weaponData.Icon, weaponData.Name, level);  
 
         containerInstance.Button.onClick.RemoveAllListeners();
         containerInstance.Button.onClick.AddListener(() => WeaponSelectedCallback(containerInstance, weaponData));
+
     }
 
-    private void WeaponSelectedCallback(WeaponSelectionContainerUI _weaponContainer, WeaponDataSO _weaponData)
+    private void WeaponSelectedCallback(WeaponSelectionContainerUI _container, WeaponDataSO _weaponData)
     {
-
         foreach (WeaponSelectionContainerUI container in containersParent.GetComponentsInChildren<WeaponSelectionContainerUI>())
         {
-            if (container == _weaponContainer)
+            if(container == _container)
                 container.Select();
             else
                 container.Deselect();
         }
     }
-
-
     
 }
