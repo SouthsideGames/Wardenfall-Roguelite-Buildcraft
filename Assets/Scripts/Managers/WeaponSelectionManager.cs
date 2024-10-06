@@ -9,14 +9,29 @@ public class WeaponSelectionManager : MonoBehaviour, IGameStateListener
     [Header("ELEMENTS:")]
     [SerializeField] private Transform containersParent;
     [SerializeField] private WeaponSelectionContainerUI weaponContainerPrefab;
+    private CharacterWeapon characterWeapon;
 
     [Header("DATA:")]
     [SerializeField] private WeaponDataSO[] starterWeapons;
+    private WeaponDataSO selectedWeapon;
+    private int initialWeaponLevel;
+
+    private void Start()
+    {
+        characterWeapon = CharacterManager.Instance.characterWeapon;
+    }
 
     public void GameStateChangedCallback(GameState _gameState)
     {
         switch (_gameState)
         {
+            case GameState.Game:
+                if (selectedWeapon == null)
+                    return;
+                characterWeapon.TryAddWeapon(selectedWeapon, initialWeaponLevel);
+                selectedWeapon = null;
+                initialWeaponLevel = 0;
+                break;
             case GameState.WeaponSelect:
                 Configure();
                 break;
@@ -38,9 +53,10 @@ public class WeaponSelectionManager : MonoBehaviour, IGameStateListener
     {
         WeaponSelectionContainerUI containerInstance = Instantiate(weaponContainerPrefab, containersParent);
 
-        WeaponDataSO weaponData = starterWeapons[UnityEngine.Random.Range(0, starterWeapons.Length)];   
+        WeaponDataSO weaponData = starterWeapons[UnityEngine.Random.Range(0, starterWeapons.Length)];
 
         int level = UnityEngine.Random.Range(0,2);
+        initialWeaponLevel = level;
 
         containerInstance.Configure(weaponData.Icon, weaponData.Name, level);  
 
@@ -51,6 +67,8 @@ public class WeaponSelectionManager : MonoBehaviour, IGameStateListener
 
     private void WeaponSelectedCallback(WeaponSelectionContainerUI _container, WeaponDataSO _weaponData)
     {
+        selectedWeapon = _weaponData;
+
         foreach (WeaponSelectionContainerUI container in containersParent.GetComponentsInChildren<WeaponSelectionContainerUI>())
         {
             if(container == _container)

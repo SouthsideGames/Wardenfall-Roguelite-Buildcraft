@@ -5,6 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(CharacterLevel))]
 [RequireComponent(typeof(CharacterDetection))]
+[RequireComponent(typeof(CharacterWeapon))]
 public class CharacterManager : MonoBehaviour
 {
     public static CharacterManager Instance;
@@ -12,6 +13,7 @@ public class CharacterManager : MonoBehaviour
     [Header("COMPONENTS:")]
     private CharacterHealth characterHealth;
     private CharacterLevel characterLevel;
+    public CharacterWeapon characterWeapon { get; private set; }
     [SerializeField] private CircleCollider2D _col;
     
 
@@ -23,7 +25,8 @@ public class CharacterManager : MonoBehaviour
             Destroy(gameObject);
 
         characterHealth = GetComponent<CharacterHealth>();  
-        characterLevel = GetComponent<CharacterLevel>();    
+        characterLevel = GetComponent<CharacterLevel>();
+        characterWeapon = GetComponent<CharacterWeapon>();
     }
 
 

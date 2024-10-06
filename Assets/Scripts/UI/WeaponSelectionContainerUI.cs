@@ -25,23 +25,7 @@ public class WeaponSelectionContainerUI : MonoBehaviour
         icon.sprite = _icon;
         weaponNameText.text = _weaponName;
 
-        Color imageColor;
-
-        switch(_level)
-        {
-            case 0:
-                imageColor = Color.white;
-                break;
-            case 1:
-                imageColor = Color.blue;
-                break;
-            case 2:
-                imageColor = Color.red;
-                break;
-            default:
-                imageColor = Color.gray;
-                break;
-        }
+        Color imageColor = ColorHolder.GetColor(_level);
 
         foreach(Image image in containerImages)
         {
