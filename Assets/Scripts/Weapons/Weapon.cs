@@ -25,11 +25,10 @@ public abstract class Weapon : MonoBehaviour, IStats
     [SerializeField] protected float aimLerp;
 
     [Header("LEVELS:")]
-    public int level { get; private set; }
+    public int Level { get; private set; }
 
     protected Enemy closestEnemy;
     protected Vector2 targetUpVector;
-
 
     protected Enemy GetClosestEnemy()
     {
@@ -90,7 +89,7 @@ public abstract class Weapon : MonoBehaviour, IStats
 
     protected void ConfigureStats()
     {
-        float multiplier = 1 + (float)level / 3;
+        float multiplier = 1 + (float)Level / 3;
 
         damage = Mathf.RoundToInt(WeaponData.GetStatValue(Stat.Attack));
         attackDelay = 1f / (WeaponData.GetStatValue(Stat.AttackSpeed) * multiplier);
@@ -100,5 +99,11 @@ public abstract class Weapon : MonoBehaviour, IStats
 
         if(WeaponData.Prefab.GetType() == typeof(RangedWeapon))
             range = WeaponData.GetStatValue(Stat.Range) * multiplier;   
+    }
+
+    public void UpgradeTo(int _targetLevel)
+    {
+        Level = _targetLevel;
+        ConfigureStats();
     }
 }

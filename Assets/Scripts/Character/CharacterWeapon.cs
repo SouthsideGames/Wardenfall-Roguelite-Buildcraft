@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class CharacterWeapon : MonoBehaviour
 {
+    [Header("ELEMENTS:")]
+    [SerializeField] private WeaponPosition[] weaponPositions;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -17,6 +20,6 @@ public class CharacterWeapon : MonoBehaviour
     }
     public void TryAddWeapon(WeaponDataSO _selectedWeapon, int _weaponLevel)
     {
-        Debug.Log("We selected weapon " + _selectedWeapon.Name + " with level : " + _weaponLevel );
+        weaponPositions[Random.Range(0, weaponPositions.Length)].AssignWeapon(_selectedWeapon.Prefab, _weaponLevel);
     }
 }
