@@ -14,13 +14,19 @@ public class WeaponSelectionContainerUI : MonoBehaviour
     [Header("LEVEL COLORS:")]
     [SerializeField] private Image[] containerImages;
 
+    [Header("STATS:")]
+    [SerializeField] private Transform statContainerParent;
+    [SerializeField] private StatContainerUI statContainerPrefab;
+    private WeaponDataSO _weaponDataSO;
+
+
     [Header("SETTING:")]
     [SerializeField] private float scaleSize = 1.075f;
     [SerializeField] private float animationSpeed = .3f;
 
     [field: SerializeField] public Button Button { get; private set; }    
 
-    public void Configure(Sprite _icon, string _weaponName, int _level)
+    public void Configure(Sprite _icon, string _weaponName, int _level, WeaponDataSO _weaponDataSO)
     {
         icon.sprite = _icon;
         weaponNameText.text = _weaponName;
@@ -31,7 +37,8 @@ public class WeaponSelectionContainerUI : MonoBehaviour
         {
            image.color = imageColor;     
         }
-          
+
+        
 
     }
 
