@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class ResourceManagers 
+public static class ResourceManager 
 {
     const string statIconsDataPath = "Data/Stat Icons";
 
@@ -16,6 +16,11 @@ public static class ResourceManagers
             statIcons = data.StatIcons;
         }
       
+        foreach(StatIcon icon in statIcons)
+            if(_stat == icon.stat)
+              return icon.icon;
+
+        Debug.LogError("No icon found for stat : " + _stat);
 
         return null;
     }
