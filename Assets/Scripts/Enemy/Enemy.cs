@@ -90,7 +90,11 @@ public abstract class Enemy : MonoBehaviour
     protected virtual void Die()
     {
         onDeathTaken?.Invoke(transform.position, level);
+        DieAfterWave();
+    }
 
+    public void DieAfterWave()
+    {
         deathParticles.transform.SetParent(null);
         deathParticles.Play();
 

@@ -137,7 +137,8 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 
     private void DefeatAllEnemies()
     {
-        transform.Clear();
+        foreach(Enemy enemy in transform.GetComponentsInChildren<Enemy>())
+            enemy.DieAfterWave();    
     }
 }
 

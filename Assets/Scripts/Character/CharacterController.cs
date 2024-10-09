@@ -15,6 +15,7 @@ public class CharacterController : MonoBehaviour, IStats
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>(); 
+        _rb.velocity = Vector2.right;
     }
 
     private void FixedUpdate()

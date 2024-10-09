@@ -28,16 +28,10 @@ public class StatsManager : MonoBehaviour
             addends.Add(kvp.Key,0);
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        UpdateStats();
-    }
-
+    void Start() => UpdateStats();
 
     public void AddStat(Stat _stat, float _value)
     {
-        // Character -> Base Stats
 
         if(addends.ContainsKey(_stat))
             addends[_stat] += _value;
@@ -45,8 +39,6 @@ public class StatsManager : MonoBehaviour
             Debug.LogError($"The key {_stat} has not been found");
 
         UpdateStats();
-
-        //Objects -> List Object stats
     }
 
     private void UpdateStats()
@@ -57,12 +49,8 @@ public class StatsManager : MonoBehaviour
 
         foreach(IStats stat in stats) 
            stat.UpdateStats(this);
-
     }
 
-    public float GetStatValue(Stat _stat)
-    {
-        float value = stats[_stat] + addends[_stat];
-        return value;
-    }
+    public float GetStatValue(Stat _stat) =>  stats[_stat] + addends[_stat];
+
 }

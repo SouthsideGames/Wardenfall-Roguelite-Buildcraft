@@ -13,6 +13,7 @@ public class WeaponSelectionContainerUI : MonoBehaviour
 
     [Header("LEVEL COLORS:")]
     [SerializeField] private Image[] containerImages;
+    [SerializeField] private Outline outline;
 
     [Header("STATS:")]
     [SerializeField] private Transform statContainerParent;
@@ -26,21 +27,25 @@ public class WeaponSelectionContainerUI : MonoBehaviour
     public void Configure(Sprite _icon, string _weaponName, int _level, WeaponDataSO _weaponData)
     {
         icon.sprite = _icon;
-        weaponNameText.text = _weaponName;
+        weaponNameText.text = _weaponName +  "\n (lvl " + (_level + 1) + ")";
 
         Color imageColor = ColorHolder.GetColor(_level);
         weaponNameText.color = imageColor;  
 
+        outline.effectColor = ColorHolder.GetOutlineColor(_level);
+
         foreach(Image image in containerImages)
           image.color = imageColor;     
 
-        ConfigureStatContainers(_weaponData);
+
+        Dictionary<Stat, float> calculatedStats = WeaponStatCalculator.GetStats(_weaponData, _level);
+        ConfigureStatContainers(calculatedStats);
 
     }
 
-    private void ConfigureStatContainers(WeaponDataSO _weaponData)
+    private void ConfigureStatContainers(Dictionary<Stat, float> _calculatedStats)
     {
-        StatContainerManager.GenerateStatContainers(_weaponData.BaseStats, statContainerParent);
+        StatContainerManager.GenerateStatContainers(_calculatedStats, statContainerParent);
     }
 
     public void Select()

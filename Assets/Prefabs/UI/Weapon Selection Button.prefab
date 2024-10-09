@@ -558,6 +558,7 @@ GameObject:
   - component: {fileID: 7987064185035041022}
   - component: {fileID: 3409375375829798335}
   - component: {fileID: -2627741370638757418}
+  - component: {fileID: 3614019305713870500}
   m_Layer: 5
   m_Name: Weapon Selection Button
   m_TagString: Untagged
@@ -683,11 +684,26 @@ MonoBehaviour:
   weaponNameText: {fileID: 7999524021374524283}
   containerImages:
   - {fileID: 7987064185035041022}
+  outline: {fileID: 3614019305713870500}
   statContainerParent: {fileID: 3903012532615116541}
-  statContainerPrefab: {fileID: 4783086208864322543, guid: 41e0c15c70f4a654aaed608c86cde862, type: 3}
   scaleSize: 1.075
   animationSpeed: 0.3
   <Button>k__BackingField: {fileID: 3409375375829798335}
+--- !u!114 &3614019305713870500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7477393110116464180}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 3, y: 3}
+  m_UseGraphicAlpha: 1
 --- !u!1 &7726761294783153507
 GameObject:
   m_ObjectHideFlags: 0
