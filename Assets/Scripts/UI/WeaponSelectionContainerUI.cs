@@ -16,8 +16,6 @@ public class WeaponSelectionContainerUI : MonoBehaviour
 
     [Header("STATS:")]
     [SerializeField] private Transform statContainerParent;
-    [SerializeField] private StatContainerUI statContainerPrefab;
-
 
     [Header("SETTING:")]
     [SerializeField] private float scaleSize = 1.075f;
@@ -31,6 +29,7 @@ public class WeaponSelectionContainerUI : MonoBehaviour
         weaponNameText.text = _weaponName;
 
         Color imageColor = ColorHolder.GetColor(_level);
+        weaponNameText.color = imageColor;  
 
         foreach(Image image in containerImages)
           image.color = imageColor;     
@@ -41,16 +40,7 @@ public class WeaponSelectionContainerUI : MonoBehaviour
 
     private void ConfigureStatContainers(WeaponDataSO _weaponData)
     {
-        foreach(KeyValuePair<Stat, float> kvp in _weaponData.BaseStats)
-        {
-            StatContainerUI statContainer = Instantiate(statContainerPrefab, statContainerParent);
-
-            Sprite icon = ResourceManager.GetStatIcon(kvp.Key);
-            string statName = Enums.FormatStatName(kvp.Key);
-            string statValue = kvp.Value.ToString();    
-
-            statContainer.Configure(icon, statName, statValue); 
-        }
+        StatContainerManager.GenerateStatContainers(_weaponData.BaseStats, statContainerParent);
     }
 
     public void Select()
