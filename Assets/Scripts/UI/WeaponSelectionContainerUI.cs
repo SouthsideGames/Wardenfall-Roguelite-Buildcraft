@@ -24,10 +24,10 @@ public class WeaponSelectionContainerUI : MonoBehaviour
 
     [field: SerializeField] public Button Button { get; private set; }    
 
-    public void Configure(Sprite _icon, string _weaponName, int _level, WeaponDataSO _weaponData)
+    public void Configure(WeaponDataSO _weaponData, int _level)
     {
-        icon.sprite = _icon;
-        weaponNameText.text = _weaponName +  "\n (lvl " + (_level + 1) + ")";
+        icon.sprite = _weaponData.Icon;
+        weaponNameText.text = _weaponData.Name +  "\n (lvl " + (_level + 1) + ")";
 
         Color imageColor = ColorHolder.GetColor(_level);
         weaponNameText.color = imageColor;  

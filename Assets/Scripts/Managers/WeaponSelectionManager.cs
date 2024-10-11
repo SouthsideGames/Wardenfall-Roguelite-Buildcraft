@@ -57,7 +57,7 @@ public class WeaponSelectionManager : MonoBehaviour, IGameStateListener
 
         int level = UnityEngine.Random.Range(0,4);
 
-        containerInstance.Configure(weaponData.Icon, weaponData.Name, level, weaponData);  
+        containerInstance.Configure(weaponData, level);  
 
         containerInstance.Button.onClick.RemoveAllListeners();
         containerInstance.Button.onClick.AddListener(() => WeaponSelectedCallback(containerInstance, weaponData, level));

@@ -12,14 +12,49 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
     [Header("ELEMENTS:")]
     [SerializeField] private UpgradeContainerUI[] upgradeContainers;
 
+    
+    [Header("CHEST:")]
+    [SerializeField] private ChestObjectContainerUI chestObjectContainerUI;
+    [SerializeField] private Transform chestContainerParent;
+
+    [Header("SETTINGS:")]
+    private int chestsCollected;
+
+    private void Awake()
+    {
+        Chest.onCollected += ChestCollectedCallback;
+    }
+
+
+    private void OnDestroy() 
+    {
+        Chest.onCollected -= ChestCollectedCallback;
+    }
+
     public void GameStateChangedCallback(GameState _gameState)
     {
         switch (_gameState)
         {
             case GameState.WaveTransition:
-                ConfigureUpgradeContainers();
+                TryOpenChest();
                 break;
         }
+    }
+
+    private void TryOpenChest()
+    {
+        if(chestsCollected > 0)
+            ShowObject();
+        else
+            ConfigureUpgradeContainers();
+    }
+
+    private void ShowObject()
+    {
+        chestsCollected--;
+
+        ObjectDataSO[] objectDatas = ResourceManager.Objects;
+        Debug.Log($"We've found {objectDatas.Length} objects.");
     }
 
     [Button]
@@ -139,6 +174,12 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
         }
 
         return () => CharacterStats.Instance.AddStat(_characterStat, value);    
+    }
+
+    private void ChestCollectedCallback(Chest chest)
+    {
+        chestsCollected++;
+        Debug.Log("We now have " + chestsCollected + "chest");
     }
 
 }
