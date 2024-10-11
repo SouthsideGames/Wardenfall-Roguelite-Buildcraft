@@ -138,7 +138,7 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
                 return () => Debug.Log("Invalid Stat");
         }
 
-        return () => StatsManager.Instance.AddStat(_characterStat, value);    
+        return () => CharacterStats.Instance.AddStat(_characterStat, value);    
     }
 
 }

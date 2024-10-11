@@ -4,16 +4,17 @@ using UnityEngine;
 using System.Linq;
 using UnityEngine.TextCore.Text;
 
-public class StatsManager : MonoBehaviour
+public class CharacterStats : MonoBehaviour
 {
-    public static StatsManager Instance;
+    public static CharacterStats Instance;
 
     [Header("DATA:")]
     [SerializeField] private CharacterDataSO characterData;
 
     [Header("SETTINGS:")]
     private Dictionary<Stat, float> addends = new Dictionary<Stat, float>();  
-    private Dictionary<Stat, float> stats = new Dictionary<Stat, float>();  
+    private Dictionary<Stat, float> stats = new Dictionary<Stat, float>();
+    private Dictionary<Stat, float> objectAddends = new Dictionary<Stat, float>();
 
     private void Awake()
     {
@@ -25,7 +26,10 @@ public class StatsManager : MonoBehaviour
         stats = characterData.BaseStats;
 
         foreach(KeyValuePair<Stat, float> kvp in stats)
+        {
             addends.Add(kvp.Key,0);
+            objectAddends.Add(kvp.Key, 0);
+        }
     }
 
     void Start() => UpdateStats();
@@ -51,6 +55,15 @@ public class StatsManager : MonoBehaviour
            stat.UpdateStats(this);
     }
 
-    public float GetStatValue(Stat _stat) =>  stats[_stat] + addends[_stat];
+    public float GetStatValue(Stat _stat) =>  stats[_stat] + addends[_stat] + objectAddends[_stat];
+
+    public void AddObject(Dictionary<Stat, float> _objectStats) 
+    {
+
+        foreach (KeyValuePair<Stat, float> kvp in _objectStats)
+            objectAddends[kvp.Key] += kvp.Value;
+
+        UpdateStats();
+    }
 
 }

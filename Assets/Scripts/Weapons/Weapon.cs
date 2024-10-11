@@ -85,7 +85,7 @@ public abstract class Weapon : MonoBehaviour, IStats
         Gizmos.DrawWireSphere(transform.position, range);
     }
 
-    public abstract void UpdateStats(StatsManager _statsManager);
+    public abstract void UpdateStats(CharacterStats _statsManager);
 
     protected void ConfigureStats()
     {

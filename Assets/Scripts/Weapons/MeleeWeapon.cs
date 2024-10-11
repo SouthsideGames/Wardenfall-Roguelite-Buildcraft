@@ -108,7 +108,7 @@ public class MeleeWeapon : Weapon
 
     private void Wait() => attackTimer += Time.deltaTime;
 
-   public override void UpdateStats(StatsManager _statsManager)
+   public override void UpdateStats(CharacterStats _statsManager)
     {
         ConfigureStats();
 

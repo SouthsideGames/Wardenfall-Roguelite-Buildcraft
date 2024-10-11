@@ -108,7 +108,7 @@ public class CharacterHealth : MonoBehaviour, IStats
         }
     }
 
-    public void UpdateStats(StatsManager _statsManager)
+    public void UpdateStats(CharacterStats _statsManager)
     {
         // Retrieve the MaxHealth value from the character stats manager and add it to baseMaxHealth
         float addedHealth = _statsManager.GetStatValue(Stat.MaxHealth);

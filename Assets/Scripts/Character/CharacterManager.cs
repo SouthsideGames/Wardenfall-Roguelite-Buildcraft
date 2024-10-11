@@ -6,6 +6,8 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterLevel))]
 [RequireComponent(typeof(CharacterDetection))]
 [RequireComponent(typeof(CharacterWeapon))]
+[RequireComponent(typeof(CharacterObjects))]
+[RequireComponent(typeof(CharacterStats))]
 public class CharacterManager : MonoBehaviour
 {
     public static CharacterManager Instance;
