@@ -17,4 +17,11 @@ public class CharacterObjects : MonoBehaviour
         foreach (ObjectDataSO objectData in Objects)
             characterStats.AddObject(objectData.BaseStats);
     }
+
+    public void AddObject(ObjectDataSO _objectToAdd)
+    {
+        Objects.Add(_objectToAdd);
+
+        characterStats.AddObject(_objectToAdd.BaseStats);
+    }
 }

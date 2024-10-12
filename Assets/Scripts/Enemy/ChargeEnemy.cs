@@ -12,7 +12,6 @@ public class ChargeEnemy : Enemy
     [SerializeField] private float cooldownTime = 3f; // Time spent on cooldown after charging
 
     [Header("Attack")]
-    [SerializeField] private int damage;
     [SerializeField] private float attackRate;
     private bool attackPerformed = false; // Flag to check if the attack has been performed during the charge
 
@@ -135,11 +134,10 @@ public class ChargeEnemy : Enemy
         }
     }
 
-    private void Attack()
+    protected override void Attack()
     {
+        base.Attack();
         attackPerformed = true; // Set the flag to true to prevent further attacks during this charge
-        character.TakeDamage(damage); // Inflict damage on the player
-        Debug.Log("ChargeEnemy attacked the player!");
     }
 
     private void OnDrawGizmosSelected()

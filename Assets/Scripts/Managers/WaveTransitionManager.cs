@@ -9,9 +9,13 @@ using Random = UnityEngine.Random;
 
 public class WaveTransitionManager : MonoBehaviour, IGameStateListener
 {
+    [Header("CHARACTER INFO:")]
+    [SerializeField] private CharacterStats characterStats;
+    [SerializeField] private CharacterObjects characterObjects;
+
     [Header("ELEMENTS:")]
     [SerializeField] private UpgradeContainerUI[] upgradeContainers;
-
+    [SerializeField] private GameObject upgradeContainersParent;
     
     [Header("CHEST:")]
     [SerializeField] private ChestObjectContainerUI chestObjectContainerUI;
@@ -43,6 +47,8 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
 
     private void TryOpenChest()
     {
+        chestContainerParent.Clear();
+        
         if(chestsCollected > 0)
             ShowObject();
         else
@@ -53,13 +59,29 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
     {
         chestsCollected--;
 
+        upgradeContainersParent.SetActive(false);   
+
         ObjectDataSO[] objectDatas = ResourceManager.Objects;
-        Debug.Log($"We've found {objectDatas.Length} objects.");
+        ObjectDataSO randomObjectData = objectDatas[Random.Range(0, objectDatas.Length)];    
+
+        ChestObjectContainerUI containerInstance = Instantiate(chestObjectContainerUI, chestContainerParent);
+        containerInstance.Configure(randomObjectData);
+
+        containerInstance.CollectButton.onClick.AddListener(() => CollectButtonCallback(randomObjectData));
+    }
+
+    private void CollectButtonCallback(ObjectDataSO _objectToTake)
+    {
+        characterObjects.AddObject(_objectToTake);
+
+        TryOpenChest();
     }
 
     [Button]
     private void ConfigureUpgradeContainers()
     {
+        upgradeContainersParent.SetActive(true);
+
         for (int i = 0; i < upgradeContainers.Length; i++)
         {
 

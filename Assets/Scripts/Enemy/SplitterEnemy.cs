@@ -11,10 +11,8 @@ public class SplitterEnemy : Enemy
     [SerializeField] private int splitHealthFactor = 2; // Health reduction factor for each split
 
     [Header("ATTACK:")]
-    [SerializeField] private int damage;
     [SerializeField] private float attackRate;
     private float attackDelay;
-    private float attackTimer;
 
     private int splitCount = 0; // Number of times the enemy has split
 
@@ -87,13 +85,5 @@ public class SplitterEnemy : Enemy
         if(distanceToPlayer <= playerDetectionRadius)
             Attack();
     }
-
-    private void Attack()
-    {
-
-        attackTimer = 0;
-        character.TakeDamage(damage);
-    }
-
    
 }

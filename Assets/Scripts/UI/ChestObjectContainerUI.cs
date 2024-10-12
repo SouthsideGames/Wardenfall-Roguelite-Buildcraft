@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class ChestObjectContainerUI : MonoBehaviour
 {
@@ -22,10 +22,6 @@ public class ChestObjectContainerUI : MonoBehaviour
     [SerializeField] private Outline outline;
 
 
-    [Header("SETTING:")]
-    [SerializeField] private float scaleSize = 1.075f;
-    [SerializeField] private float animationSpeed = .3f;
-
     public void Configure(ObjectDataSO _objectData)
     {
         icon.sprite = _objectData.Icon;
@@ -40,6 +36,8 @@ public class ChestObjectContainerUI : MonoBehaviour
           image.color = imageColor;     
 
         ConfigureStatContainers(_objectData.BaseStats);
+        
+        
 
     }
 
