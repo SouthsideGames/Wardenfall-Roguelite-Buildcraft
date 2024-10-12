@@ -9,6 +9,8 @@ using Random = UnityEngine.Random;
 
 public class WaveTransitionManager : MonoBehaviour, IGameStateListener
 {
+    public static WaveTransitionManager Instance;
+
     [Header("CHARACTER INFO:")]
     [SerializeField] private CharacterStats characterStats;
     [SerializeField] private CharacterObjects characterObjects;
@@ -26,6 +28,11 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
 
     private void Awake()
     {
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
+
         Chest.onCollected += ChestCollectedCallback;
     }
 
@@ -68,12 +75,21 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
         containerInstance.Configure(randomObjectData);
 
         containerInstance.CollectButton.onClick.AddListener(() => CollectButtonCallback(randomObjectData));
+        containerInstance.RecycleButton.onClick.AddListener(() => RecycleButtonCallback(randomObjectData));
+
+
     }
 
     private void CollectButtonCallback(ObjectDataSO _objectToTake)
     {
         characterObjects.AddObject(_objectToTake);
 
+        TryOpenChest();
+    }
+
+    private void RecycleButtonCallback(ObjectDataSO _objectToRecycle)
+    {
+        CurrencyManager.Instance.AddCurrency(_objectToRecycle.RecyclePrice);
         TryOpenChest();
     }
 
@@ -203,5 +219,8 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
         chestsCollected++;
         Debug.Log("We now have " + chestsCollected + "chest");
     }
+
+    public bool HasCollectedChest() => chestsCollected > 0;
+
 
 }
