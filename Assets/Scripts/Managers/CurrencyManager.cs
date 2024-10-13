@@ -18,8 +18,23 @@ public class CurrencyManager : MonoBehaviour
 
     }
 
+    private void Start()
+    {
+        UpdateUI();
+    }
+
     public void AddCurrency(int _amount)
     {
         Currency += _amount;
+        UpdateUI();
+    }
+
+    private void UpdateUI()
+    {
+
+        CurrencyUI[] currencyUIs = FindObjectsByType<CurrencyUI>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+
+        foreach (CurrencyUI currencyUI in currencyUIs)
+            currencyUI.UpdateText(Currency.ToString());
     }
 }

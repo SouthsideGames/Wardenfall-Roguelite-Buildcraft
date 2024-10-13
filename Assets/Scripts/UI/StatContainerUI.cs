@@ -12,11 +12,20 @@ public class StatContainerUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI statNameText;
     [SerializeField] private TextMeshProUGUI statValueText;
 
-    public void Configure(Sprite _icon, string _statName, string _statValue)
+    public void Configure(Sprite _icon, string _statName, float _statValue, bool _shouldColor = false)
     {
         statImage.sprite = _icon;
         statNameText.text    = _statName;
-        statValueText.text = _statValue;
+
+        if (_shouldColor)
+            ColorizeStatValue(_statValue);
+        else
+        {
+            statValueText.color = Color.white;
+            statValueText.text = _statValue.ToString("F2");
+        }
+
+       
     }
 
     public float GetFontSize()
@@ -28,5 +37,26 @@ public class StatContainerUI : MonoBehaviour
     {
         statNameText.fontSizeMax = _fontSize;  
         statValueText.fontSizeMax = _fontSize;  
+    }
+
+    private void ColorizeStatValue(float _statValue)
+    {
+        float sign = Mathf.Sign(_statValue);
+
+        if (_statValue == 0)
+            sign = 0;
+
+        float absStatValue = Mathf.Abs(_statValue);
+
+        Color statValueTextColor = Color.white;
+
+        if (sign > 0)
+            statValueTextColor = Color.green;
+        else if (sign < 0)
+            statValueTextColor = Color.red;
+
+        statValueText.color = statValueTextColor;
+        statValueText.text = absStatValue.ToString("F2");
+
     }
 }

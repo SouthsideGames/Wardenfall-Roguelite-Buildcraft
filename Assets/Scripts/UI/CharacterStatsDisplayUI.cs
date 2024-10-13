@@ -18,9 +18,9 @@ public class CharacterStatsDisplayUI : MonoBehaviour, IStats
             statContainerUI.gameObject.SetActive(true);
 
             Sprite statSprite = ResourceManager.GetStatIcon(stat);
-            string statValue = _statsManager.GetStatValue(stat).ToString("F2");
+            float statValue = _statsManager.GetStatValue(stat);
 
-            statContainerUI.Configure(statSprite, Enums.FormatStatName(stat), statValue);
+            statContainerUI.Configure(statSprite, Enums.FormatStatName(stat), statValue, true);
 
             index++;
         }

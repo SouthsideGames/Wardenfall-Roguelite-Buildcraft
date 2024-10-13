@@ -28,7 +28,7 @@ public class StatContainerManager : MonoBehaviour
 
             Sprite icon = ResourceManager.GetStatIcon(kvp.Key);
             string statName = Enums.FormatStatName(kvp.Key);
-            string statValue = kvp.Value.ToString("F2");    
+            float statValue = kvp.Value;    
 
             statContainer.Configure(icon, statName, statValue); 
         }
