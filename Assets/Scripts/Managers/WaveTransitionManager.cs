@@ -72,6 +72,7 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
         ObjectDataSO randomObjectData = objectDatas[Random.Range(0, objectDatas.Length)];    
 
         ChestObjectContainerUI containerInstance = Instantiate(chestObjectContainerUI, chestContainerParent);
+
         containerInstance.Configure(randomObjectData);
 
         containerInstance.CollectButton.onClick.AddListener(() => CollectButtonCallback(randomObjectData));
@@ -102,15 +103,16 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
         {
 
             int randomStat = Random.Range(0, Enum.GetValues(typeof(Stat)).Length);
-
             Stat characterStat = (Stat)Enum.GetValues(typeof(Stat)).GetValue(randomStat);
+
+            Sprite upgradeSprite = ResourceManager.GetStatIcon(characterStat);
 
             string randomStatString = Enums.FormatStatName(characterStat);
 
             string buttonString;
             Action buttonAction = GetActionToPeform(characterStat, out buttonString);
 
-            upgradeContainers[i].Configure(null, randomStatString, buttonString);
+            upgradeContainers[i].Configure(upgradeSprite, randomStatString, buttonString);
 
             upgradeContainers[i].Button.onClick.RemoveAllListeners();
             upgradeContainers[i].Button.onClick.AddListener(() => buttonAction?.Invoke()); 
@@ -197,7 +199,7 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
                 _buttonString = "+" + value.ToString() + "%";
                 break;
 
-            case Stat.CriticalResistancePercent:
+            case Stat.CriticalResistance:
                 value = Random.Range(1, 10);
                 _buttonString = "+" + value.ToString("F2") + "x";
                 break;

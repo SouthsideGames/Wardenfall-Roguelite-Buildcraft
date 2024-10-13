@@ -48,7 +48,7 @@ public class CharacterStats : MonoBehaviour
     private void UpdateStats()
     {
         IEnumerable<IStats> stats = 
-            FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None)
+            FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include, FindObjectsSortMode.None)
             .OfType<IStats>();   
 
         foreach(IStats stat in stats) 

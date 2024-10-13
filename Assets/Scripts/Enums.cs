@@ -34,7 +34,7 @@ public enum Stat
     Luck,
     Dodge,
     LifeSteal,
-    CriticalResistancePercent,
+    CriticalResistance,
     PickupRange
     
 }

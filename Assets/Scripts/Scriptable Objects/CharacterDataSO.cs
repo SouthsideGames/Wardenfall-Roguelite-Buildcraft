@@ -25,7 +25,7 @@ public class CharacterDataSO : ScriptableObject
     [SerializeField, Tooltip("Increase the chance of chest spawning.")] private float luck;
     [SerializeField, Tooltip("Chance to dodge attacks (%).")] private float dodge;
     [SerializeField, Tooltip("Damage converted to health (%).")] private float lifeSteal;
-    [SerializeField, Tooltip("Reduces enemy crit (%).")] private float criticalResistancePercent;
+    [SerializeField, Tooltip("Reduces enemy crit (%).")] private float criticalResistance;
     [SerializeField, Tooltip("Radius for auto item pickup.")] private float pickupRange;
 
     public Dictionary<Stat, float> BaseStats
@@ -47,7 +47,7 @@ public class CharacterDataSO : ScriptableObject
                 {Stat.Luck, luck},
                 {Stat.Dodge, dodge},
                 {Stat.LifeSteal, lifeSteal},
-                {Stat.CriticalResistancePercent, criticalResistancePercent},
+                {Stat.CriticalResistance, criticalResistance},
                 {Stat.PickupRange, pickupRange},   
 
             };
