@@ -7,14 +7,16 @@ using UnityEngine;
 
 public class WeaponDataSO : ScriptableObject
 {
+    [field: Header("WEAPON DETAILS:")]
+    [field: Space(10)]
     [field: SerializeField] public string Name { get; private set; }
     [field: SerializeField] public Sprite Icon { get; private set; }
     [field: SerializeField] public int PurchasePrice { get; private set; }   
     [field: SerializeField] public int RecyclePrice { get; private set; }   
-    
     [field: SerializeField] public Weapon Prefab {get; private set;}
 
-    [HorizontalLine]
+    [Header("STATS:")]
+    [Space(10)]
     [SerializeField, Tooltip("Base attack damage.")] private float attack;
     [SerializeField,  Tooltip("Attack speed of the character.")] private float attackSpeed;
     [SerializeField,  Tooltip("Chance to hit critically (%).")] private float criticalChance;

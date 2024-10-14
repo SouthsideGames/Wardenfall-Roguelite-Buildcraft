@@ -6,6 +6,8 @@ using NaughtyAttributes;
 [CreateAssetMenu(fileName = "Object Data", menuName = "Scriptable Objects/New Object", order = 0)]
 public class ObjectDataSO : ScriptableObject
 {
+    [field: Header("OBJECT:")]
+    [field: Space(10)]
     [field: SerializeField] public string Name { get; private set; }
     [field: SerializeField] public Sprite Icon { get; private set; }
     [field: SerializeField] public int Price { get; private set; }
@@ -15,7 +17,8 @@ public class ObjectDataSO : ScriptableObject
     [field: SerializeField] public int Rarity { get; private set; }
 
 
-    [HorizontalLine]
+    [Header("DATA:")]
+    [Space(10)]
     [SerializeField] private StatData[] statDatas;
 
     public Dictionary<Stat, float> BaseStats
