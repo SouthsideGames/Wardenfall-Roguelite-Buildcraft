@@ -90,7 +90,7 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
 
     private void RecycleButtonCallback(ObjectDataSO _objectToRecycle)
     {
-        CurrencyManager.Instance.AddCurrency(_objectToRecycle.RecyclePrice);
+        CurrencyManager.Instance.AdjustCurrency(_objectToRecycle.RecyclePrice);
         TryOpenChest();
     }
 

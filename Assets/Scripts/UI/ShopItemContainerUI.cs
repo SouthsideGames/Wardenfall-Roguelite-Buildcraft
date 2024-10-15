@@ -18,9 +18,10 @@ public class ShopItemContainerUI : MonoBehaviour
     [Header("STATS:")]
     [SerializeField] private Transform statContainerParent;
 
-    [Header("SETTING:")]
-    [SerializeField] private float scaleSize = 1.075f;
-    [SerializeField] private float animationSpeed = .3f;
+    [Header("LOCK ELEMENTS:")]
+    [SerializeField] private Image lockButton;
+    [SerializeField] private Sprite lockedSprite, unlockedSprite;
+    public bool isLocked {get; private set;}  
 
     [field: SerializeField] public Button PurchaseButton { get; private set; }    
 
@@ -70,5 +71,12 @@ public class ShopItemContainerUI : MonoBehaviour
         StatContainerManager.GenerateStatContainers(_stats, statContainerParent);
     }
 
+    public void LockButtonCallback()
+    {
+       isLocked = !isLocked;
+       UpdateLockVisuals();
+    }
 
-}
+  private void UpdateLockVisuals() => lockButton.sprite = isLocked ? lockedSprite : unlockedSprite;
+
+} 

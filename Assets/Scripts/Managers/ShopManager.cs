@@ -1,24 +1,59 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ShopManager : MonoBehaviour, IGameStateListener
 {
     [Header("ELEMENTS:")]
     [SerializeField] private Transform containersParent;
     [SerializeField] private ShopItemContainerUI shopItemButton;
+    [SerializeField] private Button rerollButton;
+    [SerializeField] private int rerollPrice;
+    [SerializeField] private TextMeshProUGUI rerollPriceText;
+
+    private void Awake() 
+    {
+        CurrencyManager.onUpdated += CurrencyUpdatedCallback;
+    }
+
+    private void OnDestroy() 
+    {
+        CurrencyManager.onUpdated -= CurrencyUpdatedCallback;
+    }
 
     public void GameStateChangedCallback(GameState _gameState)
     {
         if(_gameState == GameState.Shop)
-           Configure();
+        {
+            Configure();
+            UpdateRerollVisuals();
+        }
     }
 
     private void Configure()
     {
-        containersParent.Clear();
+        List<GameObject> toDestroy = new List<GameObject>();
 
-        int containersToAdd = 6;
+        for(int i = 0; i < containersParent.childCount; i++)
+        {
+            ShopItemContainerUI container = containersParent.GetChild(i).GetComponent<ShopItemContainerUI>();
+
+            if(!container.isLocked)
+               toDestroy.Add(container.gameObject);
+        }
+
+        while(toDestroy.Count > 0)
+        {
+            Transform t = toDestroy[0].transform;
+            t.SetParent(null);
+            Destroy(t.gameObject);
+            toDestroy.RemoveAt(0);  
+        }
+
+
+        int containersToAdd = 6 - containersParent.childCount;
         int weaponContainerCount = Random.Range(Mathf.Min(2, containersToAdd), containersToAdd);
         int objectContainerCount = containersToAdd - weaponContainerCount;
 
@@ -37,6 +72,25 @@ public class ShopManager : MonoBehaviour, IGameStateListener
 
             objectContainerInstance.Configure(randomObject);
         }
+    }
+
+    public void Reroll()
+    {
+        Configure();
+        CurrencyManager.Instance.UseCurrency(rerollPrice);
+    }
+
+    private void UpdateRerollVisuals()
+    {
+        rerollPriceText.text = rerollPrice.ToString();
+
+        rerollButton.interactable = CurrencyManager.Instance.HasEnoughCurrency(rerollPrice);
+    }
+
+    
+    private void CurrencyUpdatedCallback()
+    {
+        UpdateRerollVisuals();
     }
 }
  

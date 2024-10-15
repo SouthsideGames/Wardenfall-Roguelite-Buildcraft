@@ -8,14 +8,11 @@ public class CurrencyUI : MonoBehaviour
 {
     private TextMeshProUGUI text;
 
-    private void Awake()
-    {
-        text = GetComponent<TextMeshProUGUI>();
-
-    }
-
     public void UpdateText(string _currencyString)
     {
+        if(text == null)
+           text = GetComponent<TextMeshProUGUI>();
+           
         text.text = _currencyString;
     }
 }
