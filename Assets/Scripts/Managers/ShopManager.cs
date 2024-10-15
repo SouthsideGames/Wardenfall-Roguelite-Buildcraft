@@ -15,11 +15,13 @@ public class ShopManager : MonoBehaviour, IGameStateListener
 
     private void Awake() 
     {
+        ShopItemContainerUI.onPurchased += ItemPurchasedCallback;
         CurrencyManager.onUpdated += CurrencyUpdatedCallback;
     }
 
     private void OnDestroy() 
     {
+        ShopItemContainerUI.onPurchased -= ItemPurchasedCallback;
         CurrencyManager.onUpdated -= CurrencyUpdatedCallback;
     }
 
@@ -91,6 +93,17 @@ public class ShopManager : MonoBehaviour, IGameStateListener
     private void CurrencyUpdatedCallback()
     {
         UpdateRerollVisuals();
+    }
+
+    private void ItemPurchasedCallback(ShopItemContainerUI _shopItemContainerUI, int _weaponLevel)
+    {
+        if(_shopItemContainerUI.WeaponData != null)
+            TryPurchaseWeapon(_shopItemContainerUI, _weaponLevel);
+    }
+
+    private void TryPurchaseWeapon(ShopItemContainerUI _shopItemContainerUI, int _weaponLevel)
+    {
+        
     }
 }
  
