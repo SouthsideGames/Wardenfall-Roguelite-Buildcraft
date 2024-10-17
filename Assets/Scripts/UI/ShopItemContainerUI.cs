@@ -30,11 +30,22 @@ public class ShopItemContainerUI : MonoBehaviour
     [SerializeField] private Sprite lockedSprite, unlockedSprite;
     public bool isLocked {get; private set;}  
 
-    [field: SerializeField] public Button PurchaseButton { get; private set; }    
+    [SerializeField] private Button purchaseButton;  
+
+    private void Awake() 
+    {
+       CurrencyManager.onUpdated += CurrencyUpdatedCallback;
+    }
+    
+    private void OnDestroy() 
+    {
+       CurrencyManager.onUpdated -= CurrencyUpdatedCallback;
+    }
 
     public void Configure(WeaponDataSO _weaponData, int _level)
     {
         weaponLevel = _level;
+        WeaponData = _weaponData;
         
         icon.sprite = _weaponData.Icon;
         nameText.text = _weaponData.Name +  "\n (lvl " + (_level + 1) + ")";
@@ -54,14 +65,15 @@ public class ShopItemContainerUI : MonoBehaviour
         Dictionary<Stat, float> calculatedStats = WeaponStatCalculator.GetStats(_weaponData, _level);
         ConfigureStatContainers(calculatedStats);
 
-        PurchaseButton.onClick.AddListener(Purchase);
-        PurchaseButton.interactable = CurrencyManager.Instance.HasEnoughCurrency(weaponPrice);
+        purchaseButton.onClick.AddListener(Purchase);
+        purchaseButton.interactable = CurrencyManager.Instance.HasEnoughCurrency(weaponPrice);
 
     }
 
     public void Configure(ObjectDataSO _objectData)
     {
-      
+        ObjectData = _objectData;
+
         icon.sprite = _objectData.Icon;
         nameText.text = _objectData.Name;
         priceText.text = _objectData.Price.ToString();
@@ -77,8 +89,8 @@ public class ShopItemContainerUI : MonoBehaviour
 
         ConfigureStatContainers(_objectData.BaseStats);
 
-        PurchaseButton.onClick.AddListener(Purchase);
-        PurchaseButton.interactable = CurrencyManager.Instance.HasEnoughCurrency(_objectData.Price);
+        purchaseButton.onClick.AddListener(Purchase);
+        purchaseButton.interactable = CurrencyManager.Instance.HasEnoughCurrency(_objectData.Price);
 
     }
 
@@ -100,6 +112,18 @@ public class ShopItemContainerUI : MonoBehaviour
   private void Purchase()
   {
      onPurchased?.Invoke(this, weaponLevel);
+  }
+
+  private void CurrencyUpdatedCallback()
+  {
+     int itemPrice;
+
+     if(WeaponData != null)
+         itemPrice = WeaponStatCalculator.GetPurchasePrice(WeaponData, weaponLevel);
+      else
+         itemPrice = ObjectData.Price;
+
+      purchaseButton.interactable = CurrencyManager.Instance.HasEnoughCurrency(itemPrice);   
   }
 
 } 

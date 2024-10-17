@@ -7,19 +7,18 @@ public class CharacterWeapon : MonoBehaviour
     [Header("ELEMENTS:")]
     [SerializeField] private WeaponPosition[] weaponPositions;
 
-    // Start is called before the first frame update
-    void Start()
+    public bool TryAddWeapon(WeaponDataSO _selectedWeapon, int _weaponLevel)
     {
-        
-    }
+        for (int i = 0; i < weaponPositions.Length; i++)
+        {
+            if(weaponPositions[i].Weapon != null)
+               continue;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-    public void TryAddWeapon(WeaponDataSO _selectedWeapon, int _weaponLevel)
-    {
-        weaponPositions[Random.Range(0, weaponPositions.Length)].AssignWeapon(_selectedWeapon.Prefab, _weaponLevel);
+            weaponPositions[i].AssignWeapon(_selectedWeapon.Prefab, _weaponLevel);
+            return true;    
+        }
+
+
+        return false;
     }
 }

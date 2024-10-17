@@ -13,6 +13,10 @@ public class ShopManager : MonoBehaviour, IGameStateListener
     [SerializeField] private int rerollPrice;
     [SerializeField] private TextMeshProUGUI rerollPriceText;
 
+    [Header("PLAYER COMPONENTS:")]
+    [SerializeField] private CharacterWeapon characterWeapon;
+    [SerializeField] private CharacterObjects characterObject;
+
     private void Awake() 
     {
         ShopItemContainerUI.onPurchased += ItemPurchasedCallback;
@@ -99,11 +103,28 @@ public class ShopManager : MonoBehaviour, IGameStateListener
     {
         if(_shopItemContainerUI.WeaponData != null)
             TryPurchaseWeapon(_shopItemContainerUI, _weaponLevel);
+        else 
+            PurchaseObject(_shopItemContainerUI);
     }
 
     private void TryPurchaseWeapon(ShopItemContainerUI _shopItemContainerUI, int _weaponLevel)
     {
-        
+        if(characterWeapon.TryAddWeapon(_shopItemContainerUI.WeaponData, _weaponLevel))
+        {
+           int price = WeaponStatCalculator.GetPurchasePrice(_shopItemContainerUI.WeaponData, _weaponLevel);
+           CurrencyManager.Instance.UseCurrency(price);
+
+           Destroy(_shopItemContainerUI.gameObject);
+        }
+    }
+
+    private void PurchaseObject(ShopItemContainerUI _shopItemContainerUI)
+    {
+        characterObject.AddObject(_shopItemContainerUI.ObjectData);
+
+        CurrencyManager.Instance.UseCurrency(_shopItemContainerUI.ObjectData.Price);
+
+        Destroy(_shopItemContainerUI.gameObject);
     }
 }
  
