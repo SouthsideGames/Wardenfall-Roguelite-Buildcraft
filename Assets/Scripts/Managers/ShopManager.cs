@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+// TODO: update object purchase code to limit the objects from unlimited to limited
 public class ShopManager : MonoBehaviour, IGameStateListener
 {
     [Header("ELEMENTS:")]

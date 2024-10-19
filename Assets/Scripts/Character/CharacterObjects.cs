@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// TODO: update object code to limit the number of objects that can be held
 public class CharacterObjects : MonoBehaviour
 {
     [field: SerializeField] public List<ObjectDataSO> Objects { get; private set; }
