@@ -21,4 +21,19 @@ public class CharacterWeapon : MonoBehaviour
 
         return false;
     }
+
+    public Weapon[] GetWeapons()
+    {
+        List<Weapon> weaponList = new List<Weapon>();  
+
+        foreach (WeaponPosition weaponPosition in weaponPositions)
+        {
+            if(weaponPosition.Weapon == null)   
+                continue;   
+            
+            weaponList.Add(weaponPosition.Weapon);
+        }
+
+        return weaponList.ToArray();    
+    }
 }
