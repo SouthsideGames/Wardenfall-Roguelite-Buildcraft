@@ -29,9 +29,9 @@ public class CharacterWeapon : MonoBehaviour
         foreach (WeaponPosition weaponPosition in weaponPositions)
         {
             if(weaponPosition.Weapon == null)   
-                continue;   
-            
-            weaponList.Add(weaponPosition.Weapon);
+                weaponList.Add(null);
+            else
+                weaponList.Add(weaponPosition.Weapon);
         }
 
         return weaponList.ToArray();    

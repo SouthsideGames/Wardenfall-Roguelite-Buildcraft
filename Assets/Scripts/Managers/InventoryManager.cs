@@ -19,20 +19,22 @@ public class InventoryManager : MonoBehaviour, IGameStateListener
     private void Awake() 
     {
         ShopManager.onItemPurchased += ItemPurchasedCallback;
+        WeaponFuserManager.onFuse += WeaponFusedCallback;
     }
 
     private void OnDestroy() 
     {
         ShopManager.onItemPurchased -= ItemPurchasedCallback;
+        WeaponFuserManager.onFuse -= WeaponFusedCallback;
     }
 
     public void GameStateChangedCallback(GameState _gameState)
     {
         if(_gameState == GameState.Shop)
-           Configure();
+           ConfigureInventory();
     }
 
-    private void Configure()
+    private void ConfigureInventory()
     {
         inventoryItemsParent.Clear();   
 
@@ -40,8 +42,10 @@ public class InventoryManager : MonoBehaviour, IGameStateListener
 
         for (int i = 0; i < weapons.Length; i++)
         {
-            InventoryItemContainerUI container = Instantiate(inventoryItemContainer, inventoryItemsParent);
+            if(weapons[i] == null)
+                continue;
 
+            InventoryItemContainerUI container = Instantiate(inventoryItemContainer, inventoryItemsParent);
             container.Configure(weapons[i], i, () => ShowItemInfo(container));
         }
 
@@ -65,7 +69,7 @@ public class InventoryManager : MonoBehaviour, IGameStateListener
 
     private void ShowWeaponInfo(Weapon _weapon, int _index)
     {
-       inventoryItemInfoUI.Configure(_weapon);
+       inventoryItemInfoUI.ConfigureInventoryInfo(_weapon);
 
         inventoryItemInfoUI.RecycleButton.onClick.RemoveAllListeners();
         inventoryItemInfoUI.RecycleButton.onClick.AddListener(() => RecycleWeapon(_index));
@@ -87,7 +91,7 @@ public class InventoryManager : MonoBehaviour, IGameStateListener
     private void RecycleObject(ObjectDataSO _objectToRecycle)
     {
         characterObjects.RemoveObject(_objectToRecycle);
-        Configure();
+        ConfigureInventory();
         shopManagerUI.HideItemInfoPanel();  
     }
 
@@ -95,11 +99,17 @@ public class InventoryManager : MonoBehaviour, IGameStateListener
     {
         characterWeapons.RecycleWeapon(_index);
 
-        Configure();
+        ConfigureInventory();
 
         shopManagerUI.HideItemInfoPanel();
     }
 
-    private void ItemPurchasedCallback() => Configure();
+    private void ItemPurchasedCallback() => ConfigureInventory();
+
+    private void WeaponFusedCallback(Weapon _fusedWeapon)
+    {
+        ConfigureInventory(); 
+        inventoryItemInfoUI.ConfigureInventoryInfo(_fusedWeapon);
+    }
 
 }

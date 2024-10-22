@@ -105,4 +105,6 @@ public abstract class Weapon : MonoBehaviour, IStats
     }
 
     public int GetWeaponRecyclePrice() => WeaponStatCalculator.GetRecyclePrice(WeaponData, Level);
+
+    public void Upgrade() => UpgradeWeaponTo(Level + 1);
 }

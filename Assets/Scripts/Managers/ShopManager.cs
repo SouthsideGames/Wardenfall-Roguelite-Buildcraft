@@ -38,12 +38,12 @@ public class ShopManager : MonoBehaviour, IGameStateListener
     {
         if(_gameState == GameState.Shop)
         {
-            Configure();
+            ConfigureShop();
             UpdateRerollVisuals();
         }
     }
 
-    private void Configure()
+    private void ConfigureShop()
     {
         List<GameObject> toDestroy = new List<GameObject>();
 
@@ -87,7 +87,7 @@ public class ShopManager : MonoBehaviour, IGameStateListener
 
     public void Reroll()
     {
-        Configure();
+        ConfigureShop();
         CurrencyManager.Instance.UseCurrency(rerollPrice);
     }
 

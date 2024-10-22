@@ -20,9 +20,9 @@ public class InventoryItemInfoUI : MonoBehaviour
 
     [Header("BUTTONS:")]
     [field: SerializeField] public Button RecycleButton {get; private set;}
-    [SerializeField] private Button mergeButton;
+    [SerializeField] private Button fuseButton;
 
-    public void Configure(Weapon _weapon)
+    public void ConfigureInventoryInfo(Weapon _weapon)
     {
         Configure
             (
@@ -34,7 +34,12 @@ public class InventoryItemInfoUI : MonoBehaviour
 
             );
 
-        mergeButton.gameObject.SetActive(true);
+        fuseButton.gameObject.SetActive(true);
+
+        fuseButton.interactable = WeaponFuserManager.Instance.CanFuse(_weapon);
+
+        fuseButton.onClick.RemoveAllListeners();
+        fuseButton.onClick.AddListener(WeaponFuserManager.Instance.Fuse);
     }
 
     public void Configure(ObjectDataSO _objectData)
@@ -49,7 +54,7 @@ public class InventoryItemInfoUI : MonoBehaviour
 
             );
         
-        mergeButton.gameObject.SetActive(false);
+        fuseButton.gameObject.SetActive(false);
     }
 
     private void Configure(Sprite _icon, string _name, Color _containerColor, int _recyclePrice, Dictionary<Stat, float> stats)
