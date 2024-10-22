@@ -16,6 +16,16 @@ public class InventoryManager : MonoBehaviour, IGameStateListener
     [SerializeField] private ShopManagerUI shopManagerUI;
     [SerializeField] private InventoryItemInfoUI inventoryItemInfoUI;
 
+    private void Awake() 
+    {
+        ShopManager.onItemPurchased += ItemPurchasedCallback;
+    }
+
+    private void OnDestroy() 
+    {
+        ShopManager.onItemPurchased -= ItemPurchasedCallback;
+    }
+
     public void GameStateChangedCallback(GameState _gameState)
     {
         if(_gameState == GameState.Shop)
@@ -32,7 +42,7 @@ public class InventoryManager : MonoBehaviour, IGameStateListener
         {
             InventoryItemContainerUI container = Instantiate(inventoryItemContainer, inventoryItemsParent);
 
-            container.Configure(weapons[i], () => ShowItemInfo(container));
+            container.Configure(weapons[i], i, () => ShowItemInfo(container));
         }
 
         ObjectDataSO[] objectDatas = characterObjects.Objects.ToArray();
@@ -48,22 +58,48 @@ public class InventoryManager : MonoBehaviour, IGameStateListener
     private void ShowItemInfo(InventoryItemContainerUI _container)
     {
         if(_container.Weapon != null)
-           ShowWeaponInfo(_container.Weapon);
+           ShowWeaponInfo(_container.Weapon, _container.Index);
         else
             ShowObjectInfo(_container.ObjectData);
     }
 
-    private void ShowWeaponInfo(Weapon _weapon)
+    private void ShowWeaponInfo(Weapon _weapon, int _index)
     {
        inventoryItemInfoUI.Configure(_weapon);
+
+        inventoryItemInfoUI.RecycleButton.onClick.RemoveAllListeners();
+        inventoryItemInfoUI.RecycleButton.onClick.AddListener(() => RecycleWeapon(_index));
+
+
         shopManagerUI.ShowItemInfoPanel();
     }
 
     private void ShowObjectInfo(ObjectDataSO _object)
     {
         inventoryItemInfoUI.Configure(_object);
+
+        inventoryItemInfoUI.RecycleButton.onClick.RemoveAllListeners();
+        inventoryItemInfoUI.RecycleButton.onClick.AddListener(() => RecycleObject(_object));
+
         shopManagerUI.ShowItemInfoPanel();
     }
 
-    
+    private void RecycleObject(ObjectDataSO _objectToRecycle)
+    {
+        characterObjects.RemoveObject(_objectToRecycle);
+        Configure();
+        shopManagerUI.HideItemInfoPanel();  
+    }
+
+    private void RecycleWeapon(int _index)
+    {
+        characterWeapons.RecycleWeapon(_index);
+
+        Configure();
+
+        shopManagerUI.HideItemInfoPanel();
+    }
+
+    private void ItemPurchasedCallback() => Configure();
+
 }

@@ -8,7 +8,7 @@ public class CharacterStatsDisplayUI : MonoBehaviour, IStats
     [Header("ELEMENTS:")]
     [SerializeField] private Transform characterStatContainersParent;
 
-    public void UpdateStats(CharacterStats _statsManager)
+    public void UpdateWeaponStats(CharacterStats _statsManager)
     {
         int index = 0;
 

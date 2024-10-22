@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IStats 
 {
-    void UpdateStats(CharacterStats _statsManager);
+    void UpdateWeaponStats(CharacterStats _statsManager);
 }

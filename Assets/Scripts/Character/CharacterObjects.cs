@@ -25,4 +25,13 @@ public class CharacterObjects : MonoBehaviour
 
         characterStats.AddObject(_objectToAdd.BaseStats);
     }
+
+    public void RemoveObject(ObjectDataSO _objectToAdd)
+    {
+        Objects.Remove(_objectToAdd);
+         
+        CurrencyManager.Instance.AdjustCurrency(_objectToAdd.RecyclePrice);
+
+        characterStats.RemoveObjectStats(_objectToAdd.BaseStats);
+    }
 }

@@ -7,7 +7,7 @@ public class CharacterWeapon : MonoBehaviour
     [Header("ELEMENTS:")]
     [SerializeField] private WeaponPosition[] weaponPositions;
 
-    public bool TryAddWeapon(WeaponDataSO _selectedWeapon, int _weaponLevel)
+    public bool AddWeapon(WeaponDataSO _selectedWeapon, int _weaponLevel)
     {
         for (int i = 0; i < weaponPositions.Length; i++)
         {
@@ -35,5 +35,21 @@ public class CharacterWeapon : MonoBehaviour
         }
 
         return weaponList.ToArray();    
+    }
+
+    public void RecycleWeapon(int _weaponIndex)
+    {
+        for(int i = 0; i < weaponPositions.Length; i++)
+        {
+            if(i != _weaponIndex)
+               continue;
+
+            int recyclePrice = weaponPositions[i].Weapon.GetWeaponRecyclePrice();
+            CurrencyManager.Instance.AdjustCurrency(recyclePrice);
+
+            weaponPositions[i].RemoveWeaponFromPosition();
+
+            return;
+        }
     }
 }

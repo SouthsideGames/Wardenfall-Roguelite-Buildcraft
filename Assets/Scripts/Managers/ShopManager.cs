@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
+using Random = UnityEngine.Random;  
 
 // TODO: update object purchase code to limit the objects from unlimited to limited
 public class ShopManager : MonoBehaviour, IGameStateListener
 {
+    public static Action onItemPurchased;
+
     [Header("ELEMENTS:")]
     [SerializeField] private Transform containersParent;
     [SerializeField] private ShopItemContainerUI shopItemButton;
@@ -110,13 +114,15 @@ public class ShopManager : MonoBehaviour, IGameStateListener
 
     private void TryPurchaseWeapon(ShopItemContainerUI _shopItemContainerUI, int _weaponLevel)
     {
-        if(characterWeapon.TryAddWeapon(_shopItemContainerUI.WeaponData, _weaponLevel))
+        if(characterWeapon.AddWeapon(_shopItemContainerUI.WeaponData, _weaponLevel))
         {
            int price = WeaponStatCalculator.GetPurchasePrice(_shopItemContainerUI.WeaponData, _weaponLevel);
            CurrencyManager.Instance.UseCurrency(price);
 
            Destroy(_shopItemContainerUI.gameObject);
         }
+
+        onItemPurchased?.Invoke();
     }
 
     private void PurchaseObject(ShopItemContainerUI _shopItemContainerUI)
@@ -126,6 +132,8 @@ public class ShopManager : MonoBehaviour, IGameStateListener
         CurrencyManager.Instance.UseCurrency(_shopItemContainerUI.ObjectData.Price);
 
         Destroy(_shopItemContainerUI.gameObject);
+
+        onItemPurchased?.Invoke();
     }
 }
  

@@ -108,9 +108,9 @@ public class MeleeWeapon : Weapon
 
     private void Wait() => attackTimer += Time.deltaTime;
 
-   public override void UpdateStats(CharacterStats _statsManager)
+   public override void UpdateWeaponStats(CharacterStats _statsManager)
     {
-        ConfigureStats();
+        ConfigureWeaponStats();
 
         damage = Mathf.RoundToInt(damage * (1 + _statsManager.GetStatValue(Stat.Attack) / 100));
         attackDelay  /= 1 + (_statsManager.GetStatValue(Stat.AttackSpeed) / 100); 

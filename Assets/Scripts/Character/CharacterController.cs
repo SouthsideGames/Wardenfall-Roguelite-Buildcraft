@@ -23,7 +23,7 @@ public class CharacterController : MonoBehaviour, IStats
         _rb.velocity = joystick.GetMoveVector() * moveSpeed * Time.deltaTime;
     }
 
-    public void UpdateStats(CharacterStats _statsManager)
+    public void UpdateWeaponStats(CharacterStats _statsManager)
     {
         float moveSpeedPercent = _statsManager.GetStatValue(Stat.MoveSpeed) / 100;
         moveSpeed = baseMoveSpeed * (1 + moveSpeedPercent);

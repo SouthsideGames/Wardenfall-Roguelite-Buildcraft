@@ -22,7 +22,7 @@ public class CharacterDetection : MonoBehaviour, IStats
         }
     }
 
-    public void UpdateStats(CharacterStats _statsManager)
+    public void UpdateWeaponStats(CharacterStats _statsManager)
     {
         float pickUpRangePercent = _statsManager.GetStatValue(Stat.PickupRange) / 100;
         pickupRange = basePickupRange * (1 + pickUpRangePercent);

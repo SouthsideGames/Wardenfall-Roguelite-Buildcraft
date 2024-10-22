@@ -85,9 +85,9 @@ public abstract class Weapon : MonoBehaviour, IStats
         Gizmos.DrawWireSphere(transform.position, range);
     }
 
-    public abstract void UpdateStats(CharacterStats _statsManager);
+    public abstract void UpdateWeaponStats(CharacterStats _statsManager);
 
-    protected void ConfigureStats()
+    protected void ConfigureWeaponStats()
     {
         Dictionary<Stat, float> calculatedStats = WeaponStatCalculator.GetStats(WeaponData, Level);
 
@@ -98,9 +98,11 @@ public abstract class Weapon : MonoBehaviour, IStats
         range = calculatedStats[Stat.Range];
     }
 
-    public void UpgradeTo(int _targetLevel)
+    public void UpgradeWeaponTo(int _targetLevel)
     {
         Level = _targetLevel;
-        ConfigureStats();
+        ConfigureWeaponStats();
     }
+
+    public int GetWeaponRecyclePrice() => WeaponStatCalculator.GetRecyclePrice(WeaponData, Level);
 }

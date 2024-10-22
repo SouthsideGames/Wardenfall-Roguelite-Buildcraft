@@ -1,8 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-using UnityEngine.TextCore.Text;
+using System;
 
 public class CharacterStats : MonoBehaviour
 {
@@ -52,7 +51,7 @@ public class CharacterStats : MonoBehaviour
             .OfType<IStats>();   
 
         foreach(IStats stat in stats) 
-           stat.UpdateStats(this);
+           stat.UpdateWeaponStats(this);
     }
 
     public float GetStatValue(Stat _stat) =>  stats[_stat] + addends[_stat] + objectAddends[_stat];
@@ -62,6 +61,15 @@ public class CharacterStats : MonoBehaviour
 
         foreach (KeyValuePair<Stat, float> kvp in _objectStats)
             objectAddends[kvp.Key] += kvp.Value;
+
+        UpdateStats();
+    }
+
+    public void RemoveObjectStats(Dictionary<Stat, float> _objectStats)
+    {
+        
+        foreach (KeyValuePair<Stat, float> kvp in _objectStats)
+            objectAddends[kvp.Key] -= kvp.Value;
 
         UpdateStats();
     }
