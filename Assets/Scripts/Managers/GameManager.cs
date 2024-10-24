@@ -4,10 +4,14 @@ using Unity.VisualScripting;
 using UnityEngine;
 using System.Linq;
 using UnityEngine.SceneManagement;
+using System;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+
+    public static Action onGamePaused;
+    public static Action onGameResumed; 
 
     private void Awake()
     {
@@ -55,6 +59,18 @@ public class GameManager : MonoBehaviour
     public void ManageGameOver()
     {
         SceneManager.LoadScene(0);
+    }
+
+    public void PauseButtonCallback()
+    {
+        Time.timeScale = 0;
+        onGamePaused?.Invoke();
+    }
+
+    public void ResumeButtonCallback()
+    {
+        Time.timeScale = 1;
+        onGameResumed?.Invoke();    
     }
 }
 

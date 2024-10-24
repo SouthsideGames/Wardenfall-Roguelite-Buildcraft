@@ -12,6 +12,8 @@ public class UIManager : MonoBehaviour, IGameStateListener
     [SerializeField] private GameObject stageCompletePanel;
     [SerializeField] private GameObject waveTransitionPanel;
     [SerializeField] private GameObject shopPanel;
+    [SerializeField] private GameObject pausePanel;
+
 
     private List<GameObject> panels = new List<GameObject>();
 
@@ -28,6 +30,16 @@ public class UIManager : MonoBehaviour, IGameStateListener
             shopPanel
 
         });
+
+        GameManager.onGamePaused += PauseGameCallback;
+        GameManager.onGameResumed += ResumeGameCallback;
+    
+    }
+
+    private void OnDestroy() 
+    {
+        GameManager.onGamePaused -= PauseGameCallback;
+        GameManager.onGameResumed -= ResumeGameCallback;
     }
 
     public void GameStateChangedCallback(GameState _gameState)
@@ -73,5 +85,15 @@ public class UIManager : MonoBehaviour, IGameStateListener
             panel.SetActive(true);
         }
        
+    }
+
+    private void PauseGameCallback()
+    {
+        pausePanel.SetActive(true);
+    }
+
+    private void ResumeGameCallback()
+    {
+        pausePanel.SetActive(false);
     }
 }

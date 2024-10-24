@@ -134,7 +134,6 @@ public class ShopManagerUI : MonoBehaviour
 
     }
 
-    [Button]
     public void ShowItemInfoPanel()
     {
         itemInfoSlidePanel.gameObject.SetActive(true);
@@ -144,7 +143,6 @@ public class ShopManagerUI : MonoBehaviour
         .setEase(LeanTweenType.easeOutCubic);
     }
 
-    [Button]
     public void HideItemInfoPanel()
     {
         itemInfoSlidePanel.LeanCancel();
