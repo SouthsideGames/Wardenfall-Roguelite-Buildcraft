@@ -13,6 +13,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
     [SerializeField] private GameObject waveTransitionPanel;
     [SerializeField] private GameObject shopPanel;
     [SerializeField] private GameObject pausePanel;
+    [SerializeField] private GameObject confirmationPanel;
 
 
     private List<GameObject> panels = new List<GameObject>();
@@ -33,6 +34,9 @@ public class UIManager : MonoBehaviour, IGameStateListener
 
         GameManager.onGamePaused += PauseGameCallback;
         GameManager.onGameResumed += ResumeGameCallback;
+
+        pausePanel.SetActive(false);
+        HideConfirmationPanel();
     
     }
 
@@ -87,13 +91,8 @@ public class UIManager : MonoBehaviour, IGameStateListener
        
     }
 
-    private void PauseGameCallback()
-    {
-        pausePanel.SetActive(true);
-    }
-
-    private void ResumeGameCallback()
-    {
-        pausePanel.SetActive(false);
-    }
+    private void PauseGameCallback() => pausePanel.SetActive(true);
+    private void ResumeGameCallback() =>  pausePanel.SetActive(false);
+    public void ShowConfirmationPanel() =>   confirmationPanel.SetActive(true);
+    public void HideConfirmationPanel() => confirmationPanel.SetActive(false);
 }

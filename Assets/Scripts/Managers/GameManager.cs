@@ -72,6 +72,12 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
         onGameResumed?.Invoke();    
     }
+
+    public void Restart()
+    {
+        Time.timeScale = 1;
+        ManageGameOver();
+    }
 }
 
 

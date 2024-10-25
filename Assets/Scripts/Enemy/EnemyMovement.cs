@@ -9,7 +9,7 @@ public class EnemyMovement : MonoBehaviour
     private CharacterManager player;
 
     [Header("SETTINGS:")]
-    [SerializeField] private float moveSpeed;
+    public float moveSpeed;
     
     public void StorePlayer(CharacterManager _player)
     {

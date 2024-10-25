@@ -72,6 +72,7 @@ public class Bullet : MonoBehaviour
 
     private void Attack(Enemy _enemy)
     {
+
         _enemy.TakeDamage(damage, isCriticalHit);
     }
 

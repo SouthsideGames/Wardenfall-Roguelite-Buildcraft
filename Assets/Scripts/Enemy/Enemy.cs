@@ -28,7 +28,7 @@ public abstract class Enemy : MonoBehaviour
 
     [Header("HEALTH:")]
     public int maxHealth;
-    [HideInInspector] public int health;
+    public int health;
     [HideInInspector] public bool isInvincible = false;
 
     [Header("SPAWN VALUES:")]
@@ -69,7 +69,7 @@ public abstract class Enemy : MonoBehaviour
         return _sr.enabled;
     }
 
-    public void TakeDamage(int _damage, bool _isCriticalHit)
+    public virtual void TakeDamage(int _damage, bool _isCriticalHit)
     {
     
         if (isInvincible)

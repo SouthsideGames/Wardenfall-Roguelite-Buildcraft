@@ -42,7 +42,8 @@ public class RangedEnemy : Enemy
     }
 
 
-    private void TryAttack()
+    
+    protected virtual void TryAttack()
     {
        attack.AutoAim();
     }
