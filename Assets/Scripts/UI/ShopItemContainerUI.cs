@@ -34,12 +34,12 @@ public class ShopItemContainerUI : MonoBehaviour
 
     private void Awake() 
     {
-       CurrencyManager.onUpdated += CurrencyUpdatedCallback;
+       CurrencyManager.onCurrencyUpdate += CurrencyUpdatedCallback;
     }
     
     private void OnDestroy() 
     {
-       CurrencyManager.onUpdated -= CurrencyUpdatedCallback;
+       CurrencyManager.onCurrencyUpdate -= CurrencyUpdatedCallback;
     }
 
     public void Configure(WeaponDataSO _weaponData, int _level)

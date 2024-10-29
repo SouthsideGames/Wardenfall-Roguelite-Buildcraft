@@ -3,16 +3,21 @@ using System.Collections;
 using System.Collections.Generic;
 using NaughtyAttributes;
 using UnityEngine;
+using UnityEngine.Video;
+using Tabsil.Sijil;
 
-public class CurrencyManager : MonoBehaviour
+public class CurrencyManager : MonoBehaviour, IWantToBeSaved
 {
     public static CurrencyManager Instance;
 
     [Header("ACTIONS:")]
-    public static Action onUpdated;
+    public static Action onCurrencyUpdate;
+
+    private const string premiumCurrencyKey = "PremiumCurrency";
 
     [Header("ELEMENTS:")]
     [field: SerializeField] public int Currency { get; private set; }
+    [field: SerializeField] public int PremiumCurrency { get; private set; }
 
     private void Awake()
     {
@@ -21,6 +26,15 @@ public class CurrencyManager : MonoBehaviour
         else
             Destroy(gameObject);
 
+        Candy.onCollected += CandyCollectedCallback;
+        Cash.onCollected += CashCollectedCallback;  
+
+    }
+
+    private void OnDestroy() 
+    {
+        Candy.onCollected -= CandyCollectedCallback;
+        Cash.onCollected -= CashCollectedCallback;  
     }
 
     private void Start()
@@ -29,18 +43,21 @@ public class CurrencyManager : MonoBehaviour
     }
 
     [Button]
-    private void Add500Currency()
-    {
-        AdjustCurrency(500);
-    }
+    private void Add500Currency() => AdjustCurrency(500);
+    [Button]
+    private void Add500PremiumCurrency() => AdjustPremiumCurrency(500);
 
     public void AdjustCurrency(int _amount)
     {
         Currency += _amount;
-        UpdateUI();
-
-        onUpdated?.Invoke();
+        UpdateVisuals();
     }
+
+    public void AdjustPremiumCurrency(int _amount, bool save = true)
+    {
+        PremiumCurrency += _amount;
+        UpdateVisuals();
+    }  
 
     private void UpdateUI()
     {
@@ -49,9 +66,40 @@ public class CurrencyManager : MonoBehaviour
 
         foreach (CurrencyUI currencyUI in currencyUIs)
             currencyUI.UpdateText(Currency.ToString());
+
+        PremiumCurrencyUI[] premiumCurrencyUIs = FindObjectsByType<PremiumCurrencyUI>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+
+        foreach (PremiumCurrencyUI premiumCurrencyUI in premiumCurrencyUIs)
+            premiumCurrencyUI.UpdateText(PremiumCurrency.ToString());
+    }
+
+    
+
+    private void UpdateVisuals()
+    {
+        UpdateUI();
+        onCurrencyUpdate?.Invoke();
+
+        Save();
     }
 
     public bool HasEnoughCurrency(int _amount) => Currency >= _amount;
-
     public void UseCurrency(int _amount) => AdjustCurrency(-_amount);
+    public bool HasEnoughPremiumCurrency(int _amount) => PremiumCurrency >= _amount;
+    public void UsePremiumCurrency(int _amount) => AdjustPremiumCurrency(-_amount);
+    private void CandyCollectedCallback(Candy _candy) => AdjustCurrency(1);
+    private void CashCollectedCallback(Cash _case) => AdjustPremiumCurrency(1);
+
+    public void Load()
+    {
+        if(Sijil.TryLoad(this, premiumCurrencyKey, out object premiumCurrencyValue))
+           AdjustPremiumCurrency((int)premiumCurrencyValue, false);
+        else
+            AdjustPremiumCurrency(100, false);
+    }
+
+    public void Save()
+    {
+        Sijil.Save(this, premiumCurrencyKey, PremiumCurrency);
+    }
 }

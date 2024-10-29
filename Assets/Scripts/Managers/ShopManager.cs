@@ -25,13 +25,13 @@ public class ShopManager : MonoBehaviour, IGameStateListener
     private void Awake() 
     {
         ShopItemContainerUI.onPurchased += ItemPurchasedCallback;
-        CurrencyManager.onUpdated += CurrencyUpdatedCallback;
+        CurrencyManager.onCurrencyUpdate += CurrencyUpdatedCallback;
     }
 
     private void OnDestroy() 
     {
         ShopItemContainerUI.onPurchased -= ItemPurchasedCallback;
-        CurrencyManager.onUpdated -= CurrencyUpdatedCallback;
+        CurrencyManager.onCurrencyUpdate -= CurrencyUpdatedCallback;
     }
 
     public void GameStateChangedCallback(GameState _gameState)
