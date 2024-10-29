@@ -1,9 +1,6 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using NaughtyAttributes;
 using UnityEngine;
-using UnityEngine.Video;
 using Tabsil.Sijil;
 
 public class CurrencyManager : MonoBehaviour, IWantToBeSaved
@@ -37,11 +34,7 @@ public class CurrencyManager : MonoBehaviour, IWantToBeSaved
         Cash.onCollected -= CashCollectedCallback;  
     }
 
-    private void Start()
-    {
-        UpdateUI();
-    }
-
+    private void Start()=> UpdateUI();
     [Button]
     private void Add500Currency() => AdjustCurrency(500);
     [Button]
@@ -79,16 +72,8 @@ public class CurrencyManager : MonoBehaviour, IWantToBeSaved
     {
         UpdateUI();
         onCurrencyUpdate?.Invoke();
-
         Save();
     }
-
-    public bool HasEnoughCurrency(int _amount) => Currency >= _amount;
-    public void UseCurrency(int _amount) => AdjustCurrency(-_amount);
-    public bool HasEnoughPremiumCurrency(int _amount) => PremiumCurrency >= _amount;
-    public void UsePremiumCurrency(int _amount) => AdjustPremiumCurrency(-_amount);
-    private void CandyCollectedCallback(Candy _candy) => AdjustCurrency(1);
-    private void CashCollectedCallback(Cash _case) => AdjustPremiumCurrency(1);
 
     public void Load()
     {
@@ -102,4 +87,11 @@ public class CurrencyManager : MonoBehaviour, IWantToBeSaved
     {
         Sijil.Save(this, premiumCurrencyKey, PremiumCurrency);
     }
+
+    public bool HasEnoughCurrency(int _amount) => Currency >= _amount;
+    public void UseCurrency(int _amount) => AdjustCurrency(-_amount);
+    public bool HasEnoughPremiumCurrency(int _amount) => PremiumCurrency >= _amount;
+    public void UsePremiumCurrency(int _amount) => AdjustPremiumCurrency(-_amount);
+    private void CandyCollectedCallback(Candy _candy) => AdjustCurrency(1);
+    private void CashCollectedCallback(Cash _case) => AdjustPremiumCurrency(1);
 }
