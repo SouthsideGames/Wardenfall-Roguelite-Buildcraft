@@ -16,6 +16,11 @@ public class CharacterSelectionManager : MonoBehaviour
         characterDatas = ResourceManager.Characters;
     }
 
+    private void Start()
+    {
+        Initialize();
+    }
+
     private void Initialize()
     {
         for (int i = 0; i < characterDatas.Length; i++)
@@ -27,5 +32,6 @@ public class CharacterSelectionManager : MonoBehaviour
         CharacterDataSO characterData = characterDatas[_index];
 
         CharacterContainerUI characterButtonInstance = Instantiate(characterButtonPrefab, characterButtonParent);
+        characterButtonInstance.ConfigureCharacterButton(characterData.Icon);
     }
 }

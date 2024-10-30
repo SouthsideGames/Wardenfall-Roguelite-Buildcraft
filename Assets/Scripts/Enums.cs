@@ -23,8 +23,8 @@ public enum Stat
 {
     Attack,
     AttackSpeed,
-    CriticalChance,
-    CriticalPercent,
+    CriticalHitChance,
+    CriticalHitDamageAmount,
     MoveSpeed,
     MaxHealth,
     Range,
@@ -34,7 +34,7 @@ public enum Stat
     Luck,
     Dodge,
     LifeSteal,
-    CriticalResistance,
+    CriticalResistancePercent,
     PickupRange
     
 }

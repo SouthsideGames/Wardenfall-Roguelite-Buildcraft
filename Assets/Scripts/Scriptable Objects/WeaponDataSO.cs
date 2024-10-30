@@ -31,8 +31,8 @@ public class WeaponDataSO : ScriptableObject
             {
                 {Stat.Attack, attack},
                 {Stat.AttackSpeed, attackSpeed},
-                {Stat.CriticalChance, criticalChance},
-                {Stat.CriticalPercent, criticalPercent},
+                {Stat.CriticalHitChance, criticalChance},
+                {Stat.CriticalHitDamageAmount, criticalPercent},
                 {Stat.Range, range},
 
             };

@@ -144,12 +144,12 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
                 _buttonString = "+" + value.ToString() + "%";
                 break;
 
-            case Stat.CriticalChance:
+            case Stat.CriticalHitChance:
                 value = Random.Range(1, 10);
                 _buttonString = "+" + value.ToString() + "%";
                 break;
 
-            case Stat.CriticalPercent:
+            case Stat.CriticalHitDamageAmount:
                 value = Random.Range(1f, 2.5f);
                 _buttonString = "+" + value.ToString("F2") + "x";
                 break;
@@ -199,7 +199,7 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
                 _buttonString = "+" + value.ToString() + "%";
                 break;
 
-            case Stat.CriticalResistance:
+            case Stat.CriticalResistancePercent:
                 value = Random.Range(1, 10);
                 _buttonString = "+" + value.ToString("F2") + "x";
                 break;

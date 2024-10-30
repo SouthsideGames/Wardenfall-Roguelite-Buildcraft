@@ -1,18 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
+[RequireComponent(typeof(Button))]
 public class CharacterContainerUI : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [Header("ELEMENTS:")]
+    [SerializeField] private Image characterImage;
+    [SerializeField] private GameObject lockObject;
+
+    public Button Button
     {
-        
+        get { return GetComponent<Button>(); }
+
+        private set { }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ConfigureCharacterButton(Sprite _characterIcon)
     {
-        
+        characterImage.sprite = _characterIcon;
     }
+    
 }

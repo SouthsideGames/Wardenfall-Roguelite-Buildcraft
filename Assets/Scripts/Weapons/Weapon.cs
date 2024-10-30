@@ -16,8 +16,8 @@ public abstract class Weapon : MonoBehaviour, IStats
     [SerializeField] protected int damage;
     [SerializeField] protected float attackDelay;
     protected float attackTimer;
-    protected int criticalChance;
-    protected float criticalPercent;
+    protected int criticalHitChance;
+    protected float criticalHitDamageAmount;
 
     
     [Header("ANIMATIONS:")]
@@ -61,10 +61,10 @@ public abstract class Weapon : MonoBehaviour, IStats
     {
         isCriticalHit = false;
 
-        if(Random.Range(0, 101) <= criticalChance)
+        if(Random.Range(0, 101) <= criticalHitChance)
         {
             isCriticalHit = true;
-            return Mathf.RoundToInt(damage * criticalPercent);
+            return Mathf.RoundToInt(damage * criticalHitDamageAmount);
         }
 
         return damage;
@@ -93,8 +93,8 @@ public abstract class Weapon : MonoBehaviour, IStats
 
         damage = Mathf.RoundToInt(calculatedStats[Stat.Attack]);
         attackDelay = 1f / calculatedStats[Stat.AttackSpeed];
-        criticalChance = Mathf.RoundToInt(calculatedStats[Stat.CriticalChance]);
-        criticalPercent = calculatedStats[Stat.CriticalPercent];
+        criticalHitChance = Mathf.RoundToInt(calculatedStats[Stat.CriticalHitChance]);
+        criticalHitDamageAmount = calculatedStats[Stat.CriticalHitDamageAmount];
         range = calculatedStats[Stat.Range];
     }
 
