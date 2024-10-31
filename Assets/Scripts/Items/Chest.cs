@@ -6,14 +6,14 @@ using System;
 public class Chest : Item
 {
     [Header("ACTIONS:")]
-    public static Action<Chest> onCollected;
+    public static Action<Chest> OnCollected;
 
     [Header("SETTINGS:")]
     [SerializeField] private Animator anim;
 
     protected override void Collected()
     {
-        onCollected?.Invoke(this);  
+        OnCollected?.Invoke(this);  
         anim.SetTrigger("open");
     }   
 

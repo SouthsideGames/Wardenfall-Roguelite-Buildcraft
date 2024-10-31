@@ -6,10 +6,10 @@ using System;
 public class Candy : Item
 {
      [Header("ACTIONS:")]
-    public static Action<Candy> onCollected;
+    public static Action<Candy> OnCollected;
     
     protected override void Collected()
     {
-        onCollected?.Invoke(this);
+        OnCollected?.Invoke(this);
     }   
 }

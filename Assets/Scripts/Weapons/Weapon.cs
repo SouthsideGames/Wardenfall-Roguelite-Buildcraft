@@ -93,8 +93,8 @@ public abstract class Weapon : MonoBehaviour, IStats
 
         damage = Mathf.RoundToInt(calculatedStats[Stat.Attack]);
         attackDelay = 1f / calculatedStats[Stat.AttackSpeed];
-        criticalHitChance = Mathf.RoundToInt(calculatedStats[Stat.CriticalHitChance]);
-        criticalHitDamageAmount = calculatedStats[Stat.CriticalHitDamageAmount];
+        criticalHitChance = Mathf.RoundToInt(calculatedStats[Stat.CritChance]);
+        criticalHitDamageAmount = calculatedStats[Stat.CritDamage];
         range = calculatedStats[Stat.Range];
     }
 

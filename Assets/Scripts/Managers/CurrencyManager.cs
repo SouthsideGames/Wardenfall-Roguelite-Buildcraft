@@ -23,14 +23,14 @@ public class CurrencyManager : MonoBehaviour, IWantToBeSaved
         else
             Destroy(gameObject);
 
-        Candy.onCollected += CandyCollectedCallback;
+        Candy.OnCollected += CandyCollectedCallback;
         Cash.onCollected += CashCollectedCallback;  
 
     }
 
     private void OnDestroy() 
     {
-        Candy.onCollected -= CandyCollectedCallback;
+        Candy.OnCollected -= CandyCollectedCallback;
         Cash.onCollected -= CashCollectedCallback;  
     }
 

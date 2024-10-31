@@ -89,8 +89,8 @@ public class RangedWeapon : Weapon
         damage = Mathf.RoundToInt(damage * (1 + _statsManager.GetStatValue(Stat.Attack) / 100));
         attackDelay  /= 1 + (_statsManager.GetStatValue(Stat.AttackSpeed) / 100); 
 
-        criticalHitChance = Mathf.RoundToInt(criticalHitChance * 91 + _statsManager.GetStatValue(Stat.CriticalHitChance) / 100); 
-        criticalHitDamageAmount += _statsManager.GetStatValue(Stat.CriticalHitDamageAmount); //Deal times additional damage
+        criticalHitChance = Mathf.RoundToInt(criticalHitChance * 91 + _statsManager.GetStatValue(Stat.CritChance) / 100); 
+        criticalHitDamageAmount += _statsManager.GetStatValue(Stat.CritDamage); //Deal times additional damage
 
         range += _statsManager.GetStatValue(Stat.Range) / 10;
 

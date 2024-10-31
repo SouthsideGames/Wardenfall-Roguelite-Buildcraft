@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class UIManager : MonoBehaviour, IGameStateListener
@@ -15,7 +16,10 @@ public class UIManager : MonoBehaviour, IGameStateListener
     [SerializeField] private GameObject pausePanel;
     [SerializeField] private GameObject confirmationPanel;
     [SerializeField] private GameObject characterSelectPanel;
+    [SerializeField] private GameObject statisticsPanel;
 
+    [SerializeField] private TextMeshProUGUI killCounterText;
+    [SerializeField] private TextMeshProUGUI chestCounterText;
 
     private List<GameObject> panels = new List<GameObject>();
 
@@ -33,8 +37,8 @@ public class UIManager : MonoBehaviour, IGameStateListener
 
         });
 
-        GameManager.onGamePaused += PauseGameCallback;
-        GameManager.onGameResumed += ResumeGameCallback;
+        GameManager.OnGamePaused += PauseGameCallback;
+        GameManager.OnGameResumed += ResumeGameCallback;
 
         pausePanel.SetActive(false);
         HideConfirmationPanel();
@@ -42,10 +46,15 @@ public class UIManager : MonoBehaviour, IGameStateListener
     
     }
 
+    private void Update() 
+    {
+        UpdateCounterText();
+    }
+
     private void OnDestroy() 
     {
-        GameManager.onGamePaused -= PauseGameCallback;
-        GameManager.onGameResumed -= ResumeGameCallback;
+        GameManager.OnGamePaused -= PauseGameCallback;
+        GameManager.OnGameResumed -= ResumeGameCallback;
     }
 
     public void GameStateChangedCallback(GameState _gameState)
@@ -93,10 +102,18 @@ public class UIManager : MonoBehaviour, IGameStateListener
        
     }
 
+    private void UpdateCounterText()
+    {
+        killCounterText.text = StatisticsManager.Instance.CurrentRunKills.ToString();
+        chestCounterText.text = StatisticsManager.Instance.CurrentChestCollected.ToString();
+    }
+
     private void PauseGameCallback() => pausePanel.SetActive(true);
     private void ResumeGameCallback() =>  pausePanel.SetActive(false);
     public void ShowConfirmationPanel() =>   confirmationPanel.SetActive(true);
     public void HideConfirmationPanel() => confirmationPanel.SetActive(false);
     public void ShowCharacterSelectPanel() => characterSelectPanel.SetActive(true);
-    public void HideCharacterSelectPanel() => characterSelectPanel?.SetActive(false);   
+    public void HideCharacterSelectPanel() => characterSelectPanel.SetActive(false);   
+    public void ShowStatisticsPanel() => statisticsPanel.SetActive(true);
+    public void HideStatisticsPanel() => statisticsPanel.SetActive(false);   
 }

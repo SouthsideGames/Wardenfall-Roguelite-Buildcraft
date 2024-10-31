@@ -10,8 +10,9 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    public static Action onGamePaused;
-    public static Action onGameResumed; 
+    public static Action OnGamePaused;
+    public static Action OnGameResumed; 
+    public static Action OnWaveCompleted; 
 
     private void Awake()
     {
@@ -31,7 +32,10 @@ public class GameManager : MonoBehaviour
     public void StartGame() => SetGameState(GameState.Game);    
     public void StartWeaponSelect() => SetGameState(GameState.WeaponSelect);
     public void StartShop() => SetGameState(GameState.Shop);    
-    public void StartGameOver() => SetGameState(GameState.GameOver);  
+    public void StartGameOver()
+    {
+        SetGameState(GameState.GameOver);  
+    }
 
     public void SetGameState(GameState _gameState)
     {
@@ -46,6 +50,11 @@ public class GameManager : MonoBehaviour
 
     public void WaveCompletedCallback()
     {
+        OnWaveCompleted?.Invoke();
+
+        StatisticsManager.Instance.StopTimer();
+        StatisticsManager.Instance.EndRun();
+
         if(CharacterManager.Instance.HasLeveledUp() || WaveTransitionManager.Instance.HasCollectedChest())
         {
             SetGameState(GameState.WaveTransition);
@@ -64,13 +73,13 @@ public class GameManager : MonoBehaviour
     public void PauseButtonCallback()
     {
         Time.timeScale = 0;
-        onGamePaused?.Invoke();
+        OnGamePaused?.Invoke();
     }
 
     public void ResumeButtonCallback()
     {
         Time.timeScale = 1;
-        onGameResumed?.Invoke();    
+        OnGameResumed?.Invoke();    
     }
 
     public void Restart()
@@ -78,6 +87,8 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
         ManageGameOver();
     }
+
+ 
 }
 
 

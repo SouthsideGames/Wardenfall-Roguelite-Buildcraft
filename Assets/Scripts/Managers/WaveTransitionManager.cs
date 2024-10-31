@@ -33,13 +33,13 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
         else
             Destroy(gameObject);
 
-        Chest.onCollected += ChestCollectedCallback;
+        Chest.OnCollected += ChestCollectedCallback;
     }
 
 
     private void OnDestroy() 
     {
-        Chest.onCollected -= ChestCollectedCallback;
+        Chest.OnCollected -= ChestCollectedCallback;
     }
 
     public void GameStateChangedCallback(GameState _gameState)
@@ -144,12 +144,12 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
                 _buttonString = "+" + value.ToString() + "%";
                 break;
 
-            case Stat.CriticalHitChance:
+            case Stat.CritChance:
                 value = Random.Range(1, 10);
                 _buttonString = "+" + value.ToString() + "%";
                 break;
 
-            case Stat.CriticalHitDamageAmount:
+            case Stat.CritDamage:
                 value = Random.Range(1f, 2.5f);
                 _buttonString = "+" + value.ToString("F2") + "x";
                 break;
@@ -169,12 +169,12 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
                 _buttonString = "+" + value.ToString();
                 break;
 
-            case Stat.HealthRecoverySpeed:
+            case Stat.RegenSpeed:
                 value = Random.Range(1, 3);
                 _buttonString = "+" + value.ToString() + "%";
                 break;
 
-            case Stat.HealthRecoveryValue:
+            case Stat.RegenValue:
                 value = Random.Range(1, 5);
                 _buttonString = "+" + value.ToString() + "%";
                 break;
@@ -199,7 +199,7 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
                 _buttonString = "+" + value.ToString() + "%";
                 break;
 
-            case Stat.CriticalResistancePercent:
+            case Stat.CritResist:
                 value = Random.Range(1, 10);
                 _buttonString = "+" + value.ToString("F2") + "x";
                 break;

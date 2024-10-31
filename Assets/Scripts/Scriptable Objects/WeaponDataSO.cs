@@ -29,11 +29,11 @@ public class WeaponDataSO : ScriptableObject
         {
             return new Dictionary<Stat, float>
             {
-                {Stat.Attack, attack},
-                {Stat.AttackSpeed, attackSpeed},
-                {Stat.CriticalHitChance, criticalChance},
-                {Stat.CriticalHitDamageAmount, criticalPercent},
-                {Stat.Range, range},
+                {Stat.Attack,       attack},
+                {Stat.AttackSpeed,  attackSpeed},
+                {Stat.CritChance,   criticalChance},
+                {Stat.CritDamage,   criticalPercent},
+                {Stat.Range,        range},
 
             };
         }

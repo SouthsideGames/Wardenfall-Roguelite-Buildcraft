@@ -24,10 +24,10 @@ public class ItemManager : MonoBehaviour
 
     private void Awake()
     {
-        Enemy.onDeathTaken += EnemyDeathCallback;
-        Candy.onCollected += ReleaseCandy;
+        Enemy.OnDeath += EnemyDeathCallback;
+        Candy.OnCollected += ReleaseCandy;
         Cash.onCollected += ReleaseCash;    
-        Chest.onCollected += ReleaseChest;    
+        Chest.OnCollected += ReleaseChest;    
     }
 
     private void Start()
@@ -55,10 +55,10 @@ public class ItemManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        Enemy.onDeathTaken -= EnemyDeathCallback;
-        Candy.onCollected -= ReleaseCandy;
+        Enemy.OnDeath -= EnemyDeathCallback;
+        Candy.OnCollected -= ReleaseCandy;
         Cash.onCollected -= ReleaseCash;    
-        Chest.onCollected -= ReleaseChest; 
+        Chest.OnCollected -= ReleaseChest; 
     }
 
     private void EnemyDeathCallback(Vector2 _enemyPosition, int _enemyLevel)

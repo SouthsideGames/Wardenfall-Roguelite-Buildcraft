@@ -119,6 +119,9 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 
     private void StartWave(int _waveIndex)
     {
+        StatisticsManager.Instance.StartTimer();
+        StatisticsManager.Instance.StartNewRun();
+        
         ui.UpdateWaveText("Wave " + (currentWaveIndex + 1) + " / " + wave.Length);
 
         localCounters.Clear();

@@ -17,15 +17,8 @@ public class CharacterLevel : MonoBehaviour
     [Header("DEBUG:")]
     [SerializeField] private bool debug;
 
-    private void Awake()
-    {
-        Candy.onCollected += CandyCollectedCallback;
-    }
-
-    private void OnDestroy() 
-    {
-        Candy.onCollected -= CandyCollectedCallback;
-    }
+    private void Awake() => Candy.OnCollected += CandyCollectedCallback;
+    private void OnDestroy() => Candy.OnCollected -= CandyCollectedCallback;
 
 
     // Start is called before the first frame update
@@ -54,6 +47,7 @@ public class CharacterLevel : MonoBehaviour
 
     private void LevelUp()
     {
+        StatisticsManager.Instance.TotalLevelUpsInARun();
         level++;
         currentXp = 0;
         levelsEarned++;

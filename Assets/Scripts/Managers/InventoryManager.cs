@@ -21,14 +21,14 @@ public class InventoryManager : MonoBehaviour, IGameStateListener
     {
         ShopManager.onItemPurchased += ItemPurchasedCallback;
         WeaponFuserManager.onFuse += WeaponFusedCallback;
-        GameManager.onGamePaused += ConfigureInventory;
+        GameManager.OnGamePaused += ConfigureInventory;
     }
 
     private void OnDestroy() 
     {
         ShopManager.onItemPurchased -= ItemPurchasedCallback;
         WeaponFuserManager.onFuse -= WeaponFusedCallback;
-        GameManager.onGamePaused -= ConfigureInventory;
+        GameManager.OnGamePaused -= ConfigureInventory;
     }
 
     public void GameStateChangedCallback(GameState _gameState)

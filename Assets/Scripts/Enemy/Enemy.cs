@@ -7,7 +7,8 @@ public abstract class Enemy : MonoBehaviour
 {
     [Header("ACTIONS:")]
     public static Action<int, Vector2, bool> onDamageTaken;
-    public static Action<Vector2, int> onDeathTaken;
+    public static Action<Vector2, int> OnDeath;
+    public static Action OnEnemyKilled;
 
     [Header("ELEMENTS:")]
     protected CharacterManager character;
@@ -89,7 +90,8 @@ public abstract class Enemy : MonoBehaviour
 
     protected virtual void Die()
     {
-        onDeathTaken?.Invoke(transform.position, level);
+        OnDeath?.Invoke(transform.position, level);
+        OnEnemyKilled?.Invoke();
         DieAfterWave();
     }
 
@@ -144,7 +146,7 @@ public abstract class Enemy : MonoBehaviour
         {
             float enemyCriticalHitPercent = UnityEngine.Random.Range(0, 5) / 100;
 
-            if (enemyCriticalHitPercent >= CharacterStats.Instance.GetStatValue(Stat.CriticalResistancePercent))
+            if (enemyCriticalHitPercent >= CharacterStats.Instance.GetStatValue(Stat.CritResist))
             {
                 isCriticalHit = true;
 

@@ -8,6 +8,7 @@ public class CharacterHealth : MonoBehaviour, IStats
 {
     [Header("ACTIONS:")]
     public static Action<Vector2> OnDodge;
+    public static Action OnCharacterDeath;
 
     [Header("ELEMENTS:")]
     [SerializeField] private Slider healthBar;
@@ -78,7 +79,11 @@ public class CharacterHealth : MonoBehaviour, IStats
         UpdateHealthUI();
     }
 
-    private void Die() => GameManager.Instance.SetGameState(GameState.GameOver);
+    private void Die()
+    {
+        OnCharacterDeath?.Invoke();
+        GameManager.Instance.SetGameState(GameState.GameOver);
+    }
 
     private void UpdateHealthUI()
     {
@@ -123,9 +128,9 @@ public class CharacterHealth : MonoBehaviour, IStats
         dodge = _statsManager.GetStatValue(Stat.Dodge);
 
         // Calculate Health Recovery Speed and ensure it is not zero (minimum of .0001f)
-        healthRecoverySpeed = MathF.Max(.0001f, _statsManager.GetStatValue(Stat.HealthRecoverySpeed));
+        healthRecoverySpeed = MathF.Max(.0001f, _statsManager.GetStatValue(Stat.RegenSpeed));
         healthRecoveryDuration = 1f / healthRecoverySpeed;
-        healthRecoveryValue = _statsManager.GetStatValue(Stat.HealthRecoveryValue);
+        healthRecoveryValue = _statsManager.GetStatValue(Stat.RegenValue);
 
     }
 

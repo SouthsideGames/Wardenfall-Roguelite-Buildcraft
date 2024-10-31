@@ -14,18 +14,18 @@ public class CharacterDataSO : ScriptableObject
     [HorizontalLine]
     [SerializeField, Tooltip("Base attack damage.")] private float attack;
     [SerializeField,  Tooltip("Attack speed of the character.")] private float attackSpeed;
-    [SerializeField, Range(1, 15), Tooltip("Chance to hit critically (%).")] private float criticalHitChance;
-    [SerializeField, Range(1.1f, 3f), Tooltip("Extra damage for critical hits (%).")] private float criticalHitDamageAmount;
+    [SerializeField, Range(1, 15), Tooltip("Chance to hit critically (%).")] private float critChance;
+    [SerializeField, Range(1.1f, 3f), Tooltip("Extra damage for critical hits (%).")] private float critDamage;
     [SerializeField, Tooltip("Character movement speed.")] private float moveSpeed;
     [SerializeField, Tooltip("Maximum health points.")] private float maxHealth;
     [SerializeField, Tooltip("Attack or ability range.")] private float range;
-    [SerializeField, Range(1.1f, 3f), Tooltip("Health regenerated per second.")] private float healthRecoverySpeed;
-    [SerializeField, Tooltip("Amount of health to regenerate.")] private float healthRecoveryValue;
-    [SerializeField, Tooltip("Damage reduction value.")] private float armor;
+    [SerializeField, Range(1.1f, 3f), Tooltip("Health regenerated per second.")] private float regenSpeed;
+    [SerializeField, Tooltip("Amount of health to regenerate.")] private float regenValue;
+    [SerializeField, Tooltip("Damage reduction value.")] private float armor; 
     [SerializeField, Tooltip("Increase the chance of chest spawning.")] private float luck;
     [SerializeField, Range(1.1f, 10f), Tooltip("Chance to dodge attacks (%).")] private float dodge;
     [SerializeField, Tooltip("Damage converted to health (%).")] private float lifeSteal;
-    [SerializeField, Tooltip("Reduces enemy crit (%).")] private float criticalResistancePercent;
+    [SerializeField, Range(1.1f, 5f), Tooltip("Reduces enemy crit (%).")] private float critResist;
     [SerializeField, Tooltip("Radius for auto item pickup.")] private float pickupRange;
 
     public Dictionary<Stat, float> BaseStats
@@ -34,25 +34,41 @@ public class CharacterDataSO : ScriptableObject
         {
             return new Dictionary<Stat, float>
             {
-                {Stat.Attack, attack},
-                {Stat.AttackSpeed, attackSpeed},
-                {Stat.CriticalHitChance, criticalHitChance},
-                {Stat.CriticalHitDamageAmount, criticalHitDamageAmount},
-                {Stat.MoveSpeed, moveSpeed},
-                {Stat.MaxHealth, maxHealth},
-                {Stat.Range, range},
-                {Stat.HealthRecoverySpeed, healthRecoverySpeed},
-                {Stat.HealthRecoveryValue, healthRecoveryValue},
-                {Stat.Armor, armor},
-                {Stat.Luck, luck},
-                {Stat.Dodge, dodge},
-                {Stat.LifeSteal, lifeSteal},
-                {Stat.CriticalResistancePercent, criticalResistancePercent},
-                {Stat.PickupRange, pickupRange},   
+                {Stat.Attack,          attack},
+                {Stat.AttackSpeed,     attackSpeed},
+                {Stat.CritChance,      critChance},
+                {Stat.CritDamage,      critDamage},
+                {Stat.MoveSpeed,       moveSpeed},
+                {Stat.MaxHealth,       maxHealth},
+                {Stat.Range,           range},
+                {Stat.RegenSpeed,      regenSpeed},
+                {Stat.RegenValue,      regenValue},
+                {Stat.Armor,           armor},
+                {Stat.Luck,            luck},
+                {Stat.Dodge,           dodge},
+                {Stat.LifeSteal,       lifeSteal},
+                {Stat.CritResist,      critResist},
+                {Stat.PickupRange,     pickupRange},   
 
             };
         }
 
         private set{}
+    }
+
+    public Dictionary<Stat, float> NonNeutralStats
+    {
+        get 
+        {
+            Dictionary<Stat, float> nonNeutralStats = new Dictionary<Stat, float>();
+
+            foreach(KeyValuePair<Stat, float> kvp in BaseStats)
+                if(kvp.Value != 0)
+                   nonNeutralStats.Add(kvp.Key, kvp.Value);
+
+                return nonNeutralStats;
+        }
+
+        private set {}
     }
 }
