@@ -46,14 +46,20 @@ public class CharacterSelectionManager : MonoBehaviour
         characterButtonInstance.ConfigureCharacterButton(characterData.Icon);
 
         characterButtonInstance.Button.onClick.RemoveAllListeners();
-        characterButtonInstance.Button.onClick.AddListener(() =>CharacterSelectCallaback(_index));
+        characterButtonInstance.Button.onClick.AddListener(() =>CharacterSelectCallback(_index));
+        characterButtonInstance.Button.onClick.AddListener(() =>StatisticsManager.Instance.RecordCharacterUsage(characterData.ID));
     }
 
-    private void CharacterSelectCallaback(int _index)
+    private void CharacterSelectCallback(int _index)
     {
         selectedCharacterIndex = _index;
 
         CharacterDataSO characterData = characterDatas[_index];
+
+        if(characterUnlockStates[_index])
+            characterInfo.Button.interactable = false;
+        else
+            characterInfo.Button.interactable = CurrencyManager.Instance.HasEnoughPremiumCurrency(characterData.PurchasePrice);
 
         characterSelectImage.sprite = characterData.Icon;   
         characterInfo.ConfigureInfoPanel(characterData, characterUnlockStates[_index]);
@@ -70,5 +76,6 @@ public class CharacterSelectionManager : MonoBehaviour
         //Update character visuals
 
         //Update the character info - hide purchase button
+        CharacterSelectCallback(selectedCharacterIndex);
     }
 }

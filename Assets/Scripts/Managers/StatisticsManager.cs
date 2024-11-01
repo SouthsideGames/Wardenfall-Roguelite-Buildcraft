@@ -7,18 +7,24 @@ using System;
 
 public class StatisticsManager : MonoBehaviour
 {
-  public static StatisticsManager Instance { get; private set; }
-
+    public static StatisticsManager Instance { get; private set; }
     public GameStatistics currentStatistics = new GameStatistics();
-    private string statsFilePath;
-
-    private float lastPlayTimeCheck;
-    private bool isTrackingPlayTime = false;
     public int CurrentRunKills {get; private set;}
     public int CurrentWaveCompleted {get; private set;}
     public int CurrentCandyCollected {get; private set;}
     public int CurrentChestCollected {get; private set;}
     public int CurrentLevelUp {get; private set;}
+
+    private string statsFilePath;
+    private float lastPlayTimeCheck;
+    private bool isTrackingPlayTime = false;
+
+    private Dictionary<string, UsageInfo> characterUsageDict = new Dictionary<string, UsageInfo>();
+    private Dictionary<string, UsageInfo> weaponUsageDict = new Dictionary<string, UsageInfo>();
+
+
+    [SerializeField] private GameObject recordContainer;
+    [SerializeField] private GameObject collectionContainer;
 
     private void Awake()
     {
@@ -35,6 +41,9 @@ public class StatisticsManager : MonoBehaviour
         CharacterHealth.OnCharacterDeath += TotalCharacterDeathHandler;
         GameManager.OnGamePaused += OnGamePausedHandler;
         GameManager.OnGameResumed += OnGameResumedHandler;
+
+        collectionContainer.SetActive(false);
+        recordContainer.SetActive(true);    
 
 
     }
@@ -140,6 +149,24 @@ public class StatisticsManager : MonoBehaviour
         SaveStats();
     }
 
+    public void SwitchToSummary()
+    {
+        collectionContainer.SetActive(false);
+        recordContainer.SetActive(true);
+    }
+
+    public void SwitchToCollection()
+    {
+        collectionContainer.SetActive(true);
+        recordContainer.SetActive(false);
+    }
+
+    private void OnApplicationQuit()
+    {
+        StopTimer();
+        EndRun();
+    }
+
 
     #region STATISTICS FUNCTIONS
 
@@ -203,10 +230,66 @@ public class StatisticsManager : MonoBehaviour
 
     public void TotalLevelUpsInARun() => CurrentLevelUp++;
 
-    private void OnApplicationQuit()
+    public void RecordCharacterUsage(string characterID)
     {
-        StopTimer();
-        EndRun();
+        if (!characterUsageDict.ContainsKey(characterID))
+        {
+            characterUsageDict[characterID] = new UsageInfo { UsageCount = 0, LastUsed = DateTime.Now };
+        }
+
+        characterUsageDict[characterID].UsageCount++;
+        characterUsageDict[characterID].LastUsed = DateTime.Now;
+
+        Debug.Log($"Character Usage Updated: {characterID}, Count: {characterUsageDict[characterID].UsageCount}");
+
+        ConvertDictionariesToLists();  // Convert back to lists before saving
+        SaveStats();
+    }
+
+    public void RecordWeaponUsage(string weaponID)
+    {
+        if (!weaponUsageDict.ContainsKey(weaponID))
+        {
+            weaponUsageDict[weaponID] = new UsageInfo { UsageCount = 0, LastUsed = DateTime.Now };
+        }
+
+        weaponUsageDict[weaponID].UsageCount++;
+        weaponUsageDict[weaponID].LastUsed = DateTime.Now;
+
+        Debug.Log($"Weapon Usage Updated: {weaponID}, Count: {weaponUsageDict[weaponID].UsageCount}");
+
+        ConvertDictionariesToLists();  // Convert back to lists before saving
+        SaveStats();
+    }
+
+    private void ConvertDictionariesToLists()
+    {
+        currentStatistics.CharacterUsageList.Clear();
+        foreach (var entry in characterUsageDict)
+        {
+            currentStatistics.CharacterUsageList.Add(new CharacterUsageEntry { CharacterID = entry.Key, UsageInfo = entry.Value });
+        }
+
+        currentStatistics.WeaponUsageList.Clear();
+        foreach (var entry in weaponUsageDict)
+        {
+            currentStatistics.WeaponUsageList.Add(new WeaponUsageEntry { WeaponID = entry.Key, UsageInfo = entry.Value });
+        }
+    }
+
+    private void ConvertListsToDictionaries()
+    {
+        characterUsageDict.Clear();
+        foreach (var entry in currentStatistics.CharacterUsageList)
+        {
+            characterUsageDict[entry.CharacterID] = entry.UsageInfo;
+        }
+
+        weaponUsageDict.Clear();
+        foreach (var entry in currentStatistics.WeaponUsageList)
+        {
+            weaponUsageDict[entry.WeaponID] = entry.UsageInfo;
+        }
     }
 
     #endregion
@@ -231,4 +314,31 @@ public class GameStatistics
     public float TotalPlayTime;               // Total time played
     public int TotalChestCollected;          //Total chest collected across all runs
 
+  // Replace dictionaries with lists
+    public List<CharacterUsageEntry> CharacterUsageList = new List<CharacterUsageEntry>();
+    public List<WeaponUsageEntry> WeaponUsageList = new List<WeaponUsageEntry>();
+
+
+}
+
+[Serializable]
+public class CharacterUsageEntry
+{
+    public string CharacterID;
+    public UsageInfo UsageInfo;
+}
+
+[Serializable]
+public class WeaponUsageEntry
+{
+    public string WeaponID;
+    public UsageInfo UsageInfo;
+}
+
+
+[Serializable]
+public class UsageInfo
+{
+    public int UsageCount;
+    public DateTime LastUsed;
 }

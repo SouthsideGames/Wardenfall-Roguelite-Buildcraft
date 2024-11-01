@@ -41,6 +41,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
         GameManager.OnGameResumed += ResumeGameCallback;
 
         pausePanel.SetActive(false);
+        statisticsPanel.SetActive(false);   
         HideConfirmationPanel();
         HideCharacterSelectPanel();
     

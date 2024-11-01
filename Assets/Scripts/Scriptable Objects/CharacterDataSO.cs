@@ -6,6 +6,7 @@ using NaughtyAttributes;
 [CreateAssetMenu(fileName = "Character Data", menuName = "Scriptable Objects/New Character Data", order = 0)]
 public class CharacterDataSO : ScriptableObject
 {
+    [field: SerializeField] public string ID { get; private set; } 
     [field: SerializeField] public string Name { get; private set; }
     [field: SerializeField] public Sprite Icon { get; private set; }
 

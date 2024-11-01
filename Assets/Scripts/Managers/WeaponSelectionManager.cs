@@ -61,13 +61,13 @@ public class WeaponSelectionManager : MonoBehaviour, IGameStateListener
 
         containerInstance.Button.onClick.RemoveAllListeners();
         containerInstance.Button.onClick.AddListener(() => WeaponSelectedCallback(containerInstance, weaponData, level));
-
     }
 
     private void WeaponSelectedCallback(WeaponSelectionContainerUI _container, WeaponDataSO _weaponData, int _level)
     {
         selectedWeapon = _weaponData;
         initialWeaponLevel = _level;
+        StatisticsManager.Instance.RecordWeaponUsage(_weaponData.ID);
 
         foreach (WeaponSelectionContainerUI container in containersParent.GetComponentsInChildren<WeaponSelectionContainerUI>())
         {

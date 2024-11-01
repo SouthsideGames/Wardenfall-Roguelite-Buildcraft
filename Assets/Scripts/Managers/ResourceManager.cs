@@ -60,7 +60,7 @@ public static class ResourceManager
 
     public static WeaponDataSO GetRandomWeapon() => Weapons[Random.Range(0, Weapons.Length)];
 
-     private static CharacterDataSO[] characterDatas;
+    private static CharacterDataSO[] characterDatas;
     public static CharacterDataSO[] Characters
     {
         get 
