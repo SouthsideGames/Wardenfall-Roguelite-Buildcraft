@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterHealth))]
@@ -17,6 +16,7 @@ public class CharacterManager : MonoBehaviour
     private CharacterLevel characterLevel;
     public CharacterWeapon characterWeapon { get; private set; }
     [SerializeField] private CircleCollider2D _col;
+    [SerializeField] private SpriteRenderer characterRenderer;
     
 
     private void Awake()
@@ -29,8 +29,11 @@ public class CharacterManager : MonoBehaviour
         characterHealth = GetComponent<CharacterHealth>();  
         characterLevel = GetComponent<CharacterLevel>();
         characterWeapon = GetComponent<CharacterWeapon>();
+
+        CharacterSelectionManager.OnCharacterSelected += CharacterSelectionCallback;
     }
 
+    private void OnDestroy() =>  CharacterSelectionManager.OnCharacterSelected -= CharacterSelectionCallback;
 
     public void TakeDamage(int _damage)
     {
@@ -46,4 +49,11 @@ public class CharacterManager : MonoBehaviour
     {
         return characterLevel.HasLeveledUp();
     }
+
+    private void CharacterSelectionCallback(CharacterDataSO _characterData)
+    {
+        //StatisticsManager.Instance.RecordCharacterUsage(_characterData.ID);
+        characterRenderer.sprite = _characterData.Icon;
+    } 
+        
 }

@@ -17,6 +17,8 @@ public class CharacterStats : MonoBehaviour
 
     private void Awake()
     {
+        CharacterSelectionManager.OnCharacterSelected += CharacterSelectedCallback;
+
         if(Instance == null)
             Instance = this;
         else
@@ -29,6 +31,11 @@ public class CharacterStats : MonoBehaviour
             addends.Add(kvp.Key,0);
             objectAddends.Add(kvp.Key, 0);
         }
+    }
+
+    private void OnDestroy() 
+    {
+        CharacterSelectionManager.OnCharacterSelected -= CharacterSelectedCallback;
     }
 
     void Start() => UpdateStats();
@@ -70,6 +77,14 @@ public class CharacterStats : MonoBehaviour
         
         foreach (KeyValuePair<Stat, float> kvp in _objectStats)
             objectAddends[kvp.Key] -= kvp.Value;
+
+        UpdateStats();
+    }
+
+    private void CharacterSelectedCallback(CharacterDataSO _characterData)
+    {
+        characterData = _characterData;
+        stats = characterData.BaseStats;
 
         UpdateStats();
     }

@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -17,7 +16,9 @@ public class UIManager : MonoBehaviour, IGameStateListener
     [SerializeField] private GameObject confirmationPanel;
     [SerializeField] private GameObject characterSelectPanel;
     [SerializeField] private GameObject statisticsPanel;
+    [SerializeField] private GameObject settingPanel;
 
+    [Header("COUNTER TEXT:")]
     [SerializeField] private TextMeshProUGUI killCounterText;
     [SerializeField] private TextMeshProUGUI chestCounterText;
 
@@ -42,8 +43,10 @@ public class UIManager : MonoBehaviour, IGameStateListener
 
         pausePanel.SetActive(false);
         statisticsPanel.SetActive(false);   
+
         HideConfirmationPanel();
         HideCharacterSelectPanel();
+        HideSettingsPanel();
     
     }
 
@@ -117,4 +120,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
     public void HideCharacterSelectPanel() => characterSelectPanel.SetActive(false);   
     public void ShowStatisticsPanel() => statisticsPanel.SetActive(true);
     public void HideStatisticsPanel() => statisticsPanel.SetActive(false);   
+    public void ShowSettingsPanel() => settingPanel.SetActive(true);
+    public void HideSettingsPanel() => settingPanel.SetActive(false);   
+
 }

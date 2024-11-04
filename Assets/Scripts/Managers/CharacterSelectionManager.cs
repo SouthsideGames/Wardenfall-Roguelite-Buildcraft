@@ -2,9 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Tabsil.Sijil;
+using System;
 
-public class CharacterSelectionManager : MonoBehaviour
+public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
 {
+    public static Action<CharacterDataSO> OnCharacterSelected;
+
     [Header("ELEMENTS:")]
     [SerializeField] private CharacterContainerUI characterButtonPrefab;
     [SerializeField] private Transform characterButtonParent;
@@ -14,22 +18,16 @@ public class CharacterSelectionManager : MonoBehaviour
     private CharacterDataSO[] characterDatas;
     private List<bool> characterUnlockStates = new List<bool>();    
     private int selectedCharacterIndex;
-
-    private void Awake() 
-    {
-        characterDatas = ResourceManager.Characters;
-
-        //Makes the first character unlocked
-        for (int i = 0; i < characterDatas.Length; i++)
-            characterUnlockStates.Add(i == 0);
-    }
+    private int lastSelectedCharacterIndex;
+    private const string characterUnlockedStatesKey = "CharacterUnlockStatesKey";
+    private const string lastSelectedCharacterKey = "LastSelectedCharacterKey";
 
     private void Start()
     {
         characterInfo.Button.onClick.RemoveAllListeners();
         characterInfo.Button.onClick.AddListener(PurchaseSelectedCharacter);
 
-        Initialize();
+        CharacterSelectCallback(lastSelectedCharacterIndex);
     }
 
     private void Initialize()
@@ -43,11 +41,10 @@ public class CharacterSelectionManager : MonoBehaviour
         CharacterDataSO characterData = characterDatas[_index];
 
         CharacterContainerUI characterButtonInstance = Instantiate(characterButtonPrefab, characterButtonParent);
-        characterButtonInstance.ConfigureCharacterButton(characterData.Icon);
+        characterButtonInstance.ConfigureCharacterButton(characterData.Icon, characterUnlockStates[_index]);
 
         characterButtonInstance.Button.onClick.RemoveAllListeners();
         characterButtonInstance.Button.onClick.AddListener(() =>CharacterSelectCallback(_index));
-        characterButtonInstance.Button.onClick.AddListener(() =>StatisticsManager.Instance.RecordCharacterUsage(characterData.ID));
     }
 
     private void CharacterSelectCallback(int _index)
@@ -57,7 +54,13 @@ public class CharacterSelectionManager : MonoBehaviour
         CharacterDataSO characterData = characterDatas[_index];
 
         if(characterUnlockStates[_index])
+        {
+            lastSelectedCharacterIndex = _index;
             characterInfo.Button.interactable = false;
+            Save();
+
+            OnCharacterSelected.Invoke(characterData);  
+        }
         else
             characterInfo.Button.interactable = CurrencyManager.Instance.HasEnoughPremiumCurrency(characterData.PurchasePrice);
 
@@ -74,8 +77,35 @@ public class CharacterSelectionManager : MonoBehaviour
         characterUnlockStates[selectedCharacterIndex] = true;   
 
         //Update character visuals
+        characterButtonParent.GetChild(selectedCharacterIndex).GetComponent<CharacterContainerUI>().Unlock();
 
         //Update the character info - hide purchase button
         CharacterSelectCallback(selectedCharacterIndex);
+
+        Save();
+    }
+
+    public void Load()
+    {
+        characterDatas = ResourceManager.Characters;
+
+        //Makes the first character unlocked
+        for (int i = 0; i < characterDatas.Length; i++)
+            characterUnlockStates.Add(i == 0);
+
+        if(Sijil.TryLoad(this, characterUnlockedStatesKey, out object characterUnlockedStatesObject))
+            characterUnlockStates = (List<bool>)characterUnlockedStatesObject;
+
+        //load the last character we played with
+        if(Sijil.TryLoad(this, lastSelectedCharacterKey, out object lastSelectedCharacterStatesObject))
+           lastSelectedCharacterIndex = (int)lastSelectedCharacterStatesObject;
+
+        Initialize();
+    }
+
+    public void Save()
+    {
+        Sijil.Save(this, characterUnlockedStatesKey, characterUnlockStates);
+        Sijil.Save(this, lastSelectedCharacterKey, lastSelectedCharacterIndex);
     }
 }

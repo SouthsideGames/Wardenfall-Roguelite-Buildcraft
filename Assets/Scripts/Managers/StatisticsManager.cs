@@ -1,9 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
 using NaughtyAttributes;
-using System;
 
 public class StatisticsManager : MonoBehaviour
 {
@@ -41,6 +39,7 @@ public class StatisticsManager : MonoBehaviour
         CharacterHealth.OnCharacterDeath += TotalCharacterDeathHandler;
         GameManager.OnGamePaused += OnGamePausedHandler;
         GameManager.OnGameResumed += OnGameResumedHandler;
+        
 
         collectionContainer.SetActive(false);
         recordContainer.SetActive(true);    
@@ -240,8 +239,6 @@ public class StatisticsManager : MonoBehaviour
         characterUsageDict[characterID].UsageCount++;
         characterUsageDict[characterID].LastUsed = DateTime.Now;
 
-        Debug.Log($"Character Usage Updated: {characterID}, Count: {characterUsageDict[characterID].UsageCount}");
-
         ConvertDictionariesToLists();  // Convert back to lists before saving
         SaveStats();
     }
@@ -255,8 +252,6 @@ public class StatisticsManager : MonoBehaviour
 
         weaponUsageDict[weaponID].UsageCount++;
         weaponUsageDict[weaponID].LastUsed = DateTime.Now;
-
-        Debug.Log($"Weapon Usage Updated: {weaponID}, Count: {weaponUsageDict[weaponID].UsageCount}");
 
         ConvertDictionariesToLists();  // Convert back to lists before saving
         SaveStats();
@@ -274,21 +269,6 @@ public class StatisticsManager : MonoBehaviour
         foreach (var entry in weaponUsageDict)
         {
             currentStatistics.WeaponUsageList.Add(new WeaponUsageEntry { WeaponID = entry.Key, UsageInfo = entry.Value });
-        }
-    }
-
-    private void ConvertListsToDictionaries()
-    {
-        characterUsageDict.Clear();
-        foreach (var entry in currentStatistics.CharacterUsageList)
-        {
-            characterUsageDict[entry.CharacterID] = entry.UsageInfo;
-        }
-
-        weaponUsageDict.Clear();
-        foreach (var entry in currentStatistics.WeaponUsageList)
-        {
-            weaponUsageDict[entry.WeaponID] = entry.UsageInfo;
         }
     }
 

@@ -118,7 +118,7 @@ public class ShopItemContainerUI : MonoBehaviour
   {
      int itemPrice;
 
-     if(WeaponData != null)
+      if(WeaponData != null)
          itemPrice = WeaponStatCalculator.GetPurchasePrice(WeaponData, weaponLevel);
       else
          itemPrice = ObjectData.Price;

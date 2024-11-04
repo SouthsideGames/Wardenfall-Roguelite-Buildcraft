@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,9 +15,27 @@ public class CharacterContainerUI : MonoBehaviour
         private set { }
     }
 
-    public void ConfigureCharacterButton(Sprite _characterIcon)
+    public void ConfigureCharacterButton(Sprite _characterIcon, bool _isUnlocked)
     {
         characterImage.sprite = _characterIcon;
+
+        if(_isUnlocked)
+           Unlock();
+        else
+            Lock();
+    }
+
+    public void Lock()
+    {
+        lockObject.SetActive(true);
+        characterImage.color = Color.grey;
+    }
+
+    public void Unlock()
+    {
+        lockObject.SetActive(false);    
+        characterImage.color = Color.white; 
+
     }
     
 }
