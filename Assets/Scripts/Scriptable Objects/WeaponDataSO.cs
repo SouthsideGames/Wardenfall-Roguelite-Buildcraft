@@ -21,7 +21,7 @@ public class WeaponDataSO : ScriptableObject
     [SerializeField, Tooltip("Base attack damage.")] private float attack;
     [SerializeField,  Tooltip("Attack speed of the character.")] private float attackSpeed;
     [SerializeField,  Tooltip("Chance to hit critically (%).")] private float criticalChance;
-    [SerializeField,  Tooltip("Extra damage for critical hits (%).")] private float criticalPercent;
+    [SerializeField,  Tooltip("Extra damage for critical hits.")] private float criticalDamageAmount;
     [SerializeField, Tooltip("Attack or ability range.")] private float range;
 
     public Dictionary<Stat, float> BaseStats
@@ -33,7 +33,7 @@ public class WeaponDataSO : ScriptableObject
                 {Stat.Attack,       attack},
                 {Stat.AttackSpeed,  attackSpeed},
                 {Stat.CritChance,   criticalChance},
-                {Stat.CritDamage,   criticalPercent},
+                {Stat.CritDamage,   criticalDamageAmount},
                 {Stat.Range,        range},
 
             };

@@ -46,6 +46,8 @@ public abstract class Enemy : MonoBehaviour
     [Header("DEBUG:")]
     [SerializeField] private bool showGizmos;
 
+    private EnemyStatus status;
+
     // Start is called before the first frame update
     protected virtual void Start()
     {
@@ -53,6 +55,7 @@ public abstract class Enemy : MonoBehaviour
 
         movement = GetComponent<EnemyMovement>();
         character = FindFirstObjectByType<CharacterManager>();
+        status = GetComponent<EnemyStatus>();
 
         if (character == null)
         {
@@ -87,6 +90,10 @@ public abstract class Enemy : MonoBehaviour
 
     }
 
+    public void ApplyLifeDrain(float duration)
+    {
+        status.ApplyLifeDrain(duration);
+    }
 
     protected virtual void Die()
     {

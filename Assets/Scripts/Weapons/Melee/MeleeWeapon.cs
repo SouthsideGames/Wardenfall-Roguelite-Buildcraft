@@ -55,7 +55,7 @@ public class MeleeWeapon : Weapon
         damagedEnemies.Clear(); 
     }
 
-    private void AttackLogic()
+    protected virtual void AttackLogic()
     {
         Collider2D[] enemies = Physics2D.OverlapBoxAll
         (
@@ -108,7 +108,7 @@ public class MeleeWeapon : Weapon
 
     private void Wait() => attackTimer += Time.deltaTime;
 
-   public override void UpdateWeaponStats(CharacterStats _statsManager)
+    public override void UpdateWeaponStats(CharacterStats _statsManager)
     {
         ConfigureWeaponStats();
 

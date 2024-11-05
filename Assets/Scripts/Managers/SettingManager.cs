@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;   
 using TMPro;
 using Tabsil.Sijil;
+using UnityEngine.Networking;
 
 public class SettingManager : MonoBehaviour, IWantToBeSaved
 {
@@ -12,6 +13,7 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
     [SerializeField] private Button sfxButton;
     [SerializeField] private Button musicButton;
     [SerializeField] private Button privacyPolicyButton;
+    [SerializeField] private Button askButton;
 
 
     [Header("SETTINGS:")]
@@ -35,8 +37,21 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
 
         privacyPolicyButton.onClick.RemoveAllListeners();
         privacyPolicyButton.onClick.AddListener(PrivacyPolicyButtonCallback);
+        
+        askButton.onClick.RemoveAllListeners();
+        askButton.onClick.AddListener(AskButtonCallback);
     }
 
+    private void AskButtonCallback()
+    {
+        string email = "southsidegames2021@gmail.com";
+        string subject = EscapeURL("Help");
+        string body = EscapeURL("hey ! I need help with this...");
+
+        Application.OpenURL("mailto:" + email + "?subject=" + subject + "&body=" + body);
+    }
+
+    private string EscapeURL(string _s) => UnityWebRequest.EscapeURL(_s).Replace("+", "%20");
     private void SFXButtonCallback()
     {
         sfxState = !sfxState;

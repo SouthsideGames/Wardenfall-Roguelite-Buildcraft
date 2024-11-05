@@ -1,4 +1,4 @@
-using System.Collections;
+ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
@@ -11,7 +11,7 @@ public class RangedWeapon : Weapon
     [SerializeField] private Bullet bulletPrefab;
 
     [Header("POOL:")]
-    private ObjectPool<Bullet> bulletPool;
+    public ObjectPool<Bullet> bulletPool {get; private set;}
 
     // Start is called before the first frame update
     void Start()
@@ -52,7 +52,7 @@ public class RangedWeapon : Weapon
         }
     }
 
-    private void Shoot()
+    protected virtual void Shoot()
     {
         int damage = GetDamage(out bool isCriticalHit);
 

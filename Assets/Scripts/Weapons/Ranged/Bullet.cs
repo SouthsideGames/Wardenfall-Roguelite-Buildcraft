@@ -6,16 +6,16 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 public class Bullet : MonoBehaviour
 {
-    [Header("ELEMENTS:")]
+
+    [Header("BULLET SETTINGS:")]
+    [SerializeField] private LayerMask enemyMask;
+    [SerializeField] private float moveSpeed;
+
+    private bool isCriticalHit;
     private Rigidbody2D rb;
     private Collider2D col;
     private RangedWeapon rangedWeapon;
-
-    [Header("SETTINGS:")]
-    [SerializeField] private LayerMask enemyMask;
-    [SerializeField] private float moveSpeed;
     private int damage;
-    private bool isCriticalHit;
     private Enemy target;
 
     private void Awake()
@@ -81,13 +81,23 @@ public class Bullet : MonoBehaviour
         return (_layerMask.value & (1 << _layer)) != 0; 
     }
 
-     public void Reload()
+    public void Reload()
     {
         target = null;
 
         rb.velocity = Vector2.zero;
         col.enabled = true; 
 
+    }
+
+    public void SetExplosionRadius(float radius)
+    {
+        // Trigger explosion and affect enemies within radius
+        Collider2D[] enemiesHit = Physics2D.OverlapCircleAll(transform.position, radius, enemyMask);
+        foreach (var enemy in enemiesHit)
+        {
+            enemy.GetComponent<Enemy>().TakeDamage(damage, isCriticalHit);
+        }
     }
 
 

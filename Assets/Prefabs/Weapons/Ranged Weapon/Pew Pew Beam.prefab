@@ -72,10 +72,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4035153805788466543}
-  - component: {fileID: 1645784114683558494}
   - component: {fileID: 8537731421067500523}
+  - component: {fileID: -2667084341505015346}
   m_Layer: 0
-  m_Name: Cotton Candy Gun
+  m_Name: Pew Pew Beam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -97,29 +97,6 @@ Transform:
   - {fileID: 1923225789067829012}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1645784114683558494
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8230195434855500512}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 60292af3f2fa18245b0e634a3f2d1dee, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <WeaponData>k__BackingField: {fileID: 11400000, guid: e37c29a4f7fb6774e89194ac70734d23, type: 2}
-  range: 6
-  enemyMask:
-    serializedVersion: 2
-    m_Bits: 64
-  damage: 2
-  attackDelay: 0.15
-  anim: {fileID: 8537731421067500523}
-  aimLerp: 12
-  firePoint: {fileID: 7993999580436098873}
-  bulletPrefab: {fileID: 1454874200778115879, guid: 0b6de050b7fa5fe49ab07d5968191594, type: 3}
 --- !u!95 &8537731421067500523
 Animator:
   serializedVersion: 7
@@ -142,6 +119,30 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-2667084341505015346
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8230195434855500512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9434042ff14e5e24dba10b671fa601f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <WeaponData>k__BackingField: {fileID: 11400000, guid: 854eda7984966114c968a1b7636eabde, type: 2}
+  range: 0
+  enemyMask:
+    serializedVersion: 2
+    m_Bits: 64
+  damage: 0
+  attackDelay: 0
+  anim: {fileID: 0}
+  aimLerp: 0
+  firePoint: {fileID: 0}
+  bulletPrefab: {fileID: 1454874200778115879, guid: 6a2e4c1a572e87a409b037791441f82e, type: 3}
+  laserBeam: {fileID: 90382717170401352, guid: f42000efe40e06d46a41cadca9d71bf5, type: 3}
 --- !u!1 &9147867877528162964
 GameObject:
   m_ObjectHideFlags: 0
