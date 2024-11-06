@@ -100,5 +100,22 @@ public class Bullet : MonoBehaviour
         }
     }
 
+    public void SetHomingTarget(Enemy target, float homingSpeed)
+    {
+        StartCoroutine(HomingRoutine(target, homingSpeed));
+    }
+
+    private IEnumerator HomingRoutine(Enemy target, float speed)
+    {
+        while (target != null && Vector2.Distance(transform.position, target.transform.position) > 0.1f)
+        {
+            Vector2 direction = (target.transform.position - transform.position).normalized;
+            rb.velocity = direction * speed;
+            yield return null;
+        }
+
+        rb.velocity = Vector2.zero;
+    }
+
 
 }

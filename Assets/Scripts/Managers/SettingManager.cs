@@ -9,17 +9,22 @@ using UnityEngine.Networking;
 
 public class SettingManager : MonoBehaviour, IWantToBeSaved
 {
+    public static Action<bool> onSFXStateChanged;
+    public static Action<bool> onMusicStateChanged;
+
     [Header("ELEMENTS:")]
     [SerializeField] private Button sfxButton;
     [SerializeField] private Button musicButton;
     [SerializeField] private Button privacyPolicyButton;
     [SerializeField] private Button askButton;
+    [SerializeField] private Button creditsButton;
 
 
     [Header("SETTINGS:")]
     [SerializeField] private Color onColor;
     [SerializeField] private Color offColor;
     [SerializeField] private String privacyPolicyURL;
+    [SerializeField] private GameObject creditsPanel;
 
     private bool sfxState;
     private bool musicState;
@@ -40,8 +45,22 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
         
         askButton.onClick.RemoveAllListeners();
         askButton.onClick.AddListener(AskButtonCallback);
+
+        creditsButton.onClick.RemoveAllListeners();
+        creditsButton.onClick.AddListener(CreditsButtonCallback);
     }
 
+    private void Start() 
+    {
+        HideCreditsPanel();
+    }
+
+    private void CreditsButtonCallback()
+    {
+        creditsPanel.SetActive(true);
+    }
+
+    public void HideCreditsPanel() => creditsPanel.SetActive(false);
     private void AskButtonCallback()
     {
         string email = "southsidegames2021@gmail.com";
@@ -61,6 +80,7 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
         Save();
 
         //Trigger an action
+        onSFXStateChanged?.Invoke(sfxState);
     }
 
     
@@ -73,6 +93,7 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
         Save();
 
         //Trigger an action
+        onMusicStateChanged?.Invoke(musicState);    
     }
 
     private void UpdateSFXVisuals()
@@ -103,10 +124,7 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
         }
     }
 
-    private void PrivacyPolicyButtonCallback()
-    {
-        Application.OpenURL(privacyPolicyURL);
-    }
+    private void PrivacyPolicyButtonCallback() => Application.OpenURL(privacyPolicyURL);
 
     public void Load()
     {
