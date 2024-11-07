@@ -1,0 +1,36 @@
+using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
+
+[RequireComponent(typeof(Button))]
+public class CodexCardUI : MonoBehaviour
+{
+    [Header("UI Elements")]
+    [SerializeField] private Image iconImage;
+    [SerializeField] private TextMeshProUGUI nameText;
+
+    [Header("Settings")]
+    [SerializeField] private CodexDetailUI codexDetailUI; // Reference to the detail view UI
+
+    public Button Button { get; private set; }
+
+    private void Awake()
+    {
+        Button = GetComponent<Button>();
+    }
+
+    public void Configure(Sprite icon, string name, string description)
+    {
+        iconImage.sprite = icon;
+        nameText.text = name;
+
+        Button.onClick.RemoveAllListeners();
+        Button.onClick.AddListener(() => ShowDetail(icon, name, description));
+    }
+
+    private void ShowDetail(Sprite icon, string name, string description)
+    {
+        codexDetailUI.Configure(icon, name, description);
+        codexDetailUI.gameObject.SetActive(true); // Activate the detail panel
+    }
+}
