@@ -1,0 +1,64 @@
+using UnityEngine;
+using System.Collections.Generic;
+
+public class CodexManager : MonoBehaviour
+{
+    [Header("Codex Panel")]
+    [SerializeField] private GameObject codexPanel; // The main codex panel
+
+    [Header("Card Prefab")]
+    [SerializeField] private GameObject codexCardPrefab; // Prefab for each codex card
+
+    [Header("Content Parent")]
+    [SerializeField] private Transform contentParent; // Parent object for spawning cards
+
+    [Header("Detail UI")]
+    [SerializeField] private CodexDetailUI codexDetailUI; // Reference to the detailed view UI
+
+    private void ShowCodexCategory<T>(string resourcePath)
+    {
+        ClearContent(); // Clear any existing cards
+
+        // Load data from Resources folder for the selected category
+        T[] dataItems = Resources.LoadAll<T>(resourcePath);
+
+        foreach (var item in dataItems)
+        {
+            GameObject card = Instantiate(codexCardPrefab, contentParent);
+            CodexCardUI cardUI = card.GetComponent<CodexCardUI>();
+
+            // Assuming each ScriptableObject type has icon, name, and description properties
+            Sprite icon = (item as dynamic).Icon;
+            string name = (item as dynamic).Name;
+            string description = (item as dynamic).Description;
+
+            cardUI.Configure(icon, name, description);
+            cardUI.Button.onClick.AddListener(() => ShowDetail(icon, name, description)); // Add listener for card click
+        }
+    }
+
+    private void ShowDetail(Sprite icon, string name, string description)
+    {
+        codexDetailUI.Configure(icon, name, description);
+        codexDetailUI.gameObject.SetActive(true); // Activate the detail panel
+    }
+
+    private void ClearContent()
+    {
+        foreach (Transform child in contentParent)
+        {
+            Destroy(child.gameObject);
+        }
+    }
+
+    public void ShowWeapons() => ShowCodexCategory<WeaponDataSO>("Data/Weapons");
+    public void ShowCharacters() => ShowCodexCategory<CharacterDataSO>("Data/Characters");
+    public void ShowObjects() => ShowCodexCategory<ObjectDataSO>("Data/Objects");
+    public void ShowEnemies() => ShowCodexCategory<EnemyDataSO>("Data/Enemies");
+
+    public void HideCodexPanel()
+    {
+        codexPanel.SetActive(false);
+        codexDetailUI.gameObject.SetActive(false); // Hide the detail panel as well
+    }
+}
