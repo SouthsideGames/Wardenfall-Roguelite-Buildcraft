@@ -223,6 +223,7 @@ GameObject:
   - component: {fileID: 1448915146873048331}
   - component: {fileID: 5531740909353719536}
   - component: {fileID: 4282996373558818226}
+  - component: {fileID: 7725615599405782178}
   m_Layer: 5
   m_Name: Basic Button
   m_TagString: Untagged
@@ -239,7 +240,7 @@ RectTransform:
   m_GameObject: {fileID: 4750023946203428376}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 9028094644346042817}
@@ -346,6 +347,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &7725615599405782178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4750023946203428376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bc1556fa597c324da48e1ee3f0f9042, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4802082225751316580
 GameObject:
   m_ObjectHideFlags: 0

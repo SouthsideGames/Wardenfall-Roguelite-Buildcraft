@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
+using System;
 
 public class RangedWeapon : Weapon
 {
+    public static Action OnBulletFired;
 
     [Header("ELEMENTS:")]
     [SerializeField] private Transform firePoint;
@@ -54,6 +56,8 @@ public class RangedWeapon : Weapon
 
     protected virtual void Shoot()
     {
+        OnBulletFired?.Invoke();
+
         int damage = GetDamage(out bool isCriticalHit);
 
         Bullet _bullet = bulletPool.Get();
