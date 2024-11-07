@@ -17,6 +17,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
     [SerializeField] private GameObject characterSelectPanel;
     [SerializeField] private GameObject statisticsPanel;
     [SerializeField] private GameObject settingPanel;
+    [SerializeField] private GameObject codexPanel;
 
     [Header("COUNTER TEXT:")]
     [SerializeField] private TextMeshProUGUI killCounterText;
@@ -43,6 +44,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
 
         pausePanel.SetActive(false);
         statisticsPanel.SetActive(false);   
+        codexPanel.SetActive(false);
 
         HideConfirmationPanel();
         HideCharacterSelectPanel();
@@ -121,6 +123,8 @@ public class UIManager : MonoBehaviour, IGameStateListener
     public void ShowStatisticsPanel() => statisticsPanel.SetActive(true);
     public void HideStatisticsPanel() => statisticsPanel.SetActive(false);   
     public void ShowSettingsPanel() => settingPanel.SetActive(true);
-    public void HideSettingsPanel() => settingPanel.SetActive(false);   
+    public void HideSettingsPanel() => settingPanel.SetActive(false);  
+    public void ShowCodexPanel() => codexPanel.SetActive(true);
+    public void HideCodexPanel() => codexPanel.SetActive(false);  
 
 }
