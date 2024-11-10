@@ -8,6 +8,23 @@ public class DropdownContainerUI : MonoBehaviour
     [Header("ELEMENTS:")]
     [SerializeField] private Vector2 spacing;
 
+    [Space]
+    [Header("SETTINGS:")]
+    [SerializeField] private float rotationDuration;
+    [SerializeField] private LeanTweenType rotationType;
+    
+    [Space]
+    [Header("ANIMATION:")]
+    [SerializeField] private float expandDuration;
+    [SerializeField] private float collapseDuration;
+    [SerializeField] private LeanTweenType expandType;
+    [SerializeField] private LeanTweenType collapseType;
+
+    [Space]
+    [Header("FADING:")]
+    [SerializeField] private float expandFadeDuration;
+    [SerializeField] private float collapseFadeDuration;
+
     private Button mainButton;
     private DropdownContainerItemUI[] menuItems;
     private bool isExpanded = false;
@@ -51,7 +68,7 @@ public class DropdownContainerUI : MonoBehaviour
             for(int i = 0; i < itemsCount; i++)
             {
                 menuItems[i].gameObject.SetActive(true);
-                menuItems[i].trans.position = buttonPosition + spacing * (i + 1);
+                menuItems[i].trans.LeanMove(buttonPosition + spacing * (i + 1), expandDuration).setEase(expandType);
           
             }
         }
@@ -59,12 +76,15 @@ public class DropdownContainerUI : MonoBehaviour
         {
             for(int i = 0; i < itemsCount; i++)
             {
-             
-                menuItems[i].trans.position = buttonPosition;
-                menuItems[i].gameObject.SetActive(false); 
-
+                int _index = i;
+                menuItems[_index].trans.LeanMove(buttonPosition, collapseDuration)
+                    .setEase(collapseType)
+                    .setOnComplete(() => menuItems[_index].gameObject.SetActive(false));   
+                
             }
         }
+
+        mainButton.transform.LeanRotate(Vector3.forward * 360f, rotationDuration).setEase(rotationType);
     }
 
     private void OnDestroy() => mainButton.onClick.RemoveAllListeners();
