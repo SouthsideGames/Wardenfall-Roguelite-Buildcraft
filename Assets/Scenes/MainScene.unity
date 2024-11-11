@@ -1119,6 +1119,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 471280212}
+        m_TargetAssemblyTypeName: HapticFeedbackUI, Assembly-CSharp
+        m_MethodName: LightVibrate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 1350216646}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: HideSettingsPanel
@@ -1388,6 +1400,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 471280212}
+        m_TargetAssemblyTypeName: HapticFeedbackUI, Assembly-CSharp
+        m_MethodName: LightVibrate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 617157215}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: ManageGameOver
@@ -2192,14 +2216,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9044183599609130601, guid: 6fa071d18de56004ab165d56be22a291, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 9044183599609130601, guid: 6fa071d18de56004ab165d56be22a291, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9044183599609130601, guid: 6fa071d18de56004ab165d56be22a291, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044183599609130601, guid: 6fa071d18de56004ab165d56be22a291, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 471280212}
+    - target: {fileID: 9044183599609130601, guid: 6fa071d18de56004ab165d56be22a291, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 639600882}
     - target: {fileID: 9044183599609130601, guid: 6fa071d18de56004ab165d56be22a291, type: 3}
@@ -2207,15 +2239,31 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 9044183599609130601, guid: 6fa071d18de56004ab165d56be22a291, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044183599609130601, guid: 6fa071d18de56004ab165d56be22a291, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: LightVibrate
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044183599609130601, guid: 6fa071d18de56004ab165d56be22a291, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ShowEnemies
       objectReference: {fileID: 0}
     - target: {fileID: 9044183599609130601, guid: 6fa071d18de56004ab165d56be22a291, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: HapticFeedbackUI, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044183599609130601, guid: 6fa071d18de56004ab165d56be22a291, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
       value: CodexManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 9044183599609130601, guid: 6fa071d18de56004ab165d56be22a291, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044183599609130601, guid: 6fa071d18de56004ab165d56be22a291, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -2569,7 +2617,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 199842716}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 471280212}
+        m_TargetAssemblyTypeName: HapticFeedbackUI, Assembly-CSharp
+        m_MethodName: LightVibrate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &199842716
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2759,6 +2819,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 471280212}
+        m_TargetAssemblyTypeName: HapticFeedbackUI, Assembly-CSharp
+        m_MethodName: LightVibrate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 558738564}
         m_TargetAssemblyTypeName: ShopManager, Assembly-CSharp
         m_MethodName: Reroll
@@ -2867,6 +2939,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 471280212}
+        m_TargetAssemblyTypeName: HapticFeedbackUI, Assembly-CSharp
+        m_MethodName: LightVibrate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 617157215}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: StartShop
@@ -3181,7 +3265,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 231746546}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 471280212}
+        m_TargetAssemblyTypeName: HapticFeedbackUI, Assembly-CSharp
+        m_MethodName: LightVibrate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &231746545
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6254,6 +6350,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 471280212}
+        m_TargetAssemblyTypeName: HapticFeedbackUI, Assembly-CSharp
+        m_MethodName: LightVibrate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 2021406423}
         m_TargetAssemblyTypeName: CollectionSectionUI, Assembly-CSharp
         m_MethodName: PopulateCharacterCollectionSection
@@ -6737,7 +6845,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 386255912}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 471280212}
+        m_TargetAssemblyTypeName: HapticFeedbackUI, Assembly-CSharp
+        m_MethodName: LightVibrate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &388521545
 GameObject:
   m_ObjectHideFlags: 0
@@ -7803,14 +7923,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9044183599609130601, guid: 6fa071d18de56004ab165d56be22a291, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 9044183599609130601, guid: 6fa071d18de56004ab165d56be22a291, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9044183599609130601, guid: 6fa071d18de56004ab165d56be22a291, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044183599609130601, guid: 6fa071d18de56004ab165d56be22a291, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 471280212}
+    - target: {fileID: 9044183599609130601, guid: 6fa071d18de56004ab165d56be22a291, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 639600882}
     - target: {fileID: 9044183599609130601, guid: 6fa071d18de56004ab165d56be22a291, type: 3}
@@ -7818,15 +7946,31 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 9044183599609130601, guid: 6fa071d18de56004ab165d56be22a291, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044183599609130601, guid: 6fa071d18de56004ab165d56be22a291, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: LightVibrate
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044183599609130601, guid: 6fa071d18de56004ab165d56be22a291, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ShowWeapons
       objectReference: {fileID: 0}
     - target: {fileID: 9044183599609130601, guid: 6fa071d18de56004ab165d56be22a291, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: HapticFeedbackUI, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044183599609130601, guid: 6fa071d18de56004ab165d56be22a291, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
       value: CodexManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 9044183599609130601, guid: 6fa071d18de56004ab165d56be22a291, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044183599609130601, guid: 6fa071d18de56004ab165d56be22a291, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -8235,6 +8379,34 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1409842047888329610, guid: eddcea1b6b3a0fc4a88a93db97b10b28, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1409842047888329610, guid: eddcea1b6b3a0fc4a88a93db97b10b28, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1409842047888329610, guid: eddcea1b6b3a0fc4a88a93db97b10b28, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 471280212}
+    - target: {fileID: 1409842047888329610, guid: eddcea1b6b3a0fc4a88a93db97b10b28, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1409842047888329610, guid: eddcea1b6b3a0fc4a88a93db97b10b28, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: LightVibrate
+      objectReference: {fileID: 0}
+    - target: {fileID: 1409842047888329610, guid: eddcea1b6b3a0fc4a88a93db97b10b28, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: HapticFeedbackUI, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1409842047888329610, guid: eddcea1b6b3a0fc4a88a93db97b10b28, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 1575097958892395143, guid: eddcea1b6b3a0fc4a88a93db97b10b28, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -8322,6 +8494,50 @@ PrefabInstance:
     - target: {fileID: 2182949349528662852, guid: eddcea1b6b3a0fc4a88a93db97b10b28, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2445635776398008515, guid: eddcea1b6b3a0fc4a88a93db97b10b28, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2445635776398008515, guid: eddcea1b6b3a0fc4a88a93db97b10b28, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2445635776398008515, guid: eddcea1b6b3a0fc4a88a93db97b10b28, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 471280212}
+    - target: {fileID: 2445635776398008515, guid: eddcea1b6b3a0fc4a88a93db97b10b28, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 451605931}
+    - target: {fileID: 2445635776398008515, guid: eddcea1b6b3a0fc4a88a93db97b10b28, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2445635776398008515, guid: eddcea1b6b3a0fc4a88a93db97b10b28, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: LightVibrate
+      objectReference: {fileID: 0}
+    - target: {fileID: 2445635776398008515, guid: eddcea1b6b3a0fc4a88a93db97b10b28, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: LockButtonCallback
+      objectReference: {fileID: 0}
+    - target: {fileID: 2445635776398008515, guid: eddcea1b6b3a0fc4a88a93db97b10b28, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: HapticFeedbackUI, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2445635776398008515, guid: eddcea1b6b3a0fc4a88a93db97b10b28, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: ShopItemContainerUI, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2445635776398008515, guid: eddcea1b6b3a0fc4a88a93db97b10b28, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 2445635776398008515, guid: eddcea1b6b3a0fc4a88a93db97b10b28, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 2862856680076930379, guid: eddcea1b6b3a0fc4a88a93db97b10b28, type: 3}
       propertyPath: m_AnchorMax.y
@@ -9089,6 +9305,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6109290038805645131, guid: eddcea1b6b3a0fc4a88a93db97b10b28, type: 3}
   m_PrefabInstance: {fileID: 451605929}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &451605931 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: -5195619548991985438, guid: eddcea1b6b3a0fc4a88a93db97b10b28, type: 3}
+  m_PrefabInstance: {fileID: 451605929}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7c9cf405760d44439b745fc8ef00226, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &452072047
 GameObject:
   m_ObjectHideFlags: 0
@@ -10860,6 +11087,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 471280212}
+        m_TargetAssemblyTypeName: HapticFeedbackUI, Assembly-CSharp
+        m_MethodName: LightVibrate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 1350216646}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: ShowCodexPanel
@@ -11174,6 +11413,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 471280212}
+        m_TargetAssemblyTypeName: HapticFeedbackUI, Assembly-CSharp
+        m_MethodName: LightVibrate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 558738565}
         m_TargetAssemblyTypeName: ShopManagerUI, Assembly-CSharp
         m_MethodName: ShowInventory
@@ -14366,7 +14617,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 685245770}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 471280212}
+        m_TargetAssemblyTypeName: HapticFeedbackUI, Assembly-CSharp
+        m_MethodName: LightVibrate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &685245770
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22942,7 +23205,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 763836806}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 471280212}
+        m_TargetAssemblyTypeName: HapticFeedbackUI, Assembly-CSharp
+        m_MethodName: LightVibrate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &763836805
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23607,6 +23882,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 471280212}
+        m_TargetAssemblyTypeName: HapticFeedbackUI, Assembly-CSharp
+        m_MethodName: LightVibrate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 558738565}
         m_TargetAssemblyTypeName: ShopManagerUI, Assembly-CSharp
         m_MethodName: HideItemInfoPanel
@@ -25581,7 +25868,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 954357319}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 471280212}
+        m_TargetAssemblyTypeName: HapticFeedbackUI, Assembly-CSharp
+        m_MethodName: LightVibrate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &964718279
 GameObject:
   m_ObjectHideFlags: 0
@@ -25753,6 +26052,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 471280212}
+        m_TargetAssemblyTypeName: HapticFeedbackUI, Assembly-CSharp
+        m_MethodName: LightVibrate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 1350216646}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: ShowStatisticsPanel
@@ -27073,7 +27384,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1030963519}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 471280212}
+        m_TargetAssemblyTypeName: HapticFeedbackUI, Assembly-CSharp
+        m_MethodName: LightVibrate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1040474026
 GameObject:
   m_ObjectHideFlags: 0
@@ -27866,6 +28189,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 471280212}
+        m_TargetAssemblyTypeName: HapticFeedbackUI, Assembly-CSharp
+        m_MethodName: LightVibrate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 2021406423}
         m_TargetAssemblyTypeName: CollectionSectionUI, Assembly-CSharp
         m_MethodName: PopulateWeaponCollectionSection
@@ -28793,6 +29128,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 471280212}
+        m_TargetAssemblyTypeName: HapticFeedbackUI, Assembly-CSharp
+        m_MethodName: LightVibrate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 1350216646}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: ShowSettingsPanel
@@ -30139,6 +30486,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1225518945}
   m_CullTransparentMesh: 1
+--- !u!1 &1244282290
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1244282291}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1244282291
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1244282290}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1718953529}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1248985710
 GameObject:
   m_ObjectHideFlags: 0
@@ -30336,7 +30714,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1251341805}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 471280212}
+        m_TargetAssemblyTypeName: HapticFeedbackUI, Assembly-CSharp
+        m_MethodName: LightVibrate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1263173143
 GameObject:
   m_ObjectHideFlags: 0
@@ -30643,6 +31033,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 471280212}
+        m_TargetAssemblyTypeName: HapticFeedbackUI, Assembly-CSharp
+        m_MethodName: LightVibrate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 639600882}
         m_TargetAssemblyTypeName: CodexManager, Assembly-CSharp
         m_MethodName: HideCodexDetailPanel
@@ -31588,7 +31990,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1301980184}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 471280212}
+        m_TargetAssemblyTypeName: HapticFeedbackUI, Assembly-CSharp
+        m_MethodName: LightVibrate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1305686887
 GameObject:
   m_ObjectHideFlags: 0
@@ -31671,6 +32085,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 471280212}
+        m_TargetAssemblyTypeName: HapticFeedbackUI, Assembly-CSharp
+        m_MethodName: LightVibrate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 558738565}
         m_TargetAssemblyTypeName: ShopManagerUI, Assembly-CSharp
         m_MethodName: HideItemInfoPanel
@@ -34449,7 +34875,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1483944738}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 471280212}
+        m_TargetAssemblyTypeName: HapticFeedbackUI, Assembly-CSharp
+        m_MethodName: LightVibrate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1483944737
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35737,6 +36175,34 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3409375375829798335, guid: b398141cffb081f43957ad2d925d7cd4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3409375375829798335, guid: b398141cffb081f43957ad2d925d7cd4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3409375375829798335, guid: b398141cffb081f43957ad2d925d7cd4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 471280212}
+    - target: {fileID: 3409375375829798335, guid: b398141cffb081f43957ad2d925d7cd4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3409375375829798335, guid: b398141cffb081f43957ad2d925d7cd4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: LightVibrate
+      objectReference: {fileID: 0}
+    - target: {fileID: 3409375375829798335, guid: b398141cffb081f43957ad2d925d7cd4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: HapticFeedbackUI, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3409375375829798335, guid: b398141cffb081f43957ad2d925d7cd4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 3558408354722274425, guid: b398141cffb081f43957ad2d925d7cd4, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -36571,6 +37037,34 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 361798204}
     m_Modifications:
+    - target: {fileID: 30055942992442218, guid: b6a869477e488154889c47756b5116e7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 30055942992442218, guid: b6a869477e488154889c47756b5116e7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 30055942992442218, guid: b6a869477e488154889c47756b5116e7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 471280212}
+    - target: {fileID: 30055942992442218, guid: b6a869477e488154889c47756b5116e7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 30055942992442218, guid: b6a869477e488154889c47756b5116e7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: LightVibrate
+      objectReference: {fileID: 0}
+    - target: {fileID: 30055942992442218, guid: b6a869477e488154889c47756b5116e7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: HapticFeedbackUI, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 30055942992442218, guid: b6a869477e488154889c47756b5116e7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 2344256499946711587, guid: b6a869477e488154889c47756b5116e7, type: 3}
       propertyPath: m_fontSize
       value: 46.05
@@ -37570,7 +38064,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1593927093}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 471280212}
+        m_TargetAssemblyTypeName: HapticFeedbackUI, Assembly-CSharp
+        m_MethodName: LightVibrate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1593927092
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38350,7 +38856,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4282996373558818226, guid: 1d13aa44b31005d4c985c8a15c329c03, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4282996373558818226, guid: 1d13aa44b31005d4c985c8a15c329c03, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
@@ -38359,6 +38865,10 @@ PrefabInstance:
     - target: {fileID: 4282996373558818226, guid: 1d13aa44b31005d4c985c8a15c329c03, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
+      objectReference: {fileID: 471280212}
+    - target: {fileID: 4282996373558818226, guid: 1d13aa44b31005d4c985c8a15c329c03, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
       objectReference: {fileID: 617157215}
     - target: {fileID: 4282996373558818226, guid: 1d13aa44b31005d4c985c8a15c329c03, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -38366,11 +38876,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4282996373558818226, guid: 1d13aa44b31005d4c985c8a15c329c03, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: LightVibrate
+      objectReference: {fileID: 0}
+    - target: {fileID: 4282996373558818226, guid: 1d13aa44b31005d4c985c8a15c329c03, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: StartWeaponSelect
+      objectReference: {fileID: 0}
+    - target: {fileID: 4282996373558818226, guid: 1d13aa44b31005d4c985c8a15c329c03, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: HapticFeedbackUI, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 4282996373558818226, guid: 1d13aa44b31005d4c985c8a15c329c03, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
       value: GameManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4282996373558818226, guid: 1d13aa44b31005d4c985c8a15c329c03, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 4282996373558818226, guid: 1d13aa44b31005d4c985c8a15c329c03, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 4750023946203428376, guid: 1d13aa44b31005d4c985c8a15c329c03, type: 3}
       propertyPath: m_Name
@@ -39028,6 +39554,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 471280212}
+        m_TargetAssemblyTypeName: HapticFeedbackUI, Assembly-CSharp
+        m_MethodName: LightVibrate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 639600882}
         m_TargetAssemblyTypeName: CodexManager, Assembly-CSharp
         m_MethodName: HideBigCardPanel
@@ -39375,6 +39913,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 471280212}
+        m_TargetAssemblyTypeName: HapticFeedbackUI, Assembly-CSharp
+        m_MethodName: LightVibrate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 1350216646}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: HideConfirmationPanel
@@ -39911,14 +40461,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9044183599609130601, guid: 6fa071d18de56004ab165d56be22a291, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 9044183599609130601, guid: 6fa071d18de56004ab165d56be22a291, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9044183599609130601, guid: 6fa071d18de56004ab165d56be22a291, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044183599609130601, guid: 6fa071d18de56004ab165d56be22a291, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 471280212}
+    - target: {fileID: 9044183599609130601, guid: 6fa071d18de56004ab165d56be22a291, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 639600882}
     - target: {fileID: 9044183599609130601, guid: 6fa071d18de56004ab165d56be22a291, type: 3}
@@ -39926,15 +40484,31 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 9044183599609130601, guid: 6fa071d18de56004ab165d56be22a291, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044183599609130601, guid: 6fa071d18de56004ab165d56be22a291, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: LightVibrate
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044183599609130601, guid: 6fa071d18de56004ab165d56be22a291, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ShowObjects
       objectReference: {fileID: 0}
     - target: {fileID: 9044183599609130601, guid: 6fa071d18de56004ab165d56be22a291, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: HapticFeedbackUI, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044183599609130601, guid: 6fa071d18de56004ab165d56be22a291, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
       value: CodexManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 9044183599609130601, guid: 6fa071d18de56004ab165d56be22a291, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044183599609130601, guid: 6fa071d18de56004ab165d56be22a291, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -40262,6 +40836,38 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1717863799}
   m_CullTransparentMesh: 1
+--- !u!1 &1718953528
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1718953529}
+  m_Layer: 0
+  m_Name: --- Audio ---
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1718953529
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1718953528}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 4.9906616, y: 2.862994, z: 2.6876793}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1244282291}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1720335577
 GameObject:
   m_ObjectHideFlags: 0
@@ -40758,6 +41364,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 471280212}
+        m_TargetAssemblyTypeName: HapticFeedbackUI, Assembly-CSharp
+        m_MethodName: LightVibrate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 1350216646}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: HideStatisticsPanel
@@ -41041,6 +41659,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 471280212}
+        m_TargetAssemblyTypeName: HapticFeedbackUI, Assembly-CSharp
+        m_MethodName: LightVibrate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 558738565}
         m_TargetAssemblyTypeName: ShopManagerUI, Assembly-CSharp
         m_MethodName: ShowCharacterStats
@@ -42449,6 +43079,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 471280212}
+        m_TargetAssemblyTypeName: HapticFeedbackUI, Assembly-CSharp
+        m_MethodName: LightVibrate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 1350216646}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: HideCodexPanel
@@ -42589,6 +43231,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 471280212}
+        m_TargetAssemblyTypeName: HapticFeedbackUI, Assembly-CSharp
+        m_MethodName: LightVibrate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 1590093478}
         m_TargetAssemblyTypeName: SettingManager, Assembly-CSharp
         m_MethodName: HideCreditsPanel
@@ -42960,6 +43614,34 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 361798204}
     m_Modifications:
+    - target: {fileID: 30055942992442218, guid: b6a869477e488154889c47756b5116e7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 30055942992442218, guid: b6a869477e488154889c47756b5116e7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 30055942992442218, guid: b6a869477e488154889c47756b5116e7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 471280212}
+    - target: {fileID: 30055942992442218, guid: b6a869477e488154889c47756b5116e7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 30055942992442218, guid: b6a869477e488154889c47756b5116e7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: LightVibrate
+      objectReference: {fileID: 0}
+    - target: {fileID: 30055942992442218, guid: b6a869477e488154889c47756b5116e7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: HapticFeedbackUI, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 30055942992442218, guid: b6a869477e488154889c47756b5116e7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 2344256499946711587, guid: b6a869477e488154889c47756b5116e7, type: 3}
       propertyPath: m_fontSize
       value: 46.05
@@ -44798,6 +45480,34 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3409375375829798335, guid: b398141cffb081f43957ad2d925d7cd4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3409375375829798335, guid: b398141cffb081f43957ad2d925d7cd4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3409375375829798335, guid: b398141cffb081f43957ad2d925d7cd4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 471280212}
+    - target: {fileID: 3409375375829798335, guid: b398141cffb081f43957ad2d925d7cd4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3409375375829798335, guid: b398141cffb081f43957ad2d925d7cd4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: LightVibrate
+      objectReference: {fileID: 0}
+    - target: {fileID: 3409375375829798335, guid: b398141cffb081f43957ad2d925d7cd4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: HapticFeedbackUI, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3409375375829798335, guid: b398141cffb081f43957ad2d925d7cd4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 3558408354722274425, guid: b398141cffb081f43957ad2d925d7cd4, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -45744,9 +46454,49 @@ PrefabInstance:
     m_TransformParent: {fileID: 1027324311}
     m_Modifications:
     - target: {fileID: 4282996373558818226, guid: 1d13aa44b31005d4c985c8a15c329c03, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4282996373558818226, guid: 1d13aa44b31005d4c985c8a15c329c03, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4282996373558818226, guid: 1d13aa44b31005d4c985c8a15c329c03, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
+      objectReference: {fileID: 471280212}
+    - target: {fileID: 4282996373558818226, guid: 1d13aa44b31005d4c985c8a15c329c03, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
       objectReference: {fileID: 617157215}
+    - target: {fileID: 4282996373558818226, guid: 1d13aa44b31005d4c985c8a15c329c03, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4282996373558818226, guid: 1d13aa44b31005d4c985c8a15c329c03, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: LightVibrate
+      objectReference: {fileID: 0}
+    - target: {fileID: 4282996373558818226, guid: 1d13aa44b31005d4c985c8a15c329c03, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: StartGame
+      objectReference: {fileID: 0}
+    - target: {fileID: 4282996373558818226, guid: 1d13aa44b31005d4c985c8a15c329c03, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: HapticFeedbackUI, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4282996373558818226, guid: 1d13aa44b31005d4c985c8a15c329c03, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: GameManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4282996373558818226, guid: 1d13aa44b31005d4c985c8a15c329c03, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 4282996373558818226, guid: 1d13aa44b31005d4c985c8a15c329c03, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 4750023946203428376, guid: 1d13aa44b31005d4c985c8a15c329c03, type: 3}
       propertyPath: m_Name
       value: Start Button
@@ -47095,6 +47845,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 471280212}
+        m_TargetAssemblyTypeName: HapticFeedbackUI, Assembly-CSharp
+        m_MethodName: LightVibrate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 617157215}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: Restart
@@ -48494,6 +49256,34 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -61.14362
       objectReference: {fileID: 0}
+    - target: {fileID: 3409375375829798335, guid: b398141cffb081f43957ad2d925d7cd4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3409375375829798335, guid: b398141cffb081f43957ad2d925d7cd4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3409375375829798335, guid: b398141cffb081f43957ad2d925d7cd4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 471280212}
+    - target: {fileID: 3409375375829798335, guid: b398141cffb081f43957ad2d925d7cd4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3409375375829798335, guid: b398141cffb081f43957ad2d925d7cd4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: LightVibrate
+      objectReference: {fileID: 0}
+    - target: {fileID: 3409375375829798335, guid: b398141cffb081f43957ad2d925d7cd4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: HapticFeedbackUI, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3409375375829798335, guid: b398141cffb081f43957ad2d925d7cd4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 3903012532615116541, guid: b398141cffb081f43957ad2d925d7cd4, type: 3}
       propertyPath: m_SizeDelta.y
       value: 40
@@ -48859,6 +49649,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 471280212}
+        m_TargetAssemblyTypeName: HapticFeedbackUI, Assembly-CSharp
+        m_MethodName: LightVibrate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 617157215}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: ManageGameOver
@@ -49408,6 +50210,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 471280212}
+        m_TargetAssemblyTypeName: HapticFeedbackUI, Assembly-CSharp
+        m_MethodName: LightVibrate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 1188458669}
         m_TargetAssemblyTypeName: StatisticsManager, Assembly-CSharp
         m_MethodName: SwitchToSummary
@@ -50066,6 +50880,34 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 361798204}
     m_Modifications:
+    - target: {fileID: 30055942992442218, guid: b6a869477e488154889c47756b5116e7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 30055942992442218, guid: b6a869477e488154889c47756b5116e7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 30055942992442218, guid: b6a869477e488154889c47756b5116e7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 471280212}
+    - target: {fileID: 30055942992442218, guid: b6a869477e488154889c47756b5116e7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 30055942992442218, guid: b6a869477e488154889c47756b5116e7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: LightVibrate
+      objectReference: {fileID: 0}
+    - target: {fileID: 30055942992442218, guid: b6a869477e488154889c47756b5116e7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: HapticFeedbackUI, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 30055942992442218, guid: b6a869477e488154889c47756b5116e7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 2789692305885743083, guid: b6a869477e488154889c47756b5116e7, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -50499,6 +51341,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 471280212}
+        m_TargetAssemblyTypeName: HapticFeedbackUI, Assembly-CSharp
+        m_MethodName: LightVibrate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 1188458669}
         m_TargetAssemblyTypeName: StatisticsManager, Assembly-CSharp
         m_MethodName: SwitchToCollection
@@ -50655,6 +51509,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 471280212}
+        m_TargetAssemblyTypeName: HapticFeedbackUI, Assembly-CSharp
+        m_MethodName: LightVibrate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 617157215}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: ResumeButtonCallback
@@ -50744,7 +51610,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6382598581481085670}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 471280212}
+        m_TargetAssemblyTypeName: HapticFeedbackUI, Assembly-CSharp
+        m_MethodName: LightVibrate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!224 &2763206370504682029
 RectTransform:
   m_ObjectHideFlags: 0
@@ -51298,6 +52176,34 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1409842047888329610, guid: eddcea1b6b3a0fc4a88a93db97b10b28, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1409842047888329610, guid: eddcea1b6b3a0fc4a88a93db97b10b28, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1409842047888329610, guid: eddcea1b6b3a0fc4a88a93db97b10b28, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 471280212}
+    - target: {fileID: 1409842047888329610, guid: eddcea1b6b3a0fc4a88a93db97b10b28, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1409842047888329610, guid: eddcea1b6b3a0fc4a88a93db97b10b28, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: LightVibrate
+      objectReference: {fileID: 0}
+    - target: {fileID: 1409842047888329610, guid: eddcea1b6b3a0fc4a88a93db97b10b28, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: HapticFeedbackUI, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1409842047888329610, guid: eddcea1b6b3a0fc4a88a93db97b10b28, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 1575097958892395143, guid: eddcea1b6b3a0fc4a88a93db97b10b28, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -51385,6 +52291,50 @@ PrefabInstance:
     - target: {fileID: 2182949349528662852, guid: eddcea1b6b3a0fc4a88a93db97b10b28, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2445635776398008515, guid: eddcea1b6b3a0fc4a88a93db97b10b28, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2445635776398008515, guid: eddcea1b6b3a0fc4a88a93db97b10b28, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2445635776398008515, guid: eddcea1b6b3a0fc4a88a93db97b10b28, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 471280212}
+    - target: {fileID: 2445635776398008515, guid: eddcea1b6b3a0fc4a88a93db97b10b28, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 3381055206703413303}
+    - target: {fileID: 2445635776398008515, guid: eddcea1b6b3a0fc4a88a93db97b10b28, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2445635776398008515, guid: eddcea1b6b3a0fc4a88a93db97b10b28, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: LightVibrate
+      objectReference: {fileID: 0}
+    - target: {fileID: 2445635776398008515, guid: eddcea1b6b3a0fc4a88a93db97b10b28, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: LockButtonCallback
+      objectReference: {fileID: 0}
+    - target: {fileID: 2445635776398008515, guid: eddcea1b6b3a0fc4a88a93db97b10b28, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: HapticFeedbackUI, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2445635776398008515, guid: eddcea1b6b3a0fc4a88a93db97b10b28, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: ShopItemContainerUI, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2445635776398008515, guid: eddcea1b6b3a0fc4a88a93db97b10b28, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 2445635776398008515, guid: eddcea1b6b3a0fc4a88a93db97b10b28, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 2862856680076930379, guid: eddcea1b6b3a0fc4a88a93db97b10b28, type: 3}
       propertyPath: m_AnchorMax.y
@@ -52131,6 +53081,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eddcea1b6b3a0fc4a88a93db97b10b28, type: 3}
+--- !u!114 &3381055206703413303 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: -5195619548991985438, guid: eddcea1b6b3a0fc4a88a93db97b10b28, type: 3}
+  m_PrefabInstance: {fileID: 3381055206703413302}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7c9cf405760d44439b745fc8ef00226, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &3381756466605270266
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -52828,6 +53789,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 471280212}
+        m_TargetAssemblyTypeName: HapticFeedbackUI, Assembly-CSharp
+        m_MethodName: LightVibrate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: StartGame
@@ -52883,7 +53856,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5531740907568565828}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 471280212}
+        m_TargetAssemblyTypeName: HapticFeedbackUI, Assembly-CSharp
+        m_MethodName: LightVibrate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &4282996372273823430
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -52927,7 +53912,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5531740907422801284}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 471280212}
+        m_TargetAssemblyTypeName: HapticFeedbackUI, Assembly-CSharp
+        m_MethodName: LightVibrate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &4282996373438088615
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -52972,6 +53969,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 471280212}
+        m_TargetAssemblyTypeName: HapticFeedbackUI, Assembly-CSharp
+        m_MethodName: LightVibrate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: StartGame
@@ -53028,6 +54037,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 471280212}
+        m_TargetAssemblyTypeName: HapticFeedbackUI, Assembly-CSharp
+        m_MethodName: LightVibrate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: StartGame
@@ -53084,6 +54105,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 471280212}
+        m_TargetAssemblyTypeName: HapticFeedbackUI, Assembly-CSharp
+        m_MethodName: LightVibrate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 1350216646}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: ShowCharacterSelectPanel
@@ -53750,14 +54783,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9044183599609130601, guid: 6fa071d18de56004ab165d56be22a291, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 9044183599609130601, guid: 6fa071d18de56004ab165d56be22a291, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9044183599609130601, guid: 6fa071d18de56004ab165d56be22a291, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044183599609130601, guid: 6fa071d18de56004ab165d56be22a291, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 471280212}
+    - target: {fileID: 9044183599609130601, guid: 6fa071d18de56004ab165d56be22a291, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 639600882}
     - target: {fileID: 9044183599609130601, guid: 6fa071d18de56004ab165d56be22a291, type: 3}
@@ -53765,15 +54806,31 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 9044183599609130601, guid: 6fa071d18de56004ab165d56be22a291, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044183599609130601, guid: 6fa071d18de56004ab165d56be22a291, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: LightVibrate
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044183599609130601, guid: 6fa071d18de56004ab165d56be22a291, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ShowCharacters
       objectReference: {fileID: 0}
     - target: {fileID: 9044183599609130601, guid: 6fa071d18de56004ab165d56be22a291, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: HapticFeedbackUI, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044183599609130601, guid: 6fa071d18de56004ab165d56be22a291, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
       value: CodexManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 9044183599609130601, guid: 6fa071d18de56004ab165d56be22a291, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044183599609130601, guid: 6fa071d18de56004ab165d56be22a291, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -53921,6 +54978,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 471280212}
+        m_TargetAssemblyTypeName: HapticFeedbackUI, Assembly-CSharp
+        m_MethodName: LightVibrate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 1350216646}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: HideCharacterSelectPanel
@@ -53977,6 +55046,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 471280212}
+        m_TargetAssemblyTypeName: HapticFeedbackUI, Assembly-CSharp
+        m_MethodName: LightVibrate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 1350216646}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: ShowConfirmationPanel
@@ -57191,6 +58272,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 471280212}
+        m_TargetAssemblyTypeName: HapticFeedbackUI, Assembly-CSharp
+        m_MethodName: LightVibrate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 617157215}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: PauseButtonCallback
@@ -57966,9 +59059,49 @@ PrefabInstance:
     m_TransformParent: {fileID: 738769410}
     m_Modifications:
     - target: {fileID: 4282996373558818226, guid: 1d13aa44b31005d4c985c8a15c329c03, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4282996373558818226, guid: 1d13aa44b31005d4c985c8a15c329c03, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4282996373558818226, guid: 1d13aa44b31005d4c985c8a15c329c03, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
+      objectReference: {fileID: 471280212}
+    - target: {fileID: 4282996373558818226, guid: 1d13aa44b31005d4c985c8a15c329c03, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
       objectReference: {fileID: 617157215}
+    - target: {fileID: 4282996373558818226, guid: 1d13aa44b31005d4c985c8a15c329c03, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4282996373558818226, guid: 1d13aa44b31005d4c985c8a15c329c03, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: LightVibrate
+      objectReference: {fileID: 0}
+    - target: {fileID: 4282996373558818226, guid: 1d13aa44b31005d4c985c8a15c329c03, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: StartGame
+      objectReference: {fileID: 0}
+    - target: {fileID: 4282996373558818226, guid: 1d13aa44b31005d4c985c8a15c329c03, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: HapticFeedbackUI, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4282996373558818226, guid: 1d13aa44b31005d4c985c8a15c329c03, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: GameManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4282996373558818226, guid: 1d13aa44b31005d4c985c8a15c329c03, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 4282996373558818226, guid: 1d13aa44b31005d4c985c8a15c329c03, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 4750023946203428376, guid: 1d13aa44b31005d4c985c8a15c329c03, type: 3}
       propertyPath: m_Name
       value: Start Button
@@ -59120,4 +60253,5 @@ SceneRoots:
   - {fileID: 1557437623}
   - {fileID: 1877771994}
   - {fileID: 1917116788}
+  - {fileID: 1718953529}
   - {fileID: 401419032}

@@ -29,6 +29,21 @@ public abstract class Weapon : MonoBehaviour, IStats
 
     protected Enemy closestEnemy;
     protected Vector2 targetUpVector;
+    protected AudioSource audioSource;
+
+    private void Awake()
+    {
+        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.playOnAwake = false;
+        audioSource.clip = WeaponData.AttackSound;
+    }
+
+    protected void PlaySFX()
+    {
+        audioSource.pitch = Random.Range(0.95f, 1.05f);
+        audioSource.Play();
+
+    }
 
     protected Enemy GetClosestEnemy()
     {

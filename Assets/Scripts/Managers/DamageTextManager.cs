@@ -33,7 +33,12 @@ public class DamageTextManager : MonoBehaviour
 
     private void ActionOnGet(DamageText _damageText) =>  _damageText.gameObject.SetActive(true);
 
-    private void ActionOnRelease(DamageText _damageText) =>  _damageText.gameObject.SetActive(false);
+    private void ActionOnRelease(DamageText _damageText)
+    {
+        if(_damageText.gameObject != null)
+            _damageText.gameObject.SetActive(false);
+    }
+
     private void ActionOnDestroy(DamageText _damageText) => Destroy(_damageText.gameObject);
 
     private void EnemyHitCallback(int _damage, Vector2 enemyPos, bool _isCriticalHit)

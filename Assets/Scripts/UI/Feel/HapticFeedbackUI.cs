@@ -9,16 +9,17 @@ public class HapticFeedbackUI : MonoBehaviour
     private void Awake() 
     {
         RangedWeapon.OnBulletFired += LightVibrate;
-        CharacterHealth.OnCharacterDeath += MediumVibrate;
+        CharacterHealth.OnCharacterDeath += HighVibrate;
+
     }
 
     private void OnDestroy() 
     {
         RangedWeapon.OnBulletFired -= LightVibrate;
-        CharacterHealth.OnCharacterDeath -= MediumVibrate;
+        CharacterHealth.OnCharacterDeath -= HighVibrate;
     }
 
-    private void LightVibrate() 
+    public void LightVibrate() 
     {
         if(!canVibrate)
            return;
@@ -26,11 +27,20 @@ public class HapticFeedbackUI : MonoBehaviour
         CandyCoded.HapticFeedback.HapticFeedback.LightFeedback();
     }
 
-    private void MediumVibrate() 
+    public void MediumVibrate() 
     {
         if(!canVibrate)
            return;
 
         CandyCoded.HapticFeedback.HapticFeedback.MediumFeedback();
+    }
+
+    public void HighVibrate()
+    {
+        if (!canVibrate)
+            return;
+
+        CandyCoded.HapticFeedback.HapticFeedback.HeavyFeedback();
+
     }
 }

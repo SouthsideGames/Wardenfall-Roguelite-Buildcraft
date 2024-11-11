@@ -62,6 +62,8 @@ public class RangedWeapon : Weapon
 
         Bullet _bullet = bulletPool.Get();
         _bullet.Shoot(damage, transform.up, isCriticalHit );
+
+        PlaySFX();
     }
 
     #region POOLING
