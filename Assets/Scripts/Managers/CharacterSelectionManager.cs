@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Tabsil.Sijil;
+using SouthsideGames.SaveManager;
 using System;
 
 public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
@@ -93,19 +93,19 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
         for (int i = 0; i < characterDatas.Length; i++)
             characterUnlockStates.Add(i == 0);
 
-        if(Sijil.TryLoad(this, characterUnlockedStatesKey, out object characterUnlockedStatesObject))
+        if(SouthsideGames.SaveManager.SaveManager.TryLoad(this, characterUnlockedStatesKey, out object characterUnlockedStatesObject))
             characterUnlockStates = (List<bool>)characterUnlockedStatesObject;
 
         //load the last character we played with
-        if(Sijil.TryLoad(this, lastSelectedCharacterKey, out object lastSelectedCharacterStatesObject))
-           lastSelectedCharacterIndex = (int)lastSelectedCharacterStatesObject;
+        if(SouthsideGames.SaveManager.SaveManager.TryLoad(this, lastSelectedCharacterKey, out object lastSelectedCharacterStatesObject))
+            lastSelectedCharacterIndex = (int)lastSelectedCharacterStatesObject;
 
         Initialize();
     }
 
     public void Save()
     {
-        Sijil.Save(this, characterUnlockedStatesKey, characterUnlockStates);
-        Sijil.Save(this, lastSelectedCharacterKey, lastSelectedCharacterIndex);
+        SouthsideGames.SaveManager.SaveManager.Save(this, characterUnlockedStatesKey, characterUnlockStates);
+        SouthsideGames.SaveManager.SaveManager.Save(this, lastSelectedCharacterKey, lastSelectedCharacterIndex);
     }
 }

@@ -114,8 +114,16 @@ public class UIManager : MonoBehaviour, IGameStateListener
         chestCounterText.text = StatisticsManager.Instance.CurrentChestCollected.ToString();
     }
 
-    private void PauseGameCallback() => pausePanel.SetActive(true);
-    private void ResumeGameCallback() =>  pausePanel.SetActive(false);
+    private void PauseGameCallback()
+    {
+        AudioManager.Instance.DecreaseMusicVolume();
+        pausePanel.SetActive(true);
+    }
+    private void ResumeGameCallback()
+    {
+        AudioManager.Instance.ResetMusicVolume();   
+        pausePanel.SetActive(false);
+    }
     public void ShowConfirmationPanel() =>   confirmationPanel.SetActive(true);
     public void HideConfirmationPanel() => confirmationPanel.SetActive(false);
     public void ShowCharacterSelectPanel() => characterSelectPanel.SetActive(true);

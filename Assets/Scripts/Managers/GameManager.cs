@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviour
             .OfType<IGameStateListener>();   
 
         foreach(IGameStateListener gameStateListener in gameStateListeners) 
-          gameStateListener.GameStateChangedCallback(_gameState);
+            gameStateListener.GameStateChangedCallback(_gameState);
 
     }
 

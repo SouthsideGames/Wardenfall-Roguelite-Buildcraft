@@ -1,7 +1,7 @@
 using System;
 using NaughtyAttributes;
 using UnityEngine;
-using Tabsil.Sijil;
+using SouthsideGames.SaveManager;
 
 public class CurrencyManager : MonoBehaviour, IWantToBeSaved
 {
@@ -77,15 +77,15 @@ public class CurrencyManager : MonoBehaviour, IWantToBeSaved
 
     public void Load()
     {
-        if(Sijil.TryLoad(this, premiumCurrencyKey, out object premiumCurrencyValue))
-           AdjustPremiumCurrency((int)premiumCurrencyValue, false);
+        if(SaveManager.TryLoad(this, premiumCurrencyKey, out object premiumCurrencyValue))
+            AdjustPremiumCurrency((int)premiumCurrencyValue, false);
         else
             AdjustPremiumCurrency(100, false);
     }
 
     public void Save()
     {
-        Sijil.Save(this, premiumCurrencyKey, PremiumCurrency);
+        SaveManager.Save(this, premiumCurrencyKey, PremiumCurrency);
     }
 
     public bool HasEnoughCurrency(int _amount) => Currency >= _amount;

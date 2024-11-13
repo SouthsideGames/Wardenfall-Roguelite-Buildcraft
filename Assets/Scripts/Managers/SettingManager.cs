@@ -4,17 +4,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;   
 using TMPro;
-using Tabsil.Sijil;
+using SouthsideGames.SaveManager;
 using UnityEngine.Networking;
 
 public class SettingManager : MonoBehaviour, IWantToBeSaved
 {
     public static Action<bool> onSFXStateChanged;
     public static Action<bool> onMusicStateChanged;
+    public static Action<bool> onVibrateStateChanged;
 
     [Header("ELEMENTS:")]
     [SerializeField] private Button sfxButton;
     [SerializeField] private Button musicButton;
+    [SerializeField] private Button vibrateButton;
     [SerializeField] private Button privacyPolicyButton;
     [SerializeField] private Button askButton;
     [SerializeField] private Button creditsButton;
@@ -28,9 +30,11 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
 
     private bool sfxState;
     private bool musicState;
+    private bool vibrateState;
 
     private const string sfxKey = "SFX";
     private const string musicKey = "Music";
+    private const string vibrateKey = "Vibrate";
 
     private void Awake() 
     {
@@ -39,6 +43,9 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
 
         musicButton.onClick.RemoveAllListeners();
         musicButton.onClick.AddListener(MusicButtonCallback);    
+        
+        vibrateButton.onClick.RemoveAllListeners();
+        vibrateButton.onClick.AddListener(VibrateButtonCallback);    
 
         privacyPolicyButton.onClick.RemoveAllListeners();
         privacyPolicyButton.onClick.AddListener(PrivacyPolicyButtonCallback);
@@ -53,14 +60,11 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
     private void Start() 
     {
         HideCreditsPanel();
+        onSFXStateChanged?.Invoke(sfxState);
+        onMusicStateChanged?.Invoke(musicState);    
+        onVibrateStateChanged?.Invoke(vibrateState);
     }
 
-    private void CreditsButtonCallback()
-    {
-        creditsPanel.SetActive(true);
-    }
-
-    public void HideCreditsPanel() => creditsPanel.SetActive(false);
     private void AskButtonCallback()
     {
         string email = "southsidegames2021@gmail.com";
@@ -70,7 +74,6 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
         Application.OpenURL("mailto:" + email + "?subject=" + subject + "&body=" + body);
     }
 
-    private string EscapeURL(string _s) => UnityWebRequest.EscapeURL(_s).Replace("+", "%20");
     private void SFXButtonCallback()
     {
         sfxState = !sfxState;
@@ -96,6 +99,19 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
         onMusicStateChanged?.Invoke(musicState);    
     }
 
+    private void VibrateButtonCallback()
+    {
+        vibrateState = !vibrateState;
+
+        UpdateVibrateVisuals();
+
+        Save();
+
+        //Trigger an action
+        onVibrateStateChanged?.Invoke(vibrateState);
+    }
+
+
     private void UpdateSFXVisuals()
     {
         if(sfxState)
@@ -112,7 +128,7 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
 
     private void UpdateMusicVisuals()
     {
-        if(sfxState)
+        if(musicState)
         {
             musicButton.image.color = onColor;
             musicButton.GetComponentInChildren<TextMeshProUGUI>().text = "ON";
@@ -124,6 +140,23 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
         }
     }
 
+    private void UpdateVibrateVisuals()
+    {
+        if(vibrateState)
+        {
+            vibrateButton.image.color = onColor;
+            vibrateButton.GetComponentInChildren<TextMeshProUGUI>().text = "ON";
+        }
+        else 
+        {
+            vibrateButton.image.color = offColor;
+            vibrateButton.GetComponentInChildren<TextMeshProUGUI>().text = "OFF";
+        }
+    }
+
+    private void CreditsButtonCallback() => creditsPanel.SetActive(true);
+    public void HideCreditsPanel() => creditsPanel.SetActive(false);
+    private string EscapeURL(string _s) => UnityWebRequest.EscapeURL(_s).Replace("+", "%20");
     private void PrivacyPolicyButtonCallback() => Application.OpenURL(privacyPolicyURL);
 
     public void Load()
@@ -131,11 +164,11 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
         sfxState = true;
         musicState = true;
 
-        if(Sijil.TryLoad(this, sfxKey, out object sfxStateObject))
-           sfxState = (bool)sfxStateObject;
+        if(SaveManager.TryLoad(this, sfxKey, out object sfxStateObject))
+            sfxState = (bool)sfxStateObject;
 
-        if(Sijil.TryLoad(this, musicKey, out object musicStateObject))
-           musicState = (bool)musicStateObject;
+        if(SaveManager.TryLoad(this, musicKey, out object musicStateObject))
+            musicState = (bool)musicStateObject;
 
         UpdateMusicVisuals();
         UpdateSFXVisuals();
@@ -144,7 +177,7 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
 
     public void Save()
     {
-        Sijil.Save(this, sfxKey, sfxState);
-        Sijil.Save(this, musicKey, musicState);
+        SaveManager.Save(this, sfxKey, sfxState);
+        SaveManager.Save(this, musicKey, musicState);
     }
 }

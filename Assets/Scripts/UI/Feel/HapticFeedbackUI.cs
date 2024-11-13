@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class HapticFeedbackUI : MonoBehaviour
 {
-    public bool canVibrate;
+    public bool canVibrate {get; private set;}  
 
     private void Awake() 
     {
+        SettingManager.onVibrateStateChanged += VibrateStateChangedCallback;
+
         RangedWeapon.OnBulletFired += LightVibrate;
         CharacterHealth.OnCharacterDeath += HighVibrate;
 
@@ -15,6 +17,8 @@ public class HapticFeedbackUI : MonoBehaviour
 
     private void OnDestroy() 
     {
+        SettingManager.onVibrateStateChanged -= VibrateStateChangedCallback;
+
         RangedWeapon.OnBulletFired -= LightVibrate;
         CharacterHealth.OnCharacterDeath -= HighVibrate;
     }
@@ -22,9 +26,17 @@ public class HapticFeedbackUI : MonoBehaviour
     public void LightVibrate() 
     {
         if(!canVibrate)
-           return;
+        {
+            Debug.Log("did not play");
+            return;
+        }
+        else
+        {
+            Debug.Log("did play");
+            CandyCoded.HapticFeedback.HapticFeedback.LightFeedback();
+        }
 
-        CandyCoded.HapticFeedback.HapticFeedback.LightFeedback();
+        
     }
 
     public void MediumVibrate() 
@@ -43,4 +55,6 @@ public class HapticFeedbackUI : MonoBehaviour
         CandyCoded.HapticFeedback.HapticFeedback.HeavyFeedback();
 
     }
+
+    private void VibrateStateChangedCallback(bool _vibrateState) => canVibrate = !_vibrateState;
 }
