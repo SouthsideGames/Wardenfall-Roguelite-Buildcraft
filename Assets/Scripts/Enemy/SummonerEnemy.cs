@@ -13,8 +13,10 @@ public class SummonerEnemy : Enemy
     private float summonTimer = 0f; // Timer to track cooldown between summons
     private List<GameObject> activeSummonedEnemies = new List<GameObject>(); // List of currently active summoned enemies
 
-    void Update()
+    protected override void Update()
     {
+        base.Update();  
+        
         if (!hasSpawned || !_sr.enabled)
             return;
 

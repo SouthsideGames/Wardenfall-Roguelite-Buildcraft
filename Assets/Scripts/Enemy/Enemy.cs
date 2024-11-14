@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(EnemyStatus))]
 public abstract class Enemy : MonoBehaviour
 {
     [Header("ACTIONS:")]
@@ -47,6 +48,7 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] private bool showGizmos;
 
     private EnemyStatus status;
+    private Transform playerTransform;
 
     // Start is called before the first frame update
     protected virtual void Start()
@@ -62,9 +64,23 @@ public abstract class Enemy : MonoBehaviour
             Debug.LogWarning("No player found");
             Destroy(gameObject);
         }
+        else
+            playerTransform = character.transform; 
 
         Spawn();
 
+    }
+
+    protected virtual void Update()
+    {
+        if (playerTransform != null)
+        {
+            
+            if (playerTransform.position.x > transform.position.x)
+                _sr.flipX = true; 
+            else
+                _sr.flipX = false;
+        }
     }
 
     // Update is called once per frame

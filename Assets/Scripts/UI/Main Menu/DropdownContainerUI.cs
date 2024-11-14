@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DropdownMenuUI : MonoBehaviour
+public class DropdownContainerUI : MonoBehaviour
 {
     [Header("ELEMENTS:")]
     [SerializeField] private Vector2 spacing;
@@ -26,7 +26,7 @@ public class DropdownMenuUI : MonoBehaviour
     [SerializeField] private float collapseFadeDuration;
 
     private Button mainButton;
-    private DropdownMenuItemUI[] menuItems;
+    private DropdownContainerItemUI[] menuItems;
     private bool isExpanded = false;
 
     private Vector2 buttonPosition;
@@ -35,10 +35,10 @@ public class DropdownMenuUI : MonoBehaviour
     private void Start() 
     {
         itemsCount = transform.childCount - 1;
-        menuItems = new DropdownMenuItemUI[itemsCount];
+        menuItems = new DropdownContainerItemUI[itemsCount];
         for(int i = 0; i < itemsCount; i++)
         {
-            menuItems[i] = transform.GetChild(i + 1).GetComponent<DropdownMenuItemUI>();
+            menuItems[i] = transform.GetChild(i + 1).GetComponent<DropdownContainerItemUI>();
         }    
 
         mainButton = transform.GetChild(0).GetComponent<Button>();
@@ -68,12 +68,8 @@ public class DropdownMenuUI : MonoBehaviour
             for(int i = 0; i < itemsCount; i++)
             {
                 menuItems[i].gameObject.SetActive(true);
-<<<<<<<< HEAD:Assets/Scripts/UI/Main Menu/DropdownContainerUI.cs
                 menuItems[i].trans.LeanMove(buttonPosition + spacing * (i + 1), expandDuration).setEase(expandType);
           
-========
-                menuItems[i].trans.position = buttonPosition + spacing * (i + 1);    
->>>>>>>> parent of 61e3b24 (11/10):Assets/Scripts/UI/DropdownMenuUI.cs
             }
         }
         else

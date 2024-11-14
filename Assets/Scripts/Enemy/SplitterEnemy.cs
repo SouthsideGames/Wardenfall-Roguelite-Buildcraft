@@ -61,9 +61,11 @@ public class SplitterEnemy : Enemy
         Destroy(gameObject);
     }
 
-    private void Update()
+    protected override void Update()
     {
-         if (!CanAttack())
+        base.Update();  
+
+        if (!CanAttack())
             return;
 
         if(attackTimer >= attackDelay)    

@@ -17,8 +17,10 @@ public class TeleportEnemy : RangedEnemy
         nextTeleportTime = Time.time;
     }
 
-    void Update()
+    protected override void Update()
     {
+        base.Update();  
+        
         if (!CanAttack())
             return;
 

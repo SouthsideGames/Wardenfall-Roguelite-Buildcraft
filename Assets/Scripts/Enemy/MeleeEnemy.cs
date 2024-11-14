@@ -18,8 +18,10 @@ public class MeleeEnemy : Enemy
 
     }
 
-    void Update()
+    protected override void Update()
     {
+        base.Update();  
+        
         if (!CanAttack())
             return;
 

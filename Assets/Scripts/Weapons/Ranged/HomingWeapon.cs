@@ -6,7 +6,6 @@ public class HomingWeapon : RangedWeapon
 {
     [Header("HOMING SETTINGS")]
     [SerializeField] private float homingSpeed = 5.0f;
-    [SerializeField] private float maxHomingRange = 10.0f;
 
     protected override void Shoot()
     {

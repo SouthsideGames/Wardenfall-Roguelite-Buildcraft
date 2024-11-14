@@ -8,8 +8,10 @@ public class ExplodeEnemy : Enemy
     [SerializeField] private ParticleSystem explosionEffect; // Particle effect for explosion
     private bool isExploding = false; // Flag to prevent multiple explosions
 
-    void Update()
+    protected override void Update()
     {
+        base.Update();  
+        
         if (!hasSpawned || !CanAttack() || isExploding)
             return;
 

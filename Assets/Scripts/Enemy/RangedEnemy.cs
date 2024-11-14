@@ -19,8 +19,10 @@ public class RangedEnemy : Enemy
         attack.StorePlayer(character);
     }
 
-    void Update()
+    protected override void Update()
     {
+        base.Update();  
+
         if (!CanAttack())
             return;
 

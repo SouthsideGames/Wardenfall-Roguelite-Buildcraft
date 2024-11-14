@@ -7,6 +7,7 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterWeapon))]
 [RequireComponent(typeof(CharacterObjects))]
 [RequireComponent(typeof(CharacterStats))]
+[RequireComponent(typeof(CharacterAnimator))]
 public class CharacterManager : MonoBehaviour
 {
     public static CharacterManager Instance;
@@ -14,6 +15,7 @@ public class CharacterManager : MonoBehaviour
     [Header("COMPONENTS:")]
     private CharacterHealth characterHealth;
     private CharacterLevel characterLevel;
+    private CharacterAnimator characterAnim;
     public CharacterWeapon characterWeapon { get; private set; }
     [SerializeField] private CircleCollider2D _col;
     [SerializeField] private SpriteRenderer characterRenderer;
@@ -29,6 +31,7 @@ public class CharacterManager : MonoBehaviour
         characterHealth = GetComponent<CharacterHealth>();  
         characterLevel = GetComponent<CharacterLevel>();
         characterWeapon = GetComponent<CharacterWeapon>();
+        characterAnim = GetComponent<CharacterAnimator>();  
 
         CharacterSelectionManager.OnCharacterSelected += CharacterSelectionCallback;
     }

@@ -9,15 +9,11 @@ public class SoundEffectUI : MonoBehaviour
 
     private Button button;
 
-    private void Awake() 
-    {
-        button = GetComponent<Button>();
-    }
-
+    private void Awake() => button = GetComponent<Button>();
+    
     public void PlaySFX()
     {
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(() => AudioManager.Instance.PlaySFX(clipToPlay));
-    
     }
 }
