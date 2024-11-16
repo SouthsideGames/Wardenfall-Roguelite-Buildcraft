@@ -15,9 +15,9 @@ public abstract class Enemy : MonoBehaviour
     [Header("ELEMENTS:")]
     protected CharacterManager character;
     protected EnemyMovement movement;
-    [SerializeField] protected SpriteRenderer _sr;
+    [SerializeField] protected SpriteRenderer _spriteRenderer;
     [SerializeField] private SpriteRenderer spawnIndicator;
-    [SerializeField] private Collider2D _col;
+    [SerializeField] private Collider2D _collider;
     protected bool hasSpawned = false;
 
     [Header("LEVELS:")]
@@ -78,16 +78,16 @@ public abstract class Enemy : MonoBehaviour
         {
             
             if (playerTransform.position.x > transform.position.x)
-                _sr.flipX = true; 
+                _spriteRenderer.flipX = true; 
             else
-                _sr.flipX = false;
+                _spriteRenderer.flipX = false;
         }
     }
 
     // Update is called once per frame
     protected bool CanAttack()
     {
-        return _sr.enabled;
+        return _spriteRenderer.enabled;
     }
 
     protected virtual void Attack()
@@ -171,7 +171,7 @@ public abstract class Enemy : MonoBehaviour
 
     private void SetRenderersVisibility(bool visibility)
     {
-        _sr.enabled = visibility;
+        _spriteRenderer.enabled = visibility;
         spawnIndicator.enabled = !visibility;
     }
 
@@ -179,7 +179,7 @@ public abstract class Enemy : MonoBehaviour
     {
         SetRenderersVisibility(true);
         hasSpawned = true;
-        _col.enabled = true;
+        _collider.enabled = true;
 
         if(movement != null)
             movement.StorePlayer(character);

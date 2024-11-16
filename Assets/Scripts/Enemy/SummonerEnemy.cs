@@ -17,7 +17,7 @@ public class SummonerEnemy : Enemy
     {
         base.Update();  
         
-        if (!hasSpawned || !_sr.enabled)
+        if (!hasSpawned || !_spriteRenderer.enabled)
             return;
 
         // Handle summoning logic

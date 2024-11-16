@@ -53,7 +53,12 @@ public class RangedEnemyAttack : MonoBehaviour
     {
         //bullet direction
         Vector2 direction = (player.GetColliderCenter() - (Vector2)firePoint.position).normalized;
+        InstantShoot(direction);
+ 
+    }
 
+    public void InstantShoot(Vector2 direction)
+    {
         EnemyBullet bullet = bulletPool.Get();
         bullet.Shoot(damage, direction);
     }
