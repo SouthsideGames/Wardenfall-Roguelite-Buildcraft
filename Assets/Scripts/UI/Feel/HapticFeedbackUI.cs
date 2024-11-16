@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class HapticFeedbackUI : MonoBehaviour
 {
-    public bool canVibrate {get; private set;}  
+    private bool canVibrate;
 
     private void Awake() 
     {
@@ -26,17 +26,9 @@ public class HapticFeedbackUI : MonoBehaviour
     public void LightVibrate() 
     {
         if(!canVibrate)
-        {
-            Debug.Log("did not play");
             return;
-        }
         else
-        {
-            Debug.Log("did play");
             CandyCoded.HapticFeedback.HapticFeedback.LightFeedback();
-        }
-
-        
     }
 
     public void MediumVibrate() 
@@ -56,5 +48,5 @@ public class HapticFeedbackUI : MonoBehaviour
 
     }
 
-    private void VibrateStateChangedCallback(bool _vibrateState) => canVibrate = !_vibrateState;
+    private void VibrateStateChangedCallback(bool _vibrateState) => canVibrate = _vibrateState;
 }

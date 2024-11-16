@@ -27270,22 +27270,26 @@ MonoBehaviour:
   wave:
   - name: Wave 00
     segments:
-    - spawnPercentage: {x: 0, y: 78.614395}
+    - spawnPercentage: {x: 33, y: 100}
       spawnFrequency: 1
-      prefab: {fileID: 5829535922412643463, guid: 52d8d00f7e20f0546bbdd77942577be7, type: 3}
+      prefab: {fileID: 5829535922412643463, guid: ca04ad0947fbabe4a97d8e5b64c01f4b, type: 3}
+      spawnOnce: 1
   - name: Wave 01
     segments:
     - spawnPercentage: {x: 0, y: 61.185463}
       spawnFrequency: 5
       prefab: {fileID: 796357530644533229, guid: dce6837828728fd4e9b6e1ef8619d092, type: 3}
+      spawnOnce: 0
   - name: Wave 02
     segments:
     - spawnPercentage: {x: 0, y: 30.592731}
       spawnFrequency: 1
       prefab: {fileID: 5829535922412643463, guid: c88aff18d97f9d54d99275c4f18929c6, type: 3}
+      spawnOnce: 0
     - spawnPercentage: {x: 31.86743, y: 71.38304}
       spawnFrequency: 5
       prefab: {fileID: 796357530644533229, guid: dce6837828728fd4e9b6e1ef8619d092, type: 3}
+      spawnOnce: 0
 --- !u!114 &973259118
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43325,6 +43329,18 @@ MonoBehaviour:
       - m_Target: {fileID: 471280212}
         m_TargetAssemblyTypeName: HapticFeedbackUI, Assembly-CSharp
         m_MethodName: LightVibrate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1350216646}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: HideStatisticsPanel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

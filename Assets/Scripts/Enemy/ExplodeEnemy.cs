@@ -3,10 +3,10 @@ using UnityEngine;
 public class ExplodeEnemy : Enemy
 {
     [Header("EXPLODER SPECIFICS:")]
-    [SerializeField] private float explosionRadius = 3f; // Radius of the explosion
-    [SerializeField] private int explosionDamage = 10; // Damage dealt by the explosion
-    [SerializeField] private ParticleSystem explosionEffect; // Particle effect for explosion
-    private bool isExploding = false; // Flag to prevent multiple explosions
+    [SerializeField] private float explosionRadius = 3f; 
+    [SerializeField] private int explosionDamage = 10; 
+    [SerializeField] private ParticleSystem explosionEffect; 
+    private bool isExploding = false; 
 
     protected override void Update()
     {

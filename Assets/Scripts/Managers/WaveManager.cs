@@ -67,6 +67,9 @@ public class WaveManager : MonoBehaviour, IGameStateListener
             {
                 Instantiate(segment.prefab, GetSpawnPosition(), Quaternion.identity, transform);
                 localCounters[i]++;
+
+                if(segment.spawnOnce)
+                   localCounters[i] += Mathf.Infinity;
             }
         }
 
@@ -127,7 +130,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         localCounters.Clear();
 
         foreach(WaveSegment segment in wave[_waveIndex ].segments)
-            localCounters.Add(1);
+            localCounters.Add(0);
 
         timer = 0;
         hasWaveStarted = true;
@@ -162,4 +165,6 @@ public struct WaveSegment
     public float spawnFrequency;
     [Tooltip("What will be spawned in this wave?")]
     public GameObject prefab;
+    [Tooltip("Spawn this prefab once?")]
+    public bool spawnOnce;
 }

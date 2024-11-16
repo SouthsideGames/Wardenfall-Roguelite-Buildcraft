@@ -19,8 +19,10 @@ public class BerserkerEnemy : Enemy
         attackDelay = 1f / attackRate;
     }
 
-    void Update()
+    protected override void Update()
     {
+        base.Update();
+        
         if (!CanAttack())
             return;
 

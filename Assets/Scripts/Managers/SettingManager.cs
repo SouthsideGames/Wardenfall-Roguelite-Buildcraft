@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;   
 using TMPro;
@@ -9,6 +7,8 @@ using UnityEngine.Networking;
 
 public class SettingManager : MonoBehaviour, IWantToBeSaved
 {
+    public static SettingManager Instance;
+
     public static Action<bool> onSFXStateChanged;
     public static Action<bool> onMusicStateChanged;
     public static Action<bool> onVibrateStateChanged;
@@ -38,6 +38,11 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
 
     private void Awake() 
     {
+        if(Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
+
         sfxButton.onClick.RemoveAllListeners();
         sfxButton.onClick.AddListener(SFXButtonCallback);    
 
@@ -60,6 +65,7 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
     private void Start() 
     {
         HideCreditsPanel();
+
         onSFXStateChanged?.Invoke(sfxState);
         onMusicStateChanged?.Invoke(musicState);    
         onVibrateStateChanged?.Invoke(vibrateState);
@@ -170,8 +176,12 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
         if(SaveManager.TryLoad(this, musicKey, out object musicStateObject))
             musicState = (bool)musicStateObject;
 
+        if(SaveManager.TryLoad(this, vibrateKey, out object vibrateStateObject))
+            vibrateState = (bool)vibrateStateObject;
+
         UpdateMusicVisuals();
         UpdateSFXVisuals();
+        UpdateVibrateVisuals();
 
     }
 
@@ -179,5 +189,6 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
     {
         SaveManager.Save(this, sfxKey, sfxState);
         SaveManager.Save(this, musicKey, musicState);
+        SaveManager.Save(this, vibrateKey, vibrateState);
     }
 }
