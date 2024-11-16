@@ -39,6 +39,14 @@ public enum Stat
     
 }
 
+public enum BossState
+{
+    None,
+    Idle,
+    Moving,
+    Attacking
+}
+
 public static class Enums
 {
     public static string FormatStatName(Stat _stat)

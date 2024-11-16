@@ -7,9 +7,10 @@ using UnityEngine;
 public abstract class Enemy : MonoBehaviour
 {
     [Header("ACTIONS:")]
-    public static Action<int, Vector2, bool> onDamageTaken;
+    public static Action<int, Vector2, bool> OnDamageTaken;
     public static Action<Vector2, int> OnDeath;
     public static Action OnEnemyKilled;
+    protected Action OnSpawnCompleted;
 
     [Header("ELEMENTS:")]
     protected CharacterManager character;
@@ -30,7 +31,7 @@ public abstract class Enemy : MonoBehaviour
 
     [Header("HEALTH:")]
     public int maxHealth;
-    public int health;
+    [HideInInspector] public int health;
     [HideInInspector] public bool isInvincible = false;
 
     [Header("SPAWN VALUES:")]
@@ -89,77 +90,6 @@ public abstract class Enemy : MonoBehaviour
         return _sr.enabled;
     }
 
-    public virtual void TakeDamage(int _damage, bool _isCriticalHit)
-    {
-    
-        if (isInvincible)
-            return;
-
-        int realDamage = Mathf.Min(_damage, health);
-        health -= realDamage;
-
-        onDamageTaken?.Invoke(_damage, transform.position, _isCriticalHit);
-
-
-        if (health <= 0)
-            Die();
-
-    }
-
-    public void ApplyLifeDrain(float duration)
-    {
-        status.ApplyLifeDrain(duration);
-    }
-
-    protected virtual void Die()
-    {
-        OnDeath?.Invoke(transform.position, level);
-        OnEnemyKilled?.Invoke();
-        DieAfterWave();
-    }
-
-    public void DieAfterWave()
-    {
-        deathParticles.transform.SetParent(null);
-        deathParticles.Play();
-
-        Destroy(gameObject);
-    }
-
-    private void OnDrawGizmos()
-    {
-        if (!showGizmos)
-            return;
-
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, playerDetectionRadius);
-    }
-
-    private void Spawn()
-    {
-        SetRenderersVisibility(false);
-
-        Vector3 targetScale = spawnIndicator.transform.localScale * spawnSize;
-        LeanTween.scale(spawnIndicator.gameObject, targetScale, spawnTime)
-            .setLoopPingPong(numberOfLoops)
-            .setOnComplete(ShowEnemy);
-
-    }
-
-    protected virtual void ShowEnemy()
-    {
-        SetRenderersVisibility(true);
-        hasSpawned = true;
-        _col.enabled = true;
-        movement.StorePlayer(character);
-    }
-
-    private void SetRenderersVisibility(bool visibility)
-    {
-        _sr.enabled = visibility;
-        spawnIndicator.enabled = !visibility;
-    }
-
     protected virtual void Attack()
     {
         isCriticalHit = false;
@@ -191,6 +121,79 @@ public abstract class Enemy : MonoBehaviour
 
     }
 
-   
+    public virtual void TakeDamage(int _damage, bool _isCriticalHit)
+    {
+    
+        if (isInvincible)
+            return;
+
+        int realDamage = Mathf.Min(_damage, health);
+        health -= realDamage;
+
+        OnDamageTaken?.Invoke(_damage, transform.position, _isCriticalHit);
+
+
+        if (health <= 0)
+            Die();
+
+    }
+
+    public void ApplyLifeDrain(float duration)
+    {
+        status.ApplyLifeDrain(duration);
+    }
+
+    protected virtual void Die()
+    {
+        OnDeath?.Invoke(transform.position, level);
+        OnEnemyKilled?.Invoke();
+        DieAfterWave();
+    }
+
+    public void DieAfterWave()
+    {
+        deathParticles.transform.SetParent(null);
+        deathParticles.Play();
+
+        Destroy(gameObject);
+    }
+
+    private void Spawn()
+    {
+        SetRenderersVisibility(false);
+
+        Vector3 targetScale = spawnIndicator.transform.localScale * spawnSize;
+        LeanTween.scale(spawnIndicator.gameObject, targetScale, spawnTime)
+            .setLoopPingPong(numberOfLoops)
+            .setOnComplete(SpawnCompleted);
+
+    }
+
+    private void SetRenderersVisibility(bool visibility)
+    {
+        _sr.enabled = visibility;
+        spawnIndicator.enabled = !visibility;
+    }
+
+    protected virtual void SpawnCompleted()
+    {
+        SetRenderersVisibility(true);
+        hasSpawned = true;
+        _col.enabled = true;
+
+        if(movement != null)
+            movement.StorePlayer(character);
+
+        OnSpawnCompleted?.Invoke();
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (!showGizmos)
+            return;
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, playerDetectionRadius);
+    }
 
 }

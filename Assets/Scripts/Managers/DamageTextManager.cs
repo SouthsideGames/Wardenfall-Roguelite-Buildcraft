@@ -12,13 +12,13 @@ public class DamageTextManager : MonoBehaviour
 
     private void Awake()
     {
-        Enemy.onDamageTaken += EnemyHitCallback;
+        Enemy.OnDamageTaken += EnemyHitCallback;
         CharacterHealth.OnDodge += CharacterDodgeCallback;
     } 
 
     private void OnDestroy()
     {
-        Enemy.onDamageTaken -= EnemyHitCallback;
+        Enemy.OnDamageTaken -= EnemyHitCallback;
         CharacterHealth.OnDodge -= CharacterDodgeCallback;
     }
    

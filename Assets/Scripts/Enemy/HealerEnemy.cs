@@ -12,9 +12,9 @@ public class HealerEnemy : Enemy
 
     private List<Enemy> tetheredEnemies = new List<Enemy>(); // List of tethered enemies
 
-    protected override void ShowEnemy()
+    protected override void SpawnCompleted()
     {
-        base.ShowEnemy();
+        base.SpawnCompleted();
 
         TetherRandomEnemies();
     }

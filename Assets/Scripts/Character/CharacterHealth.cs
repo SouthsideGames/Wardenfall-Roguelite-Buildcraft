@@ -31,12 +31,12 @@ public class CharacterHealth : MonoBehaviour, IStats
 
     private void Awake()
     {
-        Enemy.onDamageTaken += EnemyDamageCallback;
+        Enemy.OnDamageTaken += EnemyDamageCallback;
     }
 
     private void OnDestroy() 
     {
-        Enemy.onDamageTaken -= EnemyDamageCallback;
+        Enemy.OnDamageTaken -= EnemyDamageCallback;
     }
 
     private void Update()

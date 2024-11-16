@@ -344,7 +344,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.427451, g: 0.4156863, b: 0.5568628, a: 1}
+      maxColor: {r: 0.57254905, g: 0.9960785, b: 0.74509805, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -408,8 +408,8 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.2
-      minScalar: 0.05
+      scalar: 1
+      minScalar: 0.5
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -5501,7 +5501,7 @@ MonoBehaviour:
   level: 0
   damage: 0
   playerDetectionRadius: 0
-  maxHealth: 0
+  maxHealth: 1500
   health: 0
   isInvincible: 0
   spawnSize: 1.2
@@ -5510,6 +5510,10 @@ MonoBehaviour:
   canPerformCriticalHit: 0
   deathParticles: {fileID: 482209723644523875}
   showGizmos: 0
+  healthBar: {fileID: 5909067328119558400}
+  healthText: {fileID: 4328854165419088474}
+  maxIdleDuration: 3
+  moveSpeed: 0
 --- !u!114 &7984724841211401293
 MonoBehaviour:
   m_ObjectHideFlags: 0
