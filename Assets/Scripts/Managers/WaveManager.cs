@@ -9,6 +9,10 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     [Header("ELEMENTS:")]
     [SerializeField] private CharacterManager character;
     private WaveUI ui;
+
+    [Header("DIFFICULTY SETTINGS:")]
+    [SerializeField] private float difficultyMultiplier = 1.0f;
+    [SerializeField] private float difficultyIncrement = 0.1f;
     
     [Header("SETTINGS:")]
     [SerializeField] private float waveDuration;
@@ -20,6 +24,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     [SerializeField] private Wave[] wave;
     private List<float> localCounters = new List<float>();
 
+    private Wave currentWave;
     
     private void Awake()
     {
@@ -45,37 +50,76 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 
             
     }
+
+    private void StartWave(int _waveIndex)
+    {
+        StatisticsManager.Instance.StartTimer();
+        StatisticsManager.Instance.StartNewRun();
+
+        ui.UpdateWaveText("Wave " + (currentWaveIndex + 1) + " / " + wave.Length);
+
+        localCounters.Clear();
+
+        currentWave = wave[_waveIndex];
+
+        ApplyDifficultyScaling();
+
+        for (int i = 0; i < currentWave.segments.Count; i++)
+        {
+            WaveSegment segment = currentWave.segments[i];
+
+            segment.tStart = segment.spawnPercentage.x / 100 * waveDuration;
+            segment.tEnd = segment.spawnPercentage.y / 100 * waveDuration;
+
+            segment.spawnFrequency *= difficultyMultiplier;
+
+            float spawnDuration = segment.tEnd - segment.tStart;
+            spawnDuration *= 1.0f / difficultyMultiplier;
+            segment.tEnd = segment.tStart + spawnDuration;
+
+            currentWave.segments[i] = segment;
+
+            localCounters.Add(0);
+        }
+
+        timer = 0;
+        hasWaveStarted = true;
+    }
+
     
     private void ManageCurrentWave()
     {
-        Wave currentWave = wave[currentWaveIndex];
+        currentWave = wave[currentWaveIndex];
 
-        for(int i = 0; i < currentWave.segments.Count; i++)
-        {   
-            WaveSegment segment = currentWave.segments[i];  
+        for (int i = 0; i < currentWave.segments.Count; i++)
+        {
+            WaveSegment segment = currentWave.segments[i];
 
-            float tStart = segment.spawnPercentage.x / 100 * waveDuration;
-            float tEnd = segment.spawnPercentage.y / 100 * waveDuration;    
+            if (timer < segment.tStart || timer > segment.tEnd)
+                continue;
 
-            if(timer < tStart || timer > tEnd)
-               continue;
-
-            float timeSinceSegmentStart = timer - tStart;
+            float timeSinceSegmentStart = timer - segment.tStart;
             float spawnDelay = 1f / segment.spawnFrequency;
 
-            if(timeSinceSegmentStart / spawnDelay > localCounters[i])
+            if (timeSinceSegmentStart / spawnDelay > localCounters[i])
             {
                 Instantiate(segment.prefab, GetSpawnPosition(), Quaternion.identity, transform);
                 localCounters[i]++;
 
-                if(segment.spawnOnce)
-                   localCounters[i] += Mathf.Infinity;
+                if (segment.spawnOnce)
+                    localCounters[i] += Mathf.Infinity;
             }
         }
 
-        timer += Time.deltaTime;    
+        timer += Time.deltaTime;
 
     }
+
+    private void StartNextWave()
+    {
+        StartWave(currentWaveIndex);
+    }
+
 
     private void ManageWaveTransition()
     {
@@ -87,11 +131,13 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         if (currentWaveIndex >= wave.Length)
         {
             ui.StageCompleted();
-
             GameManager.Instance.SetGameState(GameState.StageCompleted);
         }
         else
+        {
+            difficultyMultiplier += difficultyIncrement;
             GameManager.Instance.WaveCompletedCallback();
+        }
     }
 
     private Vector2 GetSpawnPosition()
@@ -119,27 +165,20 @@ public class WaveManager : MonoBehaviour, IGameStateListener
                 break;
         }
     }
-
-    private void StartWave(int _waveIndex)
+    
+    private void ApplyDifficultyScaling()
     {
-        StatisticsManager.Instance.StartTimer();
-        StatisticsManager.Instance.StartNewRun();
-        
-        ui.UpdateWaveText("Wave " + (currentWaveIndex + 1) + " / " + wave.Length);
+        float difficultyMultiplier = 1.0f + SettingManager.Instance.currentDifficultyIndex * 0.5f; // Scale based on difficulty
 
-        localCounters.Clear();
+        for (int i = 0; i < currentWave.segments.Count; i++)
+        {
+            WaveSegment segment = currentWave.segments[i];
 
-        foreach(WaveSegment segment in wave[_waveIndex ].segments)
-            localCounters.Add(0);
-
-        timer = 0;
-        hasWaveStarted = true;
+            segment.spawnFrequency *= difficultyMultiplier; // Increase spawn rate
+            segment.tEnd = segment.tStart + (segment.tEnd - segment.tStart) / difficultyMultiplier; // Tighten spawn window
+        }
     }
 
-    private void StartNextWave()
-    {
-        StartWave(currentWaveIndex);
-    }
 
     private void DefeatAllEnemies()
     {
@@ -167,4 +206,7 @@ public struct WaveSegment
     public GameObject prefab;
     [Tooltip("Spawn this prefab once?")]
     public bool spawnOnce;
+
+    [HideInInspector] public float tStart;
+    [HideInInspector] public float tEnd;
 }

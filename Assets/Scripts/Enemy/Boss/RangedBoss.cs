@@ -155,10 +155,16 @@ public class Boss : Enemy
     {
         Vector2 targetPosition = Vector2.zero;
 
-        targetPosition.x = Mathf.Clamp(targetPosition.x, -14, 14);
-        targetPosition.y = Mathf.Clamp(targetPosition.y, -6, 6);
+        targetPosition.x = Random.Range(-14f, 14f);
+        targetPosition.y = Random.Range(-6f, 6f);
         
         return targetPosition;
+    }
+
+    protected override void Die()
+    {
+        OnBossDeath?.Invoke(transform.position); 
+        DieAfterWave();
     }
 
     private void DamageTakenCallback(int _damage, Vector2 _position, bool _isCriticalHit) => UpdateHealthUI();

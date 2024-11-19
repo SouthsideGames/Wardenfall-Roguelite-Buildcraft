@@ -8,7 +8,8 @@ public abstract class Enemy : MonoBehaviour
 {
     [Header("ACTIONS:")]
     public static Action<int, Vector2, bool> OnDamageTaken;
-    public static Action<Vector2, int> OnDeath;
+    public static Action<Vector2> OnDeath;
+    public static Action<Vector2> OnBossDeath;
     public static Action OnEnemyKilled;
     protected Action OnSpawnCompleted;
 
@@ -19,9 +20,6 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] private SpriteRenderer spawnIndicator;
     [SerializeField] private Collider2D _collider;
     protected bool hasSpawned = false;
-
-    [Header("LEVELS:")]
-    [SerializeField] private int level;
 
     [Header("ATTACK:")]
     [SerializeField] protected int damage;
@@ -145,7 +143,7 @@ public abstract class Enemy : MonoBehaviour
 
     protected virtual void Die()
     {
-        OnDeath?.Invoke(transform.position, level);
+        OnDeath?.Invoke(transform.position);
         OnEnemyKilled?.Invoke();
         DieAfterWave();
     }
@@ -196,4 +194,8 @@ public abstract class Enemy : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, playerDetectionRadius);
     }
 
+    public Vector2 GetCenter()
+    {
+        return (Vector2)transform.position + _collider.offset;
+    }
 }

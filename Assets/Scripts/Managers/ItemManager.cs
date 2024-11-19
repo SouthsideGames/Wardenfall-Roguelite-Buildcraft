@@ -1,7 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
+
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Pool;
+using Random = UnityEngine.Random;
 
 public class ItemManager : MonoBehaviour
 {
@@ -25,9 +26,10 @@ public class ItemManager : MonoBehaviour
     private void Awake()
     {
         Enemy.OnDeath += EnemyDeathCallback;
+        Enemy.OnBossDeath += BossDeathCallback;  
         Candy.OnCollected += ReleaseCandy;
         Cash.onCollected += ReleaseCash;    
-        Chest.OnCollected += ReleaseChest;    
+        Chest.OnCollected += ReleaseChest;  
     }
 
     private void Start()
@@ -56,12 +58,13 @@ public class ItemManager : MonoBehaviour
     private void OnDestroy()
     {
         Enemy.OnDeath -= EnemyDeathCallback;
+        Enemy.OnBossDeath -= BossDeathCallback;  
         Candy.OnCollected -= ReleaseCandy;
         Cash.onCollected -= ReleaseCash;    
-        Chest.OnCollected -= ReleaseChest; 
+        Chest.OnCollected -= ReleaseChest;
     }
 
-    private void EnemyDeathCallback(Vector2 _enemyPosition, int _enemyLevel)
+    private void EnemyDeathCallback(Vector2 _enemyPosition)
     {
         bool shouldSpawnCash = Random.Range(0, 101) <= cashDropChance;
 
@@ -72,6 +75,8 @@ public class ItemManager : MonoBehaviour
         TryDropChest(_enemyPosition);
         
     }
+
+    private void BossDeathCallback(Vector2 _bossPosition) =>  DropChest(_bossPosition);
 
     private void ReleaseCandy(Candy _candy) => candyPool.Release(_candy);    
     private void ReleaseCash(Cash _cash) => cashPool.Release(_cash);    
@@ -84,11 +89,11 @@ public class ItemManager : MonoBehaviour
         if (!shouldSpawnCash)
            return;
 
-        Item itemToDrop = chestPool.Get(); 
-
-        itemToDrop.transform.position = _spawnPosition;
+        DropChest(_spawnPosition);
         
     }
+
+    private void DropChest(Vector2 _spawnPosition) => Instantiate(chestPrefab, _spawnPosition, Quaternion.identity, transform);
 
     #region POOLING
     private Candy CandyCreateFunction() => Instantiate(candyPrefab, transform);
