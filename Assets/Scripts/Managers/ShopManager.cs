@@ -91,7 +91,7 @@ public class ShopManager : MonoBehaviour, IGameStateListener
         CurrencyManager.Instance.UseCurrency(rerollPrice);
     }
 
-    private void UpdateRerollVisuals()
+    private void UpdateRerollVisuals() 
     {
         rerollPriceText.text = rerollPrice.ToString();
 

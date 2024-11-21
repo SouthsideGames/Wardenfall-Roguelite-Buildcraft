@@ -7,6 +7,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
     [Header("PANELS:")]
     [SerializeField] private GameObject menuPanel;
     [SerializeField] private GameObject weaponSelectPanel;
+    [SerializeField] private GameObject gameModeSelectPanel;
     [SerializeField] private GameObject gamePanel;
     [SerializeField] private GameObject gameoverPanel;
     [SerializeField] private GameObject stageCompletePanel;
@@ -31,6 +32,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
         {
             menuPanel,
             weaponSelectPanel,
+            gameModeSelectPanel,
             gamePanel,
             gameoverPanel,
             stageCompletePanel,
@@ -72,6 +74,9 @@ public class UIManager : MonoBehaviour, IGameStateListener
                 break;
             case GameState.WeaponSelect:
                 ShowPanel(weaponSelectPanel);
+                break;
+            case GameState.GameModeSelect:
+                ShowPanel(gameModeSelectPanel);
                 break;
             case GameState.Game:
                 ShowPanel(gamePanel);
@@ -124,6 +129,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
         AudioManager.Instance.ResetMusicVolume();   
         pausePanel.SetActive(false);
     }
+    
     public void ShowConfirmationPanel() =>   confirmationPanel.SetActive(true);
     public void HideConfirmationPanel() => confirmationPanel.SetActive(false);
     public void ShowCharacterSelectPanel() => characterSelectPanel.SetActive(true);

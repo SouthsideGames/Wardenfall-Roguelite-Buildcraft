@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Collider2D))]
@@ -13,6 +14,7 @@ public class EnemyBullet : MonoBehaviour
 
     [Header("SETTINGS:")]
     [SerializeField] private float moveSpeed;
+    [SerializeField] private float angularSpeed;
     private int damage;
 
     private void Awake()
@@ -29,8 +31,12 @@ public class EnemyBullet : MonoBehaviour
     {
         damage = _damage;  
 
+        if(Mathf.Abs(_direction.x + 1) < 0.01f)
+            _direction.y += .01f;
+
         transform.right = _direction;
         rb.velocity = _direction * moveSpeed;
+        rb.angularVelocity = angularSpeed;
     }
 
     private void OnTriggerEnter2D(Collider2D collider)
@@ -51,8 +57,10 @@ public class EnemyBullet : MonoBehaviour
     public void Reload()
     {
         rb.velocity = Vector2.zero;
-
+        rb.angularVelocity = 0;
         col.enabled = true; 
 
+        LeanTween.cancel(gameObject);
+        LeanTween.delayedCall(gameObject, 5, () => rangedEnemyAttack.ReleaseBullet(this));
     }
 }

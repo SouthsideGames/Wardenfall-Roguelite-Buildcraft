@@ -6,6 +6,7 @@ public enum GameState
 {
     Menu,
     WeaponSelect,
+    GameModeSelect,
     Game,
     GameOver,
     StageCompleted,
@@ -13,7 +14,7 @@ public enum GameState
     Shop
 }
 
-public  enum MeleeWeaponState 
+public enum MeleeWeaponState 
 {
     Idle,
     Attack
@@ -45,6 +46,15 @@ public enum BossState
     Idle,
     Moving,
     Attacking
+}
+
+public enum GameMode
+{
+    WaveBased,
+    Survival,
+    Endless,
+    BossRush,
+    ObjectiveBased
 }
 
 public static class Enums

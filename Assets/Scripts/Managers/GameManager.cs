@@ -9,10 +9,10 @@ using System;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-
     public static Action OnGamePaused;
     public static Action OnGameResumed; 
     public static Action OnWaveCompleted; 
+
 
     private void Awake()
     {
@@ -29,7 +29,8 @@ public class GameManager : MonoBehaviour
         SetGameState(GameState.Menu);
     }
 
-    public void StartGame() => SetGameState(GameState.Game);    
+    public void StartGame() => SetGameState(GameState.Game); 
+    public void StartGameModeSelect() => SetGameState(GameState.GameModeSelect);   
     public void StartWeaponSelect() => SetGameState(GameState.WeaponSelect);
     public void StartShop() => SetGameState(GameState.Shop);    
     public void StartGameOver()
