@@ -99,10 +99,7 @@ public class ShopManager : MonoBehaviour, IGameStateListener
     }
 
     
-    private void CurrencyUpdatedCallback()
-    {
-        UpdateRerollVisuals();
-    }
+    private void CurrencyUpdatedCallback() => UpdateRerollVisuals();
 
     private void ItemPurchasedCallback(ShopItemContainerUI _shopItemContainerUI, int _weaponLevel)
     {

@@ -33,10 +33,7 @@ public class GameManager : MonoBehaviour
     public void StartGameModeSelect() => SetGameState(GameState.GameModeSelect);   
     public void StartWeaponSelect() => SetGameState(GameState.WeaponSelect);
     public void StartShop() => SetGameState(GameState.Shop);    
-    public void StartGameOver()
-    {
-        SetGameState(GameState.GameOver);  
-    }
+    public void StartGameOver() => SetGameState(GameState.GameOver);  
 
     public void SetGameState(GameState _gameState)
     {
@@ -66,10 +63,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void ManageGameOver()
-    {
-        SceneManager.LoadScene(0);
-    }
+    public void ManageGameOver() => SceneManager.LoadScene(0);
 
     public void PauseButtonCallback()
     {

@@ -93,11 +93,11 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
         for (int i = 0; i < characterDatas.Length; i++)
             characterUnlockStates.Add(i == 0);
 
-        if(SouthsideGames.SaveManager.SaveManager.TryLoad(this, characterUnlockedStatesKey, out object characterUnlockedStatesObject))
+        if(SaveManager.TryLoad(this, characterUnlockedStatesKey, out object characterUnlockedStatesObject))
             characterUnlockStates = (List<bool>)characterUnlockedStatesObject;
 
         //load the last character we played with
-        if(SouthsideGames.SaveManager.SaveManager.TryLoad(this, lastSelectedCharacterKey, out object lastSelectedCharacterStatesObject))
+        if(SaveManager.TryLoad(this, lastSelectedCharacterKey, out object lastSelectedCharacterStatesObject))
             lastSelectedCharacterIndex = (int)lastSelectedCharacterStatesObject;
 
         Initialize();
@@ -105,7 +105,7 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
 
     public void Save()
     {
-        SouthsideGames.SaveManager.SaveManager.Save(this, characterUnlockedStatesKey, characterUnlockStates);
-        SouthsideGames.SaveManager.SaveManager.Save(this, lastSelectedCharacterKey, lastSelectedCharacterIndex);
+        SaveManager.Save(this, characterUnlockedStatesKey, characterUnlockStates);
+        SaveManager.Save(this, lastSelectedCharacterKey, lastSelectedCharacterIndex);
     }
 }

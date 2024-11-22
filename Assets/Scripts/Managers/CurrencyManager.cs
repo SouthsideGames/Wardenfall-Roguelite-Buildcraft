@@ -67,7 +67,6 @@ public class CurrencyManager : MonoBehaviour, IWantToBeSaved
     }
 
     
-
     private void UpdateVisuals()
     {
         UpdateUI();
@@ -83,11 +82,7 @@ public class CurrencyManager : MonoBehaviour, IWantToBeSaved
             AdjustPremiumCurrency(100, false);
     }
 
-    public void Save()
-    {
-        SaveManager.Save(this, premiumCurrencyKey, PremiumCurrency);
-    }
-
+    public void Save() => SaveManager.Save(this, premiumCurrencyKey, PremiumCurrency);
     public bool HasEnoughCurrency(int _amount) => Currency >= _amount;
     public void UseCurrency(int _amount) => AdjustCurrency(-_amount);
     public bool HasEnoughPremiumCurrency(int _amount) => PremiumCurrency >= _amount;

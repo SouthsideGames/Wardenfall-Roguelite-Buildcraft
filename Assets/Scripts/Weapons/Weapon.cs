@@ -36,6 +36,9 @@ public abstract class Weapon : MonoBehaviour, IStats
         audioSource = gameObject.AddComponent<AudioSource>();
         audioSource.playOnAwake = false;
         audioSource.clip = WeaponData.AttackSound;
+
+        if(anim != null && WeaponData.AnimatorOverride != null)
+            anim.runtimeAnimatorController = WeaponData.AnimatorOverride;
     }
 
     protected void PlaySFX()

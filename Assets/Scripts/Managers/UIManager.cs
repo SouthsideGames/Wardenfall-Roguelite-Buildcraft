@@ -54,11 +54,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
     
     }
 
-    private void Update() 
-    {
-        UpdateCounterText();
-    }
-
+    private void Update() => UpdateCounterText();
     private void OnDestroy() 
     {
         GameManager.OnGamePaused -= PauseGameCallback;

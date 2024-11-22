@@ -16,10 +16,7 @@ public class WeaponSelectionManager : MonoBehaviour, IGameStateListener
     private WeaponDataSO selectedWeapon;
     private int initialWeaponLevel;
 
-    private void Start()
-    {
-        characterWeapon = CharacterManager.Instance.characterWeapon;
-    }
+    private void Start() => characterWeapon = CharacterManager.Instance.characterWeapon;
 
     public void GameStateChangedCallback(GameState _gameState)
     {

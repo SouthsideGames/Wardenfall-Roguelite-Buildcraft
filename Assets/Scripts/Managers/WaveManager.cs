@@ -202,7 +202,13 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         Vector2 offset = direction * UnityEngine.Random.Range(6, 10);
         Vector2 target = (Vector2)character.transform.position + offset;
 
-        return new Vector2(Mathf.Clamp(target.x, -18, 18), Mathf.Clamp(target.y, -8, 8));
+        if(!CameraManager.Instance.UseInfiniteMap)
+        {
+            target.x = Mathf.Clamp(target.x, -Constants.arenaSize.x / 2, Constants.arenaSize.x / 2);
+            target.y = Mathf.Clamp(target.y, -Constants.arenaSize.y / 2, Constants.arenaSize.y / 2);
+        }
+
+        return target;  
     }
 
     private void UpdateUIForWaveStart()

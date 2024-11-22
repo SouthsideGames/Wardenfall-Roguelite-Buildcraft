@@ -17,6 +17,7 @@ public class WeaponDataSO : ScriptableObject
     [field: SerializeField] public Weapon Prefab {get; private set;}
 
     [field: SerializeField] public AudioClip AttackSound { get; private set; }
+    [field: SerializeField] public AnimatorOverrideController AnimatorOverride { get; private set; }
 
     [Header("STATS:")]
     [Space(10)]
