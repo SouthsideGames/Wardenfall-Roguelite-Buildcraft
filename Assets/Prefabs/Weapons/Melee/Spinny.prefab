@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 584893579131057538}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.143, y: -0, z: 0}
+  m_LocalPosition: {x: 0, y: -0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -66,7 +66,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.12961972, y: 0.0030860752}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -76,7 +76,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 2.543093, y: 0.73458815}
+  m_Size: {x: 1.5, y: 1.5}
   m_EdgeRadius: 0
 --- !u!1 &4075609433105477847
 GameObject:
@@ -103,14 +103,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4075609433105477847}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: 0.70710677, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
-  m_LocalScale: {x: 0.6000001, y: 0.6000001, z: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7046191350905913524}
   m_Father: {fileID: 8968316710020594955}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4786068519791655524
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -154,7 +154,7 @@ SpriteRenderer:
   m_SortingLayerID: 883773661
   m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 5485319108022510092, guid: 15c981701acaf3f4b840cf2f1f7d3446, type: 3}
+  m_Sprite: {fileID: -1320041549103889438, guid: da3927821cddca54fb2f2ae3643d344c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -174,8 +174,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2823779214590732286}
-  - component: {fileID: 3090414645501929170}
   - component: {fileID: 3925099432812879877}
+  - component: {fileID: 1312180931142463823}
   m_Layer: 0
   m_Name: Spinny
   m_TagString: Untagged
@@ -199,29 +199,6 @@ Transform:
   - {fileID: 8968316710020594955}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3090414645501929170
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6241322030481016399}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42472dbe50ad63f498d7361cd28c16f7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <WeaponData>k__BackingField: {fileID: 11400000, guid: 90dd82cf1cc327644a3011eb84881940, type: 2}
-  range: 1.5
-  enemyMask:
-    serializedVersion: 2
-    m_Bits: 64
-  damage: 20
-  attackDelay: 0.8
-  anim: {fileID: 3925099432812879877}
-  aimLerp: 12
-  hitpoint: {fileID: 7046191350905913524}
-  hitCollider: {fileID: 7925197867343454752}
 --- !u!95 &3925099432812879877
 Animator:
   serializedVersion: 7
@@ -232,7 +209,7 @@ Animator:
   m_GameObject: {fileID: 6241322030481016399}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 975ea308f1a51664c9ea7bd689edcf38, type: 2}
+  m_Controller: {fileID: 22100000, guid: 09cb02d2a0dd7e448af8ec5e566814c8, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -244,6 +221,34 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1312180931142463823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6241322030481016399}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b78f722d28829a547bc40db69e7f5ae7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <WeaponData>k__BackingField: {fileID: 11400000, guid: 90dd82cf1cc327644a3011eb84881940, type: 2}
+  range: 1.5
+  enemyMask:
+    serializedVersion: 2
+    m_Bits: 64
+  damage: 30
+  attackDelay: 1
+  autoAim: 0
+  anim: {fileID: 3925099432812879877}
+  aimLerp: 10
+  state: 0
+  hitpoint: {fileID: 7046191350905913524}
+  hitCollider: {fileID: 7925197867343454752}
+  damagedEnemies: []
+  orbitRadius: 3
+  orbitSpeed: 500
 --- !u!1 &7523463312478332396
 GameObject:
   m_ObjectHideFlags: 0

@@ -16,6 +16,7 @@ public enum GameState
 
 public enum MeleeWeaponState 
 {
+    Empty,
     Idle,
     Attack
 }

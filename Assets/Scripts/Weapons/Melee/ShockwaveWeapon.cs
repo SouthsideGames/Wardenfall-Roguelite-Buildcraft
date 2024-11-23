@@ -11,14 +11,7 @@ public class ShockwaveWeapon : MeleeWeapon
     [SerializeField] private float shockwaveGrowthRate = 2.0f; // How quickly the shockwave grows
     [SerializeField] private float shockwaveMaxRadius = 5.0f;  // Maximum size the shockwave can reach
 
-    protected override void AttackLogic()
-    {
-        base.AttackLogic();
-
-        SpawnShockwave();
-    }
-
-    private void SpawnShockwave()
+    public void SpawnShockwave()
     {
         GameObject shockwave = Instantiate(shockwavePrefab, spawnPoint.position, Quaternion.identity);
         

@@ -6,7 +6,9 @@ using NaughtyAttributes;
 [RequireComponent(typeof(WaveUI))]
 public class WaveManager : MonoBehaviour, IGameStateListener
 {
-  [Header("ELEMENTS:")]
+    public static Action OnWaveCompleted;
+
+    [Header("ELEMENTS:")]
     [SerializeField] private CharacterManager character;
     private WaveUI ui;
 
@@ -118,6 +120,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 
     private void HandleWaveTransition()
     {
+        OnWaveCompleted?.Invoke();
         DefeatAllEnemies();
         hasWaveStarted = false;
         currentWaveIndex++;
@@ -135,7 +138,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
                 break;
         }
     }
-
+ 
     private void HandleWaveBasedTransition()
     {
         if (currentWaveIndex >= wave.Length)

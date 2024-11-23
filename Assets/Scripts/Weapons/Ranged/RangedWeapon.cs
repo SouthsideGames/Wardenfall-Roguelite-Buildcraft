@@ -15,21 +15,19 @@ public class RangedWeapon : Weapon
     [Header("POOL:")]
     public ObjectPool<Bullet> bulletPool {get; private set;}
 
-    // Start is called before the first frame update
     void Start()
     {
         bulletPool = new ObjectPool<Bullet>(CreateFunction, ActionOnGet, ActionOnRelease, ActionOnDestroy);
     }
 
-    // Update is called once per frame
     void Update()
     {
-        AutoAim();
+        AutoAimLogic();
     }
 
-    protected override void AutoAim()
+    protected override void AutoAimLogic()
     {
-        base.AutoAim();
+        base.AutoAimLogic();
 
         if(closestEnemy != null)
         {
@@ -40,15 +38,15 @@ public class RangedWeapon : Weapon
             return;
         }
 
-         transform.up = Vector3.Lerp(transform.up, targetUpVector, Time.deltaTime * aimLerp);
-
+        transform.up = Vector3.Lerp(transform.up, targetUpVector, Time.deltaTime * aimLerp);
     }
 
     private void ShootLogic()
     {
         attackTimer += Time.deltaTime;
 
-        if(attackTimer > attackDelay){
+        if(attackTimer > attackDelay)
+        {
             attackTimer = 0f;
             Shoot();
         }
@@ -61,7 +59,7 @@ public class RangedWeapon : Weapon
         int damage = GetDamage(out bool isCriticalHit);
 
         Bullet _bullet = bulletPool.Get();
-        _bullet.Shoot(damage, transform.up, isCriticalHit );
+        _bullet.Shoot(damage, transform.up, isCriticalHit);
 
         PlaySFX();
     }
@@ -81,7 +79,7 @@ public class RangedWeapon : Weapon
         _bullet.gameObject.SetActive(true);
     }
 
-    private void ActionOnRelease(Bullet _bullet) =>  _bullet.gameObject.SetActive(false);
+    private void ActionOnRelease(Bullet _bullet) => _bullet.gameObject.SetActive(false);
     private void ActionOnDestroy(Bullet _bullet) => Destroy(_bullet.gameObject);
 
     public void ReleaseBullet(Bullet _bullet) => bulletPool.Release(_bullet);
@@ -93,13 +91,12 @@ public class RangedWeapon : Weapon
         ConfigureWeaponStats();
 
         damage = Mathf.RoundToInt(damage * (1 + _statsManager.GetStatValue(Stat.Attack) / 100));
-        attackDelay  /= 1 + (_statsManager.GetStatValue(Stat.AttackSpeed) / 100); 
+        attackDelay /= 1 + (_statsManager.GetStatValue(Stat.AttackSpeed) / 100);
 
-        criticalHitChance = Mathf.RoundToInt(criticalHitChance * 91 + _statsManager.GetStatValue(Stat.CritChance) / 100); 
-        criticalHitDamageAmount += _statsManager.GetStatValue(Stat.CritDamage); //Deal times additional damage
+        criticalHitChance = Mathf.RoundToInt(criticalHitChance * (1 + _statsManager.GetStatValue(Stat.CritChance) / 100));
+        criticalHitDamageAmount += _statsManager.GetStatValue(Stat.CritDamage);
 
         range += _statsManager.GetStatValue(Stat.Range) / 10;
-
     }
 
 }

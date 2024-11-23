@@ -19,10 +19,7 @@ public class Shockwave : MonoBehaviour
         initialScale = transform.localScale;
     }
 
-    private void OnEnable()
-    {
-        StartCoroutine(ExpandShockwave());
-    }
+    private void OnEnable() => StartCoroutine(ExpandShockwave());
 
     private IEnumerator ExpandShockwave()
     {

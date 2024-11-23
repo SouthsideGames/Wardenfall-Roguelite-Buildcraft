@@ -9,7 +9,7 @@ public class LaserWeapon : RangedWeapon
 
     void Update()
     {
-        AutoAim();
+        AutoAimLogic();
         Shoot();
     }
 
@@ -28,9 +28,9 @@ public class LaserWeapon : RangedWeapon
     }
 
 
-    protected override void AutoAim()
+    protected override void AutoAimLogic()
     {
-        base.AutoAim();
+        base.AutoAimLogic();
         if (closestEnemy != null)
             targetUpVector = (closestEnemy.transform.position - transform.position).normalized;
     }

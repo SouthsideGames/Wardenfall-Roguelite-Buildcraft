@@ -18,6 +18,8 @@ public abstract class Weapon : MonoBehaviour, IStats
     protected float attackTimer;
     protected int criticalHitChance;
     protected float criticalHitDamageAmount;
+    [SerializeField] private bool autoAim = true; // Toggle for Auto Aim
+    public bool AutoAim => autoAim;
 
     
     [Header("ANIMATIONS:")]
@@ -88,11 +90,31 @@ public abstract class Weapon : MonoBehaviour, IStats
         return damage;
     }
 
-    protected virtual void AutoAim()
+    protected virtual void AutoAimLogic()
     {
         closestEnemy = GetClosestEnemy();
 
-        targetUpVector = Vector3.up;
+        if (closestEnemy != null)
+        {
+            targetUpVector = (closestEnemy.transform.position - transform.position).normalized;
+            transform.up = Vector3.Lerp(transform.up, targetUpVector, Time.deltaTime * aimLerp);
+        }
+
+    }
+
+    protected virtual void TimerAttackLogic()
+    {
+        if (attackTimer >= attackDelay)
+        {
+            attackTimer = 0;
+            StartAttack();
+        }
+
+        attackTimer += Time.deltaTime;
+    }
+
+    protected virtual void StartAttack()
+    {
 
     }
 

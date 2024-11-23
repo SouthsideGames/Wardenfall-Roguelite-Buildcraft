@@ -2,16 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MinionWeapon : Weapon
+public class MinionWeapon : MeleeWeapon
 {
     [Header("MINION SPECIFICS:")]
-    [SerializeField] private MinionManager minionPrefab;  // Reference to the minion prefab
-    [SerializeField] private int minionCount;             // Number of minions to summon
-    [SerializeField] private float minionLifetime;        // Lifetime of each minion
-    [SerializeField] private int minionDamage;            // Damage dealt by each minion
-    [SerializeField] private float summonCooldown;        // Time between summons
+    [Tooltip("Reference to the minion prefab that will be spawned.")]
+    [SerializeField] private MinionManager minionPrefab;
+
+    [Tooltip("The number of minions to summon each time.")]
+    [SerializeField] private int minionCount;
+
+    [Tooltip("The lifetime of each minion in seconds.")]
+    [SerializeField] private float minionLifetime;
+
+    [Tooltip("The amount of damage each minion deals.")]
+    [SerializeField] private int minionDamage;
+
+    [Tooltip("Cooldown time (in seconds) between consecutive summons.")]
+    [SerializeField] private float summonCooldown;
 
     private float summonTimer;
+
+    
 
     private void Update()
     {
@@ -25,6 +36,8 @@ public class MinionWeapon : Weapon
 
     private void SummonMinions()
     {
+        anim.Play("Attack");
+
         for (int i = 0; i < minionCount; i++)
         {
             // Instantiate a new minion and set its position near the player

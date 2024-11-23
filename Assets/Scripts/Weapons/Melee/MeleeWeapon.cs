@@ -1,123 +1,101 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class MeleeWeapon : Weapon
 {
-  
-    private MeleeWeaponState state;
+    [HideInInspector] public MeleeWeaponState state;
 
     [Header("ELEMENTS:")]
     [SerializeField] private Transform hitpoint;
-    [SerializeField] private BoxCollider2D hitCollider;
-    private List<Enemy> damagedEnemies = new List<Enemy>();
+    [SerializeField] public BoxCollider2D hitCollider;
+    [HideInInspector] public List<Enemy> damagedEnemies = new List<Enemy>();
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-         state = MeleeWeaponState.Idle;
+        WaveManager.OnWaveCompleted  += OnWaveCompletedCallback;
+        CharacterHealth.OnCharacterDeath += OnWaveCompletedCallback;
     }
 
-    // Update is called once per frame
+    private void OnDestroy()
+    {
+        WaveManager.OnWaveCompleted  -= OnWaveCompletedCallback;
+        CharacterHealth.OnCharacterDeath -= OnWaveCompletedCallback;
+    }
+
+
+    void Start() => state = MeleeWeaponState.Idle;
+
     void Update()
     {
-        switch(state)
-       {
+        switch (state)
+        {
             case MeleeWeaponState.Idle:
-                AutoAim();
+                if (AutoAim)
+                    AutoAimLogic();
+                else
+                    TimerAttackLogic();
                 break;
             case MeleeWeaponState.Attack:
                 AttackState();
                 break;
+            case MeleeWeaponState.Empty:
+                break;
             default:
                 break;
-       }
+        }
     }
 
-    private void AttackState()
-    {
-        AttackLogic();
-    }
-
-    private void StartAttack()
+    protected override void StartAttack()
     {
         anim.Play("Attack");
-        state = MeleeWeaponState.Attack;   
+        state = MeleeWeaponState.Attack;
 
-        damagedEnemies.Clear(); 
-
+        damagedEnemies.Clear();
         anim.speed = 1f / attackDelay;
     }
 
     private void EndAttack()
     {
         state = MeleeWeaponState.Idle;
-        damagedEnemies.Clear(); 
+        damagedEnemies.Clear();
     }
 
+    private void AttackState() => AttackLogic();
     protected virtual void AttackLogic()
     {
-        Collider2D[] enemies = Physics2D.OverlapBoxAll
-        (
-            hitpoint.position, 
-            hitCollider.bounds.size, 
-            hitpoint.localEulerAngles.z, 
-            enemyMask
-        );
+        Collider2D[] enemies = Physics2D.OverlapBoxAll(
+            hitpoint.position,
+            hitCollider.bounds.size,
+            hitpoint.localEulerAngles.z,
+            enemyMask);
 
         for (int i = 0; i < enemies.Length; i++)
         {
             Enemy enemy = enemies[i].GetComponent<Enemy>();
 
-            if(!damagedEnemies.Contains(enemy))
+            if (!damagedEnemies.Contains(enemy))
             {
                 int damage = GetDamage(out bool isCriticalHit);
 
                 enemy.TakeDamage(damage, isCriticalHit);
                 damagedEnemies.Add(enemy);
             }
-           
         }
     }
-
-    protected override void AutoAim()
-    {
-        base.AutoAim();
-
-        if(closestEnemy != null)
-        {
-            targetUpVector = (closestEnemy.transform.position - transform.position).normalized;
-            transform.up = targetUpVector;  
-            ManageAttackTimer();
-        }
-
-        transform.up = Vector3.Lerp(transform.up, targetUpVector, Time.deltaTime * aimLerp);
-
-        Wait();
-
-    }
-
-    private void ManageAttackTimer()
-    {
-        if(attackTimer >= attackDelay)
-        {
-            attackTimer = 0;
-            StartAttack();
-        }
-    }
-
-    private void Wait() => attackTimer += Time.deltaTime;
 
     public override void UpdateWeaponStats(CharacterStats _statsManager)
     {
         ConfigureWeaponStats();
 
         damage = Mathf.RoundToInt(damage * (1 + _statsManager.GetStatValue(Stat.Attack) / 100));
-        attackDelay  /= 1 + (_statsManager.GetStatValue(Stat.AttackSpeed) / 100); 
+        attackDelay /= 1 + (_statsManager.GetStatValue(Stat.AttackSpeed) / 100);
 
-        criticalHitChance = Mathf.RoundToInt(criticalHitChance * 91 + _statsManager.GetStatValue(Stat.CritChance) / 100); 
-        criticalHitDamageAmount += _statsManager.GetStatValue(Stat.CritDamage); //Deal times additional damage
-
+        criticalHitChance = Mathf.RoundToInt(criticalHitChance * (1 + _statsManager.GetStatValue(Stat.CritChance) / 100));
+        criticalHitDamageAmount += _statsManager.GetStatValue(Stat.CritDamage);
     }
+
+    private void OnWaveCompletedCallback() => state = MeleeWeaponState.Empty;
 
 }

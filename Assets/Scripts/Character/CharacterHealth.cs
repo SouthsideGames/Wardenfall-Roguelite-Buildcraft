@@ -14,7 +14,6 @@ public class CharacterHealth : MonoBehaviour, IStats
     [SerializeField] private Slider healthBar;
     [SerializeField] private TextMeshProUGUI healthText;
 
-
     [Header("SETTINGS:")]
     [SerializeField] private int baseMaxHealth;
 

@@ -8,21 +8,15 @@ public class MinionManager : MonoBehaviour
     [SerializeField] private float lifetime;
     [SerializeField] private int damage;
 
-    private void Start()
-    {
-        StartCoroutine(LifetimeCountdown());
-    }
-
+    private void Start() => StartCoroutine(LifetimeCountdown());
+    
     public void InitializeMinion(float _lifetime, int _damage)
     {
         lifetime = _lifetime;
         damage = _damage;
     }
 
-    public int GetDamage()
-    {
-        return damage;
-    }
+    public int GetDamage() => damage;
 
     private IEnumerator LifetimeCountdown()
     {
@@ -30,8 +24,5 @@ public class MinionManager : MonoBehaviour
         DestroyMinion();
     }
 
-    private void DestroyMinion()
-    {
-        Destroy(gameObject);
-    }
+    private void DestroyMinion() => Destroy(gameObject);
 }

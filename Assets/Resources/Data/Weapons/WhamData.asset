@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: WhamData
   m_EditorClassIdentifier: 
   <ID>k__BackingField: 9
-  <Icon>k__BackingField: {fileID: 5485319108022510092, guid: 15c981701acaf3f4b840cf2f1f7d3446, type: 3}
+  <Icon>k__BackingField: {fileID: 485907682, guid: 258e5a7de28049b43a7b1fb741a1b6ac, type: 3}
   <Name>k__BackingField: Wham
   <Description>k__BackingField: "Wham, <i>Melee</i>. This heavy weapon creates a
     powerful shockwave when swung, damaging creatures in its path. It\u2019s perfect
@@ -21,8 +21,10 @@ MonoBehaviour:
   <PurchasePrice>k__BackingField: 700
   <RecyclePrice>k__BackingField: 350
   <Prefab>k__BackingField: {fileID: -524496338795754806, guid: 06ba9a1503206784d99f1c029bffe994, type: 3}
-  attack: 35
+  <AttackSound>k__BackingField: {fileID: 0}
+  <AnimatorOverride>k__BackingField: {fileID: 22100000, guid: c6d13442d96385548824b2ca4ea95f87, type: 2}
+  attack: 15
   attackSpeed: 0.8
-  criticalChance: 15
-  criticalDamageAmount: 80
-  range: 1.5
+  criticalChance: 0.5
+  criticalDamageAmount: 30
+  range: 3

@@ -4,24 +4,35 @@ using UnityEngine;
 
 public class Flamethrower : Weapon
 {
-    [Header("FLAMETHROWER SPECIFICS:")]
+   [Header("FLAMETHROWER SPECIFICS:")]
     [SerializeField] private float flameRange;
     [SerializeField] private float flameAngle;
+    private bool attackLeftSide = true; // Toggle to determine which side to attack
 
-    void Update()
+    void Update() =>  TimerAttackLogic();
+
+    protected override void TimerAttackLogic()
     {
-        AutoAim();
-        if (attackTimer >= attackDelay)
+        base.TimerAttackLogic();
+        if (attackTimer == 0) // Trigger attack when the timer resets
         {
-            EmitFlame();
-            attackTimer = 0f;
+            StartAttack();
         }
-        attackTimer += Time.deltaTime;
+    }
+
+    protected override void StartAttack()
+    {
+        EmitFlame();
+        attackTimer = attackDelay; // Reset the attack timer
+        attackLeftSide = !attackLeftSide; // Toggle the attack side
     }
 
     private void EmitFlame()
     {
-        Collider2D[] enemies = Physics2D.OverlapCircleAll(transform.position, flameRange, enemyMask);
+        Vector2 attackDirection = attackLeftSide ? Vector2.left : Vector2.right; // Determine attack side
+        Vector2 attackPosition = (Vector2)transform.position + attackDirection * flameRange * 0.5f;
+
+        Collider2D[] enemies = Physics2D.OverlapCircleAll(attackPosition, flameRange, enemyMask);
         foreach (var enemy in enemies)
         {
             Vector2 direction = (enemy.transform.position - transform.position).normalized;
@@ -31,6 +42,9 @@ public class Flamethrower : Weapon
                 enemy.GetComponent<Enemy>().TakeDamage((int)(damage * Time.deltaTime), _isCriticalHit: false);
             }
         }
+
+        // Debug visuals for flame emission
+        Debug.DrawLine(transform.position, attackPosition, Color.red, 0.1f);
     }
 
     public override void UpdateWeaponStats(CharacterStats _statsManager)
@@ -38,13 +52,11 @@ public class Flamethrower : Weapon
         ConfigureWeaponStats();
 
         damage = Mathf.RoundToInt(damage * (1 + _statsManager.GetStatValue(Stat.Attack) / 100));
-        attackDelay  /= 1 + (_statsManager.GetStatValue(Stat.AttackSpeed) / 100); 
+        attackDelay /= 1 + (_statsManager.GetStatValue(Stat.AttackSpeed) / 100);
 
-        criticalHitChance = Mathf.RoundToInt(criticalHitChance * 91 + _statsManager.GetStatValue(Stat.CritChance) / 100); 
-        criticalHitDamageAmount += _statsManager.GetStatValue(Stat.CritDamage); //Deal times additional damage
+        criticalHitChance = Mathf.RoundToInt(criticalHitChance * (1 + _statsManager.GetStatValue(Stat.CritChance) / 100));
+        criticalHitDamageAmount += _statsManager.GetStatValue(Stat.CritDamage);
 
         range += _statsManager.GetStatValue(Stat.Range) / 10;
-
     }
-
 }
