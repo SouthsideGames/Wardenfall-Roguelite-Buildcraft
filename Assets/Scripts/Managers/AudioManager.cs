@@ -43,6 +43,7 @@ public class AudioManager : MonoBehaviour, IGameStateListener
   
 
     void Start() => PlayBackgroundMusic();
+
     private void Update() 
     {
        if(isMusicMuted)

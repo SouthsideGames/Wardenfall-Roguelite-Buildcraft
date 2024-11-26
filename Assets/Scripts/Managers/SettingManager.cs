@@ -195,6 +195,7 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
     {
         sfxState = true;
         musicState = true;
+        vibrateState = true;
 
         if(SaveManager.TryLoad(this, sfxKey, out object sfxStateObject))
             sfxState = (bool)sfxStateObject;
