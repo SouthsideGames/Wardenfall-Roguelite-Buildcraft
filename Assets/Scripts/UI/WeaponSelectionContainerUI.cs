@@ -52,7 +52,7 @@ public class WeaponSelectionContainerUI : MonoBehaviour
     {
         LeanTween.cancel(gameObject);
 
-        LeanTween.scale(gameObject, Vector3.one * scaleSize, animationSpeed).setEase(LeanTweenType.easeInOutSine);
+        LeanTween.scale(gameObject, Vector3.one * scaleSize, animationSpeed).setEase(LeanTweenType.easeOutElastic);
     }
 
     public void Deselect()

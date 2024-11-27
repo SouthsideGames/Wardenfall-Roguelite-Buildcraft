@@ -5,7 +5,7 @@ using UnityEngine;
 
 public abstract class Weapon : MonoBehaviour, IStats
 {
-    [field: SerializeField] public WeaponDataSO WeaponData {get; private set;}  
+     [field: SerializeField] public WeaponDataSO WeaponData {get; private set;}  
 
     [Header("ELEMENTS:")]
     [SerializeField] protected float range;
@@ -18,8 +18,6 @@ public abstract class Weapon : MonoBehaviour, IStats
     protected float attackTimer;
     protected int criticalHitChance;
     protected float criticalHitDamageAmount;
-    [SerializeField] private bool autoAim = true; // Toggle for Auto Aim
-    public bool AutoAim => autoAim;
 
     
     [Header("ANIMATIONS:")]
@@ -38,9 +36,6 @@ public abstract class Weapon : MonoBehaviour, IStats
         audioSource = gameObject.AddComponent<AudioSource>();
         audioSource.playOnAwake = false;
         audioSource.clip = WeaponData.AttackSound;
-
-        if(anim != null && WeaponData.AnimatorOverride != null)
-            anim.runtimeAnimatorController = WeaponData.AnimatorOverride;
     }
 
     protected void PlaySFX()
@@ -94,27 +89,7 @@ public abstract class Weapon : MonoBehaviour, IStats
     {
         closestEnemy = GetClosestEnemy();
 
-        if (closestEnemy != null)
-        {
-            targetUpVector = (closestEnemy.transform.position - transform.position).normalized;
-            transform.up = Vector3.Lerp(transform.up, targetUpVector, Time.deltaTime * aimLerp);
-        }
-
-    }
-
-    protected virtual void TimerAttackLogic()
-    {
-        if (attackTimer >= attackDelay)
-        {
-            attackTimer = 0;
-            StartAttack();
-        }
-
-        attackTimer += Time.deltaTime;
-    }
-
-    protected virtual void StartAttack()
-    {
+        targetUpVector = Vector3.up;
 
     }
 

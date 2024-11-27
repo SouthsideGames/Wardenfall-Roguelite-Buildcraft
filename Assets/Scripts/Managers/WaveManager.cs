@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using NaughtyAttributes;
+using SouthsideGames.DailyMissions;
 
 [RequireComponent(typeof(WaveUI))]
 public class WaveManager : MonoBehaviour, IGameStateListener
@@ -121,6 +122,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     private void HandleWaveTransition()
     {
         OnWaveCompleted?.Invoke();
+        MissionManager.Increment(MissionType.wavesCompleted, 1);
         DefeatAllEnemies();
         hasWaveStarted = false;
         currentWaveIndex++;

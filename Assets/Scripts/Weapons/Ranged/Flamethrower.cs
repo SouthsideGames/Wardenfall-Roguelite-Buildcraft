@@ -9,23 +9,23 @@ public class Flamethrower : Weapon
     [SerializeField] private float flameAngle;
     private bool attackLeftSide = true; // Toggle to determine which side to attack
 
-    void Update() =>  TimerAttackLogic();
+    // void Update() =>  TimerAttackLogic();
 
-    protected override void TimerAttackLogic()
-    {
-        base.TimerAttackLogic();
-        if (attackTimer == 0) // Trigger attack when the timer resets
-        {
-            StartAttack();
-        }
-    }
+    // protected override void TimerAttackLogic()
+    // {
+    //     base.TimerAttackLogic();
+    //     if (attackTimer == 0) // Trigger attack when the timer resets
+    //     {
+    //         StartAttack();
+    //     }
+    // }
 
-    protected override void StartAttack()
-    {
-        EmitFlame();
-        attackTimer = attackDelay; // Reset the attack timer
-        attackLeftSide = !attackLeftSide; // Toggle the attack side
-    }
+    // protected override void StartAttack()
+    // {
+    //     EmitFlame();
+    //     attackTimer = attackDelay; // Reset the attack timer
+    //     attackLeftSide = !attackLeftSide; // Toggle the attack side
+    // }
 
     private void EmitFlame()
     {

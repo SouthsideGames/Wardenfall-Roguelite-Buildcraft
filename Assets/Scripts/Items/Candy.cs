@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using SouthsideGames.DailyMissions;
 
 public class Candy : Item
 {
@@ -10,6 +11,7 @@ public class Candy : Item
     
     protected override void Collected()
     {
+        MissionManager.Increment(MissionType.currencyCollected, 1);
         OnCollected?.Invoke(this);
     }   
 }

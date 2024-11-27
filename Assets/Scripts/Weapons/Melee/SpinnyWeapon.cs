@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class SpinnyWeapon : MeleeWeapon
 {
+    private MeleeWeaponState state;
+
     [Header("SPINNY SETTINGS")]
     [SerializeField] private float orbitRadius = 2f;
     [SerializeField] private float orbitSpeed = 50f;

@@ -58,6 +58,16 @@ public enum GameMode
     ObjectiveBased
 }
 
+public enum MissionType
+{
+    wavesCompleted = 0,
+    enemiesPopped = 1,
+    weaponsUsed = 2,
+    premiumCurrencyCollected = 3,
+    currencyCollected = 4
+
+}
+
 public static class Enums
 {
     public static string FormatStatName(Stat _stat)

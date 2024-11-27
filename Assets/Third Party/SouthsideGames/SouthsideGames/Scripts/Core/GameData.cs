@@ -32,6 +32,12 @@ namespace SouthsideGames.SaveManager
             value = null;
             return false;
         }
+
+        public void Remove(string key)
+        {
+            if (data.ContainsKey(key))
+                data.Remove(key);
+        }
     }
 
     [Serializable]

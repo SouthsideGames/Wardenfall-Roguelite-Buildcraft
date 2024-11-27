@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using SouthsideGames.DailyMissions;
 using UnityEngine;
 
 [RequireComponent(typeof(EnemyStatus))]
@@ -145,6 +146,7 @@ public abstract class Enemy : MonoBehaviour
     {
         OnDeath?.Invoke(transform.position);
         OnEnemyKilled?.Invoke();
+        MissionManager.Increment(MissionType.enemiesPopped, 1);
         DieAfterWave();
     }
 

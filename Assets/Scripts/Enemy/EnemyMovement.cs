@@ -10,33 +10,43 @@ public class EnemyMovement : MonoBehaviour
 
     [Header("SETTINGS:")]
     public float moveSpeed;
-    
+    private bool canMove = true;
+
     public void StorePlayer(CharacterManager _player)
     {
-        player = _player;   
+        player = _player;
     }
 
     public void FollowPlayer()
     {
-        Vector2 direction = (player.transform.position - transform.position).normalized;
+        if (!canMove || player == null) return;
 
+        Vector2 direction = (player.transform.position - transform.position).normalized;
         Vector2 targetPosition = (Vector2)transform.position + direction * moveSpeed * Time.deltaTime;
 
         transform.position = targetPosition;
     }
-
 
     public void MoveAwayFromPlayer()
     {
-        // Calculate the direction away from the player
-        Vector2 direction = (transform.position - player.transform.position).normalized;
+        if (!canMove || player == null) return;
 
-        // Calculate the target position by moving away from the player
+        Vector2 direction = (transform.position - player.transform.position).normalized;
         Vector2 targetPosition = (Vector2)transform.position + direction * moveSpeed * Time.deltaTime;
 
-        // Move the enemy to the target position
         transform.position = targetPosition;
     }
 
+    public void DisableMovement(float duration)
+    {
+        StartCoroutine(DisableMovementTemporarily(duration));
+    }
+
+    private IEnumerator DisableMovementTemporarily(float duration)
+    {
+        canMove = false; 
+        yield return new WaitForSeconds(duration);
+        canMove = true; 
+    }
 
 }
