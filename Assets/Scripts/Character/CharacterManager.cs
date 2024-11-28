@@ -13,12 +13,12 @@ public class CharacterManager : MonoBehaviour
     public static CharacterManager Instance;
 
     [Header("COMPONENTS:")]
-    private CharacterHealth characterHealth;
-    private CharacterLevel characterLevel;
-    private CharacterAnimator characterAnim;
-    public CharacterWeapon characterWeapon { get; private set; }
+    private CharacterLevel level;
+    private CharacterAnimator anim;
+    public CharacterWeapon weapon { get; private set; }
+    public CharacterHealth health { get; private set; }
     [SerializeField] private CircleCollider2D _col;
-    [SerializeField] private SpriteRenderer characterRenderer;
+    [SerializeField] private SpriteRenderer _sr;
     
 
     private void Awake()
@@ -28,35 +28,26 @@ public class CharacterManager : MonoBehaviour
         else
             Destroy(gameObject);
 
-        characterHealth = GetComponent<CharacterHealth>();  
-        characterLevel = GetComponent<CharacterLevel>();
-        characterWeapon = GetComponent<CharacterWeapon>();
-        characterAnim = GetComponent<CharacterAnimator>();  
+        health = GetComponent<CharacterHealth>();  
+        level = GetComponent<CharacterLevel>();
+        weapon = GetComponent<CharacterWeapon>();
+        anim = GetComponent<CharacterAnimator>();  
 
         CharacterSelectionManager.OnCharacterSelected += CharacterSelectionCallback;
     }
 
     private void OnDestroy() =>  CharacterSelectionManager.OnCharacterSelected -= CharacterSelectionCallback;
 
-    public void TakeDamage(int _damage)
-    {
-        characterHealth.TakeDamage(_damage);    
-    }
+    public void TakeDamage(int _damage) => health.TakeDamage(_damage);
 
-    public Vector2 GetColliderCenter()
-    {
-        return (Vector2)transform.position + _col.offset;
-    }
+    public Vector2 GetColliderCenter() => (Vector2)transform.position + _col.offset;
 
-    public bool HasLeveledUp()
-    {
-        return characterLevel.HasLeveledUp();
-    }
+    public bool HasLeveledUp() => level.HasLeveledUp();
 
     private void CharacterSelectionCallback(CharacterDataSO _characterData)
     {
-        //StatisticsManager.Instance.RecordCharacterUsage(_characterData.ID);
-        characterRenderer.sprite = _characterData.Icon;
+        StatisticsManager.Instance.RecordCharacterUsage(_characterData.ID);
+        _sr.sprite = _characterData.Icon;
     } 
         
 }

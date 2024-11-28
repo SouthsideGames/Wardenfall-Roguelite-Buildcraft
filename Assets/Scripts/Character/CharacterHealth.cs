@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using SouthsideGames.DailyMissions;
 
 public class CharacterHealth : MonoBehaviour, IStats
 {
@@ -130,6 +131,22 @@ public class CharacterHealth : MonoBehaviour, IStats
         healthRecoverySpeed = MathF.Max(.0001f, _statsManager.GetStatValue(Stat.RegenSpeed));
         healthRecoveryDuration = 1f / healthRecoverySpeed;
         healthRecoveryValue = _statsManager.GetStatValue(Stat.RegenValue);
+
+    }
+
+    public void OnCharacterDeathMission(GameMode _gameMode)
+    {
+        if ((MissionType)_gameMode == MissionType.waveBasedPlayed)
+            MissionManager.Increment(MissionType.waveBasedPlayed, 1);
+        else if ((MissionType)_gameMode == MissionType.survivalPlayed)
+            MissionManager.Increment(MissionType.survivalPlayed, 1);
+        else if ((MissionType)_gameMode == MissionType.objectiveBasedPlayed)
+            MissionManager.Increment(MissionType.objectiveBasedPlayed, 1);
+        else if ((MissionType)_gameMode == MissionType.bossRushPlayed)
+            MissionManager.Increment(MissionType.bossRushPlayed, 1);
+        else if ((MissionType)_gameMode == MissionType.endlessPlayed)
+            MissionManager.Increment(MissionType.endlessPlayed, 1);
+
 
     }
 

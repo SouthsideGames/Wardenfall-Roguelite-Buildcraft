@@ -4,6 +4,7 @@ using UnityEngine;
 using NaughtyAttributes;
 using SouthsideGames.DailyMissions;
 
+
 [RequireComponent(typeof(WaveUI))]
 public class WaveManager : MonoBehaviour, IGameStateListener
 {
@@ -28,15 +29,23 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     private List<float> localCounters = new List<float>();
 
     [Header("GAME MODE:")]
-    [SerializeField] private GameMode selectedGameMode;
+    public GameMode selectedGameMode { get; private set; }
 
     private Wave currentWave;
-    private float survivalScalingTimer; // For Survival mode scaling every 2 minutes
-    private int waveCompletionCount;   // Tracks waves completed for Endless/BossRush scaling
+    private float survivalScalingTimer;
+    private int waveCompletionCount;  
 
     private void Awake()
     {
         ui = GetComponent<WaveUI>();
+
+        CharacterHealth.OnCharacterDeath += CharacterDeathCallback;
+
+    }
+
+    private void OnDestroy()
+    {
+        CharacterHealth.OnCharacterDeath -= CharacterDeathCallback;
     }
 
     private void Update()
@@ -248,6 +257,11 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     {
         selectedGameMode = mode;
         Debug.Log($"Game mode set to: {selectedGameMode}");
+    }
+
+    private void CharacterDeathCallback()
+    {
+        character.health.OnCharacterDeathMission(selectedGameMode);
     }
 }
 

@@ -3,8 +3,6 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class CharacterController : MonoBehaviour, IStats
 {
-    [Header("ELEMENTS:")]
-    [SerializeField] private MobileJoystick joystick;
     private Rigidbody2D _rb;
 
     [Header("SETTINGS:")]
@@ -20,7 +18,7 @@ public class CharacterController : MonoBehaviour, IStats
 
     private void FixedUpdate()
     {
-        _rb.velocity = joystick.GetMoveVector() * moveSpeed * Time.deltaTime;
+        _rb.velocity = InputManager.Instance.GetMoveVector() * moveSpeed * Time.deltaTime;
     }
 
     public void UpdateWeaponStats(CharacterStats _statsManager)

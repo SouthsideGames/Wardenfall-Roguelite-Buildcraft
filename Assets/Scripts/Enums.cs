@@ -62,9 +62,14 @@ public enum MissionType
 {
     wavesCompleted = 0,
     enemiesPopped = 1,
-    weaponsUsed = 2,
-    premiumCurrencyCollected = 3,
-    currencyCollected = 4
+    premiumCurrencyCollected = 2,
+    currencyCollected = 3,
+    waveBasedPlayed = 4,
+    survivalPlayed = 5,
+    endlessPlayed = 6,
+    bossRushPlayed = 7,
+    objectiveBasedPlayed = 8
+    
 
 }
 
