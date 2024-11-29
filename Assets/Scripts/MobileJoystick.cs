@@ -68,7 +68,7 @@ public class MobileJoystick : MonoBehaviour
 
         moveMagnitude = Mathf.Min(moveMagnitude, realWidth);
 
-        move = direction.normalized * moveMagnitude;
+        move = direction.normalized;
 
         Vector3 knobMove = move * moveMagnitude;
         

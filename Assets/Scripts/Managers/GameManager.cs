@@ -11,8 +11,9 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     public static Action OnGamePaused;
     public static Action OnGameResumed; 
-    public static Action OnWaveCompleted; 
+    public static Action OnWaveCompleted;
 
+    private GameState gameState;
 
     private void Awake()
     {
@@ -37,6 +38,8 @@ public class GameManager : MonoBehaviour
 
     public void SetGameState(GameState _gameState)
     {
+        gameState = _gameState;
+
         IEnumerable<IGameStateListener> gameStateListeners = 
             FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None)
             .OfType<IGameStateListener>();   
@@ -83,6 +86,7 @@ public class GameManager : MonoBehaviour
         ManageGameOver();
     }
 
+    public bool InGameState() => gameState == GameState.Game;
  
 }
 

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class InputManager : MonoBehaviour
 {
@@ -8,9 +9,13 @@ public class InputManager : MonoBehaviour
 
     [Header("ELEMENTS:")]
     [SerializeField] private MobileJoystick joystick;
+    [SerializeField] private InputActionAsset actions;
 
     [Header("SETTINGS:")]
     [SerializeField] private bool forceHandheld = true;
+
+    [Header("INPUT ACTIONS:")]
+    private InputAction movement;
 
     private void Awake()
     {
@@ -21,6 +26,10 @@ public class InputManager : MonoBehaviour
 
         if (SystemInfo.deviceType == DeviceType.Desktop && !forceHandheld)
             joystick.gameObject.SetActive(false);
+
+        movement = actions.FindAction("Movement");
+
+        actions.Enable();
     }
 
     public Vector2 GetMoveVector()
@@ -33,6 +42,6 @@ public class InputManager : MonoBehaviour
 
     private Vector2 GetDesktopMoveVector()
     {
-        return new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        return movement.ReadValue<Vector2>();
     }
 }

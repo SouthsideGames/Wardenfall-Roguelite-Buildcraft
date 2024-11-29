@@ -13,11 +13,17 @@ public class CharacterController : MonoBehaviour, IStats
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>(); 
-        _rb.velocity = Vector2.right;
+       
     }
 
     private void FixedUpdate()
     {
+        if (!GameManager.Instance.InGameState())
+        {
+            _rb.velocity = Vector2.zero;
+            return;
+        }
+
         _rb.velocity = InputManager.Instance.GetMoveVector() * moveSpeed * Time.deltaTime;
     }
 
