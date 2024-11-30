@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,7 @@ public class InputManager : MonoBehaviour
 
     [Header("ELEMENTS:")]
     [SerializeField] private MobileJoystick joystick;
+    [SerializeField] private GameObject pauseButton;
     [SerializeField] private InputActionAsset actions;
 
     [Header("SETTINGS:")]
@@ -16,6 +18,7 @@ public class InputManager : MonoBehaviour
 
     [Header("INPUT ACTIONS:")]
     private InputAction movement;
+    private InputAction pause;
 
     private void Awake()
     {
@@ -25,11 +28,29 @@ public class InputManager : MonoBehaviour
             Destroy(gameObject);
 
         if (SystemInfo.deviceType == DeviceType.Desktop && !forceHandheld)
+        {
             joystick.gameObject.SetActive(false);
+            pauseButton.gameObject.SetActive(false);
+        }
+            
+
 
         movement = actions.FindAction("Movement");
+        pause = actions.FindAction("Pause");
+
+        pause.performed += PauseCallback;
 
         actions.Enable();
+    }
+
+    private void OnDestroy()
+    {
+        pause.performed -= PauseCallback;
+    }
+
+    private void PauseCallback(InputAction.CallbackContext obj)
+    {
+        GameManager.Instance.PauseButtonCallback();
     }
 
     public Vector2 GetMoveVector()

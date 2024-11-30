@@ -50,6 +50,8 @@ public class DropdownContainerUI : MonoBehaviour
         ResetPosition();
     }
 
+    private void OnDisable() => ResetPosition();
+
     private void ResetPosition()
     {
         for(int i = 0; i < itemsCount; i++)

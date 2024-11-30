@@ -1,9 +1,12 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using System;
 
 public class UIManager : MonoBehaviour, IGameStateListener
 {
+    public static Action<Panel> OnPanelShown;
+
     [Header("PANELS:")]
     [SerializeField] private GameObject menuPanel;
     [SerializeField] private GameObject weaponSelectPanel;
@@ -97,11 +100,15 @@ public class UIManager : MonoBehaviour, IGameStateListener
 
     private void ShowPanel(GameObject panel, bool _hidePreviousPanels = true)
     {
+
         if(_hidePreviousPanels)
         {
             foreach (GameObject p in panels)
             {
                 p.SetActive(p == panel);
+
+                if (p == panel)
+                   TriggerPanelAction(panel);
             }
         }
         else
@@ -121,24 +128,105 @@ public class UIManager : MonoBehaviour, IGameStateListener
     {
         AudioManager.Instance.DecreaseMusicVolume();
         pausePanel.SetActive(true);
+
+        TriggerPanelAction(pausePanel);
     }
+
     private void ResumeGameCallback()
     {
         AudioManager.Instance.ResetMusicVolume();   
         pausePanel.SetActive(false);
     }
-    
-    public void ShowConfirmationPanel() =>   confirmationPanel.SetActive(true);
-    public void HideConfirmationPanel() => confirmationPanel.SetActive(false);
-    public void ShowCharacterSelectPanel() => characterSelectPanel.SetActive(true);
-    public void HideCharacterSelectPanel() => characterSelectPanel.SetActive(false);   
-    public void ShowStatisticsPanel() => statisticsPanel.SetActive(true);
-    public void HideStatisticsPanel() => statisticsPanel.SetActive(false);   
-    public void ShowSettingsPanel() => settingPanel.SetActive(true);
-    public void HideSettingsPanel() => settingPanel.SetActive(false);  
-    public void ShowCodexPanel() => codexPanel.SetActive(true);
-    public void HideCodexPanel() => codexPanel.SetActive(false);  
-    public void ShowMissionPanel() => missionPanel.SetActive(true);
-    public void HideMissionPanel() => missionPanel.SetActive(false);  
+
+    public void ShowConfirmationPanel()
+    {
+        confirmationPanel.SetActive(true);
+        TriggerPanelAction(confirmationPanel);
+        ShowPanelInteractability(pausePanel, false);
+    }
+
+    public void HideConfirmationPanel()
+    {
+        confirmationPanel.SetActive(false);
+        TriggerPanelAction(pausePanel);
+        ShowPanelInteractability(pausePanel, true);
+    }
+
+    public void ShowCharacterSelectPanel()
+    {
+        characterSelectPanel.SetActive(true);
+        TriggerPanelAction(characterSelectPanel);
+        menuPanel.SetActive(false);
+    }
+    public void HideCharacterSelectPanel()
+    {
+        characterSelectPanel.SetActive(false);
+        menuPanel.SetActive(true);
+        TriggerPanelAction(menuPanel);
+    }
+
+    public void ShowStatisticsPanel()
+    {
+        statisticsPanel.SetActive(true);
+        TriggerPanelAction(statisticsPanel);
+        menuPanel.SetActive(false);
+    }
+    public void HideStatisticsPanel()
+    {
+        statisticsPanel.SetActive(false);
+        menuPanel.SetActive(true);
+        TriggerPanelAction(menuPanel);
+    }
+
+    public void ShowSettingsPanel()
+    {
+        settingPanel.SetActive(true);
+        TriggerPanelAction(settingPanel);
+        menuPanel.SetActive(false);
+    }
+    public void HideSettingsPanel()
+    {
+        settingPanel.SetActive(false);
+        menuPanel.SetActive(true);
+        TriggerPanelAction(menuPanel);
+    }
+
+    public void ShowCodexPanel()
+    {
+        codexPanel.SetActive(true);
+        TriggerPanelAction(codexPanel);
+        menuPanel.SetActive(false);
+    }
+    public void HideCodexPanel()
+    {
+        codexPanel.SetActive(false);
+        menuPanel.SetActive(true);
+        TriggerPanelAction(menuPanel);
+    }
+
+    public void ShowMissionPanel()
+    {
+        missionPanel.SetActive(true);
+        TriggerPanelAction(missionPanel);
+        menuPanel.SetActive(false);
+    }
+    public void HideMissionPanel()
+    {
+        missionPanel.SetActive(false);
+        menuPanel.SetActive(true);
+        TriggerPanelAction(menuPanel);
+    }
+
+    private void TriggerPanelAction(GameObject _panelObject)
+    {
+        if (_panelObject.TryGetComponent(out Panel panelComponent))
+            OnPanelShown?.Invoke(panelComponent);
+    }
+
+    private void ShowPanelInteractability(GameObject _gameObject, bool _interactable)
+    {
+        if (_gameObject.TryGetComponent(out CanvasGroup cg))
+            cg.interactable = _interactable;
+    }
 
 }
