@@ -11,6 +11,8 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
 {
     public static WaveTransitionManager Instance;
 
+    public static Action<GameObject> OnConfigured;
+
     [Header("CHARACTER INFO:")]
     [SerializeField] private CharacterStats characterStats;
     [SerializeField] private CharacterObjects characterObjects;
@@ -118,6 +120,8 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
             upgradeContainers[i].Button.onClick.AddListener(() => buttonAction?.Invoke()); 
             upgradeContainers[i].Button.onClick.AddListener(() => BonusSelectedCallback());  
         }
+
+        OnConfigured?.Invoke(upgradeContainers[0].gameObject);
     }
 
     private void BonusSelectedCallback()

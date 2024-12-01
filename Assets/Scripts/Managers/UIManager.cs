@@ -52,6 +52,8 @@ public class UIManager : MonoBehaviour, IGameStateListener
         statisticsPanel.SetActive(false);   
         codexPanel.SetActive(false);
 
+       
+
         HideConfirmationPanel();
         HideCharacterSelectPanel();
         HideSettingsPanel();
@@ -223,7 +225,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
             OnPanelShown?.Invoke(panelComponent);
     }
 
-    private void ShowPanelInteractability(GameObject _gameObject, bool _interactable)
+    public static void ShowPanelInteractability(GameObject _gameObject, bool _interactable)
     {
         if (_gameObject.TryGetComponent(out CanvasGroup cg))
             cg.interactable = _interactable;

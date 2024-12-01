@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     public static Action OnGameResumed; 
     public static Action OnWaveCompleted;
 
-    private GameState gameState;
+    public GameState gameState { get; private set; }
 
     private void Awake()
     {

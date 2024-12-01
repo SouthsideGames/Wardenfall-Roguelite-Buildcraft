@@ -9,8 +9,9 @@ using Random = UnityEngine.Random;
 // TODO: update object purchase code to limit the objects from unlimited to limited
 public class ShopManager : MonoBehaviour, IGameStateListener
 {
-    public static Action onItemPurchased;
-
+    public static Action OnItemPurchased;
+    public static Action OnRerollDisabled;
+    
     [Header("ELEMENTS:")]
     [SerializeField] private Transform containersParent;
     [SerializeField] private ShopItemContainerUI shopItemButton;
@@ -18,20 +19,29 @@ public class ShopManager : MonoBehaviour, IGameStateListener
     [SerializeField] private int rerollPrice;
     [SerializeField] private TextMeshProUGUI rerollPriceText;
 
+    [Header("SETTINGS")]
+    [SerializeField] private float scrollSpeed;
+
     [Header("PLAYER COMPONENTS:")]
     [SerializeField] private CharacterWeapon characterWeapon;
     [SerializeField] private CharacterObjects characterObject;
 
     private void Awake() 
     {
-        ShopItemContainerUI.onPurchased += ItemPurchasedCallback;
-        CurrencyManager.onCurrencyUpdate += CurrencyUpdatedCallback;
+        ShopItemContainerUI.onPurchased     += ItemPurchasedCallback;
+
+        CurrencyManager.onCurrencyUpdate    += CurrencyUpdatedCallback;
+
+        InputManager.OnScroll               += ScrollCallback;
     }
 
     private void OnDestroy() 
     {
-        ShopItemContainerUI.onPurchased -= ItemPurchasedCallback;
-        CurrencyManager.onCurrencyUpdate -= CurrencyUpdatedCallback;
+        ShopItemContainerUI.onPurchased     -= ItemPurchasedCallback;
+
+        CurrencyManager.onCurrencyUpdate    -= CurrencyUpdatedCallback;
+
+        InputManager.OnScroll               -= ScrollCallback;
     }
 
     public void GameStateChangedCallback(GameState _gameState)
@@ -94,8 +104,10 @@ public class ShopManager : MonoBehaviour, IGameStateListener
     private void UpdateRerollVisuals() 
     {
         rerollPriceText.text = rerollPrice.ToString();
-
         rerollButton.interactable = CurrencyManager.Instance.HasEnoughCurrency(rerollPrice);
+
+        if(!rerollButton.interactable)
+            OnRerollDisabled?.Invoke();
     }
 
     
@@ -119,7 +131,7 @@ public class ShopManager : MonoBehaviour, IGameStateListener
            Destroy(_shopItemContainerUI.gameObject);
         }
 
-        onItemPurchased?.Invoke();
+        OnItemPurchased?.Invoke();
     }
 
     private void PurchaseObject(ShopItemContainerUI _shopItemContainerUI)
@@ -130,7 +142,9 @@ public class ShopManager : MonoBehaviour, IGameStateListener
 
         Destroy(_shopItemContainerUI.gameObject);
 
-        onItemPurchased?.Invoke();
+        OnItemPurchased?.Invoke();
     }
+
+    private void ScrollCallback(float _xValue) => containersParent.GetComponent<RectTransform>().anchoredPosition -= _xValue * scrollSpeed * Time.deltaTime * Vector2.right;
 }
  

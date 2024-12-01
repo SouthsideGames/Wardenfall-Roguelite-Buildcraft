@@ -7,7 +7,9 @@ using System;
 
 public class ChestObjectContainerUI : MonoBehaviour
 {
-   [Header("ELEMENTS:")]
+    public static Action<GameObject> OnSpawned;
+
+    [Header("ELEMENTS:")]
     [SerializeField] private Image icon;
     [SerializeField] private TextMeshProUGUI nameText;
 
@@ -39,7 +41,7 @@ public class ChestObjectContainerUI : MonoBehaviour
 
         ConfigureStatContainers(_objectData.BaseStats);
         
-        
+        OnSpawned?.Invoke(CollectButton.gameObject);
 
     }
 

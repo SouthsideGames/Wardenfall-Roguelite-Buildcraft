@@ -8,6 +8,10 @@ public class InputManager : MonoBehaviour
 {
     public static InputManager Instance;
 
+    public static Action OnCancel;
+    public static Action OnLock;
+    public static Action<float> OnScroll;
+
     [Header("ELEMENTS:")]
     [SerializeField] private MobileJoystick joystick;
     [SerializeField] private GameObject pauseButton;
@@ -17,8 +21,11 @@ public class InputManager : MonoBehaviour
     [SerializeField] private bool forceHandheld = true;
 
     [Header("INPUT ACTIONS:")]
-    private InputAction movement;
-    private InputAction pause;
+    private InputAction movementAction;
+    private InputAction pauseAction;
+    private InputAction cancelAction;
+    private InputAction lockAction;
+    private InputAction scrollViewAction;
 
     private void Awake()
     {
@@ -35,22 +42,26 @@ public class InputManager : MonoBehaviour
             
 
 
-        movement = actions.FindAction("Movement");
-        pause = actions.FindAction("Pause");
+        movementAction      = actions.FindAction("Movement");
+        pauseAction         = actions.FindAction("Pause");
+        cancelAction        = actions.FindAction("Cancel");
+        lockAction          = actions.FindAction("Lock");
+        scrollViewAction    = actions.FindAction("ScrollView");
 
-        pause.performed += PauseCallback;
+        pauseAction.performed       += PauseCallback;
+        cancelAction.performed      += CancelCallback;
+        lockAction.performed        += LockCallback;
+        scrollViewAction.performed  += ScrollCallback;
 
         actions.Enable();
     }
 
     private void OnDestroy()
     {
-        pause.performed -= PauseCallback;
-    }
-
-    private void PauseCallback(InputAction.CallbackContext obj)
-    {
-        GameManager.Instance.PauseButtonCallback();
+        pauseAction.performed       -= PauseCallback;
+        cancelAction.performed      -= CancelCallback;
+        lockAction.performed        -= LockCallback;
+        scrollViewAction.performed  -= ScrollCallback;
     }
 
     public Vector2 GetMoveVector()
@@ -61,8 +72,17 @@ public class InputManager : MonoBehaviour
             return joystick.GetMoveVector();
     }
 
-    private Vector2 GetDesktopMoveVector()
+    private Vector2 GetDesktopMoveVector() => movementAction.ReadValue<Vector2>();
+    private void PauseCallback(InputAction.CallbackContext obj)
     {
-        return movement.ReadValue<Vector2>();
+        if (GameManager.Instance.gameState == GameState.Game)
+        {
+            GameManager.Instance.PauseButtonCallback();
+        }
     }
+
+    private void ScrollCallback(InputAction.CallbackContext rightStick) => OnScroll?.Invoke(rightStick.ReadValue<float>());
+    private void LockCallback(InputAction.CallbackContext context) => OnLock?.Invoke();
+    private void CancelCallback(InputAction.CallbackContext context) => OnCancel?.Invoke(); 
+
 }
