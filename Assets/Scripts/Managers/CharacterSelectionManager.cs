@@ -15,6 +15,9 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
     [SerializeField] private Image characterSelectImage;
     [SerializeField] private CharacterInfoPanelUI characterInfo;
 
+    [Header("SETTINGS")]
+    [SerializeField] private float scrollSpeed;
+
     private CharacterDataSO[] characterDatas;
     private List<bool> characterUnlockStates = new List<bool>();    
     private int selectedCharacterIndex;
@@ -22,6 +25,7 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
     private const string characterUnlockedStatesKey = "CharacterUnlockStatesKey";
     private const string lastSelectedCharacterKey = "LastSelectedCharacterKey";
 
+    private void Awake() => InputManager.OnScroll += ScrollCallback;
     private void Start()
     {
         characterInfo.Button.onClick.RemoveAllListeners();
@@ -29,6 +33,8 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
 
         CharacterSelectCallback(lastSelectedCharacterIndex);
     }
+
+    private void OnDestroy() => InputManager.OnScroll -= ScrollCallback;
 
     private void Initialize()
     {
@@ -108,4 +114,6 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
         SaveManager.Save(this, characterUnlockedStatesKey, characterUnlockStates);
         SaveManager.Save(this, lastSelectedCharacterKey, lastSelectedCharacterIndex);
     }
+
+    private void ScrollCallback(float _xValue) => characterButtonParent.GetComponent<RectTransform>().anchoredPosition -= _xValue * scrollSpeed * Time.deltaTime * Vector2.right;
 }

@@ -10,44 +10,65 @@ using UnityEngine.UI;
 
 public class GameModeManager : MonoBehaviour
 {
-    [Header("Game Mode Buttons")]
-    [SerializeField] private Button waveBasedButton;
-    [SerializeField] private Button survivalButton;
-    [SerializeField] private Button endlessButton;
-    [SerializeField] private Button bossRushButton;
-    [SerializeField] private Button objectiveBasedButton;
+    [Header("ELEMENTS:")]
+    [SerializeField] private Transform buttonContainer;
+    [SerializeField] private GameModeContainerUI gameModeContainerPrefab;
 
     [Header("Wave Manager Reference")]
     [SerializeField] private WaveManager waveManager;
 
     public GameMode CurrentGameMode { get; private set; }
 
-    private void Awake()
+    private GameModeDataSO[] gameModeDatas;
+
+    private void Start()
     {
-        waveBasedButton.onClick.AddListener(() => SetGameMode(GameMode.WaveBased));
-        survivalButton.onClick.AddListener(() => SetGameMode(GameMode.Survival));
-        endlessButton.onClick.AddListener(() => SetGameMode(GameMode.Endless));
-        bossRushButton.onClick.AddListener(() => SetGameMode(GameMode.BossRush));
-        objectiveBasedButton.onClick.AddListener(() => SetGameMode(GameMode.ObjectiveBased));
+        buttonContainer.Clear();
+        LoadGameModeData();
+        GenerateButtons();
     }
 
-    private void SetGameMode(GameMode mode)
+    private void LoadGameModeData()
     {
-        CurrentGameMode = mode;
+        gameModeDatas = Resources.LoadAll<GameModeDataSO>("Data/Game Mode");
+    }
 
-        // Notify the WaveManager (if assigned)
+    private void GenerateButtons()
+    {
+        foreach (var gameModeData in gameModeDatas)
+        {
+            gameModeData.UpdateUnlockState(); 
+            if (gameModeData.IsUnlocked) 
+            {
+                CreateGameModeButton(gameModeData);
+            }
+        }
+    }
+
+    private void CreateGameModeButton(GameModeDataSO gameModeData)
+    {
+        GameModeContainerUI containerInstance = Instantiate(gameModeContainerPrefab, buttonContainer);
+
+        containerInstance.Configure(gameModeData, true);
+
+        containerInstance.GetComponent<Button>().onClick.AddListener(() => SetGameMode(gameModeData));
+        containerInstance.GetComponent<Button>().onClick.AddListener(() => GameManager.Instance.StartWeaponSelect());
+    }
+
+    private void SetGameMode(GameModeDataSO gameModeData)
+    {
+        Debug.Log($"Game Mode Set: {gameModeData.Name}");
+
         if (waveManager != null)
         {
-            waveManager.SetGameMode(mode);
+            waveManager.SetGameMode(gameModeData.GameMode);
         }
 
-        // Notify all objects implementing IGameModeListener
-        NotifyGameModeListeners(mode);
+        NotifyGameModeListeners(gameModeData.GameMode);
     }
 
     private void NotifyGameModeListeners(GameMode mode)
     {
-        // Find all active objects implementing IGameModeListener
         IEnumerable<IGameModeListener> listeners = FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None)
             .OfType<IGameModeListener>();
 
@@ -57,6 +78,5 @@ public class GameModeManager : MonoBehaviour
             listener.GameModeChangedCallback(mode);
         }
     }
-
     
 }

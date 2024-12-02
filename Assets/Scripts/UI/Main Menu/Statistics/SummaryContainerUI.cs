@@ -40,7 +40,7 @@ public class SummaryContainerUI : MonoBehaviour
             timeSpan.Minutes,
             timeSpan.Seconds);
 
-        totalWavesCompleted.text = $"Total Waves Completed: {stats.TotalWavesCompletedInARun}";
+        totalWavesCompleted.text = $"Total Waves Completed: {stats.TotalWavesCompleted}";
         totalKillsText.text = $"Total Kills: {stats.TotalKills}";
         totalDeathsText.text = $"Total Deaths: {stats.TotalDeaths}";
         totalCandyText.text = $"Total Candy Collected: {stats.TotalCandyCollected}";

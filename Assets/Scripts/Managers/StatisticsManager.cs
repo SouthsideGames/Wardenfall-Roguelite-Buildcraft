@@ -186,7 +186,7 @@ public class StatisticsManager : MonoBehaviour
     private void TotalWaveCompletedHandler()
     {
         CurrentWaveCompleted++;
-        currentStatistics.TotalWavesCompletedInARun++;
+        currentStatistics.TotalWavesCompleted++;
         SaveStats();
     }
 
@@ -287,7 +287,7 @@ public class GameStatistics
     public int MostCandyCollectedInARun;    // Most candy collected in a single run
 
     // Cumulative stats across all runs
-    public int TotalWavesCompletedInARun;   // Total waves completed
+    public int TotalWavesCompleted;   // Total waves completed
     public int TotalKills;                  // Total kills across all runs
     public int TotalDeaths;                 // Total deaths across all runs
     public int TotalCandyCollected;         // Total candy collected across all runs

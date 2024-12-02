@@ -31,9 +31,12 @@ public class SelectorUI : MonoBehaviour
         InventoryManager.OnWeaponFused          += WeaponFusedCallback;  
 
         ChestObjectContainerUI.OnSpawned        += ChestSpawnedCallback;
-
         
         WaveTransitionManager.OnConfigured      += ConfiguredCallback;
+
+        CodexManager.OnDetailsOpen              += DetailOpenCallback;
+        CodexManager.OnBigDetailsOpen           += DetailBigDetailsOpenCallback;
+        CodexManager.OnBigDetailsClosed         += DetailBigDetailsClosedCallback;
 
     }
 
@@ -59,9 +62,14 @@ public class SelectorUI : MonoBehaviour
         ChestObjectContainerUI.OnSpawned        -= ChestSpawnedCallback;
 
         WaveTransitionManager.OnConfigured      -= ConfiguredCallback;
+
+        CodexManager.OnDetailsOpen              -= DetailOpenCallback;
+        CodexManager.OnBigDetailsOpen           -= DetailBigDetailsOpenCallback;
+        CodexManager.OnBigDetailsClosed         -= DetailBigDetailsClosedCallback;
     }
 
-#region CALLBACKS
+
+    #region CALLBACKS
 
     private void LockCallback()
     {
@@ -131,6 +139,11 @@ public class SelectorUI : MonoBehaviour
     private void ConfiguredCallback(GameObject _upgradeContainer) => SetSelectedGameObject(_upgradeContainer);
     private void ChestSpawnedCallback(GameObject _takeButton) => SetSelectedGameObject(_takeButton);
 
+    private void DetailOpenCallback(GameObject _backButton) => SetSelectedGameObject(_backButton);   
+
+    private void DetailBigDetailsOpenCallback(GameObject _closeButton) => SetSelectedGameObject(_closeButton);   
+
+    private void DetailBigDetailsClosedCallback(GameObject _detailBackButton) => SetSelectedGameObject(_detailBackButton);   
 
 #endregion
  
