@@ -1230,8 +1230,8 @@ GameObject:
   - component: {fileID: 7301472025448203449}
   - component: {fileID: 4944972625687796909}
   - component: {fileID: 1145923132818739533}
-  - component: {fileID: 7785115577054758054}
   - component: {fileID: 5139895534359261508}
+  - component: {fileID: 7785115577054758054}
   m_Layer: 5
   m_Name: Card
   m_TagString: Untagged
@@ -1408,6 +1408,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3be25d32fc4ff4c88b3fd3e3a2eb1231, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5139895534359261508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8982097542531683803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6efad0b487f4774d9dcc549a4fec4c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canvas: {fileID: 0}
+  cardRectTransform: {fileID: 5332841543189734342}
+  canvasGroup: {fileID: 4598806148976638620}
 --- !u!114 &7785115577054758054
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1425,18 +1440,3 @@ MonoBehaviour:
   costText: {fileID: 3850645949931527541}
   descriptionText: {fileID: 5881397644613762325}
   effectText: {fileID: 1244546448361975949}
---- !u!114 &5139895534359261508
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8982097542531683803}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6efad0b487f4774d9dcc549a4fec4c9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  canvas: {fileID: 0}
-  cardRectTransform: {fileID: 5332841543189734342}
-  canvasGroup: {fileID: 4598806148976638620}

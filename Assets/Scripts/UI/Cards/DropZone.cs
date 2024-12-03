@@ -7,15 +7,20 @@ public class DropZone : MonoBehaviour, IDropHandler
 {
      [Header("Settings")]
     [SerializeField] private string zoneType; // "ActiveDeck" or "DeckList"
-    [SerializeField] private DeckManager deckManager; // Reference to the DeckManager
+    [SerializeField] private DeckManager deckManager;
 
     public void OnDrop(PointerEventData eventData)
     {
-        // Get the dragged card
-        CardDragHandler draggedCard = eventData.pointerDrag.GetComponent<CardDragHandler>();
-        if (draggedCard != null)
+        MiniCardUI miniIcon = eventData.pointerDrag.GetComponent<MiniCardUI>();
+        CardDragHandler cardDragHandler = eventData.pointerDrag.GetComponent<CardDragHandler>();
+
+        if (miniIcon != null)
         {
-            HandleCardDrop(draggedCard);
+            HandleMiniCardDrop(miniIcon);
+        }
+        else if (cardDragHandler != null)
+        {
+            HandleCardDrop(cardDragHandler);
         }
     }
 
@@ -25,23 +30,33 @@ public class DropZone : MonoBehaviour, IDropHandler
 
         if (zoneType == "ActiveDeck")
         {
-          
-            if (deckManager.TryAddCardToActiveDeck(cardData))
+            if (deckManager.TryAddCardToActiveDeck(cardData, draggedCard.gameObject))
             {
-                Destroy(draggedCard.gameObject);
+                Debug.Log($"Card {cardData.CardName} added to ActiveDeck.");
             }
             else
             {
-                Debug.Log("Not enough space in the Active Deck.");
+                Debug.Log($"Not enough space for card {cardData.CardName} in ActiveDeck.");
                 draggedCard.ResetPosition();
             }
         }
         else if (zoneType == "DeckList")
-            deckManager.RemoveCardFromActiveDeck(cardData);
+        {
+            draggedCard.ResetPosition();
+        }
+    }
+
+    private void HandleMiniCardDrop(MiniCardUI miniCard)
+    {
+        CardSO cardData = miniCard.GetCardData();
+
+        if (zoneType == "DeckList")
+        {
+            deckManager.ReturnMiniCardToDeck(cardData, miniCard);
+        }
         else
         {
-            Debug.LogWarning($"Unknown zone type: {zoneType}");
-            draggedCard.ResetPosition(); 
+            miniCard.ResetPosition();
         }
     }
 }

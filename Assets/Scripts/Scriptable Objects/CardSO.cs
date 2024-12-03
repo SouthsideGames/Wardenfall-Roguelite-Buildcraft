@@ -47,9 +47,7 @@ public class CardSO : ScriptableObject
         }
 
         if (ActivationSound)
-        {
-            AudioSource.PlayClipAtPoint(ActivationSound, target.transform.position);
-        }
+            AudioManager.Instance.PlaySFX(ActivationSound);
     }
 
     // Example Effects
@@ -80,9 +78,5 @@ public class CardSO : ScriptableObject
         }
     }
 
-    public void Collected()
-    {
-        isCollected = true;
-
-    }
+    public void Collected() => isCollected = true;
 }

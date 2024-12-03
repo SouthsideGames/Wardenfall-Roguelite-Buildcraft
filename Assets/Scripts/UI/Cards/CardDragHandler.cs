@@ -5,10 +5,12 @@ using UnityEngine.EventSystems;
 
 public class CardDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
+    
     [Header("ELEMENTS:")]
-    [SerializeField] private Canvas canvas; // Reference to the Canvas for proper UI dragging
-    [SerializeField] private RectTransform cardRectTransform; // Reference to the card's RectTransform
-    [SerializeField] private CanvasGroup canvasGroup; // To control visibility during drag
+    [SerializeField] private Canvas canvas;
+    [SerializeField] private RectTransform cardRectTransform;
+    [SerializeField] private CanvasGroup canvasGroup;
+
     private CardSO cardData;
     private DeckManager deckManager;
 
@@ -33,32 +35,26 @@ public class CardDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         originalPosition = cardRectTransform.anchoredPosition;
         originalParent = cardRectTransform.parent;
 
-        // Bring the card to the front
         cardRectTransform.SetParent(canvas.transform, true);
 
-        canvasGroup.alpha = 0.6f; // Make the card semi-transparent
-        canvasGroup.blocksRaycasts = false; // Allow raycasts to pass through during drag
+        canvasGroup.alpha = 0.6f;
+        canvasGroup.blocksRaycasts = false;
     }
 
-    public void OnDrag(PointerEventData eventData)
-    {
-        cardRectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
-    }
+    public void OnDrag(PointerEventData eventData) => cardRectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
 
     public void OnEndDrag(PointerEventData eventData)
     {
-       Debug.Log($"Pointer entered: {eventData.pointerEnter?.name}");
+        Debug.Log($"Pointer entered: {eventData.pointerEnter?.name}");
 
-        canvasGroup.alpha = 1f; // Restore visibility
-        canvasGroup.blocksRaycasts = true; // Restore raycast blocking
+        canvasGroup.alpha = 1f;
+        canvasGroup.blocksRaycasts = true;
 
         if (eventData.pointerEnter != null && eventData.pointerEnter.CompareTag("ActiveDeck"))
         {
             Debug.Log("Dropped in ActiveDeck");
-            if (deckManager.TryAddCardToActiveDeck(cardData))
-            {
+            if (deckManager.TryAddCardToActiveDeck(cardData, gameObject))
                 Destroy(gameObject);
-            }
             else
             {
                 Debug.Log("Not enough space in ActiveDeck");
@@ -68,7 +64,7 @@ public class CardDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         else if (eventData.pointerEnter != null && eventData.pointerEnter.CompareTag("DeckList"))
         {
             Debug.Log("Dropped in DeckList");
-            deckManager.RemoveCardFromActiveDeck(cardData);
+            ResetPosition(); // DeckList should not directly remove the card
         }
         else
         {
@@ -79,10 +75,7 @@ public class CardDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         cardRectTransform.SetParent(originalParent, true);
     }
 
-    public CardSO GetCardData()
-    {
-        return cardData;
-    }
+    public CardSO GetCardData() => cardData;
 
     public void ResetPosition()
     {
