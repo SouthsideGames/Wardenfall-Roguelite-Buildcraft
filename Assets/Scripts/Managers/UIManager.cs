@@ -23,6 +23,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
     [SerializeField] private GameObject settingPanel;
     [SerializeField] private GameObject codexPanel;
     [SerializeField] private GameObject missionPanel;
+    [SerializeField] private GameObject deckbuilderPanel;
 
     [Header("COUNTER TEXT:")]
     [SerializeField] private TextMeshProUGUI killCounterText;
@@ -215,6 +216,19 @@ public class UIManager : MonoBehaviour, IGameStateListener
     public void HideMissionPanel()
     {
         missionPanel.SetActive(false);
+        menuPanel.SetActive(true);
+        TriggerPanelAction(menuPanel);
+    }
+
+    public void ShowDeckbuilderPanel()
+    {
+        deckbuilderPanel.SetActive(true);
+        TriggerPanelAction(deckbuilderPanel);
+        menuPanel.SetActive(false);
+    }
+    public void HideDeckbuilderPanel()
+    {
+        deckbuilderPanel.SetActive(false);
         menuPanel.SetActive(true);
         TriggerPanelAction(menuPanel);
     }

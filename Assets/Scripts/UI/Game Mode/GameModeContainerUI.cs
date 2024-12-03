@@ -11,7 +11,7 @@ public class GameModeContainerUI : MonoBehaviour
     [SerializeField] private Image icon;
     [SerializeField] private TextMeshProUGUI gameModeNameText;
     [SerializeField] private TextMeshProUGUI descriptionText;
-    public void Configure(GameModeDataSO _gameModeData, bool _isUnlocked)
+    public void Configure(GameModeDataSO _gameModeData)
     {
         icon.sprite = _gameModeData.Icon;
         gameModeNameText.text = _gameModeData.Name;

@@ -70,7 +70,14 @@ public enum MissionType
     bossRushPlayed = 7,
     objectiveBasedPlayed = 8
     
+}
 
+public enum CardEffectType
+{
+    Damage,
+    Buff,
+    Support,
+    Summon
 }
 
 public static class Enums

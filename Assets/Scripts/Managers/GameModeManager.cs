@@ -49,7 +49,7 @@ public class GameModeManager : MonoBehaviour
     {
         GameModeContainerUI containerInstance = Instantiate(gameModeContainerPrefab, buttonContainer);
 
-        containerInstance.Configure(gameModeData, true);
+        containerInstance.Configure(gameModeData);
 
         containerInstance.GetComponent<Button>().onClick.AddListener(() => SetGameMode(gameModeData));
         containerInstance.GetComponent<Button>().onClick.AddListener(() => GameManager.Instance.StartWeaponSelect());

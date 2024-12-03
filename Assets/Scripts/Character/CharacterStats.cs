@@ -9,6 +9,7 @@ public class CharacterStats : MonoBehaviour
 
     [Header("DATA:")]
     [SerializeField] private CharacterDataSO characterData;
+    public CharacterDataSO CharacterData => characterData;    
 
     [Header("SETTINGS:")]
     private Dictionary<Stat, float> addends = new Dictionary<Stat, float>();  
@@ -33,10 +34,7 @@ public class CharacterStats : MonoBehaviour
         }
     }
 
-    private void OnDestroy() 
-    {
-        CharacterSelectionManager.OnCharacterSelected -= CharacterSelectedCallback;
-    }
+    private void OnDestroy() => CharacterSelectionManager.OnCharacterSelected -= CharacterSelectedCallback;
 
     void Start() => UpdateStats();
 
