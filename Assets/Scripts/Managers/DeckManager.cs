@@ -39,10 +39,7 @@ public class DeckManager : MonoBehaviour
         CharacterSelectionManager.OnCharacterSelected += UpdateDeckForCharacter;
     }
 
-    private void OnDestroy()
-    {
-        CharacterSelectionManager.OnCharacterSelected -= UpdateDeckForCharacter;
-    }
+    private void OnDestroy() => CharacterSelectionManager.OnCharacterSelected -= UpdateDeckForCharacter;
 
     private void Start()
     {
@@ -54,7 +51,7 @@ public class DeckManager : MonoBehaviour
 
     public void FilterCards(CardEffectType effectType)
     {
-        currentFilter = effectType; 
+        currentFilter = effectType;
         deckListContainer.Clear();
 
         foreach (CardSO card in allCards)
@@ -85,18 +82,24 @@ public class DeckManager : MonoBehaviour
 
     public bool TryAddCardToActiveDeck(CardSO card, GameObject cardObject)
     {
-        if (currentDeckLimit >= card.Cost)
+        // Check if the card can be added to the CharacterDeck
+        if (CharacterManager.Instance.deck.AddCard(card))
         {
             activeDeck.Add(card);
             currentDeckLimit -= card.Cost;
             UpdateDeckLimitUI();
             AddMiniIcon(card);
 
-            Destroy(cardObject); // Explicitly remove card from DeckList UI
+            // Remove the card UI from the deck list
+            Destroy(cardObject);
 
             return true;
         }
-        return false;
+        else
+        {
+            Debug.Log($"Card {card.CardName} exceeds the character's deck limit.");
+            return false;
+        }
     }
 
     public void RemoveCardFromActiveDeck(CardSO card)
@@ -104,6 +107,10 @@ public class DeckManager : MonoBehaviour
         if (activeDeck.Contains(card))
         {
             activeDeck.Remove(card);
+
+            // Update the CharacterDeck
+            CharacterManager.Instance.deck.RemoveCard(card);
+
             currentDeckLimit += card.Cost;
             UpdateDeckLimitUI();
             RemoveMiniIcon(card);
@@ -140,6 +147,10 @@ public class DeckManager : MonoBehaviour
         if (activeDeck.Contains(card))
         {
             activeDeck.Remove(card);
+
+            // Update the CharacterDeck
+            CharacterManager.Instance.deck.RemoveCard(card);
+
             currentDeckLimit += card.Cost;
             UpdateDeckLimitUI();
         }
@@ -164,7 +175,6 @@ public class DeckManager : MonoBehaviour
 
     public float GetCanvasScaleFactor()
     {
-        
         return canvas != null ? canvas.scaleFactor : 1f;
     }
 }
