@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 public class MiniCardUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     [SerializeField] private Image iconImage;
-    [SerializeField] private Text costText;
+    [SerializeField] private TextMeshProUGUI costText;
 
     private CardSO cardData;
     private DeckManager deckManager;
