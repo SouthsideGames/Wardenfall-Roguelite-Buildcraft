@@ -27,6 +27,7 @@ public class DeckManager : MonoBehaviour
     private List<CardSO> activeDeck = new List<CardSO>();
     private int currentDeckLimit;
     private int deckLimitMax;
+    private CardEffectType currentFilter;
 
     private void Awake()
     {
@@ -51,11 +52,9 @@ public class DeckManager : MonoBehaviour
         UpdateDeckLimitUI();
     }
 
-    /// <summary>
-    /// Filters and displays cards in the deck list by type.
-    /// </summary>
     public void FilterCards(CardEffectType effectType)
     {
+        currentFilter = effectType; 
         deckListContainer.Clear();
 
         foreach (CardSO card in allCards)
@@ -75,9 +74,6 @@ public class DeckManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Updates the deck and character info based on the selected character.
-    /// </summary>
     private void UpdateDeckForCharacter(CharacterDataSO characterData)
     {
         characterIcon.sprite = characterData.Icon;
@@ -87,26 +83,22 @@ public class DeckManager : MonoBehaviour
         FilterCards(CardEffectType.Damage);
     }
 
-   public bool TryAddCardToActiveDeck(CardSO card, GameObject cardObject)
-{
-    if (currentDeckLimit >= card.Cost)
+    public bool TryAddCardToActiveDeck(CardSO card, GameObject cardObject)
     {
-        activeDeck.Add(card);
-        currentDeckLimit -= card.Cost;
-        UpdateDeckLimitUI();
-        AddMiniIcon(card);
+        if (currentDeckLimit >= card.Cost)
+        {
+            activeDeck.Add(card);
+            currentDeckLimit -= card.Cost;
+            UpdateDeckLimitUI();
+            AddMiniIcon(card);
 
-        // Remove the card object from the DeckListContainer
-        Destroy(cardObject);
+            Destroy(cardObject); // Explicitly remove card from DeckList UI
 
-        return true;
+            return true;
+        }
+        return false;
     }
-    return false;
-}
 
-    /// <summary>
-    /// Removes a card from the active deck.
-    /// </summary>
     public void RemoveCardFromActiveDeck(CardSO card)
     {
         if (activeDeck.Contains(card))
@@ -118,17 +110,11 @@ public class DeckManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Updates the displayed deck limit.
-    /// </summary>
     private void UpdateDeckLimitUI()
     {
         deckLimitText.text = $"Deck Limit: {deckLimitMax - currentDeckLimit}/{deckLimitMax}";
     }
 
-    /// <summary>
-    /// Adds a mini icon for the card to the active deck UI.
-    /// </summary>
     private void AddMiniIcon(CardSO card)
     {
         GameObject miniIcon = Instantiate(miniIconPrefab, activeDeckParent);
@@ -136,9 +122,6 @@ public class DeckManager : MonoBehaviour
         iconUI.Configure(card.Icon, card.Cost, card, this);
     }
 
-    /// <summary>
-    /// Removes a mini icon for the card from the active deck UI.
-    /// </summary>
     private void RemoveMiniIcon(CardSO card)
     {
         foreach (Transform child in activeDeckParent)
@@ -152,9 +135,6 @@ public class DeckManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Returns a mini card to the deck list.
-    /// </summary>
     public void ReturnMiniCardToDeck(CardSO card, MiniCardUI miniCard)
     {
         if (activeDeck.Contains(card))
@@ -166,17 +146,22 @@ public class DeckManager : MonoBehaviour
 
         Destroy(miniCard.gameObject);
 
-        GameObject newCard = Instantiate(cardPrefab, deckListContainer);
-        CardsContainerUI cardUI = newCard.GetComponent<CardsContainerUI>();
-        CardDragHandler dragHandler = newCard.GetComponent<CardDragHandler>();
+        // Check if the card's EffectType matches the current filter
+        if (currentFilter == card.EffectType)
+        {
+            GameObject newCard = Instantiate(cardPrefab, deckListContainer);
+            CardsContainerUI cardUI = newCard.GetComponent<CardsContainerUI>();
+            CardDragHandler dragHandler = newCard.GetComponent<CardDragHandler>();
 
-        cardUI.Configure(card);
-        dragHandler.Configure(card, this);
+            cardUI.Configure(card);
+            dragHandler.Configure(card, this);
+        }
+        else
+        {
+            Debug.Log($"Card {card.CardName} does not match the current filter and was not re-added.");
+        }
     }
 
-    /// <summary>
-    /// Retrieves the canvas scale factor.
-    /// </summary>
     public float GetCanvasScaleFactor()
     {
         
