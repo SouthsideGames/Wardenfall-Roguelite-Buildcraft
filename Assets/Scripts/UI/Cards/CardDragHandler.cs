@@ -54,7 +54,9 @@ public class CardDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         {
             Debug.Log("Dropped in ActiveDeck");
             if (deckManager.TryAddCardToActiveDeck(cardData, gameObject))
-                Destroy(gameObject);
+            {
+                // Card UI is now removed in TryAddCardToActiveDeck
+            }
             else
             {
                 Debug.Log("Not enough space in ActiveDeck");
@@ -63,8 +65,7 @@ public class CardDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         }
         else if (eventData.pointerEnter != null && eventData.pointerEnter.CompareTag("DeckList"))
         {
-            Debug.Log("Dropped in DeckList");
-            ResetPosition(); // DeckList should not directly remove the card
+            ResetPosition(); // Reset back to DeckList if dropped incorrectly
         }
         else
         {
