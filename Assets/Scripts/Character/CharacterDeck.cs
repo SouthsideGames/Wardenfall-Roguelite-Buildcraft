@@ -83,4 +83,26 @@ public class CharacterDeck : MonoBehaviour
             Debug.Log($"- {card.CardName} (Cost: {card.Cost})");
         }
     }
+
+    /// <summary>
+    /// Fills the equippedCards list based on the savedCardIDs from DeckManager.
+    /// </summary>
+    public void FillEquippedCardsFromSavedIDs(List<CardSO> allCards, List<string> savedCardIDs)
+    {
+        equippedCards.Clear();
+
+        foreach (string cardID in savedCardIDs)
+        {
+            CardSO matchingCard = allCards.Find(card => card.ID == cardID);
+            if (matchingCard != null)
+            {
+                equippedCards.Add(matchingCard);
+                Debug.Log($"Added {matchingCard.CardName} to equipped cards.");
+            }
+            else
+            {
+                Debug.LogWarning($"Card with ID {cardID} not found.");
+            }
+        }
+    }
 }

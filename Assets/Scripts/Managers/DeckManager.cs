@@ -1,12 +1,13 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;   
+using UnityEngine.UI;
+using SouthsideGames.SaveManager;
 
-public class DeckManager : MonoBehaviour
+public class DeckManager : MonoBehaviour, IWantToBeSaved
 {
-   public static DeckManager Instance;
+    public static DeckManager Instance;
 
     [Header("DECKLIST ELEMENTS:")]
     [SerializeField] private Transform deckListContainer;
@@ -25,6 +26,7 @@ public class DeckManager : MonoBehaviour
 
     private List<CardSO> allCards = new List<CardSO>();
     private List<CardSO> activeDeck = new List<CardSO>();
+    private List<string> savedCardIDs = new List<string>();
     private int currentDeckLimit;
     private int deckLimitMax;
     private CardEffectType currentFilter;
@@ -39,50 +41,83 @@ public class DeckManager : MonoBehaviour
         CharacterSelectionManager.OnCharacterSelected += UpdateDeckForCharacter;
     }
 
-    private void OnDestroy() => CharacterSelectionManager.OnCharacterSelected -= UpdateDeckForCharacter;
+    private void OnDestroy()
+    {
+        CharacterSelectionManager.OnCharacterSelected -= UpdateDeckForCharacter;
+    }
 
     private void Start()
     {
-        deckLimitMax = CharacterManager.Instance.stats.CharacterData.DeckLimit;
+        // Load all available cards
         allCards.AddRange(Resources.LoadAll<CardSO>(cardsResourceFolder));
-        FilterCards(CardEffectType.Damage);
+
+        // Load saved card IDs
+        Load();
+
+        // Update the active deck with saved data
+        UpdateActiveDeckFromSavedIDs();
+
+        // Set initial deck limit
+        deckLimitMax = CharacterManager.Instance.stats.CharacterData.DeckLimit;
         UpdateDeckLimitUI();
     }
 
-    public void FilterCards(CardEffectType effectType)
+    private void OnDisable()
     {
-        currentFilter = effectType;
-        deckListContainer.Clear();
+        Save();
+    }
 
-        foreach (CardSO card in allCards)
+    public void Save()
+    {
+        // Clear and update the savedCardIDs list
+        savedCardIDs = activeDeck.Select(card => card.ID).ToList();
+
+        // Save the list to the SaveManager
+        SaveManager.Save(this, "ActiveDeckCardIDs", savedCardIDs);
+        Debug.Log($"Saved Active Deck IDs: {string.Join(", ", savedCardIDs)}");
+    }
+
+    public void Load()
+    {
+        // Load saved card IDs
+        if (SaveManager.TryLoad(this, "ActiveDeckCardIDs", out object loadedData) && loadedData is List<string> loadedIDs)
         {
-            if (activeDeck.Contains(card))
-                continue;
-
-            if (card.EffectType == effectType && card.IsCollected)
-            {
-                GameObject newCard = Instantiate(cardPrefab, deckListContainer);
-                CardsContainerUI cardUI = newCard.GetComponent<CardsContainerUI>();
-                CardDragHandler dragHandler = newCard.GetComponent<CardDragHandler>();
-
-                cardUI.Configure(card);
-                dragHandler.Configure(card, this);
-            }
+            savedCardIDs = loadedIDs;
+            Debug.Log($"Loaded Active Deck IDs: {string.Join(", ", savedCardIDs)}");
+        }
+        else
+        {
+            Debug.LogWarning("No saved data found for Active Deck.");
         }
     }
 
-    private void UpdateDeckForCharacter(CharacterDataSO characterData)
+    public void UpdateActiveDeckFromSavedIDs()
     {
-        characterIcon.sprite = characterData.Icon;
-        characterNameText.text = characterData.Name;
-        currentDeckLimit = characterData.DeckLimit;
-        deckLimitText.text = $"Deck Limit: {deckLimitMax}";
-        FilterCards(CardEffectType.Damage);
+        activeDeck.Clear();
+        CharacterManager.Instance.deck.ClearDeck();
+
+        foreach (string cardID in savedCardIDs)
+        {
+            CardSO matchingCard = allCards.FirstOrDefault(card => card.ID == cardID);
+            if (matchingCard != null)
+            {
+                activeDeck.Add(matchingCard);
+                CharacterManager.Instance.deck.AddCard(matchingCard);
+                AddMiniIcon(matchingCard);
+            }
+            else
+            {
+                Debug.LogWarning($"Card with ID {cardID} not found in resources.");
+            }
+        }
+        
+
+         CharacterManager.Instance.deck.FillEquippedCardsFromSavedIDs(allCards, savedCardIDs);
+        UpdateDeckLimitUI();
     }
 
     public bool TryAddCardToActiveDeck(CardSO card, GameObject cardObject)
     {
-        // Check if the card can be added to the CharacterDeck
         if (CharacterManager.Instance.deck.AddCard(card))
         {
             activeDeck.Add(card);
@@ -90,8 +125,8 @@ public class DeckManager : MonoBehaviour
             UpdateDeckLimitUI();
             AddMiniIcon(card);
 
-            // Remove the card UI from the deck list
             Destroy(cardObject);
+            Save();
 
             return true;
         }
@@ -107,19 +142,31 @@ public class DeckManager : MonoBehaviour
         if (activeDeck.Contains(card))
         {
             activeDeck.Remove(card);
-
-            // Update the CharacterDeck
             CharacterManager.Instance.deck.RemoveCard(card);
-
             currentDeckLimit += card.Cost;
             UpdateDeckLimitUI();
             RemoveMiniIcon(card);
+            Save();
         }
     }
 
-    private void UpdateDeckLimitUI()
+    public void FilterCards(CardEffectType effectType)
     {
-        deckLimitText.text = $"Deck Limit: {deckLimitMax - currentDeckLimit}/{deckLimitMax}";
+        currentFilter = effectType;
+        deckListContainer.Clear();
+
+        foreach (CardSO card in allCards)
+        {
+            if (!activeDeck.Contains(card) && (effectType == default || card.EffectType == effectType))
+            {
+                GameObject newCard = Instantiate(cardPrefab, deckListContainer);
+                DecklistCardContainerUI cardUI = newCard.GetComponent<DecklistCardContainerUI>();
+                CardDragHandlerUI dragHandler = newCard.GetComponent<CardDragHandlerUI>();
+
+                cardUI.Configure(card);
+                dragHandler.Configure(card, this);
+            }
+        }
     }
 
     private void AddMiniIcon(CardSO card)
@@ -142,7 +189,26 @@ public class DeckManager : MonoBehaviour
         }
     }
 
-    public void ReturnMiniCardToDeck(CardSO card, MiniCardUI miniCard)
+    private void UpdateDeckLimitUI()
+    {
+        deckLimitText.text = $"Deck Limit: {activeDeck.Count}/{deckLimitMax}";
+    }
+
+    private void UpdateDeckForCharacter(CharacterDataSO characterData)
+    {
+        characterIcon.sprite = characterData.Icon;
+        characterNameText.text = characterData.Name;
+        currentDeckLimit = characterData.DeckLimit;
+        deckLimitText.text = $"Deck Limit: {deckLimitMax}";
+        FilterCards(CardEffectType.Damage);
+    }
+
+    public float GetCanvasScaleFactor()
+    {
+        return canvas != null ? canvas.scaleFactor : 1f;
+    }
+
+       public void ReturnMiniCardToDeck(CardSO card, MiniCardUI miniCard)
     {
         if (activeDeck.Contains(card))
         {
@@ -161,8 +227,8 @@ public class DeckManager : MonoBehaviour
         if (currentFilter == card.EffectType)
         {
             GameObject newCard = Instantiate(cardPrefab, deckListContainer);
-            CardsContainerUI cardUI = newCard.GetComponent<CardsContainerUI>();
-            CardDragHandler dragHandler = newCard.GetComponent<CardDragHandler>();
+            DecklistCardContainerUI cardUI = newCard.GetComponent<DecklistCardContainerUI>();
+            CardDragHandlerUI dragHandler = newCard.GetComponent<CardDragHandlerUI>();
 
             cardUI.Configure(card);
             dragHandler.Configure(card, this);
@@ -173,8 +239,6 @@ public class DeckManager : MonoBehaviour
         }
     }
 
-    public float GetCanvasScaleFactor()
-    {
-        return canvas != null ? canvas.scaleFactor : 1f;
-    }
+
+
 }

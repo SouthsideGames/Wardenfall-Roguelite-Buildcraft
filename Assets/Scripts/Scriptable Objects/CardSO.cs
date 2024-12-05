@@ -4,6 +4,8 @@ using UnityEngine;
 public class CardSO : ScriptableObject
 {
     [Header("ELEMENTS:")]
+    [SerializeField] private string iD;
+    public string ID => iD; 
     [SerializeField] private string cardName;  
     public string CardName => cardName;          
     [SerializeField] private string description;   
@@ -17,15 +19,32 @@ public class CardSO : ScriptableObject
     [SerializeField] private float effectValue;     
     public float EffectValue => effectValue;    
     [SerializeField] private bool isCollected;   
-    public bool IsCollected => isCollected;         
+    public bool IsCollected => isCollected; 
+
+    [Header("TIMERS")]
+    [SerializeField] private float activeTime = 5f;  // How long the effect lasts
+    [SerializeField] private float cooldownTime = 10f; // How long before it can be reused
+    private float activeEndTime;  // Timestamp when the active effect ends
+    private float cooldownEndTime; // Timestamp when the cooldown ends 
 
     [Header("EXTRA:")]
     [SerializeField] private GameObject SpawnPrefab;    
     [SerializeField] private AudioClip ActivationSound;  
 
+  /// <summary>
+    /// Activates the card's effect, starting its active and cooldown timers.
+    /// </summary>
     public void Activate(GameObject target)
     {
+        if (IsCoolingDown())
+        {
+            Debug.LogWarning($"Card {CardName} is cooling down. Cooldown ends in {GetCooldownRemaining()} seconds.");
+            return;
+        }
+
         Debug.Log($"Activating {CardName} on {target.name}");
+        activeEndTime = Time.time + activeTime;
+        cooldownEndTime = activeEndTime + cooldownTime;
 
         switch (EffectType)
         {
@@ -50,7 +69,11 @@ public class CardSO : ScriptableObject
             AudioManager.Instance.PlaySFX(ActivationSound);
     }
 
-    // Example Effects
+    public bool IsActive() => Time.time < activeEndTime;
+    public bool IsCoolingDown() => Time.time < cooldownEndTime && Time.time >= activeEndTime;
+    public float GetActiveTimeRemaining() => Mathf.Max(0, activeEndTime - Time.time);
+    public float GetCooldownRemaining() => Mathf.Max(0, cooldownEndTime - Time.time);
+
     private void ApplyDamage(GameObject target, float damage)
     {
         Debug.Log($"Dealing {damage} damage to {target.name}");

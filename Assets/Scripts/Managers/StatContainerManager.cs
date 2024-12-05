@@ -51,8 +51,6 @@ public class StatContainerManager : MonoBehaviour
                 minFontSize = fontSize;
         }
 
-        //At this point, we have the min font size setup
-
         for (int i = 0; i < _statContainerUIs.Count; i++)
         {
             _statContainerUIs[i].SetFontSize(minFontSize);
