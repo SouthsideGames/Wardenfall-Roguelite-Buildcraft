@@ -5,12 +5,12 @@ using UnityEngine;
 public class CharacterDeck : MonoBehaviour
 {
     [Header("ELEMENTS:")]
-    [SerializeField] private List<CardSO> equippedCards = new List<CardSO>(); 
+        [SerializeField] private List<CardSO> equippedCards = new List<CardSO>(); 
 
-    private int deckLimit; 
+    public int deckLimit { get; private set; }  
     private CharacterDataSO characterData;
 
-    private void Start()
+    private void Awake()
     {
         characterData = CharacterManager.Instance.stats.CharacterData;
 
@@ -84,9 +84,6 @@ public class CharacterDeck : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Fills the equippedCards list based on the savedCardIDs from DeckManager.
-    /// </summary>
     public void FillEquippedCardsFromSavedIDs(List<CardSO> allCards, List<string> savedCardIDs)
     {
         equippedCards.Clear();

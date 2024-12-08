@@ -11,15 +11,15 @@ public class DecklistCardContainerUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI cardNameText;
     [SerializeField] private TextMeshProUGUI costText;
     [SerializeField] private TextMeshProUGUI descriptionText;
-    [SerializeField] private TextMeshProUGUI effectText;
+    [SerializeField] private Image effectIcon;
 
     public void Configure(CardSO _cardSO)
     {
         icon.sprite = _cardSO.Icon;
         cardNameText.text = _cardSO.CardName;
         costText.text = _cardSO.Cost.ToString();
-        descriptionText.text = _cardSO.Description;
-        effectText.text = $"Type: {_cardSO.EffectType}: {_cardSO.EffectValue}";
+        //descriptionText.text = _cardSO.Description;
+        effectIcon.sprite = _cardSO.EffectIcon;
 
     }
 }

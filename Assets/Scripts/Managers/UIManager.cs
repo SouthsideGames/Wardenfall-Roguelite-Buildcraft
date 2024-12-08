@@ -59,6 +59,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
         HideCharacterSelectPanel();
         HideSettingsPanel();
         HideMissionPanel();
+        HideDeckbuilderPanel();
     
     }
 

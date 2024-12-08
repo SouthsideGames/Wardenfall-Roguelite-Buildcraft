@@ -17,7 +17,11 @@ public class CardSO : ScriptableObject
     [SerializeField] private CardEffectType effectType; 
     public CardEffectType EffectType => effectType; 
     [SerializeField] private float effectValue;     
-    public float EffectValue => effectValue;    
+    public float EffectValue => effectValue;   
+    [SerializeField] private Sprite effectIcon;     
+    public Sprite EffectIcon => effectIcon;  
+    [SerializeField] private CardRarityType rarity;     
+    public CardRarityType Rarity => rarity;    
     [SerializeField] private bool isCollected;   
     public bool IsCollected => isCollected; 
 

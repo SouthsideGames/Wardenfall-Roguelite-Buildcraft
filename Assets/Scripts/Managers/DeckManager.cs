@@ -11,7 +11,7 @@ public class DeckManager : MonoBehaviour, IWantToBeSaved
 
     [Header("DECKLIST ELEMENTS:")]
     [SerializeField] private Transform deckListContainer;
-    [SerializeField] private GameObject cardPrefab;
+    
 
     [Header("CHARACTER ELEMENTS:")]
     [SerializeField] private Image characterIcon;
@@ -20,6 +20,9 @@ public class DeckManager : MonoBehaviour, IWantToBeSaved
     [SerializeField] private GameObject miniIconPrefab;
     [SerializeField] private TextMeshProUGUI deckLimitText;
 
+    [Header("CARD FRAMES BY RARITY")]
+    [SerializeField] private List<CardFrameMapping> cardFramesByRarity;
+
     [Header("SETTINGS:")]
     [SerializeField] private string cardsResourceFolder = "Data/Cards";
     [SerializeField] private Canvas canvas;
@@ -27,6 +30,7 @@ public class DeckManager : MonoBehaviour, IWantToBeSaved
     private List<CardSO> allCards = new List<CardSO>();
     private List<CardSO> activeDeck = new List<CardSO>();
     private List<string> savedCardIDs = new List<string>();
+    private Dictionary<CardRarityType, GameObject> cardFrameDictionary;
     private int currentDeckLimit;
     private int deckLimitMax;
     private CardEffectType currentFilter;
@@ -39,6 +43,7 @@ public class DeckManager : MonoBehaviour, IWantToBeSaved
             Destroy(gameObject);
 
         CharacterSelectionManager.OnCharacterSelected += UpdateDeckForCharacter;
+        InitializeCardFrames();
     }
 
     private void OnDestroy()
@@ -48,18 +53,14 @@ public class DeckManager : MonoBehaviour, IWantToBeSaved
 
     private void Start()
     {
-        // Load all available cards
         allCards.AddRange(Resources.LoadAll<CardSO>(cardsResourceFolder));
 
-        // Load saved card IDs
         Load();
 
-        // Update the active deck with saved data
+        InitializeDeckLimitMax();
         UpdateActiveDeckFromSavedIDs();
-
-        // Set initial deck limit
-        deckLimitMax = CharacterManager.Instance.stats.CharacterData.DeckLimit;
         UpdateDeckLimitUI();
+        FilterCards(CardEffectType.None);
     }
 
     private void OnDisable()
@@ -69,25 +70,36 @@ public class DeckManager : MonoBehaviour, IWantToBeSaved
 
     public void Save()
     {
-        // Clear and update the savedCardIDs list
         savedCardIDs = activeDeck.Select(card => card.ID).ToList();
 
-        // Save the list to the SaveManager
         SaveManager.Save(this, "ActiveDeckCardIDs", savedCardIDs);
         Debug.Log($"Saved Active Deck IDs: {string.Join(", ", savedCardIDs)}");
     }
 
     public void Load()
     {
-        // Load saved card IDs
         if (SaveManager.TryLoad(this, "ActiveDeckCardIDs", out object loadedData) && loadedData is List<string> loadedIDs)
         {
             savedCardIDs = loadedIDs;
-            Debug.Log($"Loaded Active Deck IDs: {string.Join(", ", savedCardIDs)}");
         }
-        else
+
+    }
+
+    private void InitializeDeckLimitMax()
+    {
+        deckLimitMax = CharacterManager.Instance.deck.deckLimit;
+         UpdateDeckLimitUI();
+    }
+
+    private void InitializeCardFrames()
+    {
+        cardFrameDictionary = new Dictionary<CardRarityType, GameObject>();
+        foreach (CardFrameMapping mapping in cardFramesByRarity)
         {
-            Debug.LogWarning("No saved data found for Active Deck.");
+            if (!cardFrameDictionary.ContainsKey(mapping.rarity))
+            {
+                cardFrameDictionary.Add(mapping.rarity, mapping.cardFramePrefab);
+            }
         }
     }
 
@@ -105,61 +117,73 @@ public class DeckManager : MonoBehaviour, IWantToBeSaved
                 CharacterManager.Instance.deck.AddCard(matchingCard);
                 AddMiniIcon(matchingCard);
             }
-            else
-            {
-                Debug.LogWarning($"Card with ID {cardID} not found in resources.");
-            }
         }
         
 
-         CharacterManager.Instance.deck.FillEquippedCardsFromSavedIDs(allCards, savedCardIDs);
+        CharacterManager.Instance.deck.FillEquippedCardsFromSavedIDs(allCards, savedCardIDs);
         UpdateDeckLimitUI();
     }
 
     public bool TryAddCardToActiveDeck(CardSO card, GameObject cardObject)
     {
-        if (CharacterManager.Instance.deck.AddCard(card))
-        {
-            activeDeck.Add(card);
-            currentDeckLimit -= card.Cost;
-            UpdateDeckLimitUI();
-            AddMiniIcon(card);
+        int newDeckCost = activeDeck.Sum(c => c.Cost) + card.Cost;
 
-            Destroy(cardObject);
-            Save();
+        if (newDeckCost <= deckLimitMax)
+        {
+            activeDeck.Add(card);           
+            CharacterManager.Instance.deck.AddCard(card); 
+            UpdateDeckLimitUI();  
+            AddMiniIcon(card);               
+            Destroy(cardObject);            
+            Save();   
 
             return true;
         }
         else
-        {
-            Debug.Log($"Card {card.CardName} exceeds the character's deck limit.");
             return false;
-        }
     }
 
     public void RemoveCardFromActiveDeck(CardSO card)
     {
         if (activeDeck.Contains(card))
         {
-            activeDeck.Remove(card);
+            activeDeck.Remove(card);         
             CharacterManager.Instance.deck.RemoveCard(card);
-            currentDeckLimit += card.Cost;
-            UpdateDeckLimitUI();
-            RemoveMiniIcon(card);
-            Save();
+            UpdateDeckLimitUI();            
+            RemoveMiniIcon(card);            
+            Save();                         
         }
+
+        FilterCards(currentFilter);
+    }
+
+    public GameObject CreateCard(CardSO card, Transform parent)
+    {
+        if (!cardFrameDictionary.TryGetValue(card.Rarity, out GameObject framePrefab))
+            return null;
+
+        GameObject newCard = Instantiate(framePrefab, parent);
+        DecklistCardContainerUI cardUI = newCard.GetComponent<DecklistCardContainerUI>();
+        cardUI.Configure(card);
+        return newCard;
     }
 
     public void FilterCards(CardEffectType effectType)
     {
         currentFilter = effectType;
-        deckListContainer.Clear();
+
+        foreach (Transform child in deckListContainer)
+            Destroy(child.gameObject);
 
         foreach (CardSO card in allCards)
         {
-            if (!activeDeck.Contains(card) && (effectType == default || card.EffectType == effectType))
+            if (!activeDeck.Contains(card) && 
+                (effectType == CardEffectType.None || card.EffectType == effectType))
             {
-                GameObject newCard = Instantiate(cardPrefab, deckListContainer);
+                if (!cardFrameDictionary.TryGetValue(card.Rarity, out GameObject framePrefab))
+                    continue;
+
+                GameObject newCard = Instantiate(framePrefab, deckListContainer);
                 DecklistCardContainerUI cardUI = newCard.GetComponent<DecklistCardContainerUI>();
                 CardDragHandlerUI dragHandler = newCard.GetComponent<CardDragHandlerUI>();
 
@@ -174,6 +198,8 @@ public class DeckManager : MonoBehaviour, IWantToBeSaved
         GameObject miniIcon = Instantiate(miniIconPrefab, activeDeckParent);
         MiniCardUI iconUI = miniIcon.GetComponent<MiniCardUI>();
         iconUI.Configure(card.Icon, card.Cost, card, this);
+
+        UpdateDeckLimitUI();
     }
 
     private void RemoveMiniIcon(CardSO card)
@@ -191,16 +217,15 @@ public class DeckManager : MonoBehaviour, IWantToBeSaved
 
     private void UpdateDeckLimitUI()
     {
-        deckLimitText.text = $"Deck Limit: {activeDeck.Count}/{deckLimitMax}";
+        int currentDeckCost = activeDeck.Sum(card => card.Cost); // Correct total cost
+        deckLimitText.text = $"Deck Limit: {currentDeckCost}/{deckLimitMax}";
     }
 
     private void UpdateDeckForCharacter(CharacterDataSO characterData)
     {
         characterIcon.sprite = characterData.Icon;
         characterNameText.text = characterData.Name;
-        currentDeckLimit = characterData.DeckLimit;
-        deckLimitText.text = $"Deck Limit: {deckLimitMax}";
-        FilterCards(CardEffectType.Damage);
+        UpdateDeckLimitUI();   
     }
 
     public float GetCanvasScaleFactor()
@@ -208,37 +233,43 @@ public class DeckManager : MonoBehaviour, IWantToBeSaved
         return canvas != null ? canvas.scaleFactor : 1f;
     }
 
-       public void ReturnMiniCardToDeck(CardSO card, MiniCardUI miniCard)
+    public void ReturnMiniCardToDeck(CardSO card, MiniCardUI miniCard)
     {
         if (activeDeck.Contains(card))
         {
             activeDeck.Remove(card);
-
-            // Update the CharacterDeck
             CharacterManager.Instance.deck.RemoveCard(card);
-
             currentDeckLimit += card.Cost;
             UpdateDeckLimitUI();
         }
 
         Destroy(miniCard.gameObject);
 
-        // Check if the card's EffectType matches the current filter
-        if (currentFilter == card.EffectType)
+        if (currentFilter == card.EffectType && 
+            cardFrameDictionary.TryGetValue(card.Rarity, out GameObject framePrefab))
         {
-            GameObject newCard = Instantiate(cardPrefab, deckListContainer);
+            GameObject newCard = Instantiate(framePrefab, deckListContainer);
             DecklistCardContainerUI cardUI = newCard.GetComponent<DecklistCardContainerUI>();
             CardDragHandlerUI dragHandler = newCard.GetComponent<CardDragHandlerUI>();
 
             cardUI.Configure(card);
             dragHandler.Configure(card, this);
         }
-        else
-        {
-            Debug.Log($"Card {card.CardName} does not match the current filter and was not re-added.");
-        }
     }
 
-
-
 }
+
+[System.Serializable]
+public class CardFrameMapping
+{
+    public CardRarityType rarity;
+    public GameObject cardFramePrefab;
+}
+
+[System.Serializable]
+public class MiniCardFrameMapping
+{
+    public CardRarityType rarity;
+    public GameObject miniCardFramePrefab;
+}
+

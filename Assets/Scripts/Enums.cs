@@ -74,10 +74,22 @@ public enum MissionType
 
 public enum CardEffectType
 {
+    None,
     Damage,
     Buff,
     Support,
     Summon
+}
+
+public enum CardRarityType
+{
+    Common,
+    Uncommon,
+    Rare,
+    Epic,
+    Legendary,
+    Mythic,
+    Exalted
 }
 
 public static class Enums
