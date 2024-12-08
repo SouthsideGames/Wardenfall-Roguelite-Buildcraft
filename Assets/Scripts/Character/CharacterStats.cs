@@ -7,6 +7,8 @@ public class CharacterStats : MonoBehaviour
 {
     public static CharacterStats Instance;
 
+    public Action OnDataStored;
+
     [Header("DATA:")]
     [SerializeField] private CharacterDataSO characterData;
     public CharacterDataSO CharacterData => characterData;    
@@ -81,6 +83,7 @@ public class CharacterStats : MonoBehaviour
 
     private void CharacterSelectedCallback(CharacterDataSO _characterData)
     {
+        OnDataStored?.Invoke();
         characterData = _characterData;
         stats = characterData.BaseStats;
 

@@ -43,6 +43,7 @@ public class DeckManager : MonoBehaviour, IWantToBeSaved
             Destroy(gameObject);
 
         CharacterSelectionManager.OnCharacterSelected += UpdateDeckForCharacter;
+
         InitializeCardFrames();
     }
 
@@ -57,7 +58,7 @@ public class DeckManager : MonoBehaviour, IWantToBeSaved
 
         Load();
 
-        InitializeDeckLimitMax();
+    
         UpdateActiveDeckFromSavedIDs();
         UpdateDeckLimitUI();
         FilterCards(CardEffectType.None);
@@ -83,12 +84,6 @@ public class DeckManager : MonoBehaviour, IWantToBeSaved
             savedCardIDs = loadedIDs;
         }
 
-    }
-
-    private void InitializeDeckLimitMax()
-    {
-        deckLimitMax = CharacterManager.Instance.deck.deckLimit;
-         UpdateDeckLimitUI();
     }
 
     private void InitializeCardFrames()
@@ -221,10 +216,11 @@ public class DeckManager : MonoBehaviour, IWantToBeSaved
         deckLimitText.text = $"Deck Limit: {currentDeckCost}/{deckLimitMax}";
     }
 
-    private void UpdateDeckForCharacter(CharacterDataSO characterData)
+    private void UpdateDeckForCharacter(CharacterDataSO _characterData)
     {
-        characterIcon.sprite = characterData.Icon;
-        characterNameText.text = characterData.Name;
+        characterIcon.sprite = _characterData.Icon;
+        characterNameText.text = _characterData.Name;
+        deckLimitMax = _characterData.DeckLimit;
         UpdateDeckLimitUI();   
     }
 

@@ -23,7 +23,7 @@ public class CharacterManager : MonoBehaviour
     [SerializeField] private CircleCollider2D _col;
     [SerializeField] private SpriteRenderer _sr;
     
-
+    
     private void Awake()
     {
         if(Instance == null)

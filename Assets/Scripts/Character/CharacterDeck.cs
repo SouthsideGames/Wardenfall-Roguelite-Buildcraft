@@ -5,12 +5,12 @@ using UnityEngine;
 public class CharacterDeck : MonoBehaviour
 {
     [Header("ELEMENTS:")]
-        [SerializeField] private List<CardSO> equippedCards = new List<CardSO>(); 
+    [SerializeField] private List<CardSO> equippedCards = new List<CardSO>(); 
 
     public int deckLimit { get; private set; }  
     private CharacterDataSO characterData;
 
-    private void Awake()
+    private void Start()
     {
         characterData = CharacterManager.Instance.stats.CharacterData;
 
