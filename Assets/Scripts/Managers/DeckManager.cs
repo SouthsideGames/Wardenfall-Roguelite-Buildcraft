@@ -11,7 +11,8 @@ public class DeckManager : MonoBehaviour, IWantToBeSaved
 
     [Header("DECKLIST ELEMENTS:")]
     [SerializeField] private Transform deckListContainer;
-    
+    [SerializeField] private CardDetailUI cardDetailUI;
+
 
     [Header("CHARACTER ELEMENTS:")]
     [SerializeField] private Image characterIcon;
@@ -269,6 +270,18 @@ public class DeckManager : MonoBehaviour, IWantToBeSaved
             cardUI.Configure(card);
             dragHandler.Configure(card, this);
         }
+    }
+
+    public void ShowCardDetails(CardSO card)
+    {
+        if (cardDetailUI != null)
+            cardDetailUI.ShowDetail(card);
+    }
+
+    public void CloseCardDetails()
+    {
+        if (cardDetailUI != null)
+            cardDetailUI.CloseDetail();
     }
 
 }

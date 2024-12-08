@@ -6,20 +6,27 @@ using UnityEngine.UI;
 
 public class DecklistCardUI : MonoBehaviour
 {
-    [Header("ELEMENTS:")]
+    [Header("Elements")]
     [SerializeField] private Image icon;
     [SerializeField] private TextMeshProUGUI cardNameText;
     [SerializeField] private TextMeshProUGUI costText;
     [SerializeField] private TextMeshProUGUI descriptionText;
     [SerializeField] private Image effectIcon;
+    [SerializeField] private Button detailButton;
 
-    public void Configure(CardSO _cardSO)
+    private CardSO assignedCard;
+
+    public void Configure(CardSO card)
     {
-        icon.sprite = _cardSO.Icon;
-        cardNameText.text = _cardSO.CardName;
-        costText.text = _cardSO.Cost.ToString();
-        //descriptionText.text = _cardSO.Description;
-        effectIcon.sprite = _cardSO.EffectIcon;
+        assignedCard = card;
 
+        icon.sprite = card.Icon;
+        cardNameText.text = card.CardName;
+        costText.text = card.Cost.ToString();
+        descriptionText.text = card.Description;
+        effectIcon.sprite = card.EffectIcon;
+
+        detailButton.onClick.RemoveAllListeners();
+        detailButton.onClick.AddListener(() => DeckManager.Instance.ShowCardDetails(card));
     }
 }
