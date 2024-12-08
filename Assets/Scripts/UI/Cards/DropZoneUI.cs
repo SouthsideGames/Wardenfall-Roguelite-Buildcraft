@@ -11,7 +11,7 @@ public class DropZoneUI : MonoBehaviour, IDropHandler
 
     public void OnDrop(PointerEventData eventData)
     {
-        MiniCardUI miniIcon = eventData.pointerDrag.GetComponent<MiniCardUI>();
+        MiniDecklistCardUI miniIcon = eventData.pointerDrag.GetComponent<MiniDecklistCardUI>();
         CardDragHandlerUI cardDragHandler = eventData.pointerDrag.GetComponent<CardDragHandlerUI>();
 
         if (miniIcon != null)
@@ -46,7 +46,7 @@ public class DropZoneUI : MonoBehaviour, IDropHandler
         }
     }
 
-    private void HandleMiniCardDrop(MiniCardUI miniCard)
+    private void HandleMiniCardDrop(MiniDecklistCardUI miniCard)
     {
         CardSO cardData = miniCard.GetCardData();
 

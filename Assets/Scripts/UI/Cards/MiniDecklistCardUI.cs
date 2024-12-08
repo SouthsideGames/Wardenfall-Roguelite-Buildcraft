@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class MiniCardUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class MiniDecklistCardUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     [SerializeField] private Image iconImage;
     [SerializeField] private TextMeshProUGUI costText;

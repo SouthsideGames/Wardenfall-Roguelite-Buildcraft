@@ -17,11 +17,12 @@ public class DeckManager : MonoBehaviour, IWantToBeSaved
     [SerializeField] private Image characterIcon;
     [SerializeField] private TextMeshProUGUI characterNameText;
     [SerializeField] private Transform activeDeckParent;
-    [SerializeField] private GameObject miniIconPrefab;
     [SerializeField] private TextMeshProUGUI deckLimitText;
 
     [Header("CARD FRAMES BY RARITY")]
     [SerializeField] private List<CardFrameMapping> cardFramesByRarity;
+    [SerializeField] private List<MiniCardFrameMapping> miniCardFramesByRarity;
+
 
     [Header("SETTINGS:")]
     [SerializeField] private string cardsResourceFolder = "Data/Cards";
@@ -31,6 +32,7 @@ public class DeckManager : MonoBehaviour, IWantToBeSaved
     private List<CardSO> activeDeck = new List<CardSO>();
     private List<string> savedCardIDs = new List<string>();
     private Dictionary<CardRarityType, GameObject> cardFrameDictionary;
+    private Dictionary<MiniCardRarityType, GameObject> miniCardFrameDictionary;
     private int currentDeckLimit;
     private int deckLimitMax;
     private CardEffectType currentFilter;
@@ -45,6 +47,7 @@ public class DeckManager : MonoBehaviour, IWantToBeSaved
         CharacterSelectionManager.OnCharacterSelected += UpdateDeckForCharacter;
 
         InitializeCardFrames();
+        InitializeMiniCardFrames();
     }
 
     private void OnDestroy()
@@ -94,6 +97,18 @@ public class DeckManager : MonoBehaviour, IWantToBeSaved
             if (!cardFrameDictionary.ContainsKey(mapping.rarity))
             {
                 cardFrameDictionary.Add(mapping.rarity, mapping.cardFramePrefab);
+            }
+        }
+    }
+
+    private void InitializeMiniCardFrames()
+    {
+        miniCardFrameDictionary = new Dictionary<MiniCardRarityType, GameObject>();
+        foreach (MiniCardFrameMapping mapping in miniCardFramesByRarity)
+        {
+            if (!miniCardFrameDictionary.ContainsKey(mapping.rarity))
+            {
+                miniCardFrameDictionary.Add(mapping.rarity, mapping.miniCardFramePrefab);
             }
         }
     }
@@ -158,7 +173,7 @@ public class DeckManager : MonoBehaviour, IWantToBeSaved
             return null;
 
         GameObject newCard = Instantiate(framePrefab, parent);
-        DecklistCardContainerUI cardUI = newCard.GetComponent<DecklistCardContainerUI>();
+        DecklistCardUI cardUI = newCard.GetComponent<DecklistCardUI>();
         cardUI.Configure(card);
         return newCard;
     }
@@ -179,7 +194,7 @@ public class DeckManager : MonoBehaviour, IWantToBeSaved
                     continue;
 
                 GameObject newCard = Instantiate(framePrefab, deckListContainer);
-                DecklistCardContainerUI cardUI = newCard.GetComponent<DecklistCardContainerUI>();
+                DecklistCardUI cardUI = newCard.GetComponent<DecklistCardUI>();
                 CardDragHandlerUI dragHandler = newCard.GetComponent<CardDragHandlerUI>();
 
                 cardUI.Configure(card);
@@ -190,8 +205,11 @@ public class DeckManager : MonoBehaviour, IWantToBeSaved
 
     private void AddMiniIcon(CardSO card)
     {
-        GameObject miniIcon = Instantiate(miniIconPrefab, activeDeckParent);
-        MiniCardUI iconUI = miniIcon.GetComponent<MiniCardUI>();
+       if (!miniCardFrameDictionary.TryGetValue((MiniCardRarityType)card.Rarity, out GameObject miniFramePrefab))
+            return;
+
+        GameObject miniIcon = Instantiate(miniFramePrefab, activeDeckParent);
+        MiniDecklistCardUI iconUI = miniIcon.GetComponent<MiniDecklistCardUI>();
         iconUI.Configure(card.Icon, card.Cost, card, this);
 
         UpdateDeckLimitUI();
@@ -201,7 +219,7 @@ public class DeckManager : MonoBehaviour, IWantToBeSaved
     {
         foreach (Transform child in activeDeckParent)
         {
-            MiniCardUI iconUI = child.GetComponent<MiniCardUI>();
+            MiniDecklistCardUI iconUI = child.GetComponent<MiniDecklistCardUI>();
             if (iconUI != null && iconUI.MatchesCard(card))
             {
                 Destroy(child.gameObject);
@@ -229,7 +247,7 @@ public class DeckManager : MonoBehaviour, IWantToBeSaved
         return canvas != null ? canvas.scaleFactor : 1f;
     }
 
-    public void ReturnMiniCardToDeck(CardSO card, MiniCardUI miniCard)
+    public void ReturnMiniCardToDeck(CardSO card, MiniDecklistCardUI miniCard)
     {
         if (activeDeck.Contains(card))
         {
@@ -245,7 +263,7 @@ public class DeckManager : MonoBehaviour, IWantToBeSaved
             cardFrameDictionary.TryGetValue(card.Rarity, out GameObject framePrefab))
         {
             GameObject newCard = Instantiate(framePrefab, deckListContainer);
-            DecklistCardContainerUI cardUI = newCard.GetComponent<DecklistCardContainerUI>();
+            DecklistCardUI cardUI = newCard.GetComponent<DecklistCardUI>();
             CardDragHandlerUI dragHandler = newCard.GetComponent<CardDragHandlerUI>();
 
             cardUI.Configure(card);
@@ -265,7 +283,7 @@ public class CardFrameMapping
 [System.Serializable]
 public class MiniCardFrameMapping
 {
-    public CardRarityType rarity;
+    public MiniCardRarityType rarity;
     public GameObject miniCardFramePrefab;
 }
 

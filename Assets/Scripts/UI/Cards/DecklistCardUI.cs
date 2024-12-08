@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DecklistCardContainerUI : MonoBehaviour
+public class DecklistCardUI : MonoBehaviour
 {
     [Header("ELEMENTS:")]
     [SerializeField] private Image icon;

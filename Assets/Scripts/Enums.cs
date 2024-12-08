@@ -92,6 +92,17 @@ public enum CardRarityType
     Exalted
 }
 
+public enum MiniCardRarityType
+{
+    Common,
+    Uncommon,
+    Rare,
+    Epic,
+    Legendary,
+    Mythic,
+    Exalted
+}
+
 public static class Enums
 {
     public static string FormatStatName(Stat _stat)
