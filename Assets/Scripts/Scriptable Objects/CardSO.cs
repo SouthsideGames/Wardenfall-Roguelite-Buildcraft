@@ -7,7 +7,9 @@ public class CardSO : ScriptableObject
     [SerializeField] private string iD;
     public string ID => iD; 
     [SerializeField] private string cardName;  
-    public string CardName => cardName;          
+    public string CardName => cardName;
+    [SerializeField] private string effectName;
+    public string EffectName => effectName;
     [SerializeField] private string description;   
     public string Description => description;      
     [SerializeField] private Sprite icon;    

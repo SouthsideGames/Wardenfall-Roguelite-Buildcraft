@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using System;
 
-public class CardDragHandlerUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class CardDragHandlerUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerDownHandler
 {
-    
+    public static Action<CardSO> OnButtonPressed;
+
     [Header("ELEMENTS:")]
     [SerializeField] private Canvas canvas;
     [SerializeField] private RectTransform cardRectTransform;
@@ -82,5 +84,11 @@ public class CardDragHandlerUI : MonoBehaviour, IBeginDragHandler, IDragHandler,
     {
         cardRectTransform.anchoredPosition = originalPosition;
         cardRectTransform.SetParent(originalParent, true);
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        if(OnButtonPressed != null)
+            OnButtonPressed(cardData);
     }
 }

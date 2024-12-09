@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using SouthsideGames.SaveManager;
+using System;
 
 public class DeckManager : MonoBehaviour, IWantToBeSaved
 {
@@ -11,7 +12,8 @@ public class DeckManager : MonoBehaviour, IWantToBeSaved
 
     [Header("DECKLIST ELEMENTS:")]
     [SerializeField] private Transform deckListContainer;
-    [SerializeField] private CardDetailUI cardDetailUI;
+    [SerializeField] private GameObject cardDetailContainer;
+    public CardDetailUI cardDetailUI { get; private set; }
 
 
     [Header("CHARACTER ELEMENTS:")]
@@ -46,14 +48,18 @@ public class DeckManager : MonoBehaviour, IWantToBeSaved
             Destroy(gameObject);
 
         CharacterSelectionManager.OnCharacterSelected += UpdateDeckForCharacter;
+        CardDragHandlerUI.OnButtonPressed += ShowCardDetails;
 
+        cardDetailUI = cardDetailContainer.GetComponent<CardDetailUI>();
         InitializeCardFrames();
         InitializeMiniCardFrames();
+
     }
 
     private void OnDestroy()
     {
         CharacterSelectionManager.OnCharacterSelected -= UpdateDeckForCharacter;
+        CardDragHandlerUI.OnButtonPressed -= ShowCardDetails;
     }
 
     private void Start()
@@ -274,15 +280,12 @@ public class DeckManager : MonoBehaviour, IWantToBeSaved
 
     public void ShowCardDetails(CardSO card)
     {
+        cardDetailContainer.SetActive(true);
         if (cardDetailUI != null)
             cardDetailUI.ShowDetail(card);
     }
 
-    public void CloseCardDetails()
-    {
-        if (cardDetailUI != null)
-            cardDetailUI.CloseDetail();
-    }
+    public void CloseCardDetails() => cardDetailContainer.SetActive(false);
 
 }
 
