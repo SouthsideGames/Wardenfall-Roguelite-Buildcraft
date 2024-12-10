@@ -25,8 +25,8 @@ public class CodexDetailContainerUI : MonoBehaviour
         {
             GameObject miniCard = Instantiate(miniCardPrefab, miniCardParent);
             
-            CodexMiniCardUI miniCardUI = miniCard.GetComponent<CodexMiniCardUI>();
-            miniCardUI.Initialize(characterData.Icon, characterData.Name, characterData.Description, codexManager);
+            CodexCardUI miniCardUI = miniCard.GetComponent<CodexCardUI>();
+            //miniCardUI.Initialize(characterData.Icon, characterData.Name, characterData.Description, codexManager);
         }
     }
 
@@ -40,8 +40,8 @@ public class CodexDetailContainerUI : MonoBehaviour
         {
             GameObject miniCard = Instantiate(miniCardPrefab, miniCardParent);
             
-            CodexMiniCardUI miniCardUI = miniCard.GetComponent<CodexMiniCardUI>();
-            miniCardUI.Initialize(weaponData.Icon, weaponData.Name, weaponData.Description, codexManager);
+            CodexCardUI miniCardUI = miniCard.GetComponent<CodexCardUI>();
+            //miniCardUI.Initialize(weaponData.Icon, weaponData.Name, weaponData.Description, codexManager);
         }
     }
 
@@ -55,8 +55,8 @@ public class CodexDetailContainerUI : MonoBehaviour
         {
             GameObject miniCard = Instantiate(miniCardPrefab, miniCardParent);
             
-            CodexMiniCardUI miniCardUI = miniCard.GetComponent<CodexMiniCardUI>();
-            miniCardUI.Initialize(objectData.Icon, objectData.Name, objectData.GetFullDescription(), codexManager);
+            CodexCardUI miniCardUI = miniCard.GetComponent<CodexCardUI>();
+            //miniCardUI.Initialize(objectData.Icon, objectData.Name, objectData.GetFullDescription(), codexManager);
         }
     }
 
@@ -70,8 +70,8 @@ public class CodexDetailContainerUI : MonoBehaviour
         {
             GameObject miniCard = Instantiate(miniCardPrefab, miniCardParent);
             
-            CodexMiniCardUI miniCardUI = miniCard.GetComponent<CodexMiniCardUI>();
-            miniCardUI.Initialize(enemyData.Icon, enemyData.Name, enemyData.Description, codexManager);
+            CodexCardUI miniCardUI = miniCard.GetComponent<CodexCardUI>();
+            //miniCardUI.Initialize(enemyData.Icon, enemyData.Name, enemyData.Description, codexManager);
         }
     }
 

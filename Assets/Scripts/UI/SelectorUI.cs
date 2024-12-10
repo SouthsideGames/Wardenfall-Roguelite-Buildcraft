@@ -34,10 +34,6 @@ public class SelectorUI : MonoBehaviour
         
         WaveTransitionManager.OnConfigured      += ConfiguredCallback;
 
-        CodexManager.OnDetailsOpen              += DetailOpenCallback;
-        CodexManager.OnBigDetailsOpen           += DetailBigDetailsOpenCallback;
-        CodexManager.OnBigDetailsClosed         += DetailBigDetailsClosedCallback;
-
     }
 
     private void OnDestroy()
@@ -63,9 +59,6 @@ public class SelectorUI : MonoBehaviour
 
         WaveTransitionManager.OnConfigured      -= ConfiguredCallback;
 
-        CodexManager.OnDetailsOpen              -= DetailOpenCallback;
-        CodexManager.OnBigDetailsOpen           -= DetailBigDetailsOpenCallback;
-        CodexManager.OnBigDetailsClosed         -= DetailBigDetailsClosedCallback;
     }
 
 
