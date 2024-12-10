@@ -4,9 +4,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using System;
 
-public class CardDragHandlerUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerDownHandler
+public class CardHandlerUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerDownHandler
 {
-    public static Action<CardSO> OnButtonPressed;
+     public static Action<CardSO> OnButtonPressed;
 
     [Header("ELEMENTS:")]
     [SerializeField] private Canvas canvas;
@@ -18,6 +18,10 @@ public class CardDragHandlerUI : MonoBehaviour, IBeginDragHandler, IDragHandler,
 
     private Vector2 originalPosition;
     private Transform originalParent;
+
+    private float pointerDownTime;
+    private const float ClickThreshold = 0.2f; // Adjust based on your needs
+    private bool isDragging;
 
     public void Configure(CardSO cardSO, DeckManager manager)
     {
@@ -32,8 +36,16 @@ public class CardDragHandlerUI : MonoBehaviour, IBeginDragHandler, IDragHandler,
         if (!cardRectTransform) cardRectTransform = GetComponent<RectTransform>();
     }
 
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        pointerDownTime = Time.time;
+        isDragging = false;
+    }
+
     public void OnBeginDrag(PointerEventData eventData)
     {
+        isDragging = true;
+
         originalPosition = cardRectTransform.anchoredPosition;
         originalParent = cardRectTransform.parent;
 
@@ -43,31 +55,30 @@ public class CardDragHandlerUI : MonoBehaviour, IBeginDragHandler, IDragHandler,
         canvasGroup.blocksRaycasts = false;
     }
 
-    public void OnDrag(PointerEventData eventData) => cardRectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
+    public void OnDrag(PointerEventData eventData)
+    {
+        if (!isDragging) return;
+        cardRectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
+    }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        Debug.Log($"Pointer entered: {eventData.pointerEnter?.name}");
+        if (!isDragging) return;
 
         canvasGroup.alpha = 1f;
         canvasGroup.blocksRaycasts = true;
 
         if (eventData.pointerEnter != null && eventData.pointerEnter.CompareTag("ActiveDeck"))
         {
-            Debug.Log("Dropped in ActiveDeck");
             if (deckManager.TryAddCardToActiveDeck(cardData, gameObject))
             {
-                // Card UI is now removed in TryAddCardToActiveDeck
+                Debug.Log("Dropped in ActiveDeck");
             }
             else
             {
                 Debug.Log("Not enough space in ActiveDeck");
                 ResetPosition();
             }
-        }
-        else if (eventData.pointerEnter != null && eventData.pointerEnter.CompareTag("DeckList"))
-        {
-            ResetPosition(); // Reset back to DeckList if dropped incorrectly
         }
         else
         {
@@ -78,17 +89,19 @@ public class CardDragHandlerUI : MonoBehaviour, IBeginDragHandler, IDragHandler,
         cardRectTransform.SetParent(originalParent, true);
     }
 
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        if (!isDragging && Time.time - pointerDownTime <= ClickThreshold)
+        {
+            OnButtonPressed?.Invoke(cardData);
+        }
+    }
+
     public CardSO GetCardData() => cardData;
 
     public void ResetPosition()
     {
         cardRectTransform.anchoredPosition = originalPosition;
         cardRectTransform.SetParent(originalParent, true);
-    }
-
-    public void OnPointerDown(PointerEventData eventData)
-    {
-        if(OnButtonPressed != null)
-            OnButtonPressed(cardData);
     }
 }

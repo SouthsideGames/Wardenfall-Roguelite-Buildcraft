@@ -2,7 +2,7 @@ using UnityEngine;
 using TMPro;
 
 [RequireComponent(typeof(TextMeshProUGUI))]
-public class PremiumCurrencyUI : MonoBehaviour
+public class GemCurrencyUI : MonoBehaviour
 {
     private TextMeshProUGUI text;
 
@@ -14,4 +14,3 @@ public class PremiumCurrencyUI : MonoBehaviour
         text.text = _currencyString;
     }
 }
-

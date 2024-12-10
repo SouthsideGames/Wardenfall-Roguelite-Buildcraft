@@ -21,10 +21,7 @@ public class MiniDecklistCardUI : MonoBehaviour, IBeginDragHandler, IDragHandler
         deckManager = manager;
     }
 
-    public CardSO GetCardData()
-    {
-        return cardData;
-    }
+    public CardSO GetCardData() => cardData;
 
     public void OnBeginDrag(PointerEventData eventData)
     {
@@ -33,27 +30,13 @@ public class MiniDecklistCardUI : MonoBehaviour, IBeginDragHandler, IDragHandler
         transform.SetParent(deckManager.transform, true);
     }
 
-    public void OnDrag(PointerEventData eventData)
-    {
-        GetComponent<RectTransform>().anchoredPosition += eventData.delta / deckManager.GetCanvasScaleFactor();
-    }
-
-    public void OnEndDrag(PointerEventData eventData)
-    {
-        ResetPosition();
-    }
-
+    public void OnDrag(PointerEventData eventData) => GetComponent<RectTransform>().anchoredPosition += eventData.delta / deckManager.GetCanvasScaleFactor();
+    public void OnEndDrag(PointerEventData eventData) => ResetPosition();
     public void ResetPosition()
     {
         transform.SetParent(originalParent, true);
         GetComponent<RectTransform>().anchoredPosition = originalPosition;
     }
 
-     /// <summary>
-    /// Checks if this mini card matches the given card data.
-    /// </summary>
-    public bool MatchesCard(CardSO card)
-    {
-        return cardData == card;
-    }
+    public bool MatchesCard(CardSO card) => cardData == card;
 }
