@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using NaughtyAttributes;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class StatisticsManager : MonoBehaviour
 {
@@ -20,7 +22,8 @@ public class StatisticsManager : MonoBehaviour
     private Dictionary<string, UsageInfo> characterUsageDict = new Dictionary<string, UsageInfo>();
     private Dictionary<string, UsageInfo> weaponUsageDict = new Dictionary<string, UsageInfo>();
 
-
+    [Header("ELEMENTS:")]
+    [SerializeField] private Button recordButton;
     [SerializeField] private GameObject recordContainer;
     [SerializeField] private GameObject collectionContainer;
 
@@ -40,7 +43,6 @@ public class StatisticsManager : MonoBehaviour
         GameManager.OnGamePaused += OnGamePausedHandler;
         GameManager.OnGameResumed += OnGameResumedHandler;
         
-
         collectionContainer.SetActive(false);
         recordContainer.SetActive(true);    
 
@@ -64,17 +66,16 @@ public class StatisticsManager : MonoBehaviour
         LoadStats();
 
         lastPlayTimeCheck = Time.time;
+        EventSystem.current.SetSelectedGameObject(recordButton.gameObject);
     }
 
     private void Update()
     {
         if (isTrackingPlayTime)
         {
-            // Accumulate playtime by calculating the difference since the last check
             float deltaTime = Time.time - lastPlayTimeCheck;
-            currentStatistics.TotalPlayTime += deltaTime;  // Increment total playtime
+            currentStatistics.TotalPlayTime += deltaTime; 
 
-            // Update the last checked time to the current time
             lastPlayTimeCheck = Time.time;
         }
     }
@@ -102,18 +103,10 @@ public class StatisticsManager : MonoBehaviour
     [Button]
     public void ClearSaveFile()
     {
-        // Delete the save file if it exists
         if (System.IO.File.Exists(statsFilePath))
-        {
-            System.IO.File.Delete(statsFilePath);
-        }
 
-        // Reset the in-memory stats to default values
         currentStatistics = new GameStatistics();
 
-        Debug.Log("All saved data has been cleared!");
-
-        // Optionally, you could save the reset stats immediately to overwrite any existing data
         SaveStats();
     }
 
@@ -144,7 +137,6 @@ public class StatisticsManager : MonoBehaviour
         if (CurrentWaveCompleted > currentStatistics.MostWavesCompletedInARun)
             currentStatistics.MostWavesCompletedInARun  = CurrentChestCollected;
 
-        // Save the updated stats
         SaveStats();
     }
 
@@ -199,7 +191,6 @@ public class StatisticsManager : MonoBehaviour
 
     private void TotalCharacterDeathHandler()
     {
-        // Increment totalDeaths
         currentStatistics.TotalDeaths++;
         SaveStats(); 
     }
@@ -217,7 +208,6 @@ public class StatisticsManager : MonoBehaviour
     {
         if (isTrackingPlayTime)
         {
-            // Stop tracking and accumulate playtime
             isTrackingPlayTime = false;
 
             float deltaTime = Time.time - lastPlayTimeCheck;
@@ -239,7 +229,7 @@ public class StatisticsManager : MonoBehaviour
         characterUsageDict[characterID].UsageCount++;
         characterUsageDict[characterID].LastUsed = DateTime.Now;
 
-        ConvertDictionariesToLists();  // Convert back to lists before saving
+        ConvertDictionariesToLists(); 
         SaveStats();
     }
 
@@ -253,7 +243,7 @@ public class StatisticsManager : MonoBehaviour
         weaponUsageDict[weaponID].UsageCount++;
         weaponUsageDict[weaponID].LastUsed = DateTime.Now;
 
-        ConvertDictionariesToLists();  // Convert back to lists before saving
+        ConvertDictionariesToLists(); 
         SaveStats();
     }
 

@@ -10,6 +10,7 @@ public class ItemManager : MonoBehaviour
     [SerializeField] private Candy candyPrefab;
     [SerializeField] private Cash cashPrefab;
     [SerializeField] private Chest chestPrefab;
+    [SerializeField] private Gem gemPrefab;
 
     
     [Header("SETTINGS:")]
@@ -17,11 +18,14 @@ public class ItemManager : MonoBehaviour
     [SerializeField] private int cashDropChance;
     [Range(0,100)]
     [SerializeField] private int chestDropChance;
+    [Range(0,100)]
+    [SerializeField] private int gemDropChance;
 
     [Header("Pooling")]
     private ObjectPool<Candy> candyPool;
     private ObjectPool<Cash> cashPool;
     private ObjectPool<Chest> chestPool;
+    private ObjectPool<Gem> gemPool;
 
     private void Awake()
     {
@@ -30,6 +34,7 @@ public class ItemManager : MonoBehaviour
         Candy.OnCollected += ReleaseCandy;
         Cash.onCollected += ReleaseCash;    
         Chest.OnCollected += ReleaseChest;  
+        Gem.OnCollected += ReleaseGem;
     }
 
     private void Start()
@@ -52,6 +57,12 @@ public class ItemManager : MonoBehaviour
             ChestActionOnRelease, 
             ChestActionOnDestroy);
 
+        gemPool = new ObjectPool<Gem>(
+            GemCreateFunction, 
+            GemActionOnGet, 
+            GemActionOnRelease, 
+            GemActionOnDestroy);
+
 
     }
 
@@ -62,15 +73,18 @@ public class ItemManager : MonoBehaviour
         Candy.OnCollected -= ReleaseCandy;
         Cash.onCollected -= ReleaseCash;    
         Chest.OnCollected -= ReleaseChest;
+        Gem.OnCollected -= ReleaseGem;  
     }
 
     private void EnemyDeathCallback(Vector2 _enemyPosition)
     {
-        bool shouldSpawnCash = Random.Range(0, 101) <= cashDropChance;
+       Item itemToDrop = Random.Range(0f, 100f) < cashDropChance ? cashPool.Get() : 
+                      Random.Range(0f, 100f) < gemDropChance ? gemPool.Get() : candyPool.Get();
 
-        Item itemToDrop = shouldSpawnCash ? cashPool.Get() : candyPool.Get();
-
-        itemToDrop.transform.position = _enemyPosition;
+        if (itemToDrop != null)
+        {
+            itemToDrop.transform.position = _enemyPosition;
+        }
 
         TryDropChest(_enemyPosition);
         
@@ -81,6 +95,7 @@ public class ItemManager : MonoBehaviour
     private void ReleaseCandy(Candy _candy) => candyPool.Release(_candy);    
     private void ReleaseCash(Cash _cash) => cashPool.Release(_cash);    
     private void ReleaseChest(Chest _chest) => chestPool.Release(_chest);    
+    private void ReleaseGem(Gem _gem) => gemPool.Release(_gem);    
 
     private void TryDropChest(Vector2 _spawnPosition)
     {
@@ -100,6 +115,11 @@ public class ItemManager : MonoBehaviour
     private void CandyActionOnGet(Candy _candy) => _candy.gameObject.SetActive(true);
     private void CandyActionOnRelease(Candy _candy) =>  _candy.gameObject.SetActive(false);
     private void CandyActionOnDestroy(Candy _candy) => Destroy(_candy.gameObject);
+
+    private Gem GemCreateFunction() => Instantiate(gemPrefab, transform);
+    private void GemActionOnGet(Gem _gem) => _gem.gameObject.SetActive(true);
+    private void GemActionOnRelease(Gem _gem) =>  _gem.gameObject.SetActive(false);
+    private void GemActionOnDestroy(Gem _gem) => Destroy(_gem.gameObject);
 
     private Cash CashCreateFunction() => Instantiate(cashPrefab, transform);
     private void CashActionOnGet(Cash _cash) => _cash.gameObject.SetActive(true);

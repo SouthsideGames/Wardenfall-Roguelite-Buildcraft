@@ -8,15 +8,14 @@ public class CodexCardUI : MonoBehaviour
     [Header("ELEMENTS")]
     [SerializeField] private Image icon;
     [SerializeField] private TextMeshProUGUI cardName;
+    [SerializeField] private Button cardButton;
 
-    private Button cardButton;
     private CharacterDataSO characterData;
     private WeaponDataSO weaponData;
     private ObjectDataSO objectData;
     private EnemyDataSO enemyData;
     private CodexManager codexManager;
 
-    private void Start() => cardButton = GetComponent<Button>();    
 
     public void InitializeCharacterCard(Sprite _icon, string _name, CharacterDataSO _data, CodexManager _manager)
     {

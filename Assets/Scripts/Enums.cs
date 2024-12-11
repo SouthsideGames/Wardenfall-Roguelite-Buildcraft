@@ -68,7 +68,8 @@ public enum MissionType
     survivalPlayed = 5,
     endlessPlayed = 6,
     bossRushPlayed = 7,
-    objectiveBasedPlayed = 8
+    objectiveBasedPlayed = 8,
+    gemCollected = 9
     
 }
 

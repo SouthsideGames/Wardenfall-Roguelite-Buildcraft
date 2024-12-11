@@ -24,12 +24,18 @@ public class CardDetailUI : MonoBehaviour
 
     public void ShowDetail(CardSO card)
     {
-        cardIcon.sprite = card.Icon;
-        cardNameText.text = card.CardName;
-        cardEffectName.text = card.EffectName;
-        cardEffectDescriptionText.text = card.Description;
-        cardRarityText.text = card.Rarity.ToString();
-        cardEffectIcon.sprite = card.EffectIcon;
+       if (card == null)
+        {
+            Debug.LogError("Card data is null.");
+            return;
+        }
+
+        if (cardIcon != null) cardIcon.sprite = card.Icon;
+        if (cardNameText != null) cardNameText.text = card.CardName;
+        if (cardEffectName != null) cardEffectName.text = card.EffectName;
+        if (cardEffectDescriptionText != null) cardEffectDescriptionText.text = card.Description;
+        if (cardRarityText != null) cardRarityText.text = card.Rarity.ToString();
+        if (cardEffectIcon != null) cardEffectIcon.sprite = card.EffectIcon;
 
         UpdateBackgroundColor(card.Rarity);
         UpdateRarityStars(card.Rarity);
@@ -37,19 +43,28 @@ public class CardDetailUI : MonoBehaviour
 
      private void UpdateBackgroundColor(CardRarityType rarity)
     {
-        int rarityIndex = (int)rarity;
+       if (palette == null || backgroundImage == null || effectAreaImage == null)
+        {
+            Debug.LogError("Palette or background references are missing.");
+            return;
+        }
 
-        if (palette != null && palette.cardDetailColors.Length > rarityIndex)
+        int rarityIndex = (int)rarity;
+        if (rarityIndex < palette.cardDetailColors.Length)
         {
             backgroundImage.color = palette.cardDetailColors[rarityIndex];
             effectAreaImage.color = palette.cardDetailColors[rarityIndex];
-
         }
     }
 
     private void UpdateRarityStars(CardRarityType rarity)
     {
-        // Clear existing stars
+        if (rarityStarParent == null || cardStarPrefab == null || cardPlatinumStarPrefab == null)
+        {
+            Debug.LogError("Rarity star references are missing.");
+            return;
+        }
+
         foreach (Transform child in rarityStarParent)
         {
             Destroy(child.gameObject);
@@ -58,7 +73,6 @@ public class CardDetailUI : MonoBehaviour
         int starCount = GetStarCount(rarity);
         GameObject starPrefab = rarity == CardRarityType.Exalted ? cardPlatinumStarPrefab : cardStarPrefab;
 
-        // Spawn stars
         for (int i = 0; i < starCount; i++)
         {
             Instantiate(starPrefab, rarityStarParent);
