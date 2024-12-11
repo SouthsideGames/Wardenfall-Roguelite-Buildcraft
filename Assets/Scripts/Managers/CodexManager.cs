@@ -20,13 +20,13 @@ public class CodexManager : MonoBehaviour
     [SerializeField] private Transform statContainersParent;
     [SerializeField] private GameObject statPrefab;
 
-    private void Awake()
+    private void Awake() => InitializeDropdown();   
+    private void Start()
     {
-        InitializeDropdown();
+        CloseDetailView();
         LoadAndDisplayCharacterCards();
     }
 
-    private void Start() => CloseDetailView();
     private void InitializeDropdown()
     {
         categoryDropdown.ClearOptions();

@@ -14,6 +14,8 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
     public static Action<bool> onVibrateStateChanged;
 
     [Header("ELEMENTS:")]
+    [SerializeField] private Sprite offImage;
+    [SerializeField] private Sprite onImage;
     [SerializeField] private Button sfxButton;
     [SerializeField] private Button musicButton;
     [SerializeField] private Button vibrateButton;
@@ -29,8 +31,6 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
 
 
     [Header("SETTINGS:")]
-    [SerializeField] private Color onColor;
-    [SerializeField] private Color offColor;
     [SerializeField] private String privacyPolicyURL;
     [SerializeField] private GameObject creditsPanel;
 
@@ -136,12 +136,12 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
     {
         if(sfxState)
         {
-            sfxButton.image.color = onColor;
+            musicButton.image.sprite = onImage;
             sfxButton.GetComponentInChildren<TextMeshProUGUI>().text = "ON";
         }
         else 
         {
-            sfxButton.image.color = offColor;
+            musicButton.image.sprite = offImage;
             sfxButton.GetComponentInChildren<TextMeshProUGUI>().text = "OFF";
         }
     }
@@ -150,12 +150,12 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
     {
         if(musicState)
         {
-            musicButton.image.color = onColor;
+            musicButton.image.sprite = onImage;
             musicButton.GetComponentInChildren<TextMeshProUGUI>().text = "ON";
         }
         else 
         {
-            musicButton.image.color = offColor;
+            musicButton.image.sprite = offImage;
             musicButton.GetComponentInChildren<TextMeshProUGUI>().text = "OFF";
         }
     }
@@ -164,12 +164,12 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
     {
         if(vibrateState)
         {
-            vibrateButton.image.color = onColor;
+            musicButton.image.sprite = onImage;
             vibrateButton.GetComponentInChildren<TextMeshProUGUI>().text = "ON";
         }
         else 
         {
-            vibrateButton.image.color = offColor;
+            musicButton.image.sprite = offImage;
             vibrateButton.GetComponentInChildren<TextMeshProUGUI>().text = "OFF";
         }
     }

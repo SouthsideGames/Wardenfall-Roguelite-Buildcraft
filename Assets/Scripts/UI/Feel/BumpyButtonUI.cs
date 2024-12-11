@@ -37,7 +37,7 @@ public class BumpyButtonUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
            return;
 
         LeanTween.cancel(button.gameObject);
-        LeanTween.scale(gameObject, Vector2.one, .6f)
+        LeanTween.scale(gameObject, Vector2.one, .8f)
             .setEase(LeanTweenType.easeOutElastic)
             .setIgnoreTimeScale(true);
     }

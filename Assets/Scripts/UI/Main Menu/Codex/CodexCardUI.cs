@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-
+[RequireComponent(typeof(Button))]
 public class CodexCardUI : MonoBehaviour
 {
     [Header("ELEMENTS")]
@@ -18,11 +16,7 @@ public class CodexCardUI : MonoBehaviour
     private EnemyDataSO enemyData;
     private CodexManager codexManager;
 
-    private void Awake() 
-    {
-        cardButton = GetComponent<Button>();    
-    }
-
+    private void Start() => cardButton = GetComponent<Button>();    
 
     public void InitializeCharacterCard(Sprite _icon, string _name, CharacterDataSO _data, CodexManager _manager)
     {
@@ -58,7 +52,7 @@ public class CodexCardUI : MonoBehaviour
         cardName.text = _name;
         codexManager = _manager;
 
-        cardButton.onClick.RemoveAllListeners();  // Avoid stacking listeners
+        cardButton.onClick.RemoveAllListeners(); 
     }
 
 }
