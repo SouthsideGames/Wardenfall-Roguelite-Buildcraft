@@ -25,7 +25,7 @@ public class CurrencyManager : MonoBehaviour, IWantToBeSaved
         else
             Destroy(gameObject);
 
-        Candy.OnCollected += CandyCollectedCallback;
+        Meat.OnCollected += MeatCollectedCallback;
         Cash.onCollected += CashCollectedCallback;  
         Gem.OnCollected -= GemCollectedCallback;
 
@@ -33,7 +33,7 @@ public class CurrencyManager : MonoBehaviour, IWantToBeSaved
 
     private void OnDestroy() 
     {
-        Candy.OnCollected -= CandyCollectedCallback;
+        Meat.OnCollected -= MeatCollectedCallback;
         Cash.onCollected -= CashCollectedCallback;  
         Gem.OnCollected -= GemCollectedCallback;
     }
@@ -117,7 +117,7 @@ public class CurrencyManager : MonoBehaviour, IWantToBeSaved
     public bool HasEnoughPremiumCurrency(int _amount) => PremiumCurrency >= _amount;
     public void UsePremiumCurrency(int _amount) => AdjustPremiumCurrency(-_amount);
     public void UseGemCurrency(int _amount) => AdjustGemCurrency(-_amount);
-    private void CandyCollectedCallback(Candy _candy) => AdjustCurrency(1);
+    private void MeatCollectedCallback(Meat _meat) => AdjustCurrency(1);
     private void CashCollectedCallback(Cash _cash) => AdjustPremiumCurrency(1);
     private void GemCollectedCallback(Gem _gem) => AdjustGemCurrency(1);    
 }

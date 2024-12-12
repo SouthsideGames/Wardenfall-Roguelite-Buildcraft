@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 public class ItemManager : MonoBehaviour
 {
     [Header("ELEMENTS:")]
-    [SerializeField] private Candy candyPrefab;
+    [SerializeField] private Meat meatPrefab;
     [SerializeField] private Cash cashPrefab;
     [SerializeField] private Chest chestPrefab;
     [SerializeField] private Gem gemPrefab;
@@ -22,7 +22,7 @@ public class ItemManager : MonoBehaviour
     [SerializeField] private int gemDropChance;
 
     [Header("Pooling")]
-    private ObjectPool<Candy> candyPool;
+    private ObjectPool<Meat> meatPool;
     private ObjectPool<Cash> cashPool;
     private ObjectPool<Chest> chestPool;
     private ObjectPool<Gem> gemPool;
@@ -31,7 +31,7 @@ public class ItemManager : MonoBehaviour
     {
         Enemy.OnDeath += EnemyDeathCallback;
         Enemy.OnBossDeath += BossDeathCallback;  
-        Candy.OnCollected += ReleaseCandy;
+        Meat.OnCollected += ReleaseMeat;
         Cash.onCollected += ReleaseCash;    
         Chest.OnCollected += ReleaseChest;  
         Gem.OnCollected += ReleaseGem;
@@ -39,11 +39,11 @@ public class ItemManager : MonoBehaviour
 
     private void Start()
     {
-        candyPool = new ObjectPool<Candy>(
-            CandyCreateFunction, 
-            CandyActionOnGet, 
-            CandyActionOnRelease, 
-            CandyActionOnDestroy);
+        meatPool = new ObjectPool<Meat>(
+            MeatCreateFunction, 
+            MeatActionOnGet, 
+            MeatActionOnRelease, 
+            MeatActionOnDestroy);
 
         cashPool = new ObjectPool<Cash>(
             CashCreateFunction, 
@@ -70,7 +70,7 @@ public class ItemManager : MonoBehaviour
     {
         Enemy.OnDeath -= EnemyDeathCallback;
         Enemy.OnBossDeath -= BossDeathCallback;  
-        Candy.OnCollected -= ReleaseCandy;
+        Meat.OnCollected -= ReleaseMeat;
         Cash.onCollected -= ReleaseCash;    
         Chest.OnCollected -= ReleaseChest;
         Gem.OnCollected -= ReleaseGem;  
@@ -79,7 +79,7 @@ public class ItemManager : MonoBehaviour
     private void EnemyDeathCallback(Vector2 _enemyPosition)
     {
        Item itemToDrop = Random.Range(0f, 100f) < cashDropChance ? cashPool.Get() : 
-                      Random.Range(0f, 100f) < gemDropChance ? gemPool.Get() : candyPool.Get();
+                      Random.Range(0f, 100f) < gemDropChance ? gemPool.Get() : meatPool.Get();
 
         if (itemToDrop != null)
         {
@@ -92,7 +92,7 @@ public class ItemManager : MonoBehaviour
 
     private void BossDeathCallback(Vector2 _bossPosition) =>  DropChest(_bossPosition);
 
-    private void ReleaseCandy(Candy _candy) => candyPool.Release(_candy);    
+    private void ReleaseMeat(Meat _meat) => meatPool.Release(_meat);    
     private void ReleaseCash(Cash _cash) => cashPool.Release(_cash);    
     private void ReleaseChest(Chest _chest) => chestPool.Release(_chest);    
     private void ReleaseGem(Gem _gem) => gemPool.Release(_gem);    
@@ -111,10 +111,10 @@ public class ItemManager : MonoBehaviour
     private void DropChest(Vector2 _spawnPosition) => Instantiate(chestPrefab, _spawnPosition, Quaternion.identity, transform);
 
     #region POOLING
-    private Candy CandyCreateFunction() => Instantiate(candyPrefab, transform);
-    private void CandyActionOnGet(Candy _candy) => _candy.gameObject.SetActive(true);
-    private void CandyActionOnRelease(Candy _candy) =>  _candy.gameObject.SetActive(false);
-    private void CandyActionOnDestroy(Candy _candy) => Destroy(_candy.gameObject);
+    private Meat MeatCreateFunction() => Instantiate(meatPrefab, transform);
+    private void MeatActionOnGet(Meat _meat) => _meat.gameObject.SetActive(true);
+    private void MeatActionOnRelease(Meat _meat) =>  _meat.gameObject.SetActive(false);
+    private void MeatActionOnDestroy(Meat _meat) => Destroy(_meat.gameObject);
 
     private Gem GemCreateFunction() => Instantiate(gemPrefab, transform);
     private void GemActionOnGet(Gem _gem) => _gem.gameObject.SetActive(true);

@@ -11,7 +11,7 @@ public class StatisticsManager : MonoBehaviour
     public GameStatistics currentStatistics = new GameStatistics();
     public int CurrentRunKills {get; private set;}
     public int CurrentWaveCompleted {get; private set;}
-    public int CurrentCandyCollected {get; private set;}
+    public int CurrentMeatCollected {get; private set;}
     public int CurrentChestCollected {get; private set;}
     public int CurrentLevelUp {get; private set;}
 
@@ -35,7 +35,7 @@ public class StatisticsManager : MonoBehaviour
             Destroy(gameObject);
 
 
-        Candy.OnCollected += TotalCandyCollectedHandler;
+        Meat.OnCollected += TotalMeatCollectedHandler;
         Chest.OnCollected += TotalChestCollectedHandler;
         GameManager.OnWaveCompleted += TotalWaveCompletedHandler;
         Enemy.OnEnemyKilled += TotalEnemyKillsHandler;
@@ -51,7 +51,7 @@ public class StatisticsManager : MonoBehaviour
 
     private void OnDestroy() 
     {
-        Candy.OnCollected -= TotalCandyCollectedHandler;
+        Meat.OnCollected -= TotalMeatCollectedHandler;
         Chest.OnCollected -= TotalChestCollectedHandler;
         GameManager.OnWaveCompleted -= TotalWaveCompletedHandler;
         Enemy.OnEnemyKilled -= TotalEnemyKillsHandler;
@@ -114,7 +114,7 @@ public class StatisticsManager : MonoBehaviour
     {
         CurrentRunKills = 0;
         CurrentLevelUp = 0;
-        CurrentCandyCollected = 0;
+        CurrentMeatCollected = 0;
         CurrentChestCollected = 0;
         CurrentWaveCompleted = 0;
     }
@@ -128,8 +128,8 @@ public class StatisticsManager : MonoBehaviour
         if (CurrentLevelUp > currentStatistics.MostLevelUpsInARun)
             currentStatistics.MostLevelUpsInARun = CurrentLevelUp; 
 
-        if (CurrentCandyCollected > currentStatistics.MostCandyCollectedInARun)
-            currentStatistics.MostCandyCollectedInARun = CurrentCandyCollected;
+        if (CurrentMeatCollected > currentStatistics.MostMeatCollectedInARun)
+            currentStatistics.MostMeatCollectedInARun = CurrentMeatCollected;
 
         if (CurrentChestCollected > currentStatistics.MostChestsCollectedInARun)
             currentStatistics.MostChestsCollectedInARun = CurrentChestCollected;
@@ -161,10 +161,10 @@ public class StatisticsManager : MonoBehaviour
 
     #region STATISTICS FUNCTIONS
 
-    private void TotalCandyCollectedHandler(Candy _candy)
+    private void TotalMeatCollectedHandler(Meat _meat)
     {
-        CurrentCandyCollected++;
-        currentStatistics.TotalCandyCollected++;
+        CurrentMeatCollected++;
+        currentStatistics.TotalMeatCollected++;
         SaveStats();
     }
 
@@ -274,13 +274,13 @@ public class GameStatistics
     public int MostKillsInARun;             // Most kills in a single run
     public int MostLevelUpsInARun;          // Most level-ups in a single run
     public int MostChestsCollectedInARun;   // Most chests collected in a single run
-    public int MostCandyCollectedInARun;    // Most candy collected in a single run
+    public int MostMeatCollectedInARun;    // Most candy collected in a single run
 
     // Cumulative stats across all runs
     public int TotalWavesCompleted;   // Total waves completed
     public int TotalKills;                  // Total kills across all runs
     public int TotalDeaths;                 // Total deaths across all runs
-    public int TotalCandyCollected;         // Total candy collected across all runs
+    public int TotalMeatCollected;         // Total candy collected across all runs
     public float TotalPlayTime;               // Total time played
     public int TotalChestCollected;          //Total chest collected across all runs
 

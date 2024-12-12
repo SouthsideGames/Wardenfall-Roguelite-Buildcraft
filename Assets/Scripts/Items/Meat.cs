@@ -4,10 +4,10 @@ using UnityEngine;
 using System;
 using SouthsideGames.DailyMissions;
 
-public class Candy : Item
+public class Meat : Item
 {
     [Header("ACTIONS:")]
-    public static Action<Candy> OnCollected;
+    public static Action<Meat> OnCollected;
     
     protected override void Collected()
     {
