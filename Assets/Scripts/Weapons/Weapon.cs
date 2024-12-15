@@ -8,13 +8,13 @@ public abstract class Weapon : MonoBehaviour, IStats
      [field: SerializeField] public WeaponDataSO WeaponData {get; private set;}  
 
     [Header("ELEMENTS:")]
-    [SerializeField] protected float range;
+    protected float range;
     [SerializeField] protected LayerMask enemyMask;
 
 
     [Header("SETTINGS:")]
-    [SerializeField] protected int damage;
-    [SerializeField] protected float attackDelay;
+    protected int damage;
+    protected float attackDelay;
     protected float attackTimer;
     protected int criticalHitChance;
     protected float criticalHitDamageAmount;

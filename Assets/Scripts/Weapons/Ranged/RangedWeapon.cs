@@ -55,6 +55,7 @@ public class RangedWeapon : Weapon
     protected virtual void Shoot()
     {
         OnBulletFired?.Invoke();
+        anim.Play("Attack");
 
         int damage = GetDamage(out bool isCriticalHit);
 
