@@ -35,7 +35,7 @@ public class EnemyBullet : MonoBehaviour
             _direction.y += .01f;
 
         transform.right = _direction;
-        rb.velocity = _direction * moveSpeed;
+        rb.linearVelocity = _direction * moveSpeed;
         rb.angularVelocity = angularSpeed;
     }
 
@@ -56,7 +56,7 @@ public class EnemyBullet : MonoBehaviour
 
     public void Reload()
     {
-        rb.velocity = Vector2.zero;
+        rb.linearVelocity = Vector2.zero;
         rb.angularVelocity = 0;
         col.enabled = true; 
 

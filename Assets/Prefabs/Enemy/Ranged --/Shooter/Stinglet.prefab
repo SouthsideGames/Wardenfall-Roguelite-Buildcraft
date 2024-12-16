@@ -13,9 +13,10 @@ GameObject:
   - component: {fileID: 4010048583620110479}
   - component: {fileID: 3104981424680506609}
   - component: {fileID: 799529685274165997}
+  - component: {fileID: 6889160504432484258}
   m_Layer: 6
   m_Name: Stinglet
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -51,14 +52,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e05657ae18914dd45b5b93faf8f66205, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sr: {fileID: 6846065440196266612}
+  _spriteRenderer: {fileID: 0}
   spawnIndicator: {fileID: 6901306003155265661}
-  _col: {fileID: 799529685274165997}
+  _collider: {fileID: 0}
+  damage: 0
+  playerDetectionRadius: 5
   maxHealth: 19
+  health: 0
+  isInvincible: 0
   spawnSize: 1.2
   spawnTime: 0.3
   numberOfLoops: 4
-  playerDetectionRadius: 5
+  canPerformCriticalHit: 0
   deathParticles: {fileID: 3100473461851624964}
   showGizmos: 1
 --- !u!114 &4010048583620110479
@@ -129,6 +134,20 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: -0.03999999, y: 0.33399773}
   m_Radius: 0.45600224
+--- !u!114 &6889160504432484258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 796357530644533229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bac90ab437da2d343a676dcf53fb750f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  drainAmount: 1
+  drainInterval: 1
 --- !u!1 &3210812976549072079
 GameObject:
   m_ObjectHideFlags: 0
@@ -180,6 +199,7 @@ SpriteRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -266,6 +286,7 @@ SpriteRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -5135,6 +5156,7 @@ ParticleSystemRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:

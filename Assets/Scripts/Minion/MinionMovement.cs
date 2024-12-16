@@ -58,7 +58,7 @@ public class MinionMovement : MonoBehaviour
     private void MoveTowardsEnemy()
     {
         Vector2 direction = (targetEnemy.transform.position - transform.position).normalized;
-        rb.velocity = direction * moveSpeed;
+        rb.linearVelocity = direction * moveSpeed;
     }
 
     private void OnDrawGizmosSelected()

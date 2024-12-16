@@ -20,11 +20,11 @@ public class CharacterController : MonoBehaviour, IStats
     {
         if (!GameManager.Instance.InGameState())
         {
-            _rb.velocity = Vector2.zero;
+            _rb.linearVelocity = Vector2.zero;
             return;
         }
 
-        _rb.velocity = InputManager.Instance.GetMoveVector() * moveSpeed * Time.deltaTime;
+        _rb.linearVelocity = InputManager.Instance.GetMoveVector() * moveSpeed * Time.deltaTime;
     }
 
     public void UpdateWeaponStats(CharacterStats _statsManager)

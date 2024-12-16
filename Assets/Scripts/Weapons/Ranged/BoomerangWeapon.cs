@@ -1,30 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BoomerangWeapon : RangedWeapon
 {
-    [Header("BOOMERANG SPECIFICS:")]
-    [SerializeField] private float throwDistance;
-    [SerializeField] private Bullet boomerangPrefab;
+    [Header("Boomerang Settings")]
+    [SerializeField, Tooltip("Max travel distance")] private float maxDistance = 7f;
+    [SerializeField, Tooltip("Return speed")] private float returnSpeedMultiplier = 1.5f; 
 
     protected override void Shoot()
     {
-        Bullet boomerang = Instantiate(boomerangPrefab, transform.position, Quaternion.identity);
-        int damage = GetDamage(out bool isCriticalHit);
-        
-        // Initial throw
-        boomerang.Shoot(damage, transform.up, isCriticalHit);
-        StartCoroutine(BoomerangReturn(boomerang));
-    }
-
-    private IEnumerator BoomerangReturn(Bullet boomerang)
-    {
-        yield return new WaitForSeconds(0.5f);
+        OnBulletFired?.Invoke();
+        anim.Play("Attack");
 
         int damage = GetDamage(out bool isCriticalHit);
-        Vector2 returnDirection = -boomerang.transform.right;
-        
-        boomerang.Shoot(damage, returnDirection, isCriticalHit); 
+
+        BoomerangBullet bullet = bulletPool.Get() as BoomerangBullet;
+        bullet.Shoot(damage, transform.up, isCriticalHit, maxDistance, returnSpeedMultiplier);
+
+        PlaySFX();
     }
 }

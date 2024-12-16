@@ -4834,6 +4834,7 @@ ParticleSystemRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4905,7 +4906,7 @@ GameObject:
   - component: {fileID: 8379832437275754500}
   m_Layer: 6
   m_Name: Flarex
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4940,10 +4941,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a4522f0db4acd445b75a35b87c8e116, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sr: {fileID: 3622649619894333103}
+  _spriteRenderer: {fileID: 0}
   spawnIndicator: {fileID: 332598301848273570}
-  _col: {fileID: 8379832437275754500}
-  level: 0
+  _collider: {fileID: 0}
   damage: 5
   playerDetectionRadius: 2
   maxHealth: 200
@@ -5073,6 +5073,7 @@ SpriteRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -5159,6 +5160,7 @@ SpriteRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:

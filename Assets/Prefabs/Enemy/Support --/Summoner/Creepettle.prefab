@@ -4865,6 +4865,7 @@ ParticleSystemRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -9755,6 +9756,7 @@ ParticleSystemRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -9924,6 +9926,7 @@ SpriteRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -10009,7 +10012,7 @@ GameObject:
   - component: {fileID: 2789950900881401301}
   m_Layer: 6
   m_Name: Creepettle
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10046,10 +10049,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d838fe1bebb14966940ffed56ecb3a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sr: {fileID: 262906454086925378}
+  _spriteRenderer: {fileID: 0}
   spawnIndicator: {fileID: 1434686942595017463}
-  _col: {fileID: 2789950900881401301}
-  level: 0
+  _collider: {fileID: 0}
   damage: 0
   playerDetectionRadius: 0
   maxHealth: 5
@@ -10186,6 +10188,7 @@ SpriteRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:

@@ -51,6 +51,7 @@ SpriteRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -137,6 +138,7 @@ SpriteRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -184,9 +186,10 @@ GameObject:
   - component: {fileID: 1905146589038196524}
   - component: {fileID: 3380606989215897294}
   - component: {fileID: 2632007060129678738}
+  - component: {fileID: 1122862972469765393}
   m_Layer: 6
   m_Name: Shellunk
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -271,10 +274,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2180b1eee45ed5445b126a4f1e4d6f53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sr: {fileID: 3120268767642104266}
+  _spriteRenderer: {fileID: 0}
   spawnIndicator: {fileID: 1882422145411493699}
-  _col: {fileID: 3380606989215897294}
-  level: 0
+  _collider: {fileID: 0}
   damage: 20
   playerDetectionRadius: 1.35
   maxHealth: 100
@@ -286,8 +288,23 @@ MonoBehaviour:
   canPerformCriticalHit: 0
   deathParticles: {fileID: 4164785758290427616}
   showGizmos: 1
+  attackRate: 0
   shieldHealth: 50
   shield: {fileID: 2512326149274488663}
+--- !u!114 &1122862972469765393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2145636691612748121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bac90ab437da2d343a676dcf53fb750f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  drainAmount: 1
+  drainInterval: 1
 --- !u!1 &2512326149274488663
 GameObject:
   m_ObjectHideFlags: 0
@@ -339,6 +356,7 @@ SpriteRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -5208,6 +5226,7 @@ ParticleSystemRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:

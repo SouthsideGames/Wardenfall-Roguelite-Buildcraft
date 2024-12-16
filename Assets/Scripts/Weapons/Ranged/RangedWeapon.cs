@@ -10,14 +10,14 @@ public class RangedWeapon : Weapon
 
     [Header("ELEMENTS:")]
     [SerializeField] private Transform firePoint;
-    [SerializeField] private Bullet bulletPrefab;
+    [SerializeField] private BulletBase bulletPrefab;
 
     [Header("POOL:")]
-    public ObjectPool<Bullet> bulletPool {get; private set;}
+    public ObjectPool<BulletBase> bulletPool {get; private set;}
 
     void Start()
     {
-        bulletPool = new ObjectPool<Bullet>(CreateFunction, ActionOnGet, ActionOnRelease, ActionOnDestroy);
+        bulletPool = new ObjectPool<BulletBase>(CreateFunction, ActionOnGet, ActionOnRelease, ActionOnDestroy);
     }
 
     void Update()
@@ -41,7 +41,7 @@ public class RangedWeapon : Weapon
         transform.up = Vector3.Lerp(transform.up, targetUpVector, Time.deltaTime * aimLerp);
     }
 
-    private void ShootLogic()
+    protected void ShootLogic()
     {
         attackTimer += Time.deltaTime;
 
@@ -59,31 +59,31 @@ public class RangedWeapon : Weapon
 
         int damage = GetDamage(out bool isCriticalHit);
 
-        Bullet _bullet = bulletPool.Get();
+        BulletBase _bullet = bulletPool.Get();
         _bullet.Shoot(damage, transform.up, isCriticalHit);
 
         PlaySFX();
     }
 
     #region POOLING
-    private Bullet CreateFunction()
+    private BulletBase CreateFunction()
     {
-        Bullet bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
+        BulletBase bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
         bullet.Configure(this);
         return bullet;
     }
 
-    private void ActionOnGet(Bullet _bullet)
+    private void ActionOnGet(BulletBase _bullet)
     {   
         _bullet.Reload();
         _bullet.transform.position = firePoint.position;
         _bullet.gameObject.SetActive(true);
     }
 
-    private void ActionOnRelease(Bullet _bullet) => _bullet.gameObject.SetActive(false);
-    private void ActionOnDestroy(Bullet _bullet) => Destroy(_bullet.gameObject);
+    private void ActionOnRelease(BulletBase _bullet) => _bullet.gameObject.SetActive(false);
+    private void ActionOnDestroy(BulletBase _bullet) => Destroy(_bullet.gameObject);
 
-    public void ReleaseBullet(Bullet _bullet) => bulletPool.Release(_bullet);
+    public void ReleaseBullet(BulletBase _bullet) => bulletPool.Release(_bullet);
 
     #endregion
 

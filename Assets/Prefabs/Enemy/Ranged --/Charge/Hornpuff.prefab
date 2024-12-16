@@ -4834,6 +4834,7 @@ ParticleSystemRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4941,6 +4942,7 @@ SpriteRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4991,7 +4993,7 @@ GameObject:
   - component: {fileID: 7382393630559290276}
   m_Layer: 6
   m_Name: Hornpuff
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5075,10 +5077,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d558ad2273ccd541a223b61690d12ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sr: {fileID: 4171277772667265588}
+  _spriteRenderer: {fileID: 0}
   spawnIndicator: {fileID: 7310978342789289596}
-  _col: {fileID: 3478709589087782155}
-  level: 0
+  _collider: {fileID: 0}
   damage: 5
   playerDetectionRadius: 0.89
   maxHealth: 5
@@ -5095,7 +5096,6 @@ MonoBehaviour:
   chargeSpeed: 30
   chargeDistance: 20
   cooldownTime: 6
-  attackRate: 0.1
 --- !u!114 &7382393630559290276
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5161,6 +5161,7 @@ SpriteRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
