@@ -15,16 +15,9 @@ public class RangedWeapon : Weapon
     [Header("POOL:")]
     public ObjectPool<BulletBase> bulletPool {get; private set;}
 
-    void Start()
-    {
-        bulletPool = new ObjectPool<BulletBase>(CreateFunction, ActionOnGet, ActionOnRelease, ActionOnDestroy);
-    }
-
-    void Update()
-    {
-        AutoAimLogic();
-    }
-
+    void Start() =>  bulletPool = new ObjectPool<BulletBase>(CreateFunction, ActionOnGet, ActionOnRelease, ActionOnDestroy);
+    void Update() => AutoAimLogic();
+    
     protected override void AutoAimLogic()
     {
         base.AutoAimLogic();
@@ -82,7 +75,6 @@ public class RangedWeapon : Weapon
 
     private void ActionOnRelease(BulletBase _bullet) => _bullet.gameObject.SetActive(false);
     private void ActionOnDestroy(BulletBase _bullet) => Destroy(_bullet.gameObject);
-
     public void ReleaseBullet(BulletBase _bullet) => bulletPool.Release(_bullet);
 
     #endregion

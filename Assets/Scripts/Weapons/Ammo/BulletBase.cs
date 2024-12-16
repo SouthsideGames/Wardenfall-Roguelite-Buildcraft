@@ -12,7 +12,7 @@ public class BulletBase : MonoBehaviour
     protected Rigidbody2D rb;
     private Collider2D col;
     protected RangedWeapon rangedWeapon;
-    private Enemy target;
+    protected Enemy target;
 
     protected virtual void Awake()
     {
@@ -53,25 +53,20 @@ public class BulletBase : MonoBehaviour
         }
     }
 
-    protected virtual void ApplyDamage(Enemy enemy)
-    {
-        enemy.TakeDamage(damage, isCriticalHit);
-    }
-
-    protected virtual void DestroyBullet()
-    {
-        gameObject.SetActive(false);
-    }
-
-    protected bool IsInLayerMask(int layer, LayerMask layerMask)
-    {
-        return (layerMask.value & (1 << layer)) != 0;
-    }
-
+    protected virtual void ApplyDamage(Enemy enemy) => enemy.TakeDamage(damage, isCriticalHit);
+    protected virtual void DestroyBullet() => gameObject.SetActive(false);
+    protected bool IsInLayerMask(int layer, LayerMask layerMask) => (layerMask.value & (1 << layer)) != 0;
     protected virtual void Release()
     {
-        if (!gameObject.activeSelf)
+       if (!gameObject.activeSelf)
+        return;
+
+        if (rangedWeapon == null)
+        {
+            Debug.LogError("RangedWeapon reference is missing! Did you forget to call Configure()?");
+            DestroyBullet();  // Fallback behavior
             return;
+        }
 
         rangedWeapon.ReleaseBullet(this);
     }

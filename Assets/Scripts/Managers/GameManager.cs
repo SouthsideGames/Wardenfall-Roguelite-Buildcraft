@@ -23,14 +23,18 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
     }
 
-    // Start is called before the first frame update
+
     void Start()
     {
         Application.targetFrameRate = 60;
         SetGameState(GameState.Menu);
     }
 
-    public void StartGame() => SetGameState(GameState.Game); 
+    public void StartGame()
+    {
+        SetGameState(GameState.Game); 
+    }
+    
     public void StartGameModeSelect() => SetGameState(GameState.GameModeSelect);   
     public void StartWeaponSelect() => SetGameState(GameState.WeaponSelect);
     public void StartShop() => SetGameState(GameState.Shop);    

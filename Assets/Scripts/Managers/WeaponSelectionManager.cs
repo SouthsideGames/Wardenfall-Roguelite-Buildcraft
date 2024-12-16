@@ -3,12 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using NaughtyAttributes;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class WeaponSelectionManager : MonoBehaviour, IGameStateListener
 {
     [Header("ELEMENTS:")]
     [SerializeField] private Transform containersParent;
     [SerializeField] private WeaponSelectionContainerUI weaponContainerPrefab;
+    [SerializeField] private Button startButton;
     private CharacterWeapon characterWeapon;
 
     [Header("DATA:")]
@@ -16,7 +18,17 @@ public class WeaponSelectionManager : MonoBehaviour, IGameStateListener
     private WeaponDataSO selectedWeapon;
     private int initialWeaponLevel;
 
-    private void Start() => characterWeapon = CharacterManager.Instance.weapon;
+    private void Start()
+    {
+        characterWeapon = CharacterManager.Instance.weapon;
+        startButton.interactable = false;
+    }
+
+    private void Update() 
+    {
+        if(selectedWeapon != null)
+          startButton.interactable = true;
+    }
 
     public void GameStateChangedCallback(GameState _gameState)
     {

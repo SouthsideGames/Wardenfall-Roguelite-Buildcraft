@@ -5,18 +5,26 @@ public class SplitterBullet : BulletBase
     [Header("SPLITTER SETTINGS")]
     [SerializeField] private BulletBase splitBulletPrefab;
     [SerializeField] private float splitDamageMultiplier = 0.5f;
+    [SerializeField] private float maxDistance = 10f;
 
-    private readonly Vector2[] directions =
+    [Header("SPLIT SPAWN POINTS")]
+    [SerializeField] private Transform[] spawnPoints;
+
+    private Vector2 startPosition;
+
+    protected override void Awake()
     {
-        Vector2.up,               // N
-        new Vector2(1, 1).normalized,  // NE
-        Vector2.right,            // E
-        new Vector2(1, -1).normalized, // SE
-        Vector2.down,             // S
-        new Vector2(-1, -1).normalized, // SW
-        Vector2.left,             // W
-        new Vector2(-1, 1).normalized   // NW
-    };
+        base.Awake();
+        startPosition = transform.position;
+    }
+
+    private void Update()
+    {
+        if (Vector2.Distance(transform.position, startPosition) >= maxDistance)
+        {
+            TriggerSplit();
+        }
+    }
 
     protected override void OnTriggerEnter2D(Collider2D collider)
     {
@@ -25,23 +33,32 @@ public class SplitterBullet : BulletBase
             Enemy enemy = collider.GetComponent<Enemy>();
             if (enemy != null)
             {
-                ApplyDamage(enemy);
+                ApplyDamage(enemy); 
             }
 
-            SpawnSplitBullets();
-            DestroyBullet();
+            TriggerSplit();
         }
+    }
+
+    private void TriggerSplit()
+    {
+        SpawnSplitBullets();
+        DestroyBullet();
+        SplitterWeapon.OnAmmoAFinished?.Invoke(); 
     }
 
     private void SpawnSplitBullets()
     {
-        foreach (Vector2 direction in directions)
+        if (spawnPoints == null || spawnPoints.Length == 0)
         {
-            BulletBase splitBullet = Instantiate(splitBulletPrefab, transform.position, Quaternion.identity);
-            splitBullet.Shoot(Mathf.RoundToInt(damage * splitDamageMultiplier), Vector2.zero, isCriticalHit);
+            Debug.LogError("No spawn points assigned!");
+            return;
+        }
 
-            // Stop movement to make the split bullets stationary
-            splitBullet.GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;
+        foreach (Transform spawnPoint in spawnPoints)
+        {
+            BulletBase splitBullet = Instantiate(splitBulletPrefab, spawnPoint.position, spawnPoint.rotation);
+            splitBullet.Shoot(Mathf.RoundToInt(damage * splitDamageMultiplier), Vector2.zero, isCriticalHit); 
         }
     }
 }
