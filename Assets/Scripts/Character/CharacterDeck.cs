@@ -7,17 +7,13 @@ public class CharacterDeck : MonoBehaviour
     [Header("ELEMENTS:")]
     [SerializeField] private List<CardSO> equippedCards = new List<CardSO>(); 
 
-    public int deckLimit { get; private set; }  
+    public int deckLimit = 10;
     private CharacterDataSO characterData;
 
     private void Start()
     {
         characterData = CharacterManager.Instance.stats.CharacterData;
 
-        if (characterData != null)
-        {
-            deckLimit = characterData.DeckLimit;
-        }
     }
 
     public bool AddCard(CardSO card)

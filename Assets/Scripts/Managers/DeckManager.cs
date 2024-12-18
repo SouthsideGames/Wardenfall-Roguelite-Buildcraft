@@ -19,8 +19,8 @@ public class DeckManager : MonoBehaviour, IWantToBeSaved
     [Header("CHARACTER ELEMENTS:")]
     [SerializeField] private Image characterIcon;
     [SerializeField] private TextMeshProUGUI characterNameText;
-    [SerializeField] private Transform activeDeckParent;
     [SerializeField] private TextMeshProUGUI deckLimitText;
+    [SerializeField] private Transform activeDeckParent;
 
     [Header("CARD FRAMES BY RARITY")]
     [SerializeField] private List<CardFrameMapping> cardFramesByRarity;
@@ -38,7 +38,7 @@ public class DeckManager : MonoBehaviour, IWantToBeSaved
     private Dictionary<MiniCardRarityType, GameObject> miniCardFrameDictionary;
     private Dictionary<MainMenuMiniCardRarityType, GameObject> mainMenuMiniCardFrameDictionary;
     private int currentDeckLimit;
-    private int deckLimitMax;
+    private int deckLimitMax = 10;
     private CardEffectType currentFilter;
 
     private void Awake()
@@ -283,7 +283,6 @@ public class DeckManager : MonoBehaviour, IWantToBeSaved
     {
         characterIcon.sprite = _characterData.Icon;
         characterNameText.text = _characterData.Name;
-        deckLimitMax = _characterData.DeckLimit;
         UpdateDeckLimitUI();   
     }
 

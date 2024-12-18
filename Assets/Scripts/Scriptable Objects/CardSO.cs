@@ -57,7 +57,7 @@ public class CardSO : ScriptableObject
             case CardEffectType.Damage:
                 ApplyDamage(target, EffectValue);
                 break;
-            case CardEffectType.Buff:
+            case CardEffectType.Utility:
                 ApplyBuff(target, EffectValue);
                 break;
             case CardEffectType.Support:

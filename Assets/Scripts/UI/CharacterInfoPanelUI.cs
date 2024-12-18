@@ -8,7 +8,6 @@ public class CharacterInfoPanelUI : MonoBehaviour
 {
     [Header("ELEMENTS")]
     [SerializeField] private TextMeshProUGUI nameText;
-    [SerializeField] private TextMeshProUGUI deckLimitText;
     [SerializeField] private TextMeshProUGUI priceText;
     [SerializeField] private GameObject priceContainer;
     [SerializeField] private Transform statsParent;
@@ -18,7 +17,6 @@ public class CharacterInfoPanelUI : MonoBehaviour
     public void ConfigureInfoPanel(CharacterDataSO _characterDataSO, bool unlocked)
     {
         nameText.text = _characterDataSO.Name;
-        deckLimitText.text = $"Deck Limit: {_characterDataSO.DeckLimit}";
         priceText.text = _characterDataSO.PurchasePrice.ToString(); 
 
         priceContainer.SetActive(!unlocked);

@@ -77,7 +77,7 @@ public enum CardEffectType
 {
     None,
     Damage,
-    Buff,
+    Utility,
     Support,
     Summon
 }
