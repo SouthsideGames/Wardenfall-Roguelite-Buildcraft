@@ -13,7 +13,6 @@ public class WeaponSelectionContainerUI : MonoBehaviour
 
     [Header("LEVEL COLORS:")]
     [SerializeField] private Image[] containerImages;
-    [SerializeField] private Outline outline;
 
     [Header("STATS:")]
     [SerializeField] private Transform statContainerParent;
@@ -31,8 +30,6 @@ public class WeaponSelectionContainerUI : MonoBehaviour
 
         Color imageColor = ColorHolder.GetColor(_level);
         weaponNameText.color = imageColor;  
-
-        outline.effectColor = ColorHolder.GetOutlineColor(_level);
 
         foreach(Image image in containerImages)
           image.color = imageColor;     

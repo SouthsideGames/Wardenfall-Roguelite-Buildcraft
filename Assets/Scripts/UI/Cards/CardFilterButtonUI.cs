@@ -7,5 +7,5 @@ public class CardFilterButtonUI : MonoBehaviour
 {
     [SerializeField] private CardEffectType effectType;
 
-    public void AssignEffectType() => DeckManager.Instance.FilterCards(effectType);
+    public void AssignEffectType() => LoadoutManager.Instance.FilterCards(effectType);
 }

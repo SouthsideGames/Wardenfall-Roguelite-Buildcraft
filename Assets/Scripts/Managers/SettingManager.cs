@@ -136,12 +136,12 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
     {
         if(sfxState)
         {
-            musicButton.image.sprite = onImage;
+            sfxButton.image.sprite = onImage;
             sfxButton.GetComponentInChildren<TextMeshProUGUI>().text = "ON";
         }
         else 
         {
-            musicButton.image.sprite = offImage;
+            sfxButton.image.sprite = offImage;
             sfxButton.GetComponentInChildren<TextMeshProUGUI>().text = "OFF";
         }
     }
@@ -164,12 +164,12 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
     {
         if(vibrateState)
         {
-            musicButton.image.sprite = onImage;
+            vibrateButton.image.sprite = onImage;
             vibrateButton.GetComponentInChildren<TextMeshProUGUI>().text = "ON";
         }
         else 
         {
-            musicButton.image.sprite = offImage;
+            vibrateButton.image.sprite = offImage;
             vibrateButton.GetComponentInChildren<TextMeshProUGUI>().text = "OFF";
         }
     }

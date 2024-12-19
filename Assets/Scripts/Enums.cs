@@ -53,7 +53,6 @@ public enum GameMode
 {
     WaveBased,
     Survival,
-    Endless,
     BossRush,
     ObjectiveBased
 }

@@ -90,15 +90,15 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 
         for (int i = 0; i < currentWave.segments.Count; i++)
         {
-            var segment = currentWave.segments[i]; // Copy the segment
+            var segment = currentWave.segments[i]; 
 
             segment.tStart = segment.spawnPercentage.x / 100 * waveDuration;
             segment.tEnd = segment.spawnPercentage.y / 100 * waveDuration;
 
-            if (selectedGameMode == GameMode.Endless || selectedGameMode == GameMode.Survival)
+            if (selectedGameMode == GameMode.Survival)
                 segment.spawnFrequency *= difficultyMultiplier;
 
-            currentWave.segments[i] = segment; // Write the modified segment back to the list
+            currentWave.segments[i] = segment;
             localCounters.Add(0);
         }
     }
@@ -142,7 +142,6 @@ public class WaveManager : MonoBehaviour, IGameStateListener
                 HandleWaveBasedTransition();
                 break;
 
-            case GameMode.Endless:
             case GameMode.BossRush:
             case GameMode.ObjectiveBased:
                 HandleEndlessOrBossRushTransition();
@@ -169,12 +168,6 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 
         if (waveCompletionCount % 5 == 0)
             ApplyDifficultyScaling();
-
-        if (selectedGameMode == GameMode.Endless)
-            currentWaveIndex %= wave.Length; // Loop waves indefinitely
-
-        if (currentWaveIndex >= wave.Length && selectedGameMode != GameMode.Endless)
-            EndStage();
 
         StartWave(currentWaveIndex);
     }

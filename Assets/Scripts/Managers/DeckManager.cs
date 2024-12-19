@@ -6,9 +6,9 @@ using UnityEngine.UI;
 using SouthsideGames.SaveManager;
 using System;
 
-public class DeckManager : MonoBehaviour, IWantToBeSaved
+public class LoadoutManager : MonoBehaviour, IWantToBeSaved
 {
-    public static DeckManager Instance;
+    public static LoadoutManager Instance;
 
     [Header("ELEMENTS:")]
     [SerializeField] private Transform deckListContainer;
@@ -20,6 +20,7 @@ public class DeckManager : MonoBehaviour, IWantToBeSaved
     [SerializeField] private Image characterIcon;
     [SerializeField] private TextMeshProUGUI characterNameText;
     [SerializeField] private TextMeshProUGUI deckLimitText;
+    [SerializeField] private TextMeshProUGUI totalCardsText;
     [SerializeField] private Transform activeDeckParent;
 
     [Header("CARD FRAMES BY RARITY")]
@@ -75,6 +76,7 @@ public class DeckManager : MonoBehaviour, IWantToBeSaved
         UpdateMainMenuDeckFromSavedIDs();
         UpdateDeckLimitUI();
         FilterCards(CardEffectType.None);
+        UpdateTotalCardsUI(CardEffectType.None);
     }
 
     private void OnDisable() => Save();
@@ -215,6 +217,7 @@ public class DeckManager : MonoBehaviour, IWantToBeSaved
     public void FilterCards(CardEffectType effectType)
     {
         currentFilter = effectType;
+        UpdateTotalCardsUI(effectType);
 
         foreach (Transform child in deckListContainer)
             Destroy(child.gameObject);
@@ -320,6 +323,26 @@ public class DeckManager : MonoBehaviour, IWantToBeSaved
     }
 
     public void CloseCardDetails() => cardDetailContainer.SetActive(false);
+
+    private void UpdateTotalCardsUI(CardEffectType effectType)
+    {
+        int totalCardsInResources;
+        int purchasedCards;
+
+        if (effectType == CardEffectType.None)
+        {
+            totalCardsInResources = allCards.Count;
+            purchasedCards = activeDeck.Count;
+        }
+        else
+        {
+            totalCardsInResources = allCards.Count(card => card.EffectType == effectType);
+            purchasedCards = activeDeck.Count(card => card.EffectType == effectType);
+        }
+
+        totalCardsText.text = $"Cards: {purchasedCards}/{totalCardsInResources}";
+    }
+    
 
 }
 

@@ -7,7 +7,7 @@ public class DropZoneUI : MonoBehaviour, IDropHandler
 {
      [Header("Settings")]
     [SerializeField] private string zoneType; // "ActiveDeck" or "DeckList"
-    [SerializeField] private DeckManager deckManager;
+    [SerializeField] private LoadoutManager deckManager;
 
     public void OnDrop(PointerEventData eventData)
     {

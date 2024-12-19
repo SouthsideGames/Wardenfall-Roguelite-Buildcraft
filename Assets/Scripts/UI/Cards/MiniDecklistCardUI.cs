@@ -9,11 +9,11 @@ public class MiniDecklistCardUI : MonoBehaviour, IBeginDragHandler, IDragHandler
     [SerializeField] private TextMeshProUGUI costText;
 
     private CardSO cardData;
-    private DeckManager deckManager;
+    private LoadoutManager deckManager;
     private Transform originalParent;
     private Vector2 originalPosition;
 
-    public void Configure(Sprite icon, int cost, CardSO cardSO, DeckManager manager)
+    public void Configure(Sprite icon, int cost, CardSO cardSO, LoadoutManager manager)
     {
         iconImage.sprite = icon;
         costText.text = cost.ToString();

@@ -57,13 +57,9 @@ public class CameraManager : MonoBehaviour, IGameModeListener
             case GameMode.ObjectiveBased:
                 SwitchToMainCamera();
                 break;
-            case GameMode.Endless:
-                SwitchToMainCamera();
-                break;
             case GameMode.Survival:
                 SwitchToSurvivalCamera();
                 break;
-
         }
     }
 
