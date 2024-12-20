@@ -560,6 +560,7 @@ GameObject:
   - component: {fileID: -2627741370638757418}
   - component: {fileID: 6796097580293615805}
   - component: {fileID: 923985280673948478}
+  - component: {fileID: 8694075615329021493}
   m_Layer: 5
   m_Name: Weapon Selection Container
   m_TagString: Untagged
@@ -685,7 +686,6 @@ MonoBehaviour:
   weaponNameText: {fileID: 7999524021374524283}
   containerImages:
   - {fileID: 7987064185035041022}
-  outline: {fileID: 0}
   statContainerParent: {fileID: 3903012532615116541}
   scaleSize: 1.075
   animationSpeed: 0.3
@@ -715,6 +715,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clipToPlay: {fileID: 8300000, guid: 1f48773f9d0f44dcf9e4009b8cec61c5, type: 3}
+--- !u!114 &8694075615329021493
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7477393110116464180}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 0, y: -7}
+  m_UseGraphicAlpha: 1
 --- !u!1 &7726761294783153507
 GameObject:
   m_ObjectHideFlags: 0
