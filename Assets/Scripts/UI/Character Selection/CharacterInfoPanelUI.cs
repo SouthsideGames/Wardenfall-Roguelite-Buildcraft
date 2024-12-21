@@ -8,6 +8,7 @@ public class CharacterInfoPanelUI : MonoBehaviour
 {
     [Header("ELEMENTS")]
     [SerializeField] private Image backgroundImage;
+    [SerializeField] private Image characterImage;
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private TextMeshProUGUI rarityText;
     [SerializeField] private TextMeshProUGUI priceText;
@@ -23,7 +24,8 @@ public class CharacterInfoPanelUI : MonoBehaviour
 
     private Dictionary<CharacterCardRarityType, Sprite> rarityBackgrounds;
 
-    [field: SerializeField] public Button Button {get; private set;}    
+    [field: SerializeField] public Button Button {get; private set;}  
+    [SerializeField] private Button closeButton;  
 
     private void Awake()
     {
@@ -38,27 +40,58 @@ public class CharacterInfoPanelUI : MonoBehaviour
         };
     }
 
-    public void ConfigureInfoPanel(CharacterDataSO _characterDataSO, bool unlocked)
+    private void Start()
+    {
+        // Assign close button functionality
+        closeButton.onClick.AddListener(ClosePanel);
+    }
+
+   public void ConfigureInfoPanel(CharacterDataSO _characterDataSO, bool unlocked)
     {
         nameText.text = _characterDataSO.Name;
         rarityText.text = _characterDataSO.Rarity.ToString();
-        priceText.text = _characterDataSO.PurchasePrice.ToString(); 
-
-
+        priceText.text = _characterDataSO.PurchasePrice.ToString();
+        characterImage.sprite = _characterDataSO.Icon;
 
         priceContainer.SetActive(!unlocked);
 
         StatContainerManager.GenerateStatContainers(_characterDataSO.NonNeutralStats, statsParent);
 
-        // Set the background based on rarity
         if (rarityBackgrounds.TryGetValue(_characterDataSO.Rarity, out Sprite bgSprite))
         {
             backgroundImage.sprite = bgSprite;
         }
+    }
+
+ public void ShowPanel(CharacterDataSO _characterDataSO, bool unlocked)
+    {
+        gameObject.SetActive(true); 
+        ConfigureInfoPanel(_characterDataSO, unlocked); 
+
+        if (unlocked)
+        {
+            Button.GetComponentInChildren<TextMeshProUGUI>().text = "Select";
+            Button.interactable = true; 
+        }
         else
         {
-            Debug.LogWarning($"No background set for rarity {_characterDataSO.Rarity}");
+            Button.GetComponentInChildren<TextMeshProUGUI>().text = $"Buy {_characterDataSO.PurchasePrice}";
+            Button.interactable = CurrencyManager.Instance.HasEnoughPremiumCurrency(_characterDataSO.PurchasePrice);
+        }
+    }
+
+    public void ClosePanel()
+    {
+        // Clear UI elements
+        nameText.text = "";
+        rarityText.text = "";
+        priceText.text = "";
+
+        foreach (Transform child in statsParent)
+        {
+            Destroy(child.gameObject); // Clear stat containers
         }
 
+        gameObject.SetActive(false); // Hide panel
     }
 }
