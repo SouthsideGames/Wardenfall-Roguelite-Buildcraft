@@ -7,13 +7,15 @@ using System;
 
 public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
 {
-    public static Action<CharacterDataSO> OnCharacterSelected;
+     public static Action<CharacterDataSO> OnCharacterSelected;
 
     [Header("ELEMENTS:")]
-    [SerializeField] private CharacterContainerUI characterCardPrefab;
     [SerializeField] private Transform characterButtonParent;
     [SerializeField] private Image characterSelectImage;
     [SerializeField] private CharacterInfoPanelUI characterInfo;
+
+    [Header("CHARACTER FRAMES BY RARITY")]
+    [SerializeField] private List<CharacterCardFrameMapping> characterFramesByRarity;
 
     [Header("SETTINGS")]
     [SerializeField] private float scrollSpeed;
@@ -25,19 +27,40 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
     private const string characterUnlockedStatesKey = "CharacterUnlockStatesKey";
     private const string lastSelectedCharacterKey = "LastSelectedCharacterKey";
 
+    private Dictionary<CharacterCardRarityType, GameObject> characterFrameDictionary;
+    private HashSet<string> spawnedCharacterIDs = new HashSet<string>();
+
     private void Awake() => InputManager.OnScroll += ScrollCallback;
+
     private void Start()
     {
+        InitializeCharacterFrames();
         characterInfo.Button.onClick.RemoveAllListeners();
         characterInfo.Button.onClick.AddListener(PurchaseSelectedCharacter);
-
+        Load();
+        if (characterButtonParent.childCount == 0)
+            Initialize();
         CharacterSelectCallback(lastSelectedCharacterIndex);
     }
 
     private void OnDestroy() => InputManager.OnScroll -= ScrollCallback;
 
+    private void InitializeCharacterFrames()
+    {
+        characterFrameDictionary = new Dictionary<CharacterCardRarityType, GameObject>();
+        foreach (CharacterCardFrameMapping mapping in characterFramesByRarity)
+        {
+            if (!characterFrameDictionary.ContainsKey(mapping.rarity))
+                characterFrameDictionary.Add(mapping.rarity, mapping.characterCardPrefab);
+        }
+    }
+
     private void Initialize()
     {
+        spawnedCharacterIDs.Clear();
+        foreach (Transform child in characterButtonParent)
+            Destroy(child.gameObject);
+
         for (int i = 0; i < characterDatas.Length; i++)
             CreateCharacterButton(i);
     }
@@ -45,26 +68,30 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
     private void CreateCharacterButton(int _index)
     {
         CharacterDataSO characterData = characterDatas[_index];
+        if (spawnedCharacterIDs.Contains(characterData.ID)) return;
+        spawnedCharacterIDs.Add(characterData.ID);
 
-        CharacterContainerUI characterButtonInstance = Instantiate(characterCardPrefab, characterButtonParent);
-        characterButtonInstance.ConfigureCharacterButton(characterData.Icon, characterUnlockStates[_index]);
+        if (!characterFrameDictionary.TryGetValue(characterData.Rarity, out GameObject prefabToUse))
+            prefabToUse = characterFrameDictionary[CharacterCardRarityType.Common];
+
+        GameObject characterButtonGO = Instantiate(prefabToUse, characterButtonParent);
+        CharacterContainerUI characterButtonInstance = characterButtonGO.GetComponent<CharacterContainerUI>();
+        characterButtonInstance.ConfigureCharacterButton(characterData.Icon, characterData.RoleIcon, characterData.Name, characterUnlockStates[_index]);
 
         characterButtonInstance.Button.onClick.RemoveAllListeners();
-        characterButtonInstance.Button.onClick.AddListener(() =>CharacterSelectCallback(_index));
+        characterButtonInstance.Button.onClick.AddListener(() => CharacterSelectCallback(_index));
     }
 
     private void CharacterSelectCallback(int _index)
     {
         selectedCharacterIndex = _index;
-
         CharacterDataSO characterData = characterDatas[_index];
 
-        if(characterUnlockStates[_index])
+        if (characterUnlockStates[_index])
         {
             lastSelectedCharacterIndex = _index;
             characterInfo.Button.interactable = false;
             Save();
-
             OnCharacterSelected.Invoke(characterData);  
         }
         else
@@ -78,16 +105,9 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
     {
         int price = characterDatas[selectedCharacterIndex].PurchasePrice;
         CurrencyManager.Instance.AdjustPremiumCurrency(-price);
-
-        // Save Unlock state of that Character
         characterUnlockStates[selectedCharacterIndex] = true;   
-
-        //Update character visuals
         characterButtonParent.GetChild(selectedCharacterIndex).GetComponent<CharacterContainerUI>().Unlock();
-
-        //Update the character info - hide purchase button
         CharacterSelectCallback(selectedCharacterIndex);
-
         Save();
     }
 
@@ -95,18 +115,21 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
     {
         characterDatas = ResourceManager.Characters;
 
-        //Makes the first character unlocked
+        HashSet<string> idCheck = new HashSet<string>();
         for (int i = 0; i < characterDatas.Length; i++)
-            characterUnlockStates.Add(i == 0);
+        {
+            if (idCheck.Contains(characterDatas[i].ID) || string.IsNullOrEmpty(characterDatas[i].ID))
+                continue;
 
-        if(SaveManager.TryLoad(this, characterUnlockedStatesKey, out object characterUnlockedStatesObject))
+            idCheck.Add(characterDatas[i].ID);
+            characterUnlockStates.Add(i == 0);
+        }
+
+        if (SaveManager.TryLoad(this, characterUnlockedStatesKey, out object characterUnlockedStatesObject))
             characterUnlockStates = (List<bool>)characterUnlockedStatesObject;
 
-        //load the last character we played with
-        if(SaveManager.TryLoad(this, lastSelectedCharacterKey, out object lastSelectedCharacterStatesObject))
+        if (SaveManager.TryLoad(this, lastSelectedCharacterKey, out object lastSelectedCharacterStatesObject))
             lastSelectedCharacterIndex = (int)lastSelectedCharacterStatesObject;
-
-        Initialize();
     }
 
     public void Save()
@@ -116,4 +139,11 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
     }
 
     private void ScrollCallback(float _xValue) => characterButtonParent.GetComponent<RectTransform>().anchoredPosition -= _xValue * scrollSpeed * Time.deltaTime * Vector2.right;
+}
+
+[Serializable]
+public class CharacterCardFrameMapping
+{
+    public CharacterCardRarityType rarity;
+    public GameObject characterCardPrefab;
 }
