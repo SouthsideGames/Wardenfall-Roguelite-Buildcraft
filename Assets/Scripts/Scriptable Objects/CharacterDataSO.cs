@@ -8,9 +8,12 @@ public class CharacterDataSO : ScriptableObject
 {
     [field: SerializeField] public string ID { get; private set; } 
     [field: SerializeField] public Sprite Icon { get; private set; }
+    [field: SerializeField] public Sprite RoleIcon { get; private set; }
     [field: SerializeField] public string Name { get; private set; }
     [field: SerializeField, TextArea] public string Description { get; private set; }
     [field: SerializeField] public int PurchasePrice { get; private set; }   
+    [SerializeField] private CharacterCardRarityType rarity;     
+    public CharacterCardRarityType Rarity => rarity;    
 
     [HorizontalLine]
     [SerializeField, Tooltip("Base attack damage.")] private float attack;

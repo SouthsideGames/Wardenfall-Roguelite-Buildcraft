@@ -10,7 +10,7 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
     public static Action<CharacterDataSO> OnCharacterSelected;
 
     [Header("ELEMENTS:")]
-    [SerializeField] private CharacterContainerUI characterButtonPrefab;
+    [SerializeField] private CharacterContainerUI characterCardPrefab;
     [SerializeField] private Transform characterButtonParent;
     [SerializeField] private Image characterSelectImage;
     [SerializeField] private CharacterInfoPanelUI characterInfo;
@@ -46,7 +46,7 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
     {
         CharacterDataSO characterData = characterDatas[_index];
 
-        CharacterContainerUI characterButtonInstance = Instantiate(characterButtonPrefab, characterButtonParent);
+        CharacterContainerUI characterButtonInstance = Instantiate(characterCardPrefab, characterButtonParent);
         characterButtonInstance.ConfigureCharacterButton(characterData.Icon, characterUnlockStates[_index]);
 
         characterButtonInstance.Button.onClick.RemoveAllListeners();

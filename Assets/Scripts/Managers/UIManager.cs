@@ -27,7 +27,6 @@ public class UIManager : MonoBehaviour, IGameStateListener
 
     [Header("COUNTER TEXT:")]
     [SerializeField] private TextMeshProUGUI killCounterText;
-    [SerializeField] private TextMeshProUGUI chestCounterText;
 
     private List<GameObject> panels = new List<GameObject>();
 
@@ -116,18 +115,11 @@ public class UIManager : MonoBehaviour, IGameStateListener
             }
         }
         else
-        {
             panel.SetActive(true);
-        }
        
     }
 
-    private void UpdateCounterText()
-    {
-        killCounterText.text = StatisticsManager.Instance.CurrentRunKills.ToString();
-        chestCounterText.text = StatisticsManager.Instance.CurrentChestCollected.ToString();
-    }
-
+    private void UpdateCounterText() => killCounterText.text = StatisticsManager.Instance.CurrentRunKills.ToString();
     private void PauseGameCallback()
     {
         AudioManager.Instance.DecreaseMusicVolume();

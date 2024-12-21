@@ -114,6 +114,15 @@ public enum MainMenuMiniCardRarityType
     Exalted
 }
 
+public enum CharacterCardRarityType
+{
+    Common,
+    Uncommon,
+    Rare,
+    Epic,
+    Legendary
+}
+
 public static class Enums
 {
     public static string FormatStatName(Stat _stat)

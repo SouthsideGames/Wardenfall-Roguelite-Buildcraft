@@ -111,6 +111,8 @@ public abstract class Weapon : MonoBehaviour, IStats
         criticalHitChance = Mathf.RoundToInt(calculatedStats[Stat.CritChance]);
         criticalHitDamageAmount = calculatedStats[Stat.CritDamage];
         range = calculatedStats[Stat.Range];
+
+        anim.speed = 1f / attackDelay;
     }
 
     public void UpgradeWeaponTo(int _targetLevel)

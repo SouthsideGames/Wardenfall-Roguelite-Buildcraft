@@ -124,10 +124,7 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
         OnConfigured?.Invoke(upgradeContainers[0].gameObject);
     }
 
-    private void BonusSelectedCallback()
-    {
-        GameManager.Instance.WaveCompletedCallback();
-    }
+    private void BonusSelectedCallback() => GameManager.Instance.WaveCompletedCallback();
 
     private Action GetActionToPeform(Stat _characterStat, out string _buttonString)    
     {

@@ -43,10 +43,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 
     }
 
-    private void OnDestroy()
-    {
-        CharacterHealth.OnCharacterDeath -= CharacterDeathCallback;
-    }
+    private void OnDestroy() => CharacterHealth.OnCharacterDeath -= CharacterDeathCallback;
 
     private void Update()
     {
@@ -252,10 +249,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         Debug.Log($"Game mode set to: {selectedGameMode}");
     }
 
-    private void CharacterDeathCallback()
-    {
-        character.health.OnCharacterDeathMission(selectedGameMode);
-    }
+    private void CharacterDeathCallback() => character.health.OnCharacterDeathMission(selectedGameMode);
 }
 
 public static class Extensions

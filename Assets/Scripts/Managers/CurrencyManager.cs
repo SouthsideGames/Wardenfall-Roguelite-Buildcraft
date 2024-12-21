@@ -27,7 +27,7 @@ public class CurrencyManager : MonoBehaviour, IWantToBeSaved
 
         Meat.OnCollected += MeatCollectedCallback;
         Cash.onCollected += CashCollectedCallback;  
-        Gem.OnCollected -= GemCollectedCallback;
+        Gem.OnCollected += GemCollectedCallback;
 
     }
 
