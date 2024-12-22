@@ -5,10 +5,10 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Button))]
 public class CharacterContainerUI : MonoBehaviour
 {
-    [Header("ELEMENTS:")]
+   [Header("ELEMENTS:")]
     [SerializeField] private Image characterImage;
-    [SerializeField] private TextMeshProUGUI name;
-    [SerializeField] private Image roleIcon;
+    [SerializeField] private GameObject backgroundImage;
+    [SerializeField] private Image dimImage;
     [SerializeField] private GameObject lockObject;
 
     public Button Button
@@ -18,11 +18,9 @@ public class CharacterContainerUI : MonoBehaviour
         private set { }
     }
 
-    public void ConfigureCharacterButton(Sprite _characterIcon, Sprite _roleIcon, string _name, bool _isUnlocked)
+    public void ConfigureCharacterButton(Sprite _characterIcon, bool _isUnlocked)
     {
         characterImage.sprite = _characterIcon;
-        roleIcon.sprite = _roleIcon;
-        name.text = _name;
 
         if(_isUnlocked)
            Unlock();
@@ -35,8 +33,6 @@ public class CharacterContainerUI : MonoBehaviour
      
         lockObject.SetActive(true);
         characterImage.color = Color.grey;
-
-        
     }
 
     public void Unlock()
