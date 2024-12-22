@@ -7,10 +7,11 @@ using System;
 
 public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
 {
-public static Action<CharacterDataSO> OnCharacterSelected;
+     public static Action<CharacterDataSO> OnCharacterSelected;
 
     [Header("ELEMENTS:")]
     [SerializeField] private Transform characterButtonParent;
+    [SerializeField] private Image characterSelectImage;
     [SerializeField] private CharacterInfoPanelUI characterInfo;
 
     [Header("CHARACTER FRAMES BY RARITY")]
@@ -29,15 +30,7 @@ public static Action<CharacterDataSO> OnCharacterSelected;
     private Dictionary<CharacterCardRarityType, GameObject> characterFrameDictionary;
     private HashSet<string> spawnedCharacterIDs = new HashSet<string>();
 
-    private CharacterContainerUI lastSelectedCharacter; // Track selected character
-
-    public static CharacterSelectionManager Instance { get; private set; }
-
-    private void Awake()
-    {
-        Instance = this; // Singleton reference
-        InputManager.OnScroll += ScrollCallback;
-    }
+    private void Awake() => InputManager.OnScroll += ScrollCallback;
 
     private void Start()
     {
@@ -47,16 +40,10 @@ public static Action<CharacterDataSO> OnCharacterSelected;
         Load();
         if (characterButtonParent.childCount == 0)
             Initialize();
-
-        // Highlight the last selected character
-        CharacterContainerUI selectedUI = characterButtonParent.GetChild(lastSelectedCharacterIndex).GetComponent<CharacterContainerUI>();
-        SelectCharacter(selectedUI);
+        CharacterSelectCallback(lastSelectedCharacterIndex);
     }
 
-    private void OnDestroy()
-    {
-        InputManager.OnScroll -= ScrollCallback;
-    }
+    private void OnDestroy() => InputManager.OnScroll -= ScrollCallback;
 
     private void InitializeCharacterFrames()
     {
@@ -81,7 +68,6 @@ public static Action<CharacterDataSO> OnCharacterSelected;
     private void CreateCharacterButton(int _index)
     {
         CharacterDataSO characterData = characterDatas[_index];
-
         if (spawnedCharacterIDs.Contains(characterData.ID)) return;
         spawnedCharacterIDs.Add(characterData.ID);
 
@@ -90,24 +76,10 @@ public static Action<CharacterDataSO> OnCharacterSelected;
 
         GameObject characterButtonGO = Instantiate(prefabToUse, characterButtonParent);
         CharacterContainerUI characterButtonInstance = characterButtonGO.GetComponent<CharacterContainerUI>();
+        characterButtonInstance.ConfigureCharacterButton(characterData.Icon, characterData.RoleIcon, characterData.Name, characterUnlockStates[_index]);
 
-        bool isSelected = (_index == lastSelectedCharacterIndex); // Is this the saved selection?
-        characterButtonInstance.ConfigureCharacterButton(characterData, characterUnlockStates[_index], characterInfo, isSelected);
-    }
-
-    public void SelectCharacter(CharacterContainerUI selectedCharacter)
-    {
-        if (lastSelectedCharacter != null)
-        {
-            lastSelectedCharacter.SetSelected(false); // Deselect previous character
-        }
-
-        lastSelectedCharacter = selectedCharacter;
-        lastSelectedCharacter.SetSelected(true); // Highlight selected character
-
-        // Save selection for persistence
-        selectedCharacterIndex = System.Array.IndexOf(characterDatas, lastSelectedCharacter.characterData);
-        Save();
+        characterButtonInstance.Button.onClick.RemoveAllListeners();
+        characterButtonInstance.Button.onClick.AddListener(() => CharacterSelectCallback(_index));
     }
 
     private void CharacterSelectCallback(int _index)
@@ -125,6 +97,7 @@ public static Action<CharacterDataSO> OnCharacterSelected;
         else
             characterInfo.Button.interactable = CurrencyManager.Instance.HasEnoughPremiumCurrency(characterData.PurchasePrice);
 
+        characterSelectImage.sprite = characterData.Icon;   
         characterInfo.ConfigureInfoPanel(characterData, characterUnlockStates[_index]);
     }
 
@@ -149,7 +122,7 @@ public static Action<CharacterDataSO> OnCharacterSelected;
                 continue;
 
             idCheck.Add(characterDatas[i].ID);
-            characterUnlockStates.Add(i == 0); // First character is always unlocked
+            characterUnlockStates.Add(i == 0);
         }
 
         if (SaveManager.TryLoad(this, characterUnlockedStatesKey, out object characterUnlockedStatesObject))
