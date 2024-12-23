@@ -24,7 +24,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     private bool hasWaveStarted;
     private int currentWaveIndex;
 
-    [Header("WAVES SETTINGS:")]
+    [Header("WAVES BASED SETTINGS:")]
     [SerializeField] private Wave[] wave;
     private List<float> localCounters = new List<float>();
 

@@ -19,7 +19,7 @@ public abstract class Enemy : MonoBehaviour
     protected EnemyMovement movement;
     [SerializeField] protected SpriteRenderer _spriteRenderer;
     [SerializeField] private SpriteRenderer spawnIndicator;
-    [SerializeField] private SpriteRenderer lockedOnIndicator;
+
     [SerializeField] private Collider2D _collider;
     protected bool hasSpawned = false;
 
@@ -59,8 +59,6 @@ public abstract class Enemy : MonoBehaviour
         movement = GetComponent<EnemyMovement>();
         character = FindFirstObjectByType<CharacterManager>();
         status = GetComponent<EnemyStatus>();
-
-        lockedOnIndicator.gameObject.SetActive(false);  
 
         if (character == null)
         {
@@ -204,37 +202,4 @@ public abstract class Enemy : MonoBehaviour
         return (Vector2)transform.position + _collider.offset;
     }
 
-    public void ActivateLockedOnIndicator()
-    {
-        if (lockedOnIndicator == null)
-        {
-            Debug.LogWarning("LockedOnIndicator is not assigned.");
-            return;
-        }
-
-        lockedOnIndicator.gameObject.SetActive(true);
-        StartCoroutine(BlinkLockedOnIndicator());
-    }
-
-    private IEnumerator BlinkLockedOnIndicator()
-    {
-        float blinkDuration = 0.5f;
-        int blinkCount = 6;
-
-        for (int i = 0; i < blinkCount; i++)
-        {
-            lockedOnIndicator.enabled = !lockedOnIndicator.enabled;
-            yield return new WaitForSeconds(blinkDuration);
-        }
-
-        lockedOnIndicator.enabled = true;
-    }
-
-    public void DeactivateLockedOnIndicator()
-    {
-        if (lockedOnIndicator != null)
-        {
-            lockedOnIndicator.gameObject.SetActive(false);
-        }
-    }
 }

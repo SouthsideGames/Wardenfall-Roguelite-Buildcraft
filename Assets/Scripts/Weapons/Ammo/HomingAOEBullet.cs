@@ -45,17 +45,12 @@ public class HomingAOEBullet : BulletBase
 
         if (closestEnemy != null)
         {
-            if (target != null && target != closestEnemy)
-            {
-                target.DeactivateLockedOnIndicator();
-            }
 
             target = closestEnemy;
-            target.ActivateLockedOnIndicator();
         }
         else if (target != null)
         {
-            target.DeactivateLockedOnIndicator();
+
             target = null;
         }
     }
@@ -101,11 +96,6 @@ public class HomingAOEBullet : BulletBase
             {
                 ApplyDamage(hitEnemy);
             }
-        }
-
-        if (target != null)
-        {
-            target.DeactivateLockedOnIndicator();
         }
 
         DestroyBullet();
