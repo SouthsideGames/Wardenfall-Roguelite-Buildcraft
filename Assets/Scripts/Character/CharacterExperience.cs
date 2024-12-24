@@ -5,19 +5,15 @@ using TMPro;
 
 public class CharacterExperience : MonoBehaviour, IWantToBeSaved
 {
-    [Header("ELEMENTS:")]
+    [Header("Level Progression")]
     [SerializeField] private int level = 1;
     [SerializeField] private int experience = 0;
-    [SerializeField] private int maxLevel = 15;
-    [SerializeField] private int baseExperienceRequired = 100;
-    [SerializeField] private float experienceGrowthRate = 1.5f;
-    [SerializeField] private float statGrowthMultiplier = 0.05f;
-
 
     private CharacterStats characterStats;
+    private CharacterDataSO characterData;
 
-    [Header("UI:")]
-    [SerializeField] private Image experienceSlider;
+    [Header("UI Elements")]
+    [SerializeField] private Slider experienceSlider;
     [SerializeField] private TextMeshProUGUI levelText;
     [SerializeField] private Image characterImage;
     [SerializeField] private TextMeshProUGUI characterName;
@@ -25,12 +21,12 @@ public class CharacterExperience : MonoBehaviour, IWantToBeSaved
 
     public int Level => level;
     public int Experience => experience;
-    public int MaxLevel => maxLevel;
-    public bool IsMaxLevel => level >= maxLevel;
 
     private void Awake()
     {
         characterStats = CharacterStats.Instance;
+        characterData = characterStats.CharacterData; // Get the data for the current character
+
         CharacterSelectionManager.OnCharacterSelected += UpdateCharacterDetails;
         WaveManager.OnWaveCompleted += GainWaveCompletionExperience;
         WaveManager.OnSurvivalCompleted += GainSurvivalCompletionExperience;
@@ -38,7 +34,7 @@ public class CharacterExperience : MonoBehaviour, IWantToBeSaved
 
     private void Start()
     {
-        Load(); 
+        Load(); // Load saved level and experience
     }
 
     private void OnDestroy()
@@ -50,32 +46,33 @@ public class CharacterExperience : MonoBehaviour, IWantToBeSaved
 
     public void GainExperience(int amount)
     {
-        if (IsMaxLevel)
+        if (level >= characterData.MaxLevel) // Use data from CharacterDataSO
             return;
 
         experience += amount;
 
-        while (experience >= ExperienceToLevelUp() && level < maxLevel)
+        while (experience >= ExperienceToLevelUp() && level < characterData.MaxLevel)
         {
             experience -= ExperienceToLevelUp();
             LevelUp();
         }
 
-        if (IsMaxLevel)
+        if (level >= characterData.MaxLevel)
             experience = ExperienceToLevelUp();
 
         UpdateUI();
-        Save(); 
+        Save(); // Save progress after gaining experience
     }
 
-    private int ExperienceToLevelUp()
+    public int ExperienceToLevelUp()
     {
-        return Mathf.FloorToInt(baseExperienceRequired * Mathf.Pow(experienceGrowthRate, level - 1));
+        // Use base experience and growth rate from CharacterDataSO
+        return Mathf.FloorToInt(characterData.BaseExperienceRequired * Mathf.Pow(characterData.ExperienceGrowthRate, level - 1));
     }
 
     private void LevelUp()
     {
-        if (level >= maxLevel)
+        if (level >= characterData.MaxLevel)
             return;
 
         level++;
@@ -86,15 +83,17 @@ public class CharacterExperience : MonoBehaviour, IWantToBeSaved
 
     private void ApplyStatGrowth()
     {
+        // Apply stat growth based on CharacterDataSO settings
         foreach (Stat stat in characterStats.CharacterData.BaseStats.Keys)
         {
-            float growth = characterStats.CharacterData.BaseStats[stat] * statGrowthMultiplier;
+            float growth = characterStats.CharacterData.BaseStats[stat] * characterData.StatGrowthMultiplier;
             characterStats.AddStat(stat, growth);
         }
     }
 
     private void UpdateCharacterDetails(CharacterDataSO characterData)
     {
+        this.characterData = characterData; // Update character data if switched
         characterImage.sprite = characterData.Icon;
         characterName.text = characterData.Name;
         UpdateUI();
@@ -102,20 +101,20 @@ public class CharacterExperience : MonoBehaviour, IWantToBeSaved
 
     private void UpdateUI()
     {
-        levelText.text = $"Level: {level}";
-        float progress = IsMaxLevel ? 1f : (float)experience / ExperienceToLevelUp();
-        experienceSlider.fillAmount = progress;
+        levelText.text = $"{level}";
+        float progress = (level >= characterData.MaxLevel) ? 1f : (float)experience / ExperienceToLevelUp();
+        experienceSlider.value = progress;
     }
 
     private void GainWaveCompletionExperience()
     {
-        int waveExperience = 100; 
+        int waveExperience = 100; // Set experience for wave completion
         GainExperience(waveExperience);
     }
 
     private void GainSurvivalCompletionExperience()
     {
-        int survivalExperience = Mathf.FloorToInt(waveManager.SurvivalTime * 10); 
+        int survivalExperience = Mathf.FloorToInt(waveManager.SurvivalTime * 10); // 10 XP per second survived
         GainExperience(survivalExperience);
     }
 

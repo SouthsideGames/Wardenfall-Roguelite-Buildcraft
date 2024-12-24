@@ -40,7 +40,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     private float survivalScalingTimer;
     private int waveCompletionCount;
 
-    public float SurvivalTime => survivalTimer; // Expose survival time for XP calculation
+    public float SurvivalTime => survivalTimer;
 
     private void Awake()
     {

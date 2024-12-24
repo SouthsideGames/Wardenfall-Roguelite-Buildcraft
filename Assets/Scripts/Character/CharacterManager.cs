@@ -9,6 +9,7 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterStats))]
 [RequireComponent(typeof(CharacterDeck))]
 [RequireComponent(typeof(CharacterAnimator))]
+[RequireComponent(typeof(CharacterExperience))]
 public class CharacterManager : MonoBehaviour
 {
     public static CharacterManager Instance;
@@ -20,6 +21,7 @@ public class CharacterManager : MonoBehaviour
     public CharacterHealth health { get; private set; }
     public CharacterDeck deck { get; private set; }
     public CharacterStats stats { get; private set; }
+    public CharacterExperience exp { get; private set; }
     [SerializeField] private CircleCollider2D _col;
     [SerializeField] private SpriteRenderer _sr;
     
@@ -37,6 +39,7 @@ public class CharacterManager : MonoBehaviour
         deck = GetComponent<CharacterDeck>();   
         anim = GetComponent<CharacterAnimator>();  
         stats = GetComponent<CharacterStats>();
+        exp = GetComponent<CharacterExperience>();
 
         CharacterSelectionManager.OnCharacterSelected += CharacterSelectionCallback;
     }
