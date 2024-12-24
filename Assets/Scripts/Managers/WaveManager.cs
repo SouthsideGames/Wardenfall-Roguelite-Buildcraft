@@ -8,7 +8,8 @@ using SouthsideGames.DailyMissions;
 [RequireComponent(typeof(WaveUI))]
 public class WaveManager : MonoBehaviour, IGameStateListener
 {
- public static Action OnWaveCompleted;
+    public static Action OnWaveCompleted;           
+    public static Action OnSurvivalCompleted;     
 
     [Header("ELEMENTS:")]
     [SerializeField] private CharacterManager character;
@@ -35,17 +36,22 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     public GameMode selectedGameMode { get; private set; }
 
     private Wave currentWave;
+    public float survivalTimer {get; private set; } 
     private float survivalScalingTimer;
     private int waveCompletionCount;
+
+    public float SurvivalTime => survivalTimer; // Expose survival time for XP calculation
 
     private void Awake()
     {
         ui = GetComponent<WaveUI>();
         CharacterHealth.OnCharacterDeath += CharacterDeathCallback;
-        
     }
 
-    private void OnDestroy() => CharacterHealth.OnCharacterDeath -= CharacterDeathCallback;
+    private void OnDestroy()
+    {
+        CharacterHealth.OnCharacterDeath -= CharacterDeathCallback;
+    }
 
     private void Update()
     {
@@ -124,7 +130,9 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 
     private void HandleWaveTransition()
     {
+        // Trigger XP gain for wave-based and boss rush modes
         OnWaveCompleted?.Invoke();
+
         MissionManager.Increment(MissionType.wavesCompleted, 1);
         DefeatAllEnemies();
         hasWaveStarted = false;
@@ -158,13 +166,13 @@ public class WaveManager : MonoBehaviour, IGameStateListener
             EndWaveBasedStage();
         else
             StartWave(currentWaveIndex);
-
     }
 
     private void HandleSurvivalMode()
     {
         SpawnWaveSegments();
         timer += Time.deltaTime;
+        survivalTimer += Time.deltaTime; // Track survival time
         survivalScalingTimer += Time.deltaTime;
 
         if (survivalScalingTimer >= 120f)
@@ -190,6 +198,9 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     {
         ui.StageCompleted();
         GameManager.Instance.SetGameState(GameState.SurvivalStageCompleted);
+
+        // Trigger XP gain based on survival duration
+        OnSurvivalCompleted?.Invoke();
     }
 
     private void ApplySurvivalDifficultyScaling()
@@ -239,7 +250,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         Debug.Log($"Game mode set to: {selectedGameMode}");
     }
 
-    private void CharacterDeathCallback() 
+    private void CharacterDeathCallback()
     {
         character.health.OnCharacterDeathMission(selectedGameMode);
 

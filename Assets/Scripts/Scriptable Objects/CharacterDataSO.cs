@@ -16,15 +16,6 @@ public class CharacterDataSO : ScriptableObject
     [SerializeField] private CharacterCardRarityType rarity;     
     public CharacterCardRarityType Rarity => rarity;  
 
-    [Header("LEVEL INFO:")]
-    [SerializeField] private int maxLevel = 15;
-    [SerializeField] private int baseExperienceRequired = 100;
-    [SerializeField] private float experienceGrowthRate = 1.5f;
-    [SerializeField] private float statGrowthMultiplier = 0.05f;
-    public int MaxLevel => maxLevel;
-    public int BaseExperienceRequired => baseExperienceRequired;
-    public float ExperienceGrowthRate => experienceGrowthRate;
-    public float StatGrowthMultiplier => statGrowthMultiplier;  
 
     [HorizontalLine]
     [Header("CHARACTER STATS INFO:")]
