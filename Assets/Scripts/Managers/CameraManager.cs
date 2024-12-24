@@ -54,9 +54,6 @@ public class CameraManager : MonoBehaviour, IGameModeListener
             case GameMode.BossRush:
                 SwitchToMainCamera();
                 break;
-            case GameMode.ObjectiveBased:
-                SwitchToMainCamera();
-                break;
             case GameMode.Survival:
                 SwitchToSurvivalCamera();
                 break;

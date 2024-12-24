@@ -1,10 +1,7 @@
-using System.Collections;
+
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using System.Linq;
-using UnityEngine.SceneManagement;
-using System;
 using UnityEngine.UI;
 
 
@@ -13,8 +10,6 @@ public class GameModeManager : MonoBehaviour
     [Header("ELEMENTS:")]
     [SerializeField] private Transform buttonContainer;
     [SerializeField] private GameModeContainerUI gameModeContainerPrefab;
-
-    [Header("Wave Manager Reference")]
     [SerializeField] private WaveManager waveManager;
 
     public GameMode CurrentGameMode { get; private set; }
@@ -28,20 +23,15 @@ public class GameModeManager : MonoBehaviour
         GenerateButtons();
     }
 
-    private void LoadGameModeData()
-    {
-        gameModeDatas = Resources.LoadAll<GameModeDataSO>("Data/Game Mode");
-    }
-
+    private void LoadGameModeData() => gameModeDatas = Resources.LoadAll<GameModeDataSO>("Data/Game Mode");
     private void GenerateButtons()
     {
         foreach (var gameModeData in gameModeDatas)
         {
             gameModeData.UpdateUnlockState(); 
+            
             if (gameModeData.IsUnlocked) 
-            {
                 CreateGameModeButton(gameModeData);
-            }
         }
     }
 
@@ -57,12 +47,8 @@ public class GameModeManager : MonoBehaviour
 
     private void SetGameMode(GameModeDataSO gameModeData)
     {
-        Debug.Log($"Game Mode Set: {gameModeData.Name}");
-
         if (waveManager != null)
-        {
             waveManager.SetGameMode(gameModeData.GameMode);
-        }
 
         NotifyGameModeListeners(gameModeData.GameMode);
     }
@@ -72,11 +58,8 @@ public class GameModeManager : MonoBehaviour
         IEnumerable<IGameModeListener> listeners = FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None)
             .OfType<IGameModeListener>();
 
-        // Notify each listener
         foreach (var listener in listeners)
-        {
             listener.GameModeChangedCallback(mode);
-        }
     }
     
 }

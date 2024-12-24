@@ -8,7 +8,7 @@ using SouthsideGames.DailyMissions;
 [RequireComponent(typeof(WaveUI))]
 public class WaveManager : MonoBehaviour, IGameStateListener
 {
-    public static Action OnWaveCompleted;
+ public static Action OnWaveCompleted;
 
     [Header("ELEMENTS:")]
     [SerializeField] private CharacterManager character;
@@ -17,7 +17,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     [Header("DIFFICULTY SETTINGS:")]
     [SerializeField] private float difficultyMultiplier = 1.0f;
     [SerializeField] private float difficultyIncrement = 0.1f;
-    
+
     [Header("SETTINGS:")]
     [SerializeField] private float waveDuration;
     private float timer;
@@ -26,6 +26,9 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 
     [Header("WAVES BASED SETTINGS:")]
     [SerializeField] private Wave[] wave;
+
+    [Header("BOSS RUSH SETTINGS:")]
+    [SerializeField] private Wave[] bossWaves; 
     private List<float> localCounters = new List<float>();
 
     [Header("GAME MODE:")]
@@ -33,14 +36,13 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 
     private Wave currentWave;
     private float survivalScalingTimer;
-    private int waveCompletionCount;  
+    private int waveCompletionCount;
 
     private void Awake()
     {
         ui = GetComponent<WaveUI>();
-
         CharacterHealth.OnCharacterDeath += CharacterDeathCallback;
-
+        
     }
 
     private void OnDestroy() => CharacterHealth.OnCharacterDeath -= CharacterDeathCallback;
@@ -57,37 +59,32 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 
             default:
                 if (timer < waveDuration)
-                {
                     HandleWaveProgression();
-                }
                 else
-                {
                     HandleWaveTransition();
-                }
                 break;
         }
     }
 
     private void StartWave(int waveIndex)
     {
-        if (selectedGameMode == GameMode.Survival && hasWaveStarted) return; // Skip for Survival mode
+        if (selectedGameMode == GameMode.Survival && hasWaveStarted) return;
 
         InitializeWave(waveIndex);
         hasWaveStarted = true;
         timer = 0;
 
         UpdateUIForWaveStart();
-        Debug.Log($"Wave {waveIndex + 1} started in {selectedGameMode} mode.");
     }
 
     private void InitializeWave(int waveIndex)
     {
         localCounters.Clear();
-        currentWave = wave[waveIndex];
+        currentWave = (selectedGameMode == GameMode.BossRush) ? bossWaves[waveIndex] : wave[waveIndex];
 
         for (int i = 0; i < currentWave.segments.Count; i++)
         {
-            var segment = currentWave.segments[i]; 
+            var segment = currentWave.segments[i];
 
             segment.tStart = segment.spawnPercentage.x / 100 * waveDuration;
             segment.tEnd = segment.spawnPercentage.y / 100 * waveDuration;
@@ -120,7 +117,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
                 Instantiate(segment.prefab, GetSpawnPosition(), Quaternion.identity, transform);
                 localCounters[index]++;
 
-                if (segment.spawnOnce) localCounters[index] += Mathf.Infinity; // Stop further spawns
+                if (segment.spawnOnce) localCounters[index] += Mathf.Infinity;
             }
         }
     }
@@ -140,33 +137,28 @@ public class WaveManager : MonoBehaviour, IGameStateListener
                 break;
 
             case GameMode.BossRush:
-            case GameMode.ObjectiveBased:
-                HandleEndlessOrBossRushTransition();
+                HandleBossRushTransition();
                 break;
         }
     }
- 
+
     private void HandleWaveBasedTransition()
     {
         if (currentWaveIndex >= wave.Length)
-        {
-            EndStage();
-        }
+            EndWaveBasedStage();
         else
-        {
-            ApplyDifficultyScaling();
             GameManager.Instance.WaveCompletedCallback();
-        }
     }
 
-    private void HandleEndlessOrBossRushTransition()
+    private void HandleBossRushTransition()
     {
         waveCompletionCount++;
 
-        if (waveCompletionCount % 5 == 0)
-            ApplyDifficultyScaling();
+        if (currentWaveIndex >= bossWaves.Length)
+            EndWaveBasedStage();
+        else
+            StartWave(currentWaveIndex);
 
-        StartWave(currentWaveIndex);
     }
 
     private void HandleSurvivalMode()
@@ -175,9 +167,9 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         timer += Time.deltaTime;
         survivalScalingTimer += Time.deltaTime;
 
-        if (survivalScalingTimer >= 120f) // 2 minutes
+        if (survivalScalingTimer >= 120f)
         {
-            ApplyDifficultyScaling();
+            ApplySurvivalDifficultyScaling();
             survivalScalingTimer = 0;
         }
     }
@@ -188,13 +180,19 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         ui.UpdateTimerText(((int)(waveDuration - timer)).ToString());
     }
 
-    private void EndStage()
+    private void EndWaveBasedStage()
     {
         ui.StageCompleted();
         GameManager.Instance.SetGameState(GameState.StageCompleted);
     }
 
-    private void ApplyDifficultyScaling()
+    private void EndSurvivalStage()
+    {
+        ui.StageCompleted();
+        GameManager.Instance.SetGameState(GameState.SurvivalStageCompleted);
+    }
+
+    private void ApplySurvivalDifficultyScaling()
     {
         difficultyMultiplier += difficultyIncrement;
         Debug.Log($"Difficulty scaled. Current multiplier: {difficultyMultiplier}");
@@ -204,15 +202,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     {
         Vector2 direction = UnityEngine.Random.insideUnitCircle.normalized;
         Vector2 offset = direction * UnityEngine.Random.Range(6, 10);
-        Vector2 target = (Vector2)character.transform.position + offset;
-
-        if(!CameraManager.Instance.UseInfiniteMap)
-        {
-            target.x = Mathf.Clamp(target.x, -Constants.arenaSize.x / 2, Constants.arenaSize.x / 2);
-            target.y = Mathf.Clamp(target.y, -Constants.arenaSize.y / 2, Constants.arenaSize.y / 2);
-        }
-
-        return target;  
+        return (Vector2)character.transform.position + offset;
     }
 
     private void UpdateUIForWaveStart()
@@ -249,7 +239,13 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         Debug.Log($"Game mode set to: {selectedGameMode}");
     }
 
-    private void CharacterDeathCallback() => character.health.OnCharacterDeathMission(selectedGameMode);
+    private void CharacterDeathCallback() 
+    {
+        character.health.OnCharacterDeathMission(selectedGameMode);
+
+        if (selectedGameMode == GameMode.Survival)
+            EndSurvivalStage();
+    }
 }
 
 public static class Extensions

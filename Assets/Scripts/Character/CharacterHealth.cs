@@ -32,6 +32,7 @@ public class CharacterHealth : MonoBehaviour, IStats
     private void Awake()
     {
         Enemy.OnDamageTaken += EnemyDamageCallback;
+        
     }
 
     private void OnDestroy() 
@@ -140,14 +141,8 @@ public class CharacterHealth : MonoBehaviour, IStats
             MissionManager.Increment(MissionType.waveBasedPlayed, 1);
         else if ((MissionType)_gameMode == MissionType.survivalPlayed)
             MissionManager.Increment(MissionType.survivalPlayed, 1);
-        else if ((MissionType)_gameMode == MissionType.objectiveBasedPlayed)
-            MissionManager.Increment(MissionType.objectiveBasedPlayed, 1);
         else if ((MissionType)_gameMode == MissionType.bossRushPlayed)
             MissionManager.Increment(MissionType.bossRushPlayed, 1);
-        else if ((MissionType)_gameMode == MissionType.endlessPlayed)
-            MissionManager.Increment(MissionType.endlessPlayed, 1);
-
-
     }
 
 }

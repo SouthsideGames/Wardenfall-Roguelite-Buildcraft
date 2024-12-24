@@ -10,6 +10,7 @@ public enum GameState
     Game,
     GameOver,
     StageCompleted,
+    SurvivalStageCompleted,
     WaveTransition,
     Shop
 }
@@ -53,8 +54,7 @@ public enum GameMode
 {
     WaveBased,
     Survival,
-    BossRush,
-    ObjectiveBased
+    BossRush
 }
 
 public enum MissionType
@@ -65,10 +65,9 @@ public enum MissionType
     currencyCollected = 3,
     waveBasedPlayed = 4,
     survivalPlayed = 5,
-    endlessPlayed = 6,
-    bossRushPlayed = 7,
-    objectiveBasedPlayed = 8,
-    gemCollected = 9
+    bossRushPlayed = 6,
+    objectiveBasedPlayed = 7,
+    gemCollected = 8
     
 }
 
