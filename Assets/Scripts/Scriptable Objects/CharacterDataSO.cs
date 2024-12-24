@@ -6,6 +6,7 @@ using NaughtyAttributes;
 [CreateAssetMenu(fileName = "Character Data", menuName = "Scriptable Objects/New Character Data", order = 0)]
 public class CharacterDataSO : ScriptableObject
 {
+    [Header("CHARACTER INFO:")]
     [field: SerializeField] public string ID { get; private set; } 
     [field: SerializeField] public Sprite Icon { get; private set; }
     [field: SerializeField] public Sprite RoleIcon { get; private set; }
@@ -13,9 +14,20 @@ public class CharacterDataSO : ScriptableObject
     [field: SerializeField, TextArea] public string Description { get; private set; }
     [field: SerializeField] public int PurchasePrice { get; private set; }   
     [SerializeField] private CharacterCardRarityType rarity;     
-    public CharacterCardRarityType Rarity => rarity;    
+    public CharacterCardRarityType Rarity => rarity;  
+
+    [Header("LEVEL INFO:")]
+    [SerializeField] private int maxLevel = 15;
+    [SerializeField] private int baseExperienceRequired = 100;
+    [SerializeField] private float experienceGrowthRate = 1.5f;
+    [SerializeField] private float statGrowthMultiplier = 0.05f;
+    public int MaxLevel => maxLevel;
+    public int BaseExperienceRequired => baseExperienceRequired;
+    public float ExperienceGrowthRate => experienceGrowthRate;
+    public float StatGrowthMultiplier => statGrowthMultiplier;  
 
     [HorizontalLine]
+    [Header("CHARACTER STATS INFO:")]
     [SerializeField, Tooltip("Base attack damage.")] private float attack;
     [SerializeField,  Tooltip("Attack speed of the character.")] private float attackSpeed;
     [SerializeField, Range(1, 15), Tooltip("Chance to hit critically (%).")] private float critChance;
