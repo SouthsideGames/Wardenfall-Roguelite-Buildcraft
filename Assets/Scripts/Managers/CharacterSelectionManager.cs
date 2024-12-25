@@ -26,7 +26,6 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
     private const string lastSelectedCharacterKey = "LastSelectedCharacterKey";
 
     private void Awake() => InputManager.OnScroll += ScrollCallback;
-
     private void Start()
     {
         characterInfo.Button.onClick.RemoveAllListeners();
@@ -67,27 +66,12 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
             Save();
 
             OnCharacterSelected.Invoke(characterData);
-
-            // Fetch level and experience from the leveling system
-            CharacterExperience characterExp = CharacterManager.Instance.exp;
-            int experienceToNextLevel = characterExp.Level >= characterData.MaxLevel ? 1 : characterExp.ExperienceToLevelUp();
-
-            // Update the info panel with level and experience
-            characterInfo.ConfigureInfoPanel(
-                characterData,
-                true,
-                characterExp.Level,
-                characterExp.Experience,
-                experienceToNextLevel
-            );
         }
         else
-        {
             characterInfo.Button.interactable = CurrencyManager.Instance.HasEnoughPremiumCurrency(characterData.PurchasePrice);
-            characterInfo.ConfigureInfoPanel(characterData, false, 1, 0, 1);
-        }
 
         characterSelectImage.sprite = characterData.Icon;
+        characterInfo.ConfigureInfoPanel(characterData, characterUnlockStates[_index]);
     }
 
     private void PurchaseSelectedCharacter()
@@ -98,10 +82,10 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
         // Save Unlock state of that Character
         characterUnlockStates[selectedCharacterIndex] = true;
 
-        // Update character visuals
+        //Update character visuals
         characterButtonParent.GetChild(selectedCharacterIndex).GetComponent<CharacterContainerUI>().Unlock();
 
-        // Update the character info - hide purchase button
+        //Update the character info - hide purchase button
         CharacterSelectCallback(selectedCharacterIndex);
 
         Save();
@@ -111,14 +95,14 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
     {
         characterDatas = ResourceManager.Characters;
 
-        // Makes the first character unlocked
+        //Makes the first character unlocked
         for (int i = 0; i < characterDatas.Length; i++)
             characterUnlockStates.Add(i == 0);
 
         if (SaveManager.TryLoad(this, characterUnlockedStatesKey, out object characterUnlockedStatesObject))
             characterUnlockStates = (List<bool>)characterUnlockedStatesObject;
 
-        // Load the last character we played with
+        //load the last character we played with
         if (SaveManager.TryLoad(this, lastSelectedCharacterKey, out object lastSelectedCharacterStatesObject))
             lastSelectedCharacterIndex = (int)lastSelectedCharacterStatesObject;
 

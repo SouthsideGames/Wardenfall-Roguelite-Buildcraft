@@ -13,13 +13,9 @@ public class CharacterInfoPanelUI : MonoBehaviour
     [SerializeField] private GameObject priceContainer;
     [SerializeField] private Transform statsParent;
 
-    [Header("LEVEL INFO")]
-    [SerializeField] private Slider experienceSlider;
-    [SerializeField] private TextMeshProUGUI levelText;
-
     [field: SerializeField] public Button Button { get; private set; }
 
-    public void ConfigureInfoPanel(CharacterDataSO _characterDataSO, bool unlocked, int level, int experience, int experienceToNextLevel)
+    public void ConfigureInfoPanel(CharacterDataSO _characterDataSO, bool unlocked)
     {
         // Set visuals
         icon.sprite = _characterDataSO.Icon;
@@ -29,10 +25,5 @@ public class CharacterInfoPanelUI : MonoBehaviour
 
         // Update Stats
         StatContainerManager.GenerateStatContainers(_characterDataSO.NonNeutralStats, statsParent);
-
-        // Update Level UI
-        levelText.text = level.ToString();
-        float progress = (float)experience / experienceToNextLevel;
-        experienceSlider.value = progress;
     }
 }

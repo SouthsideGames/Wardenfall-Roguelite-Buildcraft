@@ -8,8 +8,8 @@ using SouthsideGames.DailyMissions;
 [RequireComponent(typeof(WaveUI))]
 public class WaveManager : MonoBehaviour, IGameStateListener
 {
-    public static Action OnWaveCompleted;           
-    public static Action OnSurvivalCompleted;     
+    public static Action OnWaveCompleted;
+    public static Action OnSurvivalCompleted;
 
     [Header("ELEMENTS:")]
     [SerializeField] private CharacterManager character;
@@ -29,14 +29,14 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     [SerializeField] private Wave[] wave;
 
     [Header("BOSS RUSH SETTINGS:")]
-    [SerializeField] private Wave[] bossWaves; 
+    [SerializeField] private Wave[] bossWaves;
     private List<float> localCounters = new List<float>();
 
     [Header("GAME MODE:")]
     public GameMode selectedGameMode { get; private set; }
 
     private Wave currentWave;
-    public float survivalTimer {get; private set; } 
+    public float survivalTimer { get; private set; }
     private float survivalScalingTimer;
     private int waveCompletionCount;
 
