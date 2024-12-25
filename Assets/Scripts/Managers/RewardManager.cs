@@ -4,52 +4,40 @@ using System.Collections.Generic;
 
 public class RewardManager : MonoBehaviour
 {
-    [Header("Reward Panel Elements")]
-    [SerializeField] private GameObject rewardPanel;
+    [Header("ELEMENTS:")]
     [SerializeField] private Transform rewardSpawnArea;
     [SerializeField] private GameObject cashPrefab;
     [SerializeField] private GameObject gemPrefab;
     [SerializeField] private GameObject cardPrefab;
 
-    [Header("Reward Settings")]
+    [Header("SETTINGS:")]
     [SerializeField] WaveManager waveManager;
     [SerializeField] private float baseRewardCount = 3;
     [SerializeField] private float rewardScalingFactor = 0.5f;
 
-    [Header("Reward Probabilities")]
+    [Header("REWARD PROBABILITY")]
     [Range(0f, 1f)] public float cashProbability = 0.5f;
     [Range(0f, 1f)] public float gemProbability = 0.3f;
     [Range(0f, 1f)] public float cardProbability = 0.2f;
 
-    [Header("Cash and Gem Scaling")]
+    [Header("SCALING:")]
     [SerializeField] private int baseCashReward = 50;
     [SerializeField] private int cashMultiplier = 10;
     [SerializeField] private int baseGemReward = 10;
     [SerializeField] private int gemMultiplier = 2;
 
-    private List<GameObject> rewards = new List<GameObject>();
+     private List<GameObject> rewards = new List<GameObject>();
 
-    private void Awake()
-    {
-        WaveManager.OnSurvivalCompleted += ShowRewards;
-    }
+    private void Awake() => WaveManager.OnSurvivalCompleted += ShowRewards;
 
-    private void OnDestroy()
-    {
-        WaveManager.OnSurvivalCompleted -= ShowRewards;
-    }
+    private void OnDestroy() => WaveManager.OnSurvivalCompleted -= ShowRewards;
 
-    public void ShowRewards()
-    {
-        rewardPanel.SetActive(true);
-        GenerateRewards(waveManager.SurvivalTime);
-    }
+    public void ShowRewards() => GenerateRewards(waveManager.SurvivalTime);
 
     private void GenerateRewards(float survivalTime)
     {
         ClearPreviousRewards();
 
-        // Calculate reward count based on survival time
         int rewardCount = Mathf.CeilToInt(baseRewardCount + (survivalTime * rewardScalingFactor));
 
         for (int i = 0; i < rewardCount; i++)
@@ -58,28 +46,28 @@ public class RewardManager : MonoBehaviour
 
             if (randomValue < cardProbability)
             {
-                SpawnReward(cardPrefab, 1); // Cards have no quantity displayed
+                SpawnReward(cardPrefab, 0, true);
             }
             else if (randomValue < cardProbability + gemProbability)
             {
                 int gemAmount = baseGemReward + Mathf.FloorToInt(survivalTime * gemMultiplier);
-                SpawnReward(gemPrefab, gemAmount);
+                SpawnReward(gemPrefab, gemAmount, false);
             }
             else
             {
                 int cashAmount = baseCashReward + Mathf.FloorToInt(survivalTime * cashMultiplier);
-                SpawnReward(cashPrefab, cashAmount);
+                SpawnReward(cashPrefab, cashAmount, false);
             }
         }
     }
 
-    private void SpawnReward(GameObject prefab, int amount)
+    private void SpawnReward(GameObject prefab, int amount, bool isCard)
     {
         GameObject reward = Instantiate(prefab, rewardSpawnArea);
         Reward rewardItem = reward.GetComponent<Reward>();
         if (rewardItem != null)
         {
-            rewardItem.SetAmount(amount);
+            rewardItem.SetAmount(amount, isCard);
         }
         rewards.Add(reward);
     }
@@ -103,8 +91,6 @@ public class RewardManager : MonoBehaviour
             }
         }
 
-        // Close reward panel and return to menu
-        rewardPanel.SetActive(false);
         GameManager.Instance.SetGameState(GameState.Menu);
     }
 }

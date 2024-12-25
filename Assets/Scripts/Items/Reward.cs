@@ -5,11 +5,15 @@ public class Reward : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI amountText;
 
-    public void SetAmount(int amount)
+    public void SetAmount(int amount, bool isCard)
     {
         if (amountText != null)
         {
-            amountText.text = amount.ToString();
+            amountText.gameObject.SetActive(!isCard);
+            if (!isCard)
+            {
+                amountText.text = amount.ToString();
+            }
         }
     }
 }

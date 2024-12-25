@@ -7,9 +7,10 @@ public class CharacterContainerUI : MonoBehaviour
 {
    [Header("ELEMENTS:")]
     [SerializeField] private Image characterImage;
-    [SerializeField] private GameObject backgroundImage;
-    [SerializeField] private Image dimImage;
     [SerializeField] private GameObject lockObject;
+    [SerializeField] private GameObject roleStars;
+    [SerializeField] private GameObject dimObject;
+    [SerializeField] private GameObject roleIcon;
 
     public Button Button
     {
@@ -30,15 +31,31 @@ public class CharacterContainerUI : MonoBehaviour
 
     public void Lock()
     {
-     
         lockObject.SetActive(true);
-        characterImage.color = Color.grey;
+        dimObject.SetActive(true);
+
+        roleStars.SetActive(false);
+        roleIcon.SetActive(false);
+
+        Color newColor = characterImage.color; 
+        newColor.a = 0.31f;                    
+        characterImage.color = newColor;  
+
     }
 
     public void Unlock()
     {
-        lockObject.SetActive(false);    
-        characterImage.color = Color.white; 
+        lockObject.SetActive(false);   
+        dimObject.SetActive(false); 
+
+        
+        roleStars.SetActive(true);
+        roleIcon.SetActive(true);
+
+        Color newColor = characterImage.color; 
+        newColor.a = 100f;                    
+        characterImage.color = newColor;  
+
 
     }
     

@@ -6,7 +6,6 @@ using System;
 public class CharacterStats : MonoBehaviour
 {
     public static CharacterStats Instance;
-
     public Action OnDataStored;
 
     [Header("DATA:")]

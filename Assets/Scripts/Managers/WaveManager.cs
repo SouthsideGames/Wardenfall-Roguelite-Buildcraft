@@ -172,8 +172,12 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     {
         SpawnWaveSegments();
         timer += Time.deltaTime;
-        survivalTimer += Time.deltaTime; // Track survival time
+        survivalTimer += Time.deltaTime; 
         survivalScalingTimer += Time.deltaTime;
+
+        ui.UpdateTimerText($"{(int)survivalTimer / 60:D2}:{(int)survivalTimer % 60:D2}");
+
+        ui.HideWaveText();
 
         if (survivalScalingTimer >= 120f)
         {
