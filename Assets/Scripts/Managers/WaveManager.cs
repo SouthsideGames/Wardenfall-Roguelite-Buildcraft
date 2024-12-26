@@ -32,15 +32,22 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     [SerializeField] private Wave[] bossWaves;
     private List<float> localCounters = new List<float>();
 
+    [Header("SURVIVAL MODE SETTINGS:")]
+    [SerializeField] private float spawnFrequency = 1.0f;
+    [SerializeField] private List<SurvivalWaveGroup> survivalGroups;
+    [SerializeField] private List<GameObject> bossPrefabs;
+    [SerializeField] private float bossSpawnInterval = 180f; // 3 minutes
+    private bool bossSpawned;
+    public float survivalTimer { get; private set; }
+    private float survivalScalingTimer;
+    private float nextBossSpawnTime;
+    public float SurvivalTime => survivalTimer;
+
     [Header("GAME MODE:")]
     public GameMode selectedGameMode { get; private set; }
 
     private Wave currentWave;
-    public float survivalTimer { get; private set; }
-    private float survivalScalingTimer;
     private int waveCompletionCount;
-
-    public float SurvivalTime => survivalTimer;
 
     private void Awake()
     {
@@ -170,21 +177,56 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 
     private void HandleSurvivalMode()
     {
-        SpawnWaveSegments();
-        timer += Time.deltaTime;
-        survivalTimer += Time.deltaTime; 
+        survivalTimer += Time.deltaTime;
         survivalScalingTimer += Time.deltaTime;
 
-        ui.UpdateTimerText($"{(int)survivalTimer / 60:D2}:{(int)survivalTimer % 60:D2}");
-
-        ui.HideWaveText();
+        if (survivalTimer >= nextBossSpawnTime && !bossSpawned)
+        {
+            SpawnSurvivalBoss();
+        }
 
         if (survivalScalingTimer >= 120f)
         {
             ApplySurvivalDifficultyScaling();
             survivalScalingTimer = 0;
         }
+
+        SpawnSurvivalEnemies();
+
+        ui.UpdateTimerText($"{(int)survivalTimer / 60:D2}:{(int)survivalTimer % 60:D2}");
     }
+
+    private void SpawnSurvivalEnemies()
+    {
+        var group = GetCurrentSurvivalGroup();
+        if (group != null && Time.time >= timer)
+        {
+            var enemyPrefab = group.enemies[UnityEngine.Random.Range(0, group.enemies.Count)];
+            Instantiate(enemyPrefab, GetSpawnPosition(), Quaternion.identity);
+            timer = Time.time + 1f / spawnFrequency;
+        }
+    }
+
+    private SurvivalWaveGroup GetCurrentSurvivalGroup()
+    {
+        foreach (var group in survivalGroups)
+        {
+            if (survivalTimer >= group.startTime && survivalTimer < group.endTime)
+            {
+                return group;
+            }
+        }
+        return null;
+    }
+
+    private void SpawnSurvivalBoss()
+    {
+        var boss = bossPrefabs[UnityEngine.Random.Range(0, bossPrefabs.Count)];
+        Instantiate(boss, GetSpawnPosition(), Quaternion.identity);
+        bossSpawned = true;
+        nextBossSpawnTime += bossSpawnInterval;
+    }
+
 
     private void UpdateWaveTimer()
     {
@@ -294,4 +336,13 @@ public struct WaveSegment
 
     [HideInInspector] public float tStart;
     [HideInInspector] public float tEnd;
+}
+
+[Serializable]
+public class SurvivalWaveGroup
+{
+    public string name;
+    public float startTime;
+    public float endTime;
+    public List<GameObject> enemies;
 }

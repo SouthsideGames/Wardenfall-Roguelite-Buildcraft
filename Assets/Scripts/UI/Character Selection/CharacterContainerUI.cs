@@ -11,6 +11,7 @@ public class CharacterContainerUI : MonoBehaviour
     [SerializeField] private GameObject roleStars;
     [SerializeField] private GameObject dimObject;
     [SerializeField] private GameObject roleIcon;
+    [SerializeField] private TextMeshProUGUI nameText;
 
     public Button Button
     {
@@ -19,9 +20,10 @@ public class CharacterContainerUI : MonoBehaviour
         private set { }
     }
 
-    public void ConfigureCharacterButton(Sprite _characterIcon, bool _isUnlocked)
+    public void ConfigureCharacterButton(Sprite _characterIcon, string _name, bool _isUnlocked)
     {
         characterImage.sprite = _characterIcon;
+        nameText.text = _name;
 
         if(_isUnlocked)
            Unlock();

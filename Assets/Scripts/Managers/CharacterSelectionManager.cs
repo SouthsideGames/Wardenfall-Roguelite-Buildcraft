@@ -7,7 +7,7 @@ using System;
 
 public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
 {
-   public static Action<CharacterDataSO> OnCharacterSelected;
+    public static Action<CharacterDataSO> OnCharacterSelected;
 
     [Header("ELEMENTS:")]
     [SerializeField] private Transform characterButtonParent;
@@ -32,13 +32,8 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
 
     private void Awake()
     {
-        // Subscribe to scroll event
         InputManager.OnScroll += ScrollCallback;
-
-        // Initialize frame dictionary
         InitializeCharacterFrames();
-
-        // Load character data
         Load();
     }
 
@@ -47,10 +42,9 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
         characterInfo.Button.onClick.RemoveAllListeners();
         characterInfo.Button.onClick.AddListener(PurchaseSelectedCharacter);
 
-        // Ensure we have valid characters
         if (characterDatas.Length > 0)
         {
-            Initialize(); // Create buttons
+            Initialize();
             CharacterSelectCallback(lastSelectedCharacterIndex);
         }
         else
@@ -66,7 +60,6 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
 
     private void InitializeCharacterFrames()
     {
-        // Create the frame dictionary based on rarity mappings
         characterCardFrameDictionary = new Dictionary<CharacterCardRarityType, GameObject>();
         foreach (CharacterCardFrameMapping mapping in characterCardFramesByRarity)
         {
@@ -79,34 +72,44 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
                 Debug.LogWarning($"Duplicate mapping detected for rarity: {mapping.rarity}");
             }
         }
-
         Debug.Log($"Initialized {characterCardFrameDictionary.Count} character frame mappings.");
     }
 
     private void Initialize()
     {
-        // Create buttons for all characters
+        List<int> sortedIndices = new List<int>();
+
         for (int i = 0; i < characterDatas.Length; i++)
         {
-            CreateCharacterButton(i);
+            if (characterUnlockStates[i])
+                sortedIndices.Add(i);
         }
+
+        for (int i = 0; i < characterDatas.Length; i++)
+        {
+            if (!characterUnlockStates[i])
+                sortedIndices.Add(i);
+        }
+
+        for (int i = 0; i < sortedIndices.Count; i++)
+        {
+            CreateCharacterButton(sortedIndices[i]);
+        }
+        Debug.Log($"Initialized {sortedIndices.Count} characters with unlocked first.");
     }
 
     private void CreateCharacterButton(int _index)
     {
         CharacterDataSO characterData = characterDatas[_index];
 
-        // Validate rarity and prefab existence
         if (!characterCardFrameDictionary.TryGetValue(characterData.Rarity, out GameObject framePrefab))
         {
             Debug.LogError($"No frame prefab found for rarity: {characterData.Rarity}");
             return;
         }
 
-        // Instantiate frame prefab
         GameObject frameInstance = Instantiate(framePrefab, characterButtonParent);
 
-        // Configure character button inside the frame
         CharacterContainerUI characterButtonInstance = frameInstance.GetComponent<CharacterContainerUI>();
         if (characterButtonInstance == null)
         {
@@ -114,17 +117,15 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
             return;
         }
 
-        characterButtonInstance.ConfigureCharacterButton(characterData.Icon, characterUnlockStates[_index]);
+        characterButtonInstance.ConfigureCharacterButton(characterData.Icon, characterData.Name, characterUnlockStates[_index]);
         characterButtonInstance.Button.onClick.RemoveAllListeners();
         characterButtonInstance.Button.onClick.AddListener(() => CharacterSelectCallback(_index));
-
         Debug.Log($"Spawned character button for: {characterData.Name}");
     }
 
     private void CharacterSelectCallback(int _index)
     {
         selectedCharacterIndex = _index;
-
         CharacterDataSO characterData = characterDatas[_index];
 
         if (characterUnlockStates[_index])
@@ -132,7 +133,6 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
             lastSelectedCharacterIndex = _index;
             characterInfo.Button.interactable = false;
             Save();
-
             OnCharacterSelected?.Invoke(characterData);
         }
         else
@@ -148,32 +148,21 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
     {
         int price = characterDatas[selectedCharacterIndex].PurchasePrice;
         CurrencyManager.Instance.AdjustPremiumCurrency(-price);
-
-        // Update unlock state
         characterUnlockStates[selectedCharacterIndex] = true;
-
-        // Update visuals
         characterButtonParent.GetChild(selectedCharacterIndex).GetComponent<CharacterContainerUI>().Unlock();
-
-        // Update info panel
         CharacterSelectCallback(selectedCharacterIndex);
-
         Save();
     }
 
     public void Load()
     {
         characterDatas = ResourceManager.Characters;
-
-        // Default unlock first character
         for (int i = 0; i < characterDatas.Length; i++)
             characterUnlockStates.Add(i == 0);
 
-        // Load saved unlock states
         if (SaveManager.TryLoad(this, characterUnlockedStatesKey, out object characterUnlockedStatesObject))
             characterUnlockStates = (List<bool>)characterUnlockedStatesObject;
 
-        // Load last selected character
         if (SaveManager.TryLoad(this, lastSelectedCharacterKey, out object lastSelectedCharacterStatesObject))
             lastSelectedCharacterIndex = (int)lastSelectedCharacterStatesObject;
     }
