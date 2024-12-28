@@ -51,7 +51,6 @@ public abstract class Enemy : MonoBehaviour
     private EnemyStatus status;
     private Transform playerTransform;
 
-    // Start is called before the first frame update
     protected virtual void Start()
     {
         health = maxHealth;
@@ -76,7 +75,6 @@ public abstract class Enemy : MonoBehaviour
     {
         if (playerTransform != null)
         {
-            
             if (playerTransform.position.x > transform.position.x)
                 _spriteRenderer.flipX = true; 
             else
@@ -84,7 +82,6 @@ public abstract class Enemy : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     protected bool CanAttack()
     {
         return _spriteRenderer.enabled;
@@ -107,7 +104,6 @@ public abstract class Enemy : MonoBehaviour
                 {
                     character.TakeDamage(damage * 2);
                 }
-           
             }
             else
             {
@@ -118,12 +114,10 @@ public abstract class Enemy : MonoBehaviour
         {
             character.TakeDamage(damage);
         }
-
     }
 
     public virtual void TakeDamage(int _damage, bool _isCriticalHit)
     {
-    
         if (isInvincible)
             return;
 
@@ -132,15 +126,13 @@ public abstract class Enemy : MonoBehaviour
 
         OnDamageTaken?.Invoke(_damage, transform.position, _isCriticalHit);
 
-
         if (health <= 0)
             Die();
-
     }
 
-    public void ApplyLifeDrain(float duration)
+    public void ApplyLifeDrain(int damage, float duration, float interval)
     {
-        status.ApplyLifeDrain(duration);
+        status.ApplyEffect(StatusEffectType.Drain, damage, duration, interval);
     }
 
     protected virtual void Die()
@@ -167,7 +159,6 @@ public abstract class Enemy : MonoBehaviour
         LeanTween.scale(spawnIndicator.gameObject, targetScale, spawnTime)
             .setLoopPingPong(numberOfLoops)
             .setOnComplete(SpawnCompleted);
-
     }
 
     private void SetRenderersVisibility(bool visibility)
@@ -201,5 +192,4 @@ public abstract class Enemy : MonoBehaviour
     {
         return (Vector2)transform.position + _collider.offset;
     }
-
 }

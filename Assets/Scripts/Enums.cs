@@ -122,6 +122,12 @@ public enum CharacterCardRarityType
     Legendary
 }
 
+public enum StatusEffectType
+{
+    Burn,
+    Drain
+}
+
 public static class Enums
 {
     public static string FormatStatName(Stat _stat)

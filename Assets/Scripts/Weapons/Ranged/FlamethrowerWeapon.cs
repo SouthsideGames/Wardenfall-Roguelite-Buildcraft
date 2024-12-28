@@ -3,28 +3,23 @@ using UnityEngine;
 public class FlamethrowerWeapon : RangedWeapon
 {
     [Header("WAVE SETTINGS:")]
-    [SerializeField] private GameObject fireWavePrefab; // Prefab for the fire wave
-    [SerializeField] private float waveSpeed = 10f;     // Speed of the wave
-    [SerializeField] private float waveRange = 8f;      // Max travel distance
-    [SerializeField] private float burnDuration = 3f;   // Burn effect duration
-    [SerializeField] private float burnDamage = 5f;     // Damage per second from burn effect
-    [SerializeField] private float waveWidth = 1f;      // Width of the wave
+    [SerializeField] private GameObject fireWavePrefab;
+    [SerializeField] private float waveSpeed = 10f;
+    [SerializeField] private float waveRange = 8f;
+    [SerializeField] private float waveWidth = 1f;
+    [SerializeField] private int burnDamage = 5;
+    [SerializeField] private float burnDuration = 3f;
+    [SerializeField] private float burnInterval = 1f;
 
     protected override void Shoot()
     {
-        // Trigger animation and sound
         OnBulletFired?.Invoke();
         anim.Play("Attack");
         PlaySFX();
 
-        // Calculate damage
-        int damage = GetDamage(out bool isCriticalHit);
-
-        // Create the fire wave
+        // Create and configure the fire wave
         GameObject fireWave = Instantiate(fireWavePrefab, firePoint.position, transform.rotation);
         FireWave fireWaveScript = fireWave.GetComponent<FireWave>();
-
-        // Configure fire wave settings
-        fireWaveScript.Setup(damage, waveSpeed, waveRange, burnDamage, burnDuration, waveWidth, isCriticalHit);
+        fireWaveScript.Setup(waveSpeed, waveRange, burnDamage, burnDuration, burnInterval, waveWidth);
     }
 }

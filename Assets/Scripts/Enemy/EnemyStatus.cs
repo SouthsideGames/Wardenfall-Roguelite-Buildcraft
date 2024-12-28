@@ -4,50 +4,48 @@ using UnityEngine;
 
 public class EnemyStatus : MonoBehaviour
 {
-    private Enemy enemy;
-    private bool isDraining = false;
+      private Enemy enemy;
 
-    [Header("DRAIN SETTINGS")]
-    [SerializeField] private int drainAmount = 1;     
-    [SerializeField] private float drainInterval = 1.0f;    
+    private Dictionary<StatusEffectType, StatusEffect> activeEffects = new();
+
+    [Header("EFFECT SETTINGS")]
+    [SerializeField] private float defaultInterval = 1.0f;
 
     private void Awake()
     {
         enemy = GetComponent<Enemy>();
     }
 
-    public void ApplyLifeDrain(float duration)
+    public void ApplyEffect(StatusEffectType effectType, int damage, float duration, float interval = -1f)
     {
-        if (!isDraining)
+        if (!activeEffects.ContainsKey(effectType))
         {
-            isDraining = true;
-            StartCoroutine(DrainHealth(duration));
+            interval = interval > 0 ? interval : defaultInterval;
+            StatusEffect newEffect = new(effectType, damage, duration, interval, enemy);
+            activeEffects[effectType] = newEffect;
+            StartCoroutine(HandleEffect(newEffect));
         }
     }
 
-    private IEnumerator DrainHealth(float duration)
+    private IEnumerator HandleEffect(StatusEffect effect)
     {
         float elapsedTime = 0;
 
-        while (elapsedTime < duration)
+        while (elapsedTime < effect.Duration && activeEffects.ContainsKey(effect.Type))
         {
-            if (isDraining)
-            {
-                enemy.TakeDamage(drainAmount, false);
-                elapsedTime += drainInterval;
-                yield return new WaitForSeconds(drainInterval);
-            }
-            else
-            {
-                yield break;
-            }
+            effect.ApplyDamage();
+            elapsedTime += effect.Interval;
+            yield return new WaitForSeconds(effect.Interval);
         }
 
-        isDraining = false;
+        activeEffects.Remove(effect.Type);
     }
 
-    public void StopLifeDrain()
+    public void RemoveEffect(StatusEffectType effectType)
     {
-        isDraining = false;
+        if (activeEffects.ContainsKey(effectType))
+        {
+            activeEffects.Remove(effectType);
+        }
     }
 }
