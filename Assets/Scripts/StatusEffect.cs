@@ -2,24 +2,17 @@ using UnityEngine;
 
 public class StatusEffect
 {
-    
-    public StatusEffectType Type { get; private set; }
-    public int Damage { get; private set; }
-    public float Duration { get; private set; }
-    public float Interval { get; private set; }
-    private Enemy enemy;
 
-    public StatusEffect(StatusEffectType type, int damage, float duration, float interval, Enemy target)
+    public StatusEffectType EffectType;
+    public float Duration;
+    public float Value; // For slow percentage or drain damage
+    public float Interval; // Used for drain effects
+
+    public StatusEffect(StatusEffectType type, float duration, float value = 0, float interval = 0)
     {
-        Type = type;
-        Damage = damage;
+        EffectType = type;
         Duration = duration;
+        Value = value;
         Interval = interval;
-        enemy = target;
-    }
-
-    public void ApplyDamage()
-    {
-        enemy.TakeDamage(Damage, false);
     }
 }

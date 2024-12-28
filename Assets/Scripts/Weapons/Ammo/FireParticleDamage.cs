@@ -40,10 +40,13 @@ public class FireParticleDamage : MonoBehaviour
 
     private void ApplyBurn(Enemy enemy)
     {
+        // Apply burn effect using EnemyStatus
         EnemyStatus status = enemy.GetComponent<EnemyStatus>();
+
         if (status != null)
         {
-            status.ApplyEffect(StatusEffectType.Burn, burnDamage, burnDuration, burnInterval);
+            StatusEffect burnEffect = new StatusEffect(StatusEffectType.Burn, burnDuration, burnDamage, burnInterval);
+            status.ApplyEffect(burnEffect);
         }
     }
 }

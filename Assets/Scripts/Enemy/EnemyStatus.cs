@@ -4,48 +4,139 @@ using UnityEngine;
 
 public class EnemyStatus : MonoBehaviour
 {
-      private Enemy enemy;
+    private EnemyMovement movement;
+    private Enemy enemy;
+    private bool isStunned = false;
+    private bool isSlowed = false;
+    private bool isBurned = false;
 
-    private Dictionary<StatusEffectType, StatusEffect> activeEffects = new();
+    private float originalMoveSpeed;
+    private float slowFactor;
 
-    [Header("EFFECT SETTINGS")]
-    [SerializeField] private float defaultInterval = 1.0f;
+    private List<Coroutine> activeEffects = new List<Coroutine>();
 
     private void Awake()
     {
+        movement = GetComponent<EnemyMovement>();
         enemy = GetComponent<Enemy>();
-    }
 
-    public void ApplyEffect(StatusEffectType effectType, int damage, float duration, float interval = -1f)
-    {
-        if (!activeEffects.ContainsKey(effectType))
+        if (movement == null)
         {
-            interval = interval > 0 ? interval : defaultInterval;
-            StatusEffect newEffect = new(effectType, damage, duration, interval, enemy);
-            activeEffects[effectType] = newEffect;
-            StartCoroutine(HandleEffect(newEffect));
+            Debug.LogError("EnemyMovement script not found on " + gameObject.name);
         }
     }
 
-    private IEnumerator HandleEffect(StatusEffect effect)
+    public void ApplyEffect(StatusEffect effect)
     {
-        float elapsedTime = 0;
-
-        while (elapsedTime < effect.Duration && activeEffects.ContainsKey(effect.Type))
+        switch (effect.EffectType)
         {
-            effect.ApplyDamage();
-            elapsedTime += effect.Interval;
-            yield return new WaitForSeconds(effect.Interval);
-        }
+            case StatusEffectType.Stun:
+                ApplyStun(effect.Duration);
+                break;
 
-        activeEffects.Remove(effect.Type);
+            case StatusEffectType.Drain:
+                ApplyDrain((int)effect.Value, effect.Duration, effect.Interval);
+                break;
+
+            case StatusEffectType.Burn:
+                ApplyBurn((int)effect.Value, effect.Duration, effect.Interval);
+                break;
+        }
     }
 
-    public void RemoveEffect(StatusEffectType effectType)
+    private void ApplyStun(float duration)
     {
-        if (activeEffects.ContainsKey(effectType))
+        if (isStunned) return;
+        isStunned = true;
+
+        movement.DisableMovement(duration);
+
+        StartCoroutine(RemoveStun(duration));
+    }
+
+    private IEnumerator RemoveStun(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        isStunned = false;
+    }
+
+    private void ApplySlow(float duration, float percentage)
+    {
+        if (isSlowed) return;
+        isSlowed = true;
+
+        // Store original speed and apply slow effect
+        originalMoveSpeed = movement.moveSpeed;
+        slowFactor = originalMoveSpeed * (1 - percentage);
+        movement.moveSpeed = slowFactor;
+
+        StartCoroutine(RemoveSlow(duration));
+    }
+
+    private IEnumerator RemoveSlow(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        movement.moveSpeed = originalMoveSpeed;
+        isSlowed = false;
+    }
+
+    private void ApplyDrain(int damage, float duration, float interval)
+    {
+        Coroutine drainCoroutine = StartCoroutine(DrainEffect(damage, duration, interval));
+        activeEffects.Add(drainCoroutine);
+    }
+
+    private IEnumerator DrainEffect(int damage, float duration, float interval)
+    {
+        float elapsedTime = 0f;
+        while (elapsedTime < duration)
         {
-            activeEffects.Remove(effectType);
+            enemy.TakeDamage(damage, false);
+            yield return new WaitForSeconds(interval);
+            elapsedTime += interval;
         }
+    }
+
+    private void ApplyBurn(int damage, float duration, float interval)
+    {
+        if (isBurned) return; // Prevent multiple burns
+        isBurned = true;
+
+        Coroutine burnCoroutine = StartCoroutine(BurnEffect(damage, duration, interval));
+        activeEffects.Add(burnCoroutine);
+
+        StartCoroutine(RemoveBurn(duration));
+    }
+
+    private IEnumerator BurnEffect(int damage, float duration, float interval)
+    {
+        float elapsedTime = 0f;
+        while (elapsedTime < duration)
+        {
+            enemy.TakeDamage(damage, false);
+            yield return new WaitForSeconds(interval);
+            elapsedTime += interval;
+        }
+    }
+
+    private IEnumerator RemoveBurn(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        isBurned = false;
+    }
+
+    public void ClearAllEffects()
+    {
+        foreach (Coroutine effect in activeEffects)
+        {
+            StopCoroutine(effect);
+        }
+        activeEffects.Clear();
+
+        // Reset states and speed
+        isStunned = false;
+        isSlowed = false;
+        isBurned = false;
+        movement.moveSpeed = originalMoveSpeed;
     }
 }

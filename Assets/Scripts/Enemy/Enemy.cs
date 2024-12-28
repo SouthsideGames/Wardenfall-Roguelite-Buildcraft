@@ -118,25 +118,35 @@ public abstract class Enemy : MonoBehaviour
 
     public virtual void TakeDamage(int _damage, bool _isCriticalHit)
     {
-        if (isInvincible)
+        if (isInvincible || this == null || gameObject == null)
             return;
 
         int realDamage = Mathf.Min(_damage, health);
         health -= realDamage;
 
-        OnDamageTaken?.Invoke(_damage, transform.position, _isCriticalHit);
+        // Null-check before invoking damage taken action
+        if (this != null && gameObject != null)
+        {
+            OnDamageTaken?.Invoke(_damage, transform.position, _isCriticalHit);
+        }
 
-        if (health <= 0)
+        if (health <= 0 && this != null && gameObject != null)
+        {
             Die();
+        }
     }
 
     public void ApplyLifeDrain(int damage, float duration, float interval)
     {
-        status.ApplyEffect(StatusEffectType.Drain, damage, duration, interval);
+        StatusEffect drainEffect = new StatusEffect(StatusEffectType.Drain, duration, damage, interval);
+        status.ApplyEffect(drainEffect);
     }
 
     protected virtual void Die()
     {
+        if (this == null || gameObject == null)
+            return;
+
         OnDeath?.Invoke(transform.position);
         OnEnemyKilled?.Invoke();
         MissionManager.Increment(MissionType.enemiesPopped, 1);

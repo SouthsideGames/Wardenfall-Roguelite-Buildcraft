@@ -66,7 +66,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.14069271, y: 0.02512461}
+  m_Offset: {x: 0.26951748, y: 0.02512461}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -76,7 +76,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 2.1518402, y: 1.0725137}
+  m_Size: {x: 2.9722605, y: 1.0725137}
   m_EdgeRadius: 0
 --- !u!1 &4075609433105477847
 GameObject:
@@ -176,7 +176,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2823779214590732286}
   - component: {fileID: 3925099432812879877}
-  - component: {fileID: 3090414645501929170}
+  - component: {fileID: 2765882229023166747}
   m_Layer: 0
   m_Name: Basher
   m_TagString: Untagged
@@ -222,7 +222,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &3090414645501929170
+--- !u!114 &2765882229023166747
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -231,7 +231,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6241322030481016399}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42472dbe50ad63f498d7361cd28c16f7, type: 3}
+  m_Script: {fileID: 11500000, guid: f869564ba5a344f40bd25ca571811cda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   <WeaponData>k__BackingField: {fileID: 11400000, guid: f178878943bab434094bcad7d1c4b1cb, type: 2}
@@ -239,10 +239,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   anim: {fileID: 3925099432812879877}
-  aimLerp: 12
+  aimLerp: 5
   hitpoint: {fileID: 7046191350905913524}
   hitCollider: {fileID: 7925197867343454752}
   damagedEnemies: []
+  stunDuration: 2
 --- !u!1 &7523463312478332396
 GameObject:
   m_ObjectHideFlags: 0

@@ -125,7 +125,8 @@ public enum CharacterCardRarityType
 public enum StatusEffectType
 {
     Burn,
-    Drain
+    Drain,
+    Stun
 }
 
 public static class Enums
