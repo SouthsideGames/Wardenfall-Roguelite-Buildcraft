@@ -84,13 +84,26 @@ public class MeleeWeapon : Weapon
     {
         base.AutoAimLogic();
 
-        if(closestEnemy != null)
+        if (closestEnemy != null)
         {
+            // Calculate the direction to the closest enemy
             targetUpVector = (closestEnemy.transform.position - transform.position).normalized;
-            transform.up = targetUpVector;  
+            transform.up = targetUpVector;
+
+            // Flip the scale based on direction
+            if (targetUpVector.x < 0) // Aiming left
+            {
+                transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+            }
+            else // Aiming right
+            {
+                transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+            }
+
             ManageAttackTimer();
         }
 
+        // Smoothly rotate toward target direction
         transform.up = Vector3.Lerp(transform.up, targetUpVector, Time.deltaTime * aimLerp);
 
         Wait();

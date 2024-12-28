@@ -11,13 +11,13 @@ public class FireWave : MonoBehaviour
 
     private Vector2 startPosition;
 
-    [SerializeField] private FireParticleDamage particleDamage; 
+    [SerializeField] private FireParticleDamage particleDamage;
 
-    public void Setup(float _speed, float _range, float _burnDamage, float _burnDuration, float _burnInterval, float _width)
+    public void Setup(float _speed, float _range, int _burnDamage, float _burnDuration, float _burnInterval, float _width)
     {
         speed = _speed;
         range = _range;
-        burnDamage = Mathf.RoundToInt(_burnDamage);
+        burnDamage = _burnDamage;
         burnDuration = _burnDuration;
         burnInterval = _burnInterval;
 
@@ -26,7 +26,7 @@ public class FireWave : MonoBehaviour
 
         // Pass burn settings to ParticleDamage
         if (particleDamage != null)
-            particleDamage.SetupBurn(burnDamage, burnDuration, burnInterval);
+            particleDamage.SetupBurn(burnDamage, burnDamage, burnDuration, burnInterval);
 
         Destroy(gameObject, range / speed);
     }

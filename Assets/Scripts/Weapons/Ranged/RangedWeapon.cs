@@ -22,11 +22,20 @@ public class RangedWeapon : Weapon
     {
         base.AutoAimLogic();
 
-        if(closestEnemy != null)
+        if (closestEnemy != null)
         {
             targetUpVector = (closestEnemy.GetCenter() - (Vector2)transform.position).normalized;
-            transform.up = targetUpVector;  
-           
+            transform.up = targetUpVector;
+
+            if (targetUpVector.x < 0)
+            {
+                transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+            }
+            else
+            {
+                transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+            }
+
             ShootLogic();
             return;
         }

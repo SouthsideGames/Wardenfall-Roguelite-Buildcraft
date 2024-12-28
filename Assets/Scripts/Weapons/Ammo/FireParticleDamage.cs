@@ -4,26 +4,37 @@ using UnityEngine;
 
 public class FireParticleDamage : MonoBehaviour
 {
+
+    private int damage;
     private int burnDamage;
     private float burnDuration;
     private float burnInterval;
 
     private List<Enemy> affectedEnemies = new List<Enemy>();
 
-    public void SetupBurn(int damage, float duration, float interval)
+    public void SetupBurn(int baseDamage, int burnDmg, float duration, float interval)
     {
-        burnDamage = damage;
+        damage = baseDamage;
+        burnDamage = burnDmg;
         burnDuration = duration;
         burnInterval = interval;
     }
 
-    private void OnParticleCollision(GameObject other)
+    void OnParticleCollision(GameObject other)
     {
+        // Check if collided object has Enemy component
         Enemy enemy = other.GetComponent<Enemy>();
+
         if (enemy != null && !affectedEnemies.Contains(enemy))
         {
-            affectedEnemies.Add(enemy);
+            // Apply initial damage
+            enemy.TakeDamage(damage, false);
+
+            // Apply burn effect using EnemyStatus
             ApplyBurn(enemy);
+
+            // Add to affected list
+            affectedEnemies.Add(enemy);
         }
     }
 
@@ -36,3 +47,4 @@ public class FireParticleDamage : MonoBehaviour
         }
     }
 }
+

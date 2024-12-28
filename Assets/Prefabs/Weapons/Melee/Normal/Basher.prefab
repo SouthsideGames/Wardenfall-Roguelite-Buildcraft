@@ -66,7 +66,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.12116715, y: -0.12793064}
+  m_Offset: {x: -0.14069271, y: 0.02512461}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -76,7 +76,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.8187434, y: 0.9966216}
+  m_Size: {x: 2.1518402, y: 1.0725137}
   m_EdgeRadius: 0
 --- !u!1 &4075609433105477847
 GameObject:
@@ -103,14 +103,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4075609433105477847}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: 0.70710677, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.6000001, y: 0.6000001, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7046191350905913524}
   m_Father: {fileID: 8968316710020594955}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
 --- !u!212 &4786068519791655524
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -130,6 +130,7 @@ SpriteRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -154,7 +155,7 @@ SpriteRenderer:
   m_SortingLayerID: 883773661
   m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 6782899249649484260, guid: bad151940d1727e41b541c31d6ced434, type: 3}
+  m_Sprite: {fileID: 5728367982351461185, guid: 5066dbc569c056e4b8f982114daf0201, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -175,9 +176,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2823779214590732286}
   - component: {fileID: 3925099432812879877}
-  - component: {fileID: -9143893281183066976}
+  - component: {fileID: 3090414645501929170}
   m_Layer: 0
-  m_Name: Buddy Spawner
+  m_Name: Basher
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -209,7 +210,7 @@ Animator:
   m_GameObject: {fileID: 6241322030481016399}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: a55add4595125e24d9a9b8ba9b658ffe, type: 2}
+  m_Controller: {fileID: 22100000, guid: f54353ff1609241b8a342a2aedfdea24, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -221,7 +222,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &-9143893281183066976
+--- !u!114 &3090414645501929170
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -230,28 +231,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 6241322030481016399}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc1752f107663bb4d88cd9580a935981, type: 3}
+  m_Script: {fileID: 11500000, guid: 42472dbe50ad63f498d7361cd28c16f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <WeaponData>k__BackingField: {fileID: 11400000, guid: a67d0f8f978671e409b6636732fe4fff, type: 2}
-  range: 5
+  <WeaponData>k__BackingField: {fileID: 11400000, guid: f178878943bab434094bcad7d1c4b1cb, type: 2}
   enemyMask:
     serializedVersion: 2
     m_Bits: 64
-  damage: 0
-  attackDelay: 0
-  autoAim: 0
   anim: {fileID: 3925099432812879877}
-  aimLerp: 0
-  state: 0
+  aimLerp: 12
   hitpoint: {fileID: 7046191350905913524}
   hitCollider: {fileID: 7925197867343454752}
   damagedEnemies: []
-  minionPrefab: {fileID: 8562200832932317682, guid: f9cd0a8f8c5384a4aa4d45ebb70346af, type: 3}
-  minionCount: 1
-  minionLifetime: 3
-  minionDamage: 2
-  summonCooldown: 4
 --- !u!1 &7523463312478332396
 GameObject:
   m_ObjectHideFlags: 0
