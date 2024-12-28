@@ -9,7 +9,7 @@ public class RangedWeapon : Weapon
     public static Action OnBulletFired;
 
     [Header("ELEMENTS:")]
-    [SerializeField] private Transform firePoint;
+    public Transform firePoint;
     [SerializeField] private BulletBase bulletPrefab;
 
     [Header("POOL:")]

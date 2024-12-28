@@ -56,6 +56,7 @@ public class BulletBase : MonoBehaviour
     protected virtual void ApplyDamage(Enemy enemy) => enemy.TakeDamage(damage, isCriticalHit);
     protected virtual void DestroyBullet() => gameObject.SetActive(false);
     protected bool IsInLayerMask(int layer, LayerMask layerMask) => (layerMask.value & (1 << layer)) != 0;
+
     protected virtual void Release()
     {
        if (!gameObject.activeSelf)
@@ -64,7 +65,7 @@ public class BulletBase : MonoBehaviour
         if (rangedWeapon == null)
         {
             Debug.LogError("RangedWeapon reference is missing! Did you forget to call Configure()?");
-            DestroyBullet();  // Fallback behavior
+            DestroyBullet(); 
             return;
         }
 

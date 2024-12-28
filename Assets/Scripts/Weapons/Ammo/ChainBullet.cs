@@ -9,7 +9,6 @@ public class ChainBullet : BulletBase
     [SerializeField] private float chainRadius;
     [SerializeField] private int maxChains;
     [SerializeField] private float damageFalloff;
-    [SerializeField] private LayerMask enemyMask;
     [SerializeField] private float chainEffectDuration = 0.2f;
 
     private List<Enemy> hitEnemies = new List<Enemy>();

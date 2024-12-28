@@ -9,7 +9,6 @@ public class ChainWeapon : RangedWeapon
     [SerializeField] private float chainRadius = 5f;
     [SerializeField] private int maxChains = 4;
     [SerializeField] private float damageFalloff = 0.75f;
-    [SerializeField] private LayerMask enemyMask;
 
     protected override void Shoot()
     {

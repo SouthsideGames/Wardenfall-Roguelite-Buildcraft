@@ -47,10 +47,6 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
             Initialize();
             CharacterSelectCallback(lastSelectedCharacterIndex);
         }
-        else
-        {
-            Debug.LogError("No characters found in characterDatas!");
-        }
     }
 
     private void OnDestroy()
@@ -64,15 +60,8 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
         foreach (CharacterCardFrameMapping mapping in characterCardFramesByRarity)
         {
             if (!characterCardFrameDictionary.ContainsKey(mapping.rarity))
-            {
                 characterCardFrameDictionary.Add(mapping.rarity, mapping.CharacterCardFramePrefab);
-            }
-            else
-            {
-                Debug.LogWarning($"Duplicate mapping detected for rarity: {mapping.rarity}");
-            }
         }
-        Debug.Log($"Initialized {characterCardFrameDictionary.Count} character frame mappings.");
     }
 
     private void Initialize()
@@ -92,10 +81,7 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
         }
 
         for (int i = 0; i < sortedIndices.Count; i++)
-        {
             CreateCharacterButton(sortedIndices[i]);
-        }
-        Debug.Log($"Initialized {sortedIndices.Count} characters with unlocked first.");
     }
 
     private void CreateCharacterButton(int _index)
@@ -103,24 +89,17 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
         CharacterDataSO characterData = characterDatas[_index];
 
         if (!characterCardFrameDictionary.TryGetValue(characterData.Rarity, out GameObject framePrefab))
-        {
-            Debug.LogError($"No frame prefab found for rarity: {characterData.Rarity}");
             return;
-        }
 
         GameObject frameInstance = Instantiate(framePrefab, characterButtonParent);
 
         CharacterContainerUI characterButtonInstance = frameInstance.GetComponent<CharacterContainerUI>();
         if (characterButtonInstance == null)
-        {
-            Debug.LogError("CharacterContainerUI component is missing on the frame prefab!");
             return;
-        }
 
         characterButtonInstance.ConfigureCharacterButton(characterData.Icon, characterData.Name, characterUnlockStates[_index]);
         characterButtonInstance.Button.onClick.RemoveAllListeners();
         characterButtonInstance.Button.onClick.AddListener(() => CharacterSelectCallback(_index));
-        Debug.Log($"Spawned character button for: {characterData.Name}");
     }
 
     private void CharacterSelectCallback(int _index)

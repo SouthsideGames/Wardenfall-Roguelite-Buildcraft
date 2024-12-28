@@ -20,6 +20,12 @@ public class CodexManager : MonoBehaviour
     [SerializeField] private Transform statContainersParent;
     [SerializeField] private GameObject statPrefab;
 
+    [Header("ENEMY VIEW:")]
+    [SerializeField] private GameObject enemyDetailContainer;
+    [SerializeField] private Image enemyDetailIcon;
+    [SerializeField] private TextMeshProUGUI enemyDetailName;
+    [SerializeField] private TextMeshProUGUI enemyDetailDescription;
+
     private void Awake() => InitializeDropdown();   
     private void Start()
     {
@@ -146,11 +152,10 @@ public class CodexManager : MonoBehaviour
 
     public void OpenEnemyDetailView(EnemyDataSO _enemyData)
     {
-        detailIcon.sprite = _enemyData.Icon;
-        detailName.text = _enemyData.Name;
-        detailDescription.text = _enemyData.Description;
-        statContainersParent.Clear();
-        detailContainer.SetActive(true);
+        enemyDetailIcon.sprite = _enemyData.Icon;
+        enemyDetailName.text = _enemyData.Name;
+        enemyDetailDescription.text = _enemyData.Description;
+        enemyDetailContainer.SetActive(true);
     }
 
     private void DisplayCharacterStats(CharacterDataSO characterData)
@@ -193,6 +198,7 @@ public class CodexManager : MonoBehaviour
     }
 
     public void CloseDetailView() => detailContainer.SetActive(false);
+    public void CloseEnemyDetailView() => enemyDetailContainer.SetActive(false);
 
     private void ClearCards() => detailParent.Clear();
 
