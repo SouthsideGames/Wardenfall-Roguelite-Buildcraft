@@ -7,6 +7,7 @@ public class EnemyStatus : MonoBehaviour
     private EnemyMovement movement;
     private Enemy enemy;
     private bool isStunned = false;
+    public bool IsStunned => isStunned;
     private bool isSlowed = false;
     private bool isBurned = false;
 

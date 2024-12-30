@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SpinnyWeapon : MeleeWeapon
+public class WhirlwindWeapon : MeleeWeapon
 {
     private MeleeWeaponState state;
 
@@ -9,13 +9,11 @@ public class SpinnyWeapon : MeleeWeapon
     [SerializeField] private float orbitSpeed = 50f;
 
     private Transform centerObject;
-
     private float angle;
 
     private void Start()
     {
         centerObject = FindAnyObjectByType<CharacterManager>().gameObject.transform;
-
     }
 
     void Update()
@@ -25,6 +23,12 @@ public class SpinnyWeapon : MeleeWeapon
         if (centerObject == null) return;
 
         angle += orbitSpeed * Time.deltaTime;
+
+        if (angle >= 360f)
+        {
+            angle -= 360f;
+            damagedEnemies.Clear();
+        }
 
         float angleRad = angle * Mathf.Deg2Rad;
 
@@ -38,12 +42,11 @@ public class SpinnyWeapon : MeleeWeapon
 
     private void DamageEnemies()
     {
-        // Use a collider to detect enemies in range
         Collider2D[] enemies = Physics2D.OverlapBoxAll(
             transform.position,
-            hitCollider.bounds.size,  // Use the size of the collider
-            0f,                       // No rotation needed
-            enemyMask                 // The layer mask for enemies
+            hitCollider.bounds.size,
+            0f,
+            enemyMask
         );
 
         foreach (Collider2D enemyCollider in enemies)
@@ -51,19 +54,10 @@ public class SpinnyWeapon : MeleeWeapon
             Enemy enemy = enemyCollider.GetComponent<Enemy>();
             if (enemy != null && !damagedEnemies.Contains(enemy))
             {
-                // Deal damage to the enemy
                 int damage = GetDamage(out bool isCriticalHit);
                 enemy.TakeDamage(damage, isCriticalHit);
-
-                // Add enemy to the damaged list to avoid repeated damage
                 damagedEnemies.Add(enemy);
             }
-        }
-
-        // Clear the damaged list to allow enemies to be hit again after some time
-        if (state == MeleeWeaponState.Idle)
-        {
-            damagedEnemies.Clear();
         }
     }
 

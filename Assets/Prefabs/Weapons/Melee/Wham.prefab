@@ -66,7 +66,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.12961972, y: 0.0030860752}
+  m_Offset: {x: 3.2198138, y: 0.03409946}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -76,7 +76,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 2.543093, y: 0.73458815}
+  m_Size: {x: 2.543093, y: 2.6574109}
   m_EdgeRadius: 0
 --- !u!1 &1611032470557566961
 GameObject:
@@ -103,7 +103,7 @@ Transform:
   m_GameObject: {fileID: 1611032470557566961}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.88, y: -0.05, z: 0}
+  m_LocalPosition: {x: 3.47, y: -1.51, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -161,6 +161,7 @@ SpriteRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -185,12 +186,12 @@ SpriteRenderer:
   m_SortingLayerID: 883773661
   m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 485907682, guid: 258e5a7de28049b43a7b1fb741a1b6ac, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 258e5a7de28049b43a7b1fb741a1b6ac, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1.96, y: 1.23}
+  m_Size: {x: 3.92, y: 2.46}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -268,16 +269,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <WeaponData>k__BackingField: {fileID: 11400000, guid: f3a5a1f2c9401f24c967219306a47144, type: 2}
-  range: 3.16
   enemyMask:
     serializedVersion: 2
     m_Bits: 64
-  damage: 0
-  attackDelay: 0.5
-  autoAim: 0
   anim: {fileID: 3925099432812879877}
   aimLerp: 0.04
-  state: 0
   hitpoint: {fileID: 7046191350905913524}
   hitCollider: {fileID: 7925197867343454752}
   damagedEnemies: []
@@ -324,7 +320,7 @@ Transform:
   m_GameObject: {fileID: 7015427178248303990}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 4.39, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -350,6 +346,7 @@ TrailRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:

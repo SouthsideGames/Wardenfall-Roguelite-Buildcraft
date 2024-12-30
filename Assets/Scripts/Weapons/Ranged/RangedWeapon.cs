@@ -13,11 +13,25 @@ public class RangedWeapon : Weapon
     [SerializeField] private BulletBase bulletPrefab;
 
     [Header("POOL:")]
-    public ObjectPool<BulletBase> bulletPool {get; private set;}
+    public ObjectPool<BulletBase> bulletPool { get; private set; }
 
-    void Start() =>  bulletPool = new ObjectPool<BulletBase>(CreateFunction, ActionOnGet, ActionOnRelease, ActionOnDestroy);
-    void Update() => AutoAimLogic();
-    
+    [SerializeField] private bool useAutoAim = true;
+
+    void Start() => bulletPool = new ObjectPool<BulletBase>(CreateFunction, ActionOnGet, ActionOnRelease, ActionOnDestroy);
+
+    void Update()
+    {
+        Attack();
+    }
+
+    protected override void Attack()
+    {
+        if (useAutoAim)
+            AutoAimLogic();
+        else
+            ManualAttackLogic();
+    }
+
     protected override void AutoAimLogic()
     {
         base.AutoAimLogic();
@@ -43,11 +57,21 @@ public class RangedWeapon : Weapon
         transform.up = Vector3.Lerp(transform.up, targetUpVector, Time.deltaTime * aimLerp);
     }
 
+    protected override void ManualAttackLogic()
+    {
+        attackTimer += Time.deltaTime;
+        if (attackTimer >= attackDelay)
+        {
+            attackTimer = 0;
+            Shoot();
+        }
+    }
+
     protected void ShootLogic()
     {
         attackTimer += Time.deltaTime;
 
-        if(attackTimer > attackDelay)
+        if (attackTimer > attackDelay)
         {
             attackTimer = 0f;
             Shoot();
@@ -76,7 +100,7 @@ public class RangedWeapon : Weapon
     }
 
     private void ActionOnGet(BulletBase _bullet)
-    {   
+    {
         _bullet.Reload();
         _bullet.transform.position = firePoint.position;
         _bullet.gameObject.SetActive(true);

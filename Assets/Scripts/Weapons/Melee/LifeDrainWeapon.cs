@@ -11,14 +11,28 @@ public class LifeDrainWeapon : MeleeWeapon
     {
         base.AttackLogic();
 
-        if (closestEnemy != null)
+        foreach (Enemy enemy in damagedEnemies)
         {
-            EnemyStatus status = closestEnemy.GetComponent<EnemyStatus>();
+            int finalDamage = GetDamage(out bool isCriticalHit);
+            enemy.TakeDamage(finalDamage, isCriticalHit);
+
+            EnemyStatus status = enemy.GetComponent<EnemyStatus>();
             if (status != null)
             {
                 StatusEffect drainEffect = new StatusEffect(StatusEffectType.Drain, drainDuration, drainDamage, drainInterval);
                 status.ApplyEffect(drainEffect);
             }
         }
+    }
+
+    protected override void StartAttack()
+    {
+        base.StartAttack();
+        damagedEnemies.Clear();
+    }
+
+    protected override void EndAttack()
+    {
+        base.EndAttack();
     }
 }

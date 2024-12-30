@@ -66,7 +66,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.12961972, y: 0.02512461}
+  m_Offset: {x: 3.448063, y: 0.0635159}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -76,7 +76,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 2.543093, y: 1.0725137}
+  m_Size: {x: 4.453397, y: 2.6849523}
   m_EdgeRadius: 0
 --- !u!1 &4075609433105477847
 GameObject:
@@ -130,6 +130,7 @@ SpriteRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -154,12 +155,12 @@ SpriteRenderer:
   m_SortingLayerID: 883773661
   m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: -7450734880613893761, guid: 57eda307099a21f42ae735a3ec9fa14a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 788287485509a874097a9bb0dfd1e34f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2.56, y: 0.76}
+  m_Size: {x: 5.38, y: 2.66}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -174,10 +175,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2823779214590732286}
-  - component: {fileID: 3090414645501929170}
   - component: {fileID: 3925099432812879877}
+  - component: {fileID: -8387022489651942104}
   m_Layer: 0
-  m_Name: Starter Weapon 2
+  m_Name: Quake
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -199,32 +200,6 @@ Transform:
   - {fileID: 8968316710020594955}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3090414645501929170
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6241322030481016399}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42472dbe50ad63f498d7361cd28c16f7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <WeaponData>k__BackingField: {fileID: 11400000, guid: a90621db7cfdb0043a30787b97e4a05d, type: 2}
-  range: 1.2
-  enemyMask:
-    serializedVersion: 2
-    m_Bits: 64
-  damage: 30
-  attackDelay: 1.2
-  autoAim: 1
-  anim: {fileID: 3925099432812879877}
-  aimLerp: 12
-  state: 0
-  hitpoint: {fileID: 7046191350905913524}
-  hitCollider: {fileID: 7925197867343454752}
-  damagedEnemies: []
 --- !u!95 &3925099432812879877
 Animator:
   serializedVersion: 7
@@ -235,7 +210,7 @@ Animator:
   m_GameObject: {fileID: 6241322030481016399}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 975ea308f1a51664c9ea7bd689edcf38, type: 2}
+  m_Controller: {fileID: 22100000, guid: 2e83865b50ff6492fb137ddbab1778b2, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -247,6 +222,29 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-8387022489651942104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6241322030481016399}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b564874f3f454a4ea6f85f6dce4b0fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <WeaponData>k__BackingField: {fileID: 11400000, guid: f81f4cd6568bc42159cf9a5eaecef873, type: 2}
+  enemyMask:
+    serializedVersion: 2
+    m_Bits: 64
+  anim: {fileID: 3925099432812879877}
+  aimLerp: 10
+  hitpoint: {fileID: 7046191350905913524}
+  hitCollider: {fileID: 7925197867343454752}
+  damagedEnemies: []
+  knockbackForce: 2
+  bounceDistance: 1
 --- !u!1 &7523463312478332396
 GameObject:
   m_ObjectHideFlags: 0
