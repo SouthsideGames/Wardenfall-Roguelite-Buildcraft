@@ -13,7 +13,6 @@ public class LoadoutManager : MonoBehaviour, IWantToBeSaved
     [Header("ELEMENTS:")]
     [SerializeField] private Transform deckListContainer;
     [SerializeField] private GameObject cardDetailContainer;
-    [SerializeField] private Transform mainMenuDeckParent;
     public CardDetailUI cardDetailUI { get; private set; }
 
     [Header("CHARACTER ELEMENTS:")]
@@ -26,7 +25,6 @@ public class LoadoutManager : MonoBehaviour, IWantToBeSaved
     [Header("CARD FRAMES BY RARITY")]
     [SerializeField] private List<CardFrameMapping> cardFramesByRarity;
     [SerializeField] private List<MiniCardFrameMapping> miniCardFramesByRarity;
-    [SerializeField] private List<MainMenuMiniCardFrameMapping> mainMenuMiniCardFramesByRarity;
 
     [Header("SETTINGS:")]
     [SerializeField] private Canvas canvas;
@@ -37,7 +35,6 @@ public class LoadoutManager : MonoBehaviour, IWantToBeSaved
     private List<string> savedCardIDs = new List<string>();
     private Dictionary<CardRarityType, GameObject> cardFrameDictionary;
     private Dictionary<MiniCardRarityType, GameObject> miniCardFrameDictionary;
-    private Dictionary<MainMenuMiniCardRarityType, GameObject> mainMenuMiniCardFrameDictionary;
     private int currentDeckLimit;
     private int deckLimitMax = 10;
     private CardEffectType currentFilter;
@@ -55,7 +52,6 @@ public class LoadoutManager : MonoBehaviour, IWantToBeSaved
         cardDetailUI = cardDetailContainer.GetComponent<CardDetailUI>();
         InitializeCardFrames();
         InitializeMiniCardFrames();
-        InitializeMainMenuMiniCardFrames();
         CloseCardDetails();
     }
 
@@ -73,7 +69,6 @@ public class LoadoutManager : MonoBehaviour, IWantToBeSaved
         Load();
 
         UpdateActiveDeckFromSavedIDs();
-        UpdateMainMenuDeckFromSavedIDs();
         UpdateDeckLimitUI();
         FilterCards(CardEffectType.None);
         UpdateTotalCardsUI(CardEffectType.None);
@@ -119,18 +114,6 @@ public class LoadoutManager : MonoBehaviour, IWantToBeSaved
         }
     }
 
-    private void InitializeMainMenuMiniCardFrames()
-    {
-        mainMenuMiniCardFrameDictionary = new Dictionary<MainMenuMiniCardRarityType, GameObject>();
-        foreach (MainMenuMiniCardFrameMapping mapping in mainMenuMiniCardFramesByRarity)
-        {
-            if (! mainMenuMiniCardFrameDictionary.ContainsKey(mapping.rarity))
-            {
-                 mainMenuMiniCardFrameDictionary.Add(mapping.rarity, mapping.mainMenuMiniCardFramePrefab);
-            }
-        }
-    }
-
     public void UpdateActiveDeckFromSavedIDs()
     {
         activeDeck.Clear();
@@ -150,25 +133,6 @@ public class LoadoutManager : MonoBehaviour, IWantToBeSaved
         CharacterManager.Instance.deck.FillEquippedCardsFromSavedIDs(allCards, savedCardIDs);
         UpdateDeckLimitUI();
     }
-
-    public void UpdateMainMenuDeckFromSavedIDs()
-    {
-        activeDeck.Clear();
-        CharacterManager.Instance.deck.ClearDeck();
-
-        foreach (string cardID in savedCardIDs)
-        {
-            CardSO matchingCard = allCards.FirstOrDefault(card => card.ID == cardID);
-            if (matchingCard != null)
-            {
-                activeDeck.Add(matchingCard);
-                CharacterManager.Instance.deck.AddCard(matchingCard);
-                AddMenuMiniCard(matchingCard);
-            }
-        }
-        
-    }
-
 
     public bool TryAddCardToActiveDeck(CardSO card, GameObject cardObject)
     {
@@ -250,17 +214,6 @@ public class LoadoutManager : MonoBehaviour, IWantToBeSaved
         iconUI.Configure(card.Icon, card.Cost, card, this);
 
         UpdateDeckLimitUI();
-    }
-
-    private void AddMenuMiniCard(CardSO card)
-    {
-       if (!mainMenuMiniCardFrameDictionary.TryGetValue((MainMenuMiniCardRarityType)card.Rarity, out GameObject miniFramePrefab))
-            return;
-
-        GameObject miniIcon = Instantiate(miniFramePrefab, mainMenuDeckParent);
-        MenuCardUI iconUI = miniIcon.GetComponent<MenuCardUI>();
-        iconUI.Configure(card.Icon);
-
     }
 
     private void RemoveMiniIcon(CardSO card)
@@ -360,11 +313,5 @@ public class MiniCardFrameMapping
     public GameObject miniCardFramePrefab;
 }
 
-[Serializable]
-public class MainMenuMiniCardFrameMapping
-{
-    public MainMenuMiniCardRarityType rarity;
-    public GameObject mainMenuMiniCardFramePrefab;
-}
 
 

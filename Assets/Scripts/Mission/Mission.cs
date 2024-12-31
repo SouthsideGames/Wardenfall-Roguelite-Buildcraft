@@ -1,15 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Net.NetworkInformation;
-using Unity.Android.Gradle.Manifest;
-using Unity.Mathematics;
 using UnityEngine;
+using System;
 
 namespace SouthsideGames.DailyMissions
 {
     [System.Serializable]
     public class Mission
     {
+        public static Action<Mission> updateMission;
+        public static Action<Mission> completeMission;
+
         private MissionDataSO data;
         public MissionDataSO Data => data;
 
@@ -26,11 +25,16 @@ namespace SouthsideGames.DailyMissions
                    return;
                    
                 amount = Mathf.Min(value, data.Target);
-                
+
+                updateMission?.Invoke(this);
+
                 if(amount == data.Target)
                    CompleteMission();
             }
         }
+
+        public float Progress => (float)amount / data.Target;   
+        public string ProgressString => amount + "/" + data.Target;
 
         public MissionType Type => data.Type;
 
@@ -41,8 +45,8 @@ namespace SouthsideGames.DailyMissions
 
         public void CompleteMission()
         {
-            Debug.Log("Mission Complete");
             isComplete = true;
+            completeMission?.Invoke(this);  
         }
     }
 }

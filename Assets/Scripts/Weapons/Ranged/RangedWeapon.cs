@@ -15,14 +15,9 @@ public class RangedWeapon : Weapon
     [Header("POOL:")]
     public ObjectPool<BulletBase> bulletPool { get; private set; }
 
-    [SerializeField] private bool useAutoAim = true;
-
     void Start() => bulletPool = new ObjectPool<BulletBase>(CreateFunction, ActionOnGet, ActionOnRelease, ActionOnDestroy);
 
-    void Update()
-    {
-        Attack();
-    }
+    void Update() => Attack();
 
     protected override void Attack()
     {

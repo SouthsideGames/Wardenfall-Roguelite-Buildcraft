@@ -1,22 +1,37 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 namespace SouthsideGames.DailyMissions
 {
     public class MissionManagerUI : MonoBehaviour
     {
-            [Header("ELEMENTS:")]
+        [Header("ELEMENTS:")]
         [SerializeField] private MissionContainerUI missionContainerPrefab;
         [SerializeField] private Transform missionContainersParent;
+
+        List<MissionContainerUI> activeMissionContainers = new List<MissionContainerUI>();
 
         public void Init(Mission[] _activeMissions)
         {
             for (int i = 0; i < _activeMissions.Length; i++)
             {
                 MissionContainerUI containerInstance = Instantiate(missionContainerPrefab, missionContainersParent);
+                int _i = i;
+                containerInstance.Configure(_activeMissions[i], () => ClaimMission(_i));
+
+                activeMissionContainers.Add(containerInstance);
             }
         }
+
+        private void ClaimMission(int _index)
+        {
+            activeMissionContainers[_index].ClaimMission();
+            activeMissionContainers[_index].transform.SetAsLastSibling();
+        }
+
+        public void UpdateMission(int _index) => activeMissionContainers[_index].UpdateVisuals(); 
     }
 
 }

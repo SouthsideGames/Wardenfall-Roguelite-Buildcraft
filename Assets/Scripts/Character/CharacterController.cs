@@ -9,12 +9,12 @@ public class CharacterController : MonoBehaviour, IStats
     [SerializeField] private float baseMoveSpeed;
     private float moveSpeed;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        _rb = GetComponent<Rigidbody2D>(); 
-       
-    }
+    [Tooltip("Current movement direction.")]
+    private Vector2 moveDirection;
+    public Vector2 MoveDirection => moveDirection;
+
+
+    void Start() => _rb = GetComponent<Rigidbody2D>(); 
 
     private void FixedUpdate()
     {
@@ -24,6 +24,7 @@ public class CharacterController : MonoBehaviour, IStats
             return;
         }
 
+        moveDirection = InputManager.Instance.GetMoveVector();
         _rb.linearVelocity = InputManager.Instance.GetMoveVector() * moveSpeed * Time.deltaTime;
     }
 

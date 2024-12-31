@@ -20,6 +20,7 @@ public class CharacterManager : MonoBehaviour
     public CharacterHealth health { get; private set; }
     public CharacterDeck deck { get; private set; }
     public CharacterStats stats { get; private set; }
+    public CharacterController controller { get; private set; }
     [SerializeField] private CircleCollider2D _col;
     [SerializeField] private SpriteRenderer _sr;
     
@@ -37,6 +38,7 @@ public class CharacterManager : MonoBehaviour
         deck = GetComponent<CharacterDeck>();   
         anim = GetComponent<CharacterAnimator>();  
         stats = GetComponent<CharacterStats>();
+        controller = GetComponent<CharacterController>();   
 
         CharacterSelectionManager.OnCharacterSelected += CharacterSelectionCallback;
     }

@@ -6,7 +6,6 @@ public class KnockbackWeapon : MeleeWeapon
 {
     [Header("KNOCKBACK SETTINGS:")]
     [SerializeField] private float knockbackForce = 2f;
-    [SerializeField] private float bounceDistance = 1f;
 
     protected override void AttackLogic()
     {

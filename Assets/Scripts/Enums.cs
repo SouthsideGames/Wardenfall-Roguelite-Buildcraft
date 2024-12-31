@@ -66,8 +66,7 @@ public enum MissionType
     waveBasedPlayed = 4,
     survivalPlayed = 5,
     bossRushPlayed = 6,
-    objectiveBasedPlayed = 7,
-    gemCollected = 8
+    gemCollected = 7
     
 }
 
@@ -92,17 +91,6 @@ public enum CardRarityType
 }
 
 public enum MiniCardRarityType
-{
-    Common,
-    Uncommon,
-    Rare,
-    Epic,
-    Legendary,
-    Mythic,
-    Exalted
-}
-
-public enum MainMenuMiniCardRarityType
 {
     Common,
     Uncommon,

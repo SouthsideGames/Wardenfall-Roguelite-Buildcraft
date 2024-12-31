@@ -68,6 +68,8 @@ public class CharacterHealth : MonoBehaviour, IStats
 
     }
 
+    public void Heal(int _damage) => health += _damage; 
+
     private void EnemyDamageCallback(int _damage, Vector2 _enemyPos, bool _isCriticalHit)
     {
         if(health >= maxHealth)

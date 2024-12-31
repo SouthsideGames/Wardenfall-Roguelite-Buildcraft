@@ -11,6 +11,9 @@ public class MissionDataSO : ScriptableObject
     [SerializeField] private int target;
     public int Target => target;    
 
+    [SerializeField] private int rewardXp;
+    public int RewardXp => rewardXp;
+
     [SerializeField] private Sprite icon;
     public Sprite Icon => icon; 
 }

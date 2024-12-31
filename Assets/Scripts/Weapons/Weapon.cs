@@ -37,17 +37,6 @@ public abstract class Weapon : MonoBehaviour, IStats
         audioSource.clip = WeaponData.AttackSound;
     }
 
-    private void Update()
-    {
-        if (useAutoAim)
-        {
-            AutoAimLogic();
-        }
-        else
-        {
-            ManualAttackLogic();
-        }
-    }
 
     protected void PlaySFX()
     {

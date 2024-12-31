@@ -14,11 +14,9 @@ public class RicochetWeapon : RangedWeapon
 
         int damage = GetDamage(out bool isCriticalHit);
 
-        // Generate a random firing angle
         float randomAngle = Random.Range(0f, randomAngleRange);
         Vector2 randomDirection = Quaternion.Euler(0, 0, randomAngle) * Vector2.up;
 
-        // Rotate the weapon to face the shooting direction
         transform.up = randomDirection;
 
         RicochetBullet bullet = bulletPool.Get() as RicochetBullet;
