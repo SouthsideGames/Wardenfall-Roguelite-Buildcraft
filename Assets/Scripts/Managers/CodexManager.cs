@@ -18,13 +18,20 @@ public class CodexManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI detailName;
     [SerializeField] private TextMeshProUGUI detailDescription;
     [SerializeField] private Transform statContainersParent;
-    [SerializeField] private GameObject statPrefab;
 
     [Header("ENEMY VIEW:")]
     [SerializeField] private GameObject enemyDetailContainer;
     [SerializeField] private Image enemyDetailIcon;
     [SerializeField] private TextMeshProUGUI enemyDetailName;
     [SerializeField] private TextMeshProUGUI enemyDetailDescription;
+
+    [Header("OBJECT VIEW:")]
+    [SerializeField] private GameObject objectDetailContainer;
+    [SerializeField] private Image objectDetailIcon;
+    [SerializeField] private TextMeshProUGUI objectDetailName;
+    [SerializeField] private Transform objectStatContainersParent;
+
+    [SerializeField] private GameObject statPrefab;
 
     private void Awake() => InitializeDropdown();   
     private void Start()
@@ -142,12 +149,11 @@ public class CodexManager : MonoBehaviour
 
     public void OpenObjectDetailView(ObjectDataSO _objectData)
     {
-        detailIcon.sprite = _objectData.Icon;
-        detailName.text = _objectData.Name;
-        detailDescription.text = _objectData.Description;
+        objectDetailIcon.sprite = _objectData.Icon;
+        objectDetailName.text = _objectData.Name;
         statContainersParent.Clear();
         DisplayObjectStats(_objectData);
-        detailContainer.SetActive(true);
+        objectDetailContainer.SetActive(true);
     }
 
     public void OpenEnemyDetailView(EnemyDataSO _enemyData)
@@ -186,11 +192,11 @@ public class CodexManager : MonoBehaviour
 
     private void DisplayObjectStats(ObjectDataSO _objectData)
     {
-        statContainersParent.Clear();
+        objectStatContainersParent.Clear();
 
         foreach (var stat in _objectData.BaseStats)
         {
-            GameObject statEntry = Instantiate(statPrefab, statContainersParent);
+            GameObject statEntry = Instantiate(statPrefab, objectStatContainersParent);
             StatContainerUI statContainerUI = statEntry.GetComponent<StatContainerUI>();
             Sprite statIcon = ResourceManager.GetStatIcon(stat.Key);
             statContainerUI.Configure(statIcon, Enums.FormatStatName(stat.Key), stat.Value, true);
@@ -199,6 +205,7 @@ public class CodexManager : MonoBehaviour
 
     public void CloseDetailView() => detailContainer.SetActive(false);
     public void CloseEnemyDetailView() => enemyDetailContainer.SetActive(false);
+    public void CloseObjectDetailView() => objectDetailContainer.SetActive(false);
 
     private void ClearCards() => detailParent.Clear();
 

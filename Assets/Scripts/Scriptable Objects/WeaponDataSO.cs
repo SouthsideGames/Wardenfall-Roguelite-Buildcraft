@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using NaughtyAttributes;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Weapon Data", menuName = "Scriptable Objects/New Weapon Data", order = 0)]
+[CreateAssetMenu(fileName = "Weapon Data", menuName = "Scriptable Objects/New Weapon Data", order = 4)]
 public class WeaponDataSO : ScriptableObject
 {
     [field: Header("WEAPON DETAILS:")]

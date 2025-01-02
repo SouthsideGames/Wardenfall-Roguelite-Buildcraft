@@ -29,6 +29,8 @@ namespace SouthsideGames.DailyMissions
         {
             activeMissionContainers[_index].ClaimMission();
             activeMissionContainers[_index].transform.SetAsLastSibling();
+
+            MissionManager.Instance.HandleMissionClaimed(_index);
         }
 
         public void UpdateMission(int _index) => activeMissionContainers[_index].UpdateVisuals(); 

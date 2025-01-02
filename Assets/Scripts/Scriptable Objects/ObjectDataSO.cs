@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using NaughtyAttributes;
 
-[CreateAssetMenu(fileName = "Object Data", menuName = "Scriptable Objects/New Object", order = 0)]
+[CreateAssetMenu(fileName = "Object Data", menuName = "Scriptable Objects/New Object", order = 3)]
 public class ObjectDataSO : ScriptableObject
 {
     [field: Header("OBJECT:")]
     [field: Space(10)]
     [field: SerializeField] public Sprite Icon { get; private set; }
     [field: SerializeField] public string Name { get; private set; }
-    [field: SerializeField, TextArea] public string Description { get; private set; }
     [field: SerializeField] public int Price { get; private set; }
     [field: SerializeField] public int RecyclePrice { get; private set; }
 
@@ -38,17 +37,6 @@ public class ObjectDataSO : ScriptableObject
         private set { }
     }
 
-    public string GetFullDescription()
-    {
-        string fullDescription = Description + "Stats:\n";
-
-        foreach (StatData data in statDatas)
-        {
-            fullDescription += $"{data.stat}: {data.value}\n";
-        }
-
-        return fullDescription;
-    }
 }
 
 [System.Serializable]

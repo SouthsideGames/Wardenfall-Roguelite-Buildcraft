@@ -15,6 +15,9 @@ namespace SouthsideGames.DailyMissions
         private bool isComplete;
         public bool IsComplete => isComplete;   
 
+        private bool isClaimed;
+        public bool IsClaimed => isClaimed;
+
         private int amount;
         public int Amount
         {
@@ -47,6 +50,12 @@ namespace SouthsideGames.DailyMissions
         {
             isComplete = true;
             completeMission?.Invoke(this);  
+        }
+
+        public void Claim()
+        {
+            isComplete = true;
+            isClaimed = true;
         }
     }
 }

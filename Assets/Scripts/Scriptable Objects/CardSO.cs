@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Card Data", menuName = "Scriptable Objects/New Card Data", order = 0)]
+[CreateAssetMenu(fileName = "Card Data", menuName = "Scriptable Objects/New Card Data", order = 6)]
 public class CardSO : ScriptableObject
 {
     [Header("ELEMENTS:")]

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "GameMode Data", menuName = "Scriptable Objects/New Game Mode Data", order = -10)]
+[CreateAssetMenu(fileName = "GameMode Data", menuName = "Scriptable Objects/New Game Mode Data", order = 9)]
 public class GameModeDataSO : ScriptableObject
 {
     [field: SerializeField] public Sprite Icon { get; private set; }

@@ -44,16 +44,10 @@ namespace SouthsideGames.DailyMissions
             Mission.completeMission -= OnCompleteMission;
         }
 
-        public static void Increment(MissionType _missionType, int _amount)
+        public void HandleMissionClaimed(int index)
         {
-            for (int i = 0; i < Instance.activeMissions.Count; i++)
-            {
-                if(Instance.activeMissions[i].IsComplete)
-                    continue;
-                    
-                if(Instance.activeMissions[i].Type == _missionType)
-                   Instance.activeMissions[i].Amount += _amount;
-            }
+            Mission mission = activeMissions[index];
+            mission.Claim();
         }
 
         private void OnMissionUpdated(Mission _mission)
@@ -66,7 +60,18 @@ namespace SouthsideGames.DailyMissions
  
         }
 
-       
+        public static void Increment(MissionType _missionType, int _amount)
+        {
+            for (int i = 0; i < Instance.activeMissions.Count; i++)
+            {
+                if(Instance.activeMissions[i].IsComplete || Instance.activeMissions[i].IsClaimed)
+                    continue;
+                    
+                if(Instance.activeMissions[i].Type == _missionType)
+                   Instance.activeMissions[i].Amount += _amount;
+            }
+        }
+
 
     }
 }

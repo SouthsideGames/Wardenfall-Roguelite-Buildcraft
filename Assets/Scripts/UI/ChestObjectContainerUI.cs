@@ -19,6 +19,7 @@ public class ChestObjectContainerUI : MonoBehaviour
     [field: SerializeField] public Button CollectButton { get; private set; }    
     [field: SerializeField] public Button RecycleButton { get; private set; }    
     [SerializeField] public TextMeshProUGUI recyclePriceText;
+    
 
 
 

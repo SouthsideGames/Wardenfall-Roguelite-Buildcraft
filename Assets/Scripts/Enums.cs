@@ -70,6 +70,16 @@ public enum MissionType
     
 }
 
+public enum RewardType
+{
+    Currency_01 = 0,
+    Currency_02 = 1,
+    Currency_03 = 2,
+
+    Special_01 = 200,
+    Special_02 = 201
+}
+
 public enum CardEffectType
 {
     None,
@@ -109,6 +119,7 @@ public enum CharacterCardRarityType
     Epic,
     Legendary
 }
+
 
 public enum StatusEffectType
 {
