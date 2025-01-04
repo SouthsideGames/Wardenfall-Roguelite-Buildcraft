@@ -5028,7 +5028,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ddebe7d82fbdf44daf06654154cf032, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 1
+  moveSpeed: 2.5
 --- !u!58 &4061870340684110219
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -5077,25 +5077,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1df196f4cdc489348839f4606228daf5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spriteRenderer: {fileID: 0}
+  _spriteRenderer: {fileID: 9108187414904206737}
   spawnIndicator: {fileID: 4142629268000162496}
-  _collider: {fileID: 0}
-  damage: 1
-  playerDetectionRadius: 1.77
-  maxHealth: 10
+  _collider: {fileID: 4061870340684110219}
+  damage: 4
+  playerDetectionRadius: 1.2
+  maxHealth: 25
   health: 0
   isInvincible: 0
-  spawnSize: 1.2
-  spawnTime: 0.15
-  numberOfLoops: 2
+  spawnSize: 0.75
+  spawnTime: 0.5
+  numberOfLoops: 1
   canPerformCriticalHit: 0
   deathParticles: {fileID: 823602893822513286}
   showGizmos: 1
-  maxSplits: 3
+  maxSplits: 1
   smallerVersionPrefab: {fileID: 5829535922412643463, guid: 90884f920ccae73459d2e1c60c33759a, type: 3}
   splitScaleFactor: 0.5
-  splitHealthFactor: 10
-  attackRate: 1
+  splitHealthFactor: 2
+  attackRate: 0.8
 --- !u!114 &4443748951534977508
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5108,8 +5108,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bac90ab437da2d343a676dcf53fb750f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  drainAmount: 1
-  drainInterval: 1
 --- !u!1 &9193595992969736329
 GameObject:
   m_ObjectHideFlags: 0
@@ -5187,7 +5185,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: b8e8e3f5289b61440b0df71eeecea4ae, type: 3}
-  m_Color: {r: 0.12941177, g: 0.80392164, b: 0.25490198, a: 1}
+  m_Color: {r: 0.26666668, g: 0.2509804, b: 0.4117647, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

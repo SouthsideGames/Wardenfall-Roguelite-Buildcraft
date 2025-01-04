@@ -135,16 +135,18 @@ MonoBehaviour:
   enemyMask:
     serializedVersion: 2
     m_Bits: 64
+  useAutoAim: 1
   anim: {fileID: 8537731421067500523}
   aimLerp: 10
   firePoint: {fileID: 7993999580436098873}
   bulletPrefab: {fileID: 0}
-  fireWavePrefab: {fileID: 5519167330342482121, guid: d5da16cbc810942f28b4adcd353a24f8, type: 3}
+  fireWavePrefab: {fileID: 8764043878647920493, guid: c4ed38c72957f2241ad144a1614956d9, type: 3}
   waveSpeed: 10
   waveRange: 8
-  burnDuration: 3
-  burnDamage: 1
   waveWidth: 1
+  burnDamage: 1
+  burnDuration: 3
+  burnInterval: 1
 --- !u!1 &9147867877528162964
 GameObject:
   m_ObjectHideFlags: 0

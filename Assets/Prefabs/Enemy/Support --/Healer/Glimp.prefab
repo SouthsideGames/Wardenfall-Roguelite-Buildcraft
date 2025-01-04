@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 2131700390006324168}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -113,7 +113,7 @@ Transform:
   m_GameObject: {fileID: 3881472770953502525}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.046, y: -0.65, z: 0}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
   m_LocalScale: {x: 0.73, y: 0.3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -164,7 +164,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: b8e8e3f5289b61440b0df71eeecea4ae, type: 3}
-  m_Color: {r: 0.8862746, g: 0, b: 0.33333334, a: 1}
+  m_Color: {r: 0.9333334, g: 0.882353, b: 0.72156864, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -201,7 +201,7 @@ Transform:
   m_GameObject: {fileID: 4660157296969640372}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -397,7 +397,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.8862746, g: 0, b: 0.33333334, a: 1}
+      maxColor: {r: 0.29803923, g: 0.30588236, b: 0.3254902, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -5076,8 +5076,8 @@ GameObject:
   - component: {fileID: 6323866612611977464}
   - component: {fileID: 8276737661640570850}
   - component: {fileID: 6716455708022135023}
-  - component: {fileID: 507947032115667398}
   - component: {fileID: 8590368631950774282}
+  - component: {fileID: 507947032115667398}
   m_Layer: 6
   m_Name: Glimp
   m_TagString: Enemy
@@ -5115,21 +5115,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56b6a67e59eb44eb88bbe6033d04f677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spriteRenderer: {fileID: 0}
+  _spriteRenderer: {fileID: 7470796458823418826}
   spawnIndicator: {fileID: 1138471200418004597}
-  _collider: {fileID: 0}
+  _collider: {fileID: 507947032115667398}
   damage: 0
   playerDetectionRadius: 0
-  maxHealth: 2
+  maxHealth: 120
   health: 0
   isInvincible: 0
   spawnSize: 1.2
-  spawnTime: 1
-  numberOfLoops: 4
+  spawnTime: 1.2
+  numberOfLoops: 1
   canPerformCriticalHit: 0
   deathParticles: {fileID: 305940748695944711}
   showGizmos: 0
-  tetherRadius: 21.18
+  tetherRadius: 5
   maxTetheredEnemies: 4
   enemyLayer:
     serializedVersion: 2
@@ -5146,7 +5146,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ddebe7d82fbdf44daf06654154cf032, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
+  moveSpeed: 0
+--- !u!114 &8590368631950774282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6610243285245234481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bac90ab437da2d343a676dcf53fb750f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!58 &507947032115667398
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -5183,17 +5195,3 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: -0.03999999, y: 0.33399773}
   m_Radius: 0.45600224
---- !u!114 &8590368631950774282
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6610243285245234481}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bac90ab437da2d343a676dcf53fb750f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  drainAmount: 1
-  drainInterval: 1

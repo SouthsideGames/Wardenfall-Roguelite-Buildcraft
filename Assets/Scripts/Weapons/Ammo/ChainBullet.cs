@@ -5,12 +5,10 @@ using System.Collections.Generic;
 [RequireComponent(typeof(LineRenderer))]
 public class ChainBullet : BulletBase
 {
-    [Header("CHAIN SETTINGS")]
-    [SerializeField] private float chainRadius;
-    [SerializeField] private int maxChains;
-    [SerializeField] private float damageFalloff;
-    [SerializeField] private float chainEffectDuration = 0.2f;
-
+    private float chainRadius;
+    private int maxChains;
+    private float damageFalloff;
+    private float chainEffectDuration = 0.2f;
     private List<Enemy> hitEnemies = new List<Enemy>();
     private LineRenderer lineRenderer;
 

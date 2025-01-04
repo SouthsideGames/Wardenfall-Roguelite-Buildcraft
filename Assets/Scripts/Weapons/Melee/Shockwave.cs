@@ -1,15 +1,14 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Shockwave : MonoBehaviour
 {
-    [Header("SETTINGS")]
-    public float growthRate = 2.0f;
-    public float maxRadius = 5.0f; 
-    public int damage = 10;   
-    public LayerMask enemyMask;
+   [Header("SETTINGS")]
+    [SerializeField] private LayerMask enemyMask;
 
+    private float growthRate = 2.0f;
+    private float maxRadius = 5.0f; 
+    private int damage = 10;        
     private CircleCollider2D shockwaveCollider;
     private Vector3 initialScale;
 
@@ -17,6 +16,14 @@ public class Shockwave : MonoBehaviour
     {
         shockwaveCollider = GetComponent<CircleCollider2D>();
         initialScale = transform.localScale;
+    }
+
+    public void Initialize(LayerMask enemyMask, int damage, float growthRate, float maxRadius)
+    {
+        this.enemyMask = enemyMask;
+        this.damage = damage;
+        this.growthRate = growthRate;
+        this.maxRadius = maxRadius;
     }
 
     private void OnEnable() => StartCoroutine(ExpandShockwave());
@@ -27,12 +34,10 @@ public class Shockwave : MonoBehaviour
 
         while (currentRadius < maxRadius)
         {
-            // Grow the shockwave's size
             currentRadius += growthRate * Time.deltaTime;
             shockwaveCollider.radius = currentRadius;
             transform.localScale = initialScale * (currentRadius / shockwaveCollider.radius);
 
-            // Check for enemies within the shockwave’s radius
             Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(transform.position, currentRadius, enemyMask);
             foreach (Collider2D enemyCollider in hitEnemies)
             {
@@ -46,6 +51,6 @@ public class Shockwave : MonoBehaviour
             yield return null;
         }
 
-        Destroy(gameObject); // Destroy shockwave once max size is reached
+        Destroy(gameObject);
     }
 }

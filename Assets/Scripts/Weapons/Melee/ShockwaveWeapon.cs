@@ -5,20 +5,18 @@ using UnityEngine;
 public class ShockwaveWeapon : MeleeWeapon
 {
    [Header("SHOCKWAVE SETTINGS")]
-    [SerializeField] private GameObject shockwavePrefab;   // Prefab for the shockwave
-    [SerializeField] private Transform spawnPoint;         // Location to spawn the shockwave
-    [SerializeField] private float shockwaveDamage = 10;   // Damage dealt by the shockwave
-    [SerializeField] private float shockwaveGrowthRate = 2.0f; // How quickly the shockwave grows
-    [SerializeField] private float shockwaveMaxRadius = 5.0f;  // Maximum size the shockwave can reach
+    [SerializeField, Tooltip("Prefab for the shockwave")] private GameObject shockwavePrefab;  
+    [SerializeField, Tooltip("Location to spawn the shockwave")] private Transform spawnPoint;   
+    [SerializeField, Tooltip("Damage dealt by the shockwave")] private float shockwaveDamage = 10;   
+    [SerializeField, Tooltip("How quickly the shockwave grows")] private float shockwaveGrowthRate = 2.0f; 
+    [SerializeField, Tooltip("Maximum size the shockwave can reach")] private float shockwaveMaxRadius = 5.0f;
 
-    public void SpawnShockwave()
+   public void SpawnShockwave()
     {
         GameObject shockwave = Instantiate(shockwavePrefab, spawnPoint.position, Quaternion.identity);
         
         Shockwave shockwaveScript = shockwave.GetComponent<Shockwave>();
-        shockwaveScript.enemyMask = enemyMask;
-        shockwaveScript.damage = (int)shockwaveDamage;
-        shockwaveScript.growthRate = shockwaveGrowthRate;
-        shockwaveScript.maxRadius = shockwaveMaxRadius;
+        if (shockwaveScript != null)
+            shockwaveScript.Initialize(enemyMask, (int)shockwaveDamage, shockwaveGrowthRate, shockwaveMaxRadius);
     }
 }

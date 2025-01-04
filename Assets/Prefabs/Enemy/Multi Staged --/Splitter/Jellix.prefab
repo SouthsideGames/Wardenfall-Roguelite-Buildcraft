@@ -4987,9 +4987,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 163166376413015675}
-  - component: {fileID: 7188596315716425609}
   - component: {fileID: 4061870340684110219}
   - component: {fileID: 2819584679116783585}
+  - component: {fileID: 7188596315716425609}
   - component: {fileID: 4443748951534977508}
   m_Layer: 6
   m_Name: Jellix
@@ -5016,19 +5016,6 @@ Transform:
   - {fileID: 3657853948006843667}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7188596315716425609
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7989277444111341517}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ddebe7d82fbdf44daf06654154cf032, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 1
 --- !u!58 &4061870340684110219
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -5077,25 +5064,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1df196f4cdc489348839f4606228daf5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spriteRenderer: {fileID: 0}
+  _spriteRenderer: {fileID: 9108187414904206737}
   spawnIndicator: {fileID: 4142629268000162496}
-  _collider: {fileID: 0}
-  damage: 1
-  playerDetectionRadius: 1.77
-  maxHealth: 5
+  _collider: {fileID: 4061870340684110219}
+  damage: 5
+  playerDetectionRadius: 1.5
+  maxHealth: 50
   health: 0
   isInvincible: 0
-  spawnSize: 1.2
-  spawnTime: 0.3
-  numberOfLoops: 4
+  spawnSize: 1
+  spawnTime: 1
+  numberOfLoops: 1
   canPerformCriticalHit: 0
   deathParticles: {fileID: 823602893822513286}
   showGizmos: 1
   maxSplits: 3
   smallerVersionPrefab: {fileID: 7989277444111341517, guid: d0dd9dc7bc16ebd468f84b970d6d2dad, type: 3}
   splitScaleFactor: 0.5
-  splitHealthFactor: 5
+  splitHealthFactor: 2
   attackRate: 1
+--- !u!114 &7188596315716425609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7989277444111341517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ddebe7d82fbdf44daf06654154cf032, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 2
 --- !u!114 &4443748951534977508
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5108,8 +5108,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bac90ab437da2d343a676dcf53fb750f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  drainAmount: 1
-  drainInterval: 1
 --- !u!1 &9193595992969736329
 GameObject:
   m_ObjectHideFlags: 0
@@ -5187,7 +5185,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: b8e8e3f5289b61440b0df71eeecea4ae, type: 3}
-  m_Color: {r: 0.12941177, g: 0.80392164, b: 0.25490198, a: 1}
+  m_Color: {r: 0.26666668, g: 0.2509804, b: 0.4117647, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using NaughtyAttributes;
 
-[CreateAssetMenu(fileName = "Object Data", menuName = "Scriptable Objects/New Object", order = 3)]
+[CreateAssetMenu(fileName = "Object Data", menuName = "Scriptable Objects/New Object Data", order = 3)]
 public class ObjectDataSO : ScriptableObject
 {
     [field: Header("OBJECT:")]

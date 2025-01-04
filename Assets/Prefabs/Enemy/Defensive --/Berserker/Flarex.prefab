@@ -223,7 +223,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.9058824, g: 0.36078432, b: 0.3647059, a: 1}
+      maxColor: {r: 0.95294124, g: 0.3803922, b: 0.28627452, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -4941,24 +4941,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a4522f0db4acd445b75a35b87c8e116, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spriteRenderer: {fileID: 0}
+  _spriteRenderer: {fileID: 3622649619894333103}
   spawnIndicator: {fileID: 332598301848273570}
-  _collider: {fileID: 0}
-  damage: 5
-  playerDetectionRadius: 2
-  maxHealth: 200
+  _collider: {fileID: 8379832437275754500}
+  damage: 25
+  playerDetectionRadius: 3.2
+  maxHealth: 150
   health: 0
   isInvincible: 0
-  spawnSize: 1.2
-  spawnTime: 0.3
-  numberOfLoops: 4
-  canPerformCriticalHit: 0
+  spawnSize: 1.5
+  spawnTime: 1
+  numberOfLoops: 5
+  canPerformCriticalHit: 1
   deathParticles: {fileID: 573814231150591861}
   showGizmos: 0
-  enragedThreshold: 0.3
-  enragedAttackMultiplier: 2
-  enragedSpeedMultiplier: 5
-  attackRate: 2
+  enragedThreshold: 0.5
+  enragedAttackMultiplier: 2.5
+  enragedSpeedMultiplier: 1.7
+  attackRate: 0.7
 --- !u!114 &5592513278735401760
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4971,7 +4971,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ddebe7d82fbdf44daf06654154cf032, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 1
+  moveSpeed: 2.5
 --- !u!114 &1297417035062969690
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4984,8 +4984,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bac90ab437da2d343a676dcf53fb750f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  drainAmount: 1
-  drainInterval: 1
 --- !u!58 &8379832437275754500
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -5135,7 +5133,7 @@ Transform:
   m_GameObject: {fileID: 6420711995912350044}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.068, y: 0.064, z: 0}
   m_LocalScale: {x: 0.5, y: 0.2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5186,7 +5184,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: b8e8e3f5289b61440b0df71eeecea4ae, type: 3}
-  m_Color: {r: 0.9058824, g: 0.36078432, b: 0.3647059, a: 1}
+  m_Color: {r: 0.972549, g: 0.78039217, b: 0.07058824, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
