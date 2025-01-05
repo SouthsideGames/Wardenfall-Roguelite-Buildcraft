@@ -10,19 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e198315b0a618f14c8d9ad4533a8045e, type: 3}
-  m_Name: Looper_WeaponData
+  m_Name: W-007
   m_EditorClassIdentifier: 
-  <ID>k__BackingField: Spinning_01
+  <ID>k__BackingField: W-007
   <Icon>k__BackingField: {fileID: 21300000, guid: da3927821cddca54fb2f2ae3643d344c, type: 3}
-  <Name>k__BackingField: Looper
-  <Description>k__BackingField: 
+  <Name>k__BackingField: Orbitron
+  <Description>k__BackingField: A spinning blade that orbits around the player, hitting
+    enemies.
   <PurchasePrice>k__BackingField: 500
   <RecyclePrice>k__BackingField: 250
   <Prefab>k__BackingField: {fileID: 1312180931142463823, guid: 40e1fa7ec1b38574282decaeafe355b4, type: 3}
-  <AttackSound>k__BackingField: {fileID: 0}
-  <AnimatorOverride>k__BackingField: {fileID: 0}
-  attack: 3
-  attackSpeed: 10
-  criticalChance: 1
+  <AttackSound>k__BackingField: {fileID: 8300000, guid: 9e1f5ea11fdf53844baf3c3c8970f03b, type: 3}
+  <AnimatorOverride>k__BackingField: {fileID: 22100000, guid: 09cb02d2a0dd7e448af8ec5e566814c8, type: 2}
+  attack: 12
+  attackSpeed: 3
+  criticalChance: 2
   criticalDamageAmount: 1.5
-  range: 8
+  range: 10

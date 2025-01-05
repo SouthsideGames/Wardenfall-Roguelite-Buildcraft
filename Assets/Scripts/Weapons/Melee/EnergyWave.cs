@@ -1,11 +1,13 @@
 using UnityEngine;
 
-public class EnergyWave : BulletBase
+public class EnergyWave : MonoBehaviour
 {
-  private float speed;
+    private float speed;
     private int lifeStealAmount;
     private Vector2 direction;
-    private System.Action onWaveComplete; // Callback for completion
+    private int damage;
+    private LayerMask enemyMask;
+    private System.Action onWaveComplete;
 
     public void Initialize(int _damage, float _speed, LayerMask _enemyMask, int _lifeStealAmount, System.Action _onWaveComplete, Vector2 _direction)
     {
@@ -15,27 +17,25 @@ public class EnergyWave : BulletBase
         lifeStealAmount = _lifeStealAmount;
         onWaveComplete = _onWaveComplete;
         direction = _direction.normalized; // Normalize direction vector
-
-        // Automatically destroy after 3 seconds
         Invoke(nameof(DestroyWave), 3f); 
     }
 
     private void Update()
     {
-        // Move the wave in the given direction
+        
         transform.Translate(direction * speed * Time.deltaTime);
     }
 
-    protected override void OnTriggerEnter2D(Collider2D collider)
+    private void OnTriggerEnter2D(Collider2D collider)
     {
-        // Check if collided object is an enemy
+        
         if (((1 << collider.gameObject.layer) & enemyMask) != 0)
         {
             Enemy enemy = collider.GetComponent<Enemy>();
             if (enemy != null)
             {
                 enemy.TakeDamage(damage, false);
-                HealPlayer(); // Life steal
+                HealPlayer(); 
             }
 
             CompleteWave();
@@ -49,14 +49,13 @@ public class EnergyWave : BulletBase
 
     private void CompleteWave()
     {
-        // Notify weapon to allow the next wave
+      
         onWaveComplete?.Invoke();
-        Destroy(gameObject); // Destroy the wave
+        Destroy(gameObject); 
     }
 
     private void DestroyWave()
     {
-        // Notify weapon if wave times out
         onWaveComplete?.Invoke();
         Destroy(gameObject);
     }

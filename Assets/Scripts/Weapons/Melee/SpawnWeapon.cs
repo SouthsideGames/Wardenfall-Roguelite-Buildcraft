@@ -15,57 +15,48 @@ public class SpawnWeapon : MeleeWeapon
 
     [SerializeField] private Transform spawnPoint;
 
-    private bool canFire = true; // Controls firing state
+    private bool canFire = true; 
     private Vector2 cachedMoveDirection;
 
    protected override void Attack()
     {
         Vector2 moveDirection = CharacterManager.Instance.controller.MoveDirection;
 
-        // Only start attack if the player is moving
         if (canFire && moveDirection != Vector2.zero)
         {
-            anim.Play("Attack"); // Play attack animation
+            anim.Play("Attack"); 
 
-            HandleWeaponDirection(moveDirection); // Adjust weapon orientation
-            cachedMoveDirection = moveDirection; // Store movement direction
+            HandleWeaponDirection(moveDirection); 
+            cachedMoveDirection = moveDirection; 
         }
     }
 
-    // Animation Event Trigger: Call this from the animation
     public void TriggerWave()
     {
-        if (canFire && cachedMoveDirection != Vector2.zero) // Ensure movement direction is valid
-        {
-            ReleaseEnergyWave(cachedMoveDirection); // Use cached direction for wave
-        }
+        if (canFire && cachedMoveDirection != Vector2.zero) 
+            ReleaseEnergyWave(cachedMoveDirection); 
     }
 
     private void HandleWeaponDirection(Vector2 moveDirection)
     {
-        // Flip weapon based on movement direction (left or right)
         if (moveDirection.x < 0)
         {
-            transform.localScale = new Vector3(-1, 1, 1); // Flip horizontally
+            transform.localScale = new Vector3(-1, 1, 1);
         }
         else if (moveDirection.x > 0)
         {
-            transform.localScale = new Vector3(1, 1, 1); // Reset flip
+            transform.localScale = new Vector3(1, 1, 1); 
         }
     }
 
     private void ReleaseEnergyWave(Vector2 moveDirection)
     {
-        canFire = false; // Block firing until the wave is complete
+        canFire = false; 
 
-        // Instantiate energy wave
         GameObject energyWave = Instantiate(energyWavePrefab, spawnPoint.position, Quaternion.identity);
         EnergyWave wave = energyWave.GetComponent<EnergyWave>();
-        wave.Initialize(damage, waveSpeed, enemyMask, lifeStealAmount, OnWaveComplete, moveDirection); // Pass direction
+        wave.Initialize(damage, waveSpeed, enemyMask, lifeStealAmount, OnWaveComplete, moveDirection);
     }
 
-    private void OnWaveComplete()
-    {
-        canFire = true; // Allow the next wave to fire
-    }
+    private void OnWaveComplete() =>  canFire = true; 
 }
