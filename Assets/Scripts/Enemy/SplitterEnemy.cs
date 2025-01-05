@@ -1,63 +1,46 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SplitterEnemy : Enemy
 {
     [Header("SPLITTER SPECIFIC:")]
-    [SerializeField] private int maxSplits = 3; // Maximum number of times the enemy can split
-    [SerializeField] private GameObject smallerVersionPrefab; // Prefab for the smaller version of the enemy
-    [SerializeField] private float splitScaleFactor = 0.5f; // Scale reduction factor for each split
-    [SerializeField] private int splitHealthFactor = 2; // Health reduction factor for each split
+    [SerializeField, Tooltip("Maximum number of times the enemy can split")] private int maxSplits = 3; 
+    [SerializeField, Tooltip("Prefab for the smaller version of the enemy")] private GameObject smallerVersionPrefab; 
+    [SerializeField, Tooltip("Scale reduction factor for each split")] private float splitScaleFactor = 0.5f; 
+    [SerializeField, Tooltip("Health reduction factor for each split")] private int splitHealthFactor = 2; 
 
-    [Header("ATTACK:")]
-    [SerializeField] private float attackRate;
     private float attackDelay;
-
-    private int splitCount = 0; // Number of times the enemy has split
+    private int splitCount = 0; 
 
 
     protected override void Die()
     {
         if (splitCount < maxSplits)
-        {
             Split();
-        }
         else
-        {
-            base.Die(); // Call the base Die method to handle death
-        }
+            base.Die(); 
     }
 
     private void Split()
     {
-        // Increase the split count
         splitCount++;
 
-        // Create two smaller enemies
         for (int i = 0; i < 2; i++)
         {
-            // Instantiate a smaller version of the enemy
             GameObject smallerEnemy = Instantiate(smallerVersionPrefab, transform.position, Quaternion.identity);
 
-            // Adjust the size and health of the smaller enemy
             SplitterEnemy smallerEnemyScript = smallerEnemy.GetComponent<SplitterEnemy>();
 
             if (smallerEnemyScript != null)
             {
-                // Scale down the enemy
                 smallerEnemy.transform.localScale = transform.localScale * splitScaleFactor;
 
-                // Reduce the health
                 smallerEnemyScript.maxHealth = maxHealth / splitHealthFactor;
                 smallerEnemyScript.health = smallerEnemyScript.maxHealth;
 
-                // Inherit the split count
                 smallerEnemyScript.splitCount = splitCount;
             }
         }
 
-        // Destroy the current enemy after splitting
         Destroy(gameObject);
     }
 

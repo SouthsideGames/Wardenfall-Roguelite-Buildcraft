@@ -2,22 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FireParticleDamage : MonoBehaviour
+public class FireWall : MonoBehaviour
 {
+    [SerializeField] private int burnDamage;
+    [SerializeField] private float burnDuration;
+    [SerializeField] private float burnInterval;
 
     private int damage;
-    private int burnDamage;
-    private float burnDuration;
-    private float burnInterval;
+    private float duration;
 
     private List<Enemy> affectedEnemies = new List<Enemy>();
 
-    public void SetupBurn(int baseDamage, int burnDmg, float duration, float interval)
+    public void Setup(int _damage, float _duration)
     {
-        damage = baseDamage;
-        burnDamage = burnDmg;
-        burnDuration = duration;
-        burnInterval = interval;
+        damage = _damage;
+        duration = _duration;
+        StartCoroutine(DestroyAfterDuration());
+    }
+
+    private IEnumerator DestroyAfterDuration()
+    {
+        yield return new WaitForSeconds(duration);
+        Destroy(gameObject);
     }
 
     void OnParticleCollision(GameObject other)
@@ -40,7 +46,6 @@ public class FireParticleDamage : MonoBehaviour
 
     private void ApplyBurn(Enemy enemy)
     {
-        // Apply burn effect using EnemyStatus
         EnemyStatus status = enemy.GetComponent<EnemyStatus>();
 
         if (status != null)
@@ -50,4 +55,3 @@ public class FireParticleDamage : MonoBehaviour
         }
     }
 }
-

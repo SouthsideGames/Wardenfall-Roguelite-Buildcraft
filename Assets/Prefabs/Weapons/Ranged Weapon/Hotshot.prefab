@@ -75,7 +75,7 @@ GameObject:
   - component: {fileID: 8537731421067500523}
   - component: {fileID: 3087647056717236463}
   m_Layer: 0
-  m_Name: Heatwave
+  m_Name: Hotshot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -139,14 +139,10 @@ MonoBehaviour:
   anim: {fileID: 8537731421067500523}
   aimLerp: 10
   firePoint: {fileID: 7993999580436098873}
-  bulletPrefab: {fileID: 0}
-  fireWavePrefab: {fileID: 8764043878647920493, guid: c4ed38c72957f2241ad144a1614956d9, type: 3}
-  waveSpeed: 10
-  waveRange: 8
-  waveWidth: 1
-  burnDamage: 1
-  burnDuration: 3
-  burnInterval: 1
+  bulletPrefab: {fileID: 701062279065322103, guid: dfec5b7d88a29664a93188dc2c08bd6c, type: 3}
+  fireWallPrefab: {fileID: 8172849020266659018, guid: 2af5562ce69fc2d448481a1587a352a5, type: 3}
+  fireWallDamage: 10
+  fireWallDuration: 5
 --- !u!1 &9147867877528162964
 GameObject:
   m_ObjectHideFlags: 0
