@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 public class GameModeManager : MonoBehaviour
 {
+    public static GameModeManager Instance { get; private set; }
+
     [Header("ELEMENTS:")]
     [SerializeField] private Transform buttonContainer;
     [SerializeField] private GameModeContainerUI gameModeContainerPrefab;
@@ -15,6 +17,14 @@ public class GameModeManager : MonoBehaviour
     public GameMode CurrentGameMode { get; private set; }
 
     private GameModeDataSO[] gameModeDatas;
+
+    private void Awake()
+    {
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
+    }
 
     private void Start()
     {
@@ -50,6 +60,7 @@ public class GameModeManager : MonoBehaviour
         if (waveManager != null)
             waveManager.SetGameMode(gameModeData.GameMode);
 
+        CurrentGameMode = gameModeData.GameMode; 
         NotifyGameModeListeners(gameModeData.GameMode);
     }
 

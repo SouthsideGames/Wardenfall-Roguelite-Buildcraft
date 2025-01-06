@@ -11,6 +11,7 @@ public class ItemManager : MonoBehaviour
     [SerializeField] private Cash cashPrefab;
     [SerializeField] private Chest chestPrefab;
     [SerializeField] private Gem gemPrefab;
+    [SerializeField] private CollectableWeapon weaponPrefab;
 
     
     [Header("SETTINGS:")]
@@ -20,12 +21,16 @@ public class ItemManager : MonoBehaviour
     [SerializeField] private int chestDropChance;
     [Range(0,100)]
     [SerializeField] private int gemDropChance;
+    [Range(0, 100)]
+    [SerializeField] private int weaponDropChance;
+
 
     [Header("Pooling")]
     private ObjectPool<Meat> meatPool;
     private ObjectPool<Cash> cashPool;
     private ObjectPool<Chest> chestPool;
     private ObjectPool<Gem> gemPool;
+    private ObjectPool<Gem> weaponPool;
 
     private void Awake()
     {
@@ -76,22 +81,6 @@ public class ItemManager : MonoBehaviour
         Gem.OnCollected -= ReleaseGem;  
     }
 
-    private void EnemyDeathCallback(Vector2 _enemyPosition)
-    {
-       Item itemToDrop = Random.Range(0f, 100f) < cashDropChance ? cashPool.Get() : 
-                      Random.Range(0f, 100f) < gemDropChance ? gemPool.Get() : meatPool.Get();
-
-        if (itemToDrop != null)
-        {
-            itemToDrop.transform.position = _enemyPosition;
-        }
-
-        TryDropChest(_enemyPosition);
-        
-    }
-
-    private void BossDeathCallback(Vector2 _bossPosition) =>  DropChest(_bossPosition);
-
     private void ReleaseMeat(Meat _meat) => meatPool.Release(_meat);    
     private void ReleaseCash(Cash _cash) => cashPool.Release(_cash);    
     private void ReleaseChest(Chest _chest) => chestPool.Release(_chest);    
@@ -109,6 +98,45 @@ public class ItemManager : MonoBehaviour
     }
 
     private void DropChest(Vector2 _spawnPosition) => Instantiate(chestPrefab, _spawnPosition, Quaternion.identity, transform);
+
+    private void EnemyDeathCallback(Vector2 _enemyPosition)
+    {
+        Item itemToDrop = Random.Range(0f, 100f) < cashDropChance ? cashPool.Get() :
+                          Random.Range(0f, 100f) < gemDropChance ? gemPool.Get() : meatPool.Get();
+
+        if (itemToDrop != null)
+        {
+            itemToDrop.transform.position = _enemyPosition;
+        }
+
+        // Try dropping a weapon if it's survival mode
+        TryDropWeapon(_enemyPosition);
+
+        TryDropChest(_enemyPosition);
+    }
+
+    private void BossDeathCallback(Vector2 _bossPosition)
+    {
+        DropChest(_bossPosition);
+
+        // Try dropping a weapon if it's survival mode
+        TryDropWeapon(_bossPosition);
+    }
+
+    private void TryDropWeapon(Vector2 spawnPosition)
+    {
+        // Check if the current game mode is Survival
+        if (GameModeManager.Instance.CurrentGameMode == GameMode.Survival)
+        {
+            bool shouldSpawnWeapon = Random.Range(0, 101) <= weaponDropChance;
+
+            if (shouldSpawnWeapon)
+            {
+                CollectableWeapon weapon = Instantiate(weaponPrefab, spawnPosition, Quaternion.identity, transform);
+                weapon.gameObject.SetActive(true);
+            }
+        }
+    }
 
     #region POOLING
     private Meat MeatCreateFunction() => Instantiate(meatPrefab, transform);
