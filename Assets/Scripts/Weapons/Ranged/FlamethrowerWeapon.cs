@@ -8,8 +8,8 @@ public class FlamethrowerWeapon : RangedWeapon
 {
     [Header("FIRE WALL SETTINGS:")]
     [SerializeField] private GameObject fireWallPrefab;
-    [SerializeField] private int fireWallDamage = 10;
-    [SerializeField] private float fireWallDuration = 5f;
+    [SerializeField] private int fireWallDamage;
+    [SerializeField] private float fireWallDuration;
 
     protected override void Shoot()
     {

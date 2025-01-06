@@ -26,6 +26,7 @@ public abstract class Enemy : MonoBehaviour
     [Header("ATTACK:")]
     [SerializeField] protected int damage;
     [SerializeField] protected float playerDetectionRadius;
+    protected float boxDetectionRadius;
     protected float attackTimer;
     private bool isCriticalHit;
 
@@ -50,6 +51,7 @@ public abstract class Enemy : MonoBehaviour
 
     private EnemyStatus status;
     private Transform playerTransform;
+    private SurvivorBox detectedBox;
 
     protected virtual void Start()
     {
@@ -69,6 +71,8 @@ public abstract class Enemy : MonoBehaviour
 
         Spawn();
 
+        boxDetectionRadius = playerDetectionRadius;
+
     }
 
     protected virtual void Update()
@@ -80,12 +84,16 @@ public abstract class Enemy : MonoBehaviour
             else
                 _spriteRenderer.flipX = false;
         }
+
+        DetectSurvivorBox();
+
+        if (detectedBox != null && CanAttack())
+        {
+            AttackBox();
+        }
     }
 
-    protected bool CanAttack()
-    {
-        return _spriteRenderer.enabled;
-    }
+    protected bool CanAttack() => _spriteRenderer.enabled;
 
     protected virtual void Attack()
     {
@@ -101,19 +109,13 @@ public abstract class Enemy : MonoBehaviour
                 isCriticalHit = true;
 
                 if (isCriticalHit)
-                {
                     character.TakeDamage(damage * 2);
-                }
             }
             else
-            {
                 character.TakeDamage(damage);
-            }
         }
         else
-        {
             character.TakeDamage(damage);
-        }
     }
 
     public virtual void TakeDamage(int _damage, bool _isCriticalHit)
@@ -124,16 +126,11 @@ public abstract class Enemy : MonoBehaviour
         int realDamage = Mathf.Min(_damage, health);
         health -= realDamage;
 
-        // Null-check before invoking damage taken action
         if (this != null && gameObject != null)
-        {
             OnDamageTaken?.Invoke(_damage, transform.position, _isCriticalHit);
-        }
 
         if (health <= 0 && this != null && gameObject != null)
-        {
             Die();
-        }
     }
 
     public void ApplyLifeDrain(int damage, float duration, float interval)
@@ -189,6 +186,33 @@ public abstract class Enemy : MonoBehaviour
         OnSpawnCompleted?.Invoke();
     }
 
+    private void DetectSurvivorBox()
+    {
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, boxDetectionRadius);
+        foreach (Collider2D collider in colliders)
+        {
+            if (collider.CompareTag("SurvivorBox"))
+            {
+                detectedBox = collider.GetComponent<SurvivorBox>();
+                return;
+            }
+        }
+        detectedBox = null;
+    }
+
+    private void AttackBox()
+    {
+        if (detectedBox != null)
+        {
+            attackTimer -= Time.deltaTime;
+            if (attackTimer <= 0)
+            {
+                detectedBox.TakeDamage(damage);
+                attackTimer = 1f; 
+            }
+        }
+    }
+
     private void OnDrawGizmos()
     {
         if (!showGizmos)
@@ -196,10 +220,9 @@ public abstract class Enemy : MonoBehaviour
 
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, playerDetectionRadius);
+        Gizmos.color = Color.yellow; 
+        Gizmos.DrawWireSphere(transform.position, boxDetectionRadius);
     }
 
-    public Vector2 GetCenter()
-    {
-        return (Vector2)transform.position + _collider.offset;
-    }
+    public Vector2 GetCenter() => (Vector2)transform.position + _collider.offset;
 }

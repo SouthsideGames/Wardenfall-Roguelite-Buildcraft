@@ -245,7 +245,6 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         ui.StageCompleted();
         GameManager.Instance.SetGameState(GameState.SurvivalStageCompleted);
 
-        // Trigger XP gain based on survival duration
         OnSurvivalCompleted?.Invoke();
     }
 
@@ -285,6 +284,9 @@ public class WaveManager : MonoBehaviour, IGameStateListener
                 break;
             case GameState.GameOver:
                 hasWaveStarted = false;
+                DefeatAllEnemies();
+                break;
+            case GameState.SurvivalStageCompleted:
                 DefeatAllEnemies();
                 break;
         }

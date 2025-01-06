@@ -41,14 +41,16 @@ public class EnemyBullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        // Check if the bullet hits the player
         if (collider.TryGetComponent(out CharacterManager player))
         {
-
-            LeanTween.cancel(gameObject);
-
             player.TakeDamage(damage);
             col.enabled = false;    
+            rangedEnemyAttack.ReleaseBullet(this);
+        }
+        else if (collider.TryGetComponent(out SurvivorBox box))
+        {
+            box.TakeDamage(damage);
+            col.enabled = false;
             rangedEnemyAttack.ReleaseBullet(this);
         }
         
