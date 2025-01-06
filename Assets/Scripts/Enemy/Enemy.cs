@@ -7,7 +7,7 @@ using UnityEngine;
 [RequireComponent(typeof(EnemyStatus))]
 public abstract class Enemy : MonoBehaviour
 {
-    [Header("ACTIONS:")]
+ [Header("ACTIONS:")]
     public static Action<int, Vector2, bool> OnDamageTaken;
     public static Action<Vector2> OnDeath;
     public static Action<Vector2> OnBossDeath;

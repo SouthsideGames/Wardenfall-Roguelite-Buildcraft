@@ -40,22 +40,28 @@ public class RewardManager : MonoBehaviour
 
         int rewardCount = Mathf.CeilToInt(baseRewardCount + (survivalTime * rewardScalingFactor));
 
+        Debug.Log($"Generating {rewardCount} rewards...");
+
         for (int i = 0; i < rewardCount; i++)
         {
             float randomValue = UnityEngine.Random.value;
+            Debug.Log($"Random Value: {randomValue}");
 
             if (randomValue < cardProbability)
             {
+                Debug.Log("Spawning Card Reward");
                 SpawnReward(cardPrefab, 0, true);
             }
             else if (randomValue < cardProbability + gemProbability)
             {
                 int gemAmount = baseGemReward + Mathf.FloorToInt(survivalTime * gemMultiplier);
+                Debug.Log($"Spawning Gem Reward: {gemAmount}");
                 SpawnReward(gemPrefab, gemAmount, false);
             }
             else
             {
                 int cashAmount = baseCashReward + Mathf.FloorToInt(survivalTime * cashMultiplier);
+                Debug.Log($"Spawning Cash Reward: {cashAmount}");
                 SpawnReward(cashPrefab, cashAmount, false);
             }
         }

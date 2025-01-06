@@ -85,7 +85,15 @@ public class CharacterHealth : MonoBehaviour, IStats
     private void Die()
     {
         OnCharacterDeath?.Invoke();
-        GameManager.Instance.SetGameState(GameState.GameOver);
+       
+        if (GameModeManager.Instance.CurrentGameMode == GameMode.Survival)
+        {
+            GameManager.Instance.SetGameState(GameState.SurvivalStageCompleted);
+        }
+        else
+        {
+            GameManager.Instance.SetGameState(GameState.GameOver);
+        }
     }
 
     private void UpdateHealthUI()

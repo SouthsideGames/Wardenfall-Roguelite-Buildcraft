@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using NaughtyAttributes;
 using SouthsideGames.DailyMissions;
+using UnityEngine.Pool;
 
 
 [RequireComponent(typeof(WaveUI))]
@@ -46,6 +47,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     [Header("GAME MODE:")]
     public GameMode selectedGameMode { get; private set; }
 
+
     private Wave currentWave;
     private int waveCompletionCount;
 
@@ -77,6 +79,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
                     HandleWaveTransition();
                 break;
         }
+
     }
 
     private void StartWave(int waveIndex)
@@ -202,7 +205,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         if (group != null && Time.time >= timer)
         {
             var enemyPrefab = group.enemies[UnityEngine.Random.Range(0, group.enemies.Count)];
-            Instantiate(enemyPrefab, GetSpawnPosition(), Quaternion.identity);
+            Instantiate(enemyPrefab, GetSpawnPosition(), Quaternion.identity, transform);
             timer = Time.time + 1f / spawnFrequency;
         }
     }
@@ -222,11 +225,10 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     private void SpawnSurvivalBoss()
     {
         var boss = bossPrefabs[UnityEngine.Random.Range(0, bossPrefabs.Count)];
-        Instantiate(boss, GetSpawnPosition(), Quaternion.identity);
+        Instantiate(boss, GetSpawnPosition(), Quaternion.identity, transform);
         bossSpawned = true;
         nextBossSpawnTime += bossSpawnInterval;
     }
-
 
     private void UpdateWaveTimer()
     {
@@ -245,6 +247,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         ui.StageCompleted();
         GameManager.Instance.SetGameState(GameState.SurvivalStageCompleted);
 
+        Debug.Log("Survival Stage Completed - Triggering Event"); // Debug here
         OnSurvivalCompleted?.Invoke();
     }
 
@@ -287,6 +290,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
                 DefeatAllEnemies();
                 break;
             case GameState.SurvivalStageCompleted:
+                hasWaveStarted = false;
                 DefeatAllEnemies();
                 break;
         }
@@ -303,7 +307,13 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         character.health.OnCharacterDeathMission(selectedGameMode);
 
         if (selectedGameMode == GameMode.Survival)
-            EndSurvivalStage();
+        {
+            EndSurvivalStage(); // Trigger survival completion
+        }
+        else
+        {
+            GameManager.Instance.SetGameState(GameState.GameOver);
+        }
     }
 }
 

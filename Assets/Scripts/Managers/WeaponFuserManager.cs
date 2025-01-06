@@ -33,19 +33,15 @@ public class WeaponFuserManager : MonoBehaviour
 
         foreach(Weapon characterWeapon in weapons)
         {
-            //Cant Fuse with a null weapon
             if(characterWeapon == null)
                continue;
-            
-            //Cant fuse a weapon to itself
+
             if(characterWeapon == _weapon)
                continue;
 
-            //Can not fuse the same weapons
             if(characterWeapon.WeaponData.Name != _weapon.WeaponData.Name)
                 continue;
 
-            //both weapons need to be the same level
             if(characterWeapon.Level != _weapon.Level)
                continue;
 
