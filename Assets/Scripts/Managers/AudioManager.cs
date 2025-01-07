@@ -13,7 +13,6 @@ public class AudioManager : MonoBehaviour, IGameStateListener
     [SerializeField] private AudioClip gameMusic;
     [SerializeField] private AudioClip stageCompleteMusic;
     [SerializeField] private AudioClip gameoverMusic;
-    [SerializeField] private AudioClip uIMusic;
 
     [Header("SETTINGS:")]
     [SerializeField] private AudioSource musicSource;
