@@ -107,5 +107,10 @@ public class CardSO : ScriptableObject
         }
     }
 
-    public void Collected() => isCollected = true;
+    public void Collected()
+    {
+        isCollected = true;
+
+        SouthsideGames.SaveManager.SaveManager.Save(this, iD, isCollected);
+    }
 }

@@ -28,9 +28,6 @@ public class RangedEnemy : Enemy
 
         AttackLogic();
 
-        transform.localScale = character.transform.position.x >
-            transform.position.x ? Vector3.one : Vector3.one.With(x: -1);
-
     }
 
     private void AttackLogic()

@@ -15,6 +15,14 @@ public enum GameState
     Shop
 }
 
+public enum ItemRewardType
+{
+    Cash,
+    Gem,
+    Card
+}
+
+
 public enum MeleeWeaponState 
 {
     Empty,

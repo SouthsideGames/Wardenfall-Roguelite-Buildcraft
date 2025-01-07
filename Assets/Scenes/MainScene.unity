@@ -4263,9 +4263,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 617157215}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: ManageGameOver
+      - m_Target: {fileID: 1208060351}
+        m_TargetAssemblyTypeName: RewardManager, Assembly-CSharp
+        m_MethodName: CollectRewards
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4275,9 +4275,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1208060351}
-        m_TargetAssemblyTypeName: RewardManager, Assembly-CSharp
-        m_MethodName: CollectRewards
+      - m_Target: {fileID: 617157215}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: ManageGameOver
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -37242,7 +37242,7 @@ MonoBehaviour:
   rewardSpawnArea: {fileID: 4615991926976643991}
   cashPrefab: {fileID: 5150430667747509586, guid: ac26bfd8c77724e08b8b2a254fb9d906, type: 3}
   gemPrefab: {fileID: 5150430667747509586, guid: d929cee6c256747e6ab2490bed899901, type: 3}
-  cardPrefab: {fileID: 5150430667747509586, guid: 561f6ee5a3ef6412da50e417f0ba74f5, type: 3}
+  cardPrefab: {fileID: 5150430667747509586, guid: f525379504e56934ab697e003096c195, type: 3}
   waveManager: {fileID: 973259117}
   baseRewardCount: 3
   rewardScalingFactor: 0.5

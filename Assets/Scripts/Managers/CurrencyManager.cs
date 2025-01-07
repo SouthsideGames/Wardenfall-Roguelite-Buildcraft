@@ -117,6 +117,7 @@ public class CurrencyManager : MonoBehaviour, IWantToBeSaved
     public bool HasEnoughPremiumCurrency(int _amount) => PremiumCurrency >= _amount;
     public void UsePremiumCurrency(int _amount) => AdjustPremiumCurrency(-_amount);
     public void UseGemCurrency(int _amount) => AdjustGemCurrency(-_amount);
+    public bool HasEnoughGem(int _amount) => GemCurrency >= _amount;
     private void MeatCollectedCallback(Meat _meat) => AdjustCurrency(1);
     private void CashCollectedCallback(Cash _cash) => AdjustPremiumCurrency(1);
     private void GemCollectedCallback(Gem _gem) => AdjustGemCurrency(1);    

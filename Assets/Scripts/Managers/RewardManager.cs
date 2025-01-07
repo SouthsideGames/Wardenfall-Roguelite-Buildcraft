@@ -26,19 +26,29 @@ public class RewardManager : MonoBehaviour
     [SerializeField] private int baseGemReward = 10;
     [SerializeField] private int gemMultiplier = 2;
 
-     private List<GameObject> rewards = new List<GameObject>();
+    private const int MAX_REWARDS = 5;
+    private List<GameObject> rewards = new List<GameObject>();
+    private bool rewardsGenerated = false;
 
     private void Awake() => WaveManager.OnSurvivalCompleted += ShowRewards;
 
     private void OnDestroy() => WaveManager.OnSurvivalCompleted -= ShowRewards;
 
-    public void ShowRewards() => GenerateRewards(waveManager.SurvivalTime);
+    public void ShowRewards()
+    {
+        if (!rewardsGenerated) 
+        {
+            GenerateRewards(waveManager.SurvivalTime);
+            rewardsGenerated = true; 
+        }
+    }
 
     private void GenerateRewards(float survivalTime)
     {
         ClearPreviousRewards();
 
         int rewardCount = Mathf.CeilToInt(baseRewardCount + (survivalTime * rewardScalingFactor));
+        rewardCount = Mathf.Min(rewardCount, MAX_REWARDS);
 
         Debug.Log($"Generating {rewardCount} rewards...");
 
@@ -50,30 +60,30 @@ public class RewardManager : MonoBehaviour
             if (randomValue < cardProbability)
             {
                 Debug.Log("Spawning Card Reward");
-                SpawnReward(cardPrefab, 0, true);
+                SpawnReward(cardPrefab, 0, ItemRewardType.Card);
             }
             else if (randomValue < cardProbability + gemProbability)
             {
                 int gemAmount = baseGemReward + Mathf.FloorToInt(survivalTime * gemMultiplier);
                 Debug.Log($"Spawning Gem Reward: {gemAmount}");
-                SpawnReward(gemPrefab, gemAmount, false);
+                SpawnReward(gemPrefab, gemAmount, ItemRewardType.Gem);
             }
             else
             {
                 int cashAmount = baseCashReward + Mathf.FloorToInt(survivalTime * cashMultiplier);
                 Debug.Log($"Spawning Cash Reward: {cashAmount}");
-                SpawnReward(cashPrefab, cashAmount, false);
+                SpawnReward(cashPrefab, cashAmount, ItemRewardType.Cash);
             }
         }
     }
 
-    private void SpawnReward(GameObject prefab, int amount, bool isCard)
+    private void SpawnReward(GameObject prefab, int amount, ItemRewardType rewardType)
     {
         GameObject reward = Instantiate(prefab, rewardSpawnArea);
         Reward rewardItem = reward.GetComponent<Reward>();
         if (rewardItem != null)
         {
-            rewardItem.SetAmount(amount, isCard);
+            rewardItem.SetAmount(amount, rewardType);
         }
         rewards.Add(reward);
     }
@@ -91,12 +101,17 @@ public class RewardManager : MonoBehaviour
     {
         foreach (var reward in rewards)
         {
-            if (reward.TryGetComponent<Item>(out Item item))
+            // Ensure the reward is processed properly
+            if (reward.TryGetComponent<Reward>(out Reward rewardItem))
             {
-                item.Collect(CharacterManager.Instance);
+                rewardItem.Collect(); // Trigger reward-specific collection logic
             }
         }
 
+        // Clear rewards after processing
+        ClearPreviousRewards();
+
+        // Move to the menu after all rewards are collected
         GameManager.Instance.SetGameState(GameState.Menu);
     }
 }
