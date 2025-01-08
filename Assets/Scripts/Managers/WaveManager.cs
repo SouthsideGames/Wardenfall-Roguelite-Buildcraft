@@ -34,7 +34,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     private List<float> localCounters = new List<float>();
 
     [Header("SURVIVAL MODE SETTINGS:")]
-    [SerializeField] private float spawnFrequency = 1.0f;
+    [SerializeField] private float spawnFrequency = 2.0f;
     [SerializeField] private List<SurvivalWaveGroup> survivalGroups;
     [SerializeField] private List<GameObject> bossPrefabs;
     [SerializeField] private float bossSpawnInterval = 180f; // 3 minutes
@@ -90,6 +90,13 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         hasWaveStarted = true;
         timer = 0;
 
+        if (selectedGameMode == GameMode.Survival)
+        {
+            survivalTimer = 0;
+            survivalScalingTimer = 0;
+            nextBossSpawnTime = bossSpawnInterval;
+        }
+
         UpdateUIForWaveStart();
     }
 
@@ -140,7 +147,6 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 
     private void HandleWaveTransition()
     {
-        // Trigger XP gain for wave-based and boss rush modes
         OnWaveCompleted?.Invoke();
 
         MissionManager.Increment(MissionType.wavesCompleted, 1);
@@ -180,12 +186,13 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 
     private void HandleSurvivalMode()
     {
-        survivalTimer += Time.deltaTime;
+         survivalTimer += Time.deltaTime;
         survivalScalingTimer += Time.deltaTime;
 
-        if (survivalTimer >= nextBossSpawnTime && !bossSpawned)
+        if (survivalTimer >= nextBossSpawnTime)
         {
             SpawnSurvivalBoss();
+            nextBossSpawnTime += Mathf.Max(60f, bossSpawnInterval * 0.9f);
         }
 
         if (survivalScalingTimer >= 120f)
@@ -224,10 +231,10 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 
     private void SpawnSurvivalBoss()
     {
-        var boss = bossPrefabs[UnityEngine.Random.Range(0, bossPrefabs.Count)];
+        if (bossPrefabs.Count == 0) return;
+
+        GameObject boss = bossPrefabs[UnityEngine.Random.Range(0, bossPrefabs.Count)];
         Instantiate(boss, GetSpawnPosition(), Quaternion.identity, transform);
-        bossSpawned = true;
-        nextBossSpawnTime += bossSpawnInterval;
     }
 
     private void UpdateWaveTimer()
@@ -246,15 +253,19 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     {
         ui.StageCompleted();
         GameManager.Instance.SetGameState(GameState.SurvivalStageCompleted);
-
-        Debug.Log("Survival Stage Completed - Triggering Event"); // Debug here
         OnSurvivalCompleted?.Invoke();
+
+        survivalTimer = 0;
+        survivalScalingTimer = 0;
+        nextBossSpawnTime = bossSpawnInterval;
     }
 
     private void ApplySurvivalDifficultyScaling()
     {
         difficultyMultiplier += difficultyIncrement;
-        Debug.Log($"Difficulty scaled. Current multiplier: {difficultyMultiplier}");
+
+        spawnFrequency = Mathf.Clamp(spawnFrequency + 0.1f, 0.5f, 10f);
+        Debug.Log($"Difficulty scaled. Multiplier: {difficultyMultiplier}, Spawn Frequency: {spawnFrequency}");
     }
 
     private Vector2 GetSpawnPosition()

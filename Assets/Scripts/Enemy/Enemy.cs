@@ -50,7 +50,7 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] private bool showGizmos;
 
     private EnemyStatus status;
-    private Transform playerTransform;
+    protected Transform playerTransform;
     private SurvivorBox detectedBox;
 
     protected virtual void Start()
@@ -146,6 +146,11 @@ public abstract class Enemy : MonoBehaviour
 
         OnDeath?.Invoke(transform.position);
         OnEnemyKilled?.Invoke();
+
+        // Debug before calling increment
+        Debug.Log("MissionManager.Increment called with MissionType.enemiesPopped, 1");
+
+
         MissionManager.Increment(MissionType.enemiesPopped, 1);
         DieAfterWave();
     }

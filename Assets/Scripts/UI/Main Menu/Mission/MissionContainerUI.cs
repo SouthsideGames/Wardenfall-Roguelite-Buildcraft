@@ -77,11 +77,11 @@ namespace SouthsideGames.DailyMissions
             switch (_data.Type)
             {
                 case MissionType.survivalPlayed:
-                    return $"Play {_data.Target} times";
+                    return $"Play Survival Mode {_data.Target} times";
                 case MissionType.waveBasedPlayed:
-                    return $"Play {_data.Target} times";
+                    return $"Play Wave Based Mode {_data.Target} times";
                 case MissionType.bossRushPlayed:
-                    return $"Play {_data.Target} times";
+                    return $"Play Boss Rush Mode {_data.Target} times";
                 case MissionType.enemiesPopped:
                     return $"Defeat {_data.Target} enemies";
                 case MissionType.wavesCompleted:

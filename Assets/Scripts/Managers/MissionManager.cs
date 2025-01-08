@@ -9,6 +9,7 @@ namespace SouthsideGames.DailyMissions
     public class MissionManager : MonoBehaviour
     {
         public static MissionManager Instance;
+        public static Action<int> xpUpdated;
 
         [Header("COMPONENTS:")]
         private MissionManagerUI uI;
@@ -16,6 +17,9 @@ namespace SouthsideGames.DailyMissions
         [Header("DATA")]
         [SerializeField] private MissionDataSO[] missionDatas;
         List<Mission> activeMissions = new List<Mission>(); 
+
+        private int xp;
+        public int Xp => xp;    
 
         private void Awake() 
         {
@@ -48,6 +52,9 @@ namespace SouthsideGames.DailyMissions
         {
             Mission mission = activeMissions[index];
             mission.Claim();
+
+            xp += mission.Data.RewardXp;
+            xpUpdated?.Invoke(xp);
         }
 
         private void OnMissionUpdated(Mission _mission)

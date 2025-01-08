@@ -135,6 +135,18 @@ namespace SouthsideGames.SaveManager
             return fullKey;
         }
 
+        [NaughtyAttributes.Button]
+        public static void ClearData()
+        {
+            if (File.Exists(instance.dataPath))
+            {
+                File.Delete(instance.dataPath); // Delete the save file
+                Debug.Log("Save data cleared.");
+            }
+
+            GameData = new GameData(); // Reset to a new empty GameData object
+            instance.LocalSave();      // Save the fresh GameData file
+        }
 
     }
 

@@ -5096,7 +5096,7 @@ SpriteRenderer:
   m_Size: {x: 5.12, y: 5.12}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
 --- !u!1 &4645251125779831188
@@ -5397,11 +5397,11 @@ GameObject:
   m_Component:
   - component: {fileID: 4041176825780023014}
   - component: {fileID: 8835191902703020512}
-  - component: {fileID: 4352447927552231444}
   - component: {fileID: 7984724841211401293}
   - component: {fileID: 3180440092509416933}
   - component: {fileID: 4379303210947830071}
   - component: {fileID: 5663290426954537009}
+  - component: {fileID: 6818160497316672606}
   m_Layer: 6
   m_Name: Zoomby
   m_TagString: Enemy
@@ -5451,37 +5451,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &4352447927552231444
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5829535922412643463}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10319f6b828d20f409beead2782003e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _spriteRenderer: {fileID: 9109697679892941901}
-  spawnIndicator: {fileID: 8016728417625361805}
-  _collider: {fileID: 4379303210947830071}
-  damage: 0
-  playerDetectionRadius: 0
-  maxHealth: 100
-  health: 0
-  isInvincible: 0
-  spawnSize: 1.2
-  spawnTime: 0.3
-  numberOfLoops: 4
-  canPerformCriticalHit: 0
-  deathParticles: {fileID: 482209723644523875}
-  showGizmos: 0
-  healthBar: {fileID: 5909067328119558400}
-  healthText: {fileID: 4328854165419088474}
-  anim: {fileID: 8835191902703020512}
-  maxIdleDuration: 3
-  moveSpeed: 8
 --- !u!114 &7984724841211401293
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5562,6 +5531,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ddebe7d82fbdf44daf06654154cf032, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveSpeed: 0
+--- !u!114 &6818160497316672606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5829535922412643463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfe43d2d0d343b14c8e9723982bf9cc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spriteRenderer: {fileID: 0}
+  spawnIndicator: {fileID: 0}
+  _collider: {fileID: 0}
+  damage: 0
+  playerDetectionRadius: 0
+  maxHealth: 0
+  health: 0
+  isInvincible: 0
+  spawnSize: 1.2
+  spawnTime: 0.3
+  numberOfLoops: 4
+  canPerformCriticalHit: 0
+  deathParticles: {fileID: 0}
+  showGizmos: 0
+  healthBar: {fileID: 0}
+  healthText: {fileID: 0}
+  anim: {fileID: 0}
+  maxIdleDuration: 1
   moveSpeed: 0
 --- !u!1 &7181598522140050266
 GameObject:
