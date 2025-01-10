@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Coffee.UIExtensions;
 
 namespace SouthsideGames.DailyMissions
 {
@@ -14,9 +15,15 @@ namespace SouthsideGames.DailyMissions
         [Header("COMPONENTS:")]
         private MissionManagerUI uI;
 
-        [Header("DATA")]
+        [Header("DATA:")]
         [SerializeField] private MissionDataSO[] missionDatas;
         List<Mission> activeMissions = new List<Mission>(); 
+
+        [Header("EFFECT:")]
+        [SerializeField] private ParticleSystem missionCollectParticles;
+        [SerializeField] private Transform particleParent;
+        private UIParticleAttractor uIParticleAttractor;
+
 
         private int xp;
         public int Xp => xp;    
@@ -30,8 +37,10 @@ namespace SouthsideGames.DailyMissions
 
             uI = GetComponent<MissionManagerUI>();  
 
-            Mission.updateMission += OnMissionUpdated;
-            Mission.completeMission += OnCompleteMission;
+            Mission.updateMission                   += OnMissionUpdated;
+            Mission.completeMission                 += OnCompleteMission;
+            MainMissionSliderUI.OnAttractorInit     += OnAttractorInit;
+
         }
 
         private void Start() 
@@ -44,8 +53,15 @@ namespace SouthsideGames.DailyMissions
 
         private void Destroy()
         {
-            Mission.updateMission -= OnMissionUpdated;
-            Mission.completeMission -= OnCompleteMission;
+            Mission.updateMission                   -= OnMissionUpdated;
+            Mission.completeMission                 -= OnCompleteMission;
+            MainMissionSliderUI.OnAttractorInit     -= OnAttractorInit;
+        }
+
+        private void OnAttractorInit(UIParticleAttractor _attractor)
+        {
+            uIParticleAttractor = _attractor;
+            uIParticleAttractor.onAttracted.AddListener(OnCollectedParticleAttracted);
         }
 
         public void HandleMissionClaimed(int index)
@@ -53,8 +69,15 @@ namespace SouthsideGames.DailyMissions
             Mission mission = activeMissions[index];
             mission.Claim();
 
-            xp += mission.Data.RewardXp;
-            xpUpdated?.Invoke(xp);
+            int particleCount = mission.Data.RewardXp;
+
+            Vector2 screenCenter = new Vector2(Screen.width / 2, Screen.height / 2);
+            ParticleSystem collectParticlesInstance = Instantiate(missionCollectParticles, screenCenter, Quaternion.identity, particleParent);
+
+            uIParticleAttractor.AddParticleSystem(collectParticlesInstance);    
+
+            collectParticlesInstance.emission.SetBurst(0, new ParticleSystem.Burst(0, particleCount));
+            collectParticlesInstance.Play();
         }
 
         private void OnMissionUpdated(Mission _mission)
@@ -79,6 +102,11 @@ namespace SouthsideGames.DailyMissions
             }
         }
 
+        private void OnCollectedParticleAttracted()
+        {
+            xp++;
+            xpUpdated?.Invoke(xp);
+        }
 
     }
 }

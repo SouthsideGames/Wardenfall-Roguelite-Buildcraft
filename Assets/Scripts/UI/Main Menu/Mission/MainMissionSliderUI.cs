@@ -1,4 +1,5 @@
 using System;
+using Coffee.UIExtensions;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,11 +7,17 @@ namespace SouthsideGames.DailyMissions
 {
     public class MainMissionSliderUI : MonoBehaviour
     {
+        public static Action<UIParticleAttractor> OnAttractorInit;
+
         [Header("ELEMENTS:")]
         [SerializeField] private Slider slider;
+        [SerializeField] private SliderItemUI uIAttractorItemPrefab;
+        [SerializeField] private SliderItemUI sliderItemPrefab;
+        [SerializeField] private Transform itemsParent;
 
         [Header("DATA:")]
         [SerializeField] private RewardGroupDataSO data;
+        [SerializeField] private Sprite currencyIcon;
 
         private void Awake() 
         {
@@ -29,7 +36,20 @@ namespace SouthsideGames.DailyMissions
 
         private void Init()
         {
+            GenerateSliderItems();
             InitSlider();
+        }
+
+        private void GenerateSliderItems()
+        {
+            itemsParent.Clear();
+
+            SliderItemUI attractorItem = Instantiate(uIAttractorItemPrefab, itemsParent);
+            attractorItem.Configure(currencyIcon, 0.ToString());
+
+            OnAttractorInit?.Invoke(attractorItem.GetComponent<UIParticleAttractor>());
+
+
         }
 
         private void InitSlider()
