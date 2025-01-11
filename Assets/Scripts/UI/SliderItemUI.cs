@@ -10,6 +10,7 @@ namespace SouthsideGames.DailyMissions
         [Header("ELEMENTS:")]
         [SerializeField] private Image image;
         [SerializeField] private TextMeshProUGUI text;
+        public TextMeshProUGUI Text => text;    
 
         private Button button;
         public Button Button => button; 

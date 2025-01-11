@@ -2,6 +2,7 @@ using System;
 using Coffee.UIExtensions;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 namespace SouthsideGames.DailyMissions
 {
@@ -13,11 +14,13 @@ namespace SouthsideGames.DailyMissions
         [SerializeField] private Slider slider;
         [SerializeField] private SliderItemUI uIAttractorItemPrefab;
         [SerializeField] private SliderItemUI sliderItemPrefab;
-        [SerializeField] private Transform itemsParent;
+        [SerializeField] private RectTransform itemsParent;
+        private TextMeshProUGUI xpText;
 
         [Header("DATA:")]
         [SerializeField] private RewardGroupDataSO data;
         [SerializeField] private Sprite currencyIcon;
+        private int lastRewardIndex;
 
         private void Awake() 
         {
@@ -32,6 +35,8 @@ namespace SouthsideGames.DailyMissions
         private void Start() 
         {
             Init();
+
+            lastRewardIndex = 0;
         }
 
         private void Init()
@@ -47,9 +52,28 @@ namespace SouthsideGames.DailyMissions
             SliderItemUI attractorItem = Instantiate(uIAttractorItemPrefab, itemsParent);
             attractorItem.Configure(currencyIcon, 0.ToString());
 
+            xpText = attractorItem.Text;
+
             OnAttractorInit?.Invoke(attractorItem.GetComponent<UIParticleAttractor>());
 
+            for(int i = 0; i < data.RewardMilestoneDatas.Length; i++)
+            {
+                RewardMilestoneData milestoneData = data.RewardMilestoneDatas[i];
 
+                SliderItemUI itemInstance = Instantiate(sliderItemPrefab, itemsParent);
+                itemInstance.Configure(milestoneData.Icon, milestoneData.requiredXP.ToString()); 
+
+                int _i = i;
+                itemInstance.Button.onClick.AddListener(() => HandleSliderItemPressed(_i));
+            }
+
+            PlaceItems();
+
+        }
+
+        private void HandleSliderItemPressed(int index)
+        {
+            Debug.Log($"Slider item {index} was pressed");
         }
 
         private void InitSlider()
@@ -60,9 +84,40 @@ namespace SouthsideGames.DailyMissions
             slider.value = 0;
         }
 
+        private void PlaceItems()
+        {
+            float width = itemsParent.rect.width;
+            float spacing = width / (itemsParent.childCount - 1);
+
+            Vector2 startPosition = (Vector2)itemsParent.position - Vector2.right * width / 2;
+
+            for(int i = 0; i < itemsParent.childCount; i++)
+                itemsParent.GetChild(i).position = startPosition + spacing * i * Vector2.right; 
+        }
+
         private void OnXpUpdated(int _xp)
         {
             slider.value = _xp;
+            xpText.text = _xp.ToString();
+
+            CheckForRewards();
+        }
+
+        private void CheckForRewards()
+        {
+            if(lastRewardIndex > data.RewardMilestoneDatas.Length - 1)
+                return;
+                
+            if(slider.value >= data.RewardMilestoneDatas[lastRewardIndex].requiredXP)
+               EnableReward();
+        }
+
+        private void EnableReward()
+        {
+            SliderItemUI item = itemsParent.GetChild(lastRewardIndex + 1).GetComponent<SliderItemUI>();
+            item.Animate();
+
+            lastRewardIndex++;
         }
     }
 
