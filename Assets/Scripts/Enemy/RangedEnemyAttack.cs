@@ -20,9 +20,6 @@ public class RangedEnemyAttack : MonoBehaviour
     [SerializeField] private float bulletSpeed;
     private float attackTimer;
 
-    [Header("TYPE:")]
-    [SerializeField] private int shooterType;
-
     [Header("POOL:")]
     private ObjectPool<EnemyBullet> bulletPool;
 

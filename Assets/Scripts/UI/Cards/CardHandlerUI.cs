@@ -14,7 +14,7 @@ public class CardHandlerUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     [SerializeField] private CanvasGroup canvasGroup;
 
     private CardSO cardData;
-    private LoadoutManager deckManager;
+    private CardManager deckManager;
 
     private Vector2 originalPosition;
     private Transform originalParent;
@@ -23,7 +23,7 @@ public class CardHandlerUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     private const float ClickThreshold = 0.2f; // Adjust based on your needs
     private bool isDragging;
 
-    public void Configure(CardSO cardSO, LoadoutManager manager)
+    public void Configure(CardSO cardSO, CardManager manager)
     {
         cardData = cardSO;
         deckManager = manager;

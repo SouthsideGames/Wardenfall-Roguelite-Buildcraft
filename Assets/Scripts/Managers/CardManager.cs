@@ -6,9 +6,13 @@ using UnityEngine.UI;
 using SouthsideGames.SaveManager;
 using System;
 
-public class LoadoutManager : MonoBehaviour, IWantToBeSaved
+namespace SouthsideGames.CardSystem
 {
-    public static LoadoutManager Instance;
+    
+}
+public class CardManager : MonoBehaviour, IWantToBeSaved
+{
+    public static CardManager Instance;
 
     [Header("ELEMENTS:")]
     [SerializeField] private Transform deckListContainer;

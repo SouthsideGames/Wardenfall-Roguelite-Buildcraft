@@ -133,7 +133,17 @@ public enum StatusEffectType
 {
     Burn,
     Drain,
-    Stun
+    Stun,
+    Freeze,
+    Poison,
+    Blind,
+    Weaken,
+    Slow,
+    Confuse,
+    Paralyze,
+    Fear,
+    ArmorBreak,
+    Silence
 }
 
 public static class Enums

@@ -39,7 +39,7 @@ public class BerserkerEnemy : Enemy
         }
 
         // Continue following the player
-        movement.FollowPlayer();
+        movement.FollowCurrentTarget();
     }
 
     private void Enrage()

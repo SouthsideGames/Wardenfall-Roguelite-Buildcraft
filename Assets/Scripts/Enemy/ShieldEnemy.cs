@@ -27,7 +27,7 @@ public class ShieldEnemy : MeleeEnemy
             if (shieldHealth < 0)
             {
                 PlayShieldBreakParticles();
-                health += shieldHealth;  // Transfer any excess damage to actual health
+                health += shieldHealth;
                 shieldHealth = 0;
             }
         }

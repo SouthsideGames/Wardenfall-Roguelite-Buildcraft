@@ -23,7 +23,7 @@ public class ExplodeEnemy : Enemy
         else
         {
             // Move towards the player
-            movement.FollowPlayer();
+            movement.FollowCurrentTarget();
         }
     }
 

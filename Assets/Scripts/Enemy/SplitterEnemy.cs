@@ -56,7 +56,7 @@ public class SplitterEnemy : Enemy
         else
             Wait();
 
-        movement.FollowPlayer();
+        movement.FollowCurrentTarget();
     }
     private void Wait()
     {

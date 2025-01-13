@@ -4,7 +4,7 @@ using UnityEngine;
 public class EnemyMovement : MonoBehaviour
 {
     [Header("ELEMENTS:")]
-    private CharacterManager player;
+    private Transform currentTarget;
 
     [Header("SETTINGS:")]
     public float moveSpeed;
@@ -16,24 +16,29 @@ public class EnemyMovement : MonoBehaviour
 
     public void StorePlayer(CharacterManager _player)
     {
-        player = _player;
+        currentTarget = _player.transform;
     }
 
-    public void FollowPlayer()
+    public void SetTarget(Transform newTarget)
     {
-        if (!canMove || player == null || isKnockedBack) return;
+        currentTarget = newTarget;
+    }
 
-        Vector2 direction = (player.transform.position - transform.position).normalized;
+    public void FollowCurrentTarget()
+    {
+        if (!canMove || currentTarget == null || isKnockedBack) return;
+
+        Vector2 direction = ((Vector2)currentTarget.position - (Vector2)transform.position).normalized;
         Vector2 targetPosition = (Vector2)transform.position + direction * moveSpeed * Time.deltaTime;
 
         transform.position = targetPosition;
     }
 
-    public void MoveAwayFromPlayer()
+    public void MoveAwayFromCurrentTarget()
     {
-        if (!canMove || player == null || isKnockedBack) return;
+        if (!canMove || currentTarget == null || isKnockedBack) return;
 
-        Vector2 direction = (transform.position - player.transform.position).normalized;
+        Vector2 direction = ((Vector2)transform.position - (Vector2)currentTarget.position).normalized;
         Vector2 targetPosition = (Vector2)transform.position + direction * moveSpeed * Time.deltaTime;
 
         transform.position = targetPosition;
@@ -44,6 +49,11 @@ public class EnemyMovement : MonoBehaviour
         StartCoroutine(DisableMovementTemporarily(duration));
     }
 
+    public void EnableMovement()
+    {
+        canMove = true;
+    }
+
     private IEnumerator DisableMovementTemporarily(float duration)
     {
         canMove = false;
@@ -51,7 +61,6 @@ public class EnemyMovement : MonoBehaviour
         canMove = true;
     }
 
-    // **NEW: Knockback Movement**
     public void ApplyKnockback(Vector2 direction, float force, float duration)
     {
         if (!isKnockedBack)
@@ -74,6 +83,31 @@ public class EnemyMovement : MonoBehaviour
             yield return null;
         }
 
+        isKnockedBack = false;
+    }
+
+    public void SetRunAwayFromPlayer()
+    {
+        if (currentTarget != null)
+        {
+            Vector2 direction = ((Vector2)transform.position - (Vector2)currentTarget.position).normalized;
+            Vector2 targetPosition = (Vector2)transform.position + direction * moveSpeed * Time.deltaTime;
+
+            transform.position = targetPosition;
+        }
+    }
+
+    public void ResetMovement()
+    {
+        if (currentTarget != null)
+        {
+            Vector2 direction = ((Vector2)currentTarget.position - (Vector2)transform.position).normalized;
+            Vector2 targetPosition = (Vector2)transform.position + direction * moveSpeed * Time.deltaTime;
+
+            transform.position = targetPosition;
+        }
+
+        canMove = true;
         isKnockedBack = false;
     }
 

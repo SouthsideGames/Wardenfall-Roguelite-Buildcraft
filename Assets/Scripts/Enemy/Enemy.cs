@@ -29,6 +29,7 @@ public abstract class Enemy : MonoBehaviour
     protected float boxDetectionRadius;
     protected float attackTimer;
     private bool isCriticalHit;
+    private bool attacksEnabled = true;
 
     [Header("HEALTH:")]
     public int maxHealth;
@@ -42,6 +43,9 @@ public abstract class Enemy : MonoBehaviour
 
     [Header("MODIFIER:")]
     [SerializeField] private bool canPerformCriticalHit;
+    private float accuracyModifier = 1f;
+    private float damageModifier = 1f;
+    private float armorModifier = 1f;
 
     [Header("EFFECTS:")]
     [SerializeField] protected ParticleSystem deathParticles;
@@ -77,6 +81,8 @@ public abstract class Enemy : MonoBehaviour
 
     protected virtual void Update()
     {
+        if (!attacksEnabled) return;
+
         if (playerTransform != null)
         {
             if (playerTransform.position.x > transform.position.x)
@@ -97,25 +103,24 @@ public abstract class Enemy : MonoBehaviour
 
     protected virtual void Attack()
     {
+        if (!attacksEnabled) return;
+
         isCriticalHit = false;
         attackTimer = 0;
 
-        if(canPerformCriticalHit)
+        int finalDamage = Mathf.CeilToInt(damage * damageModifier);
+        if (canPerformCriticalHit)
         {
             float enemyCriticalHitPercent = UnityEngine.Random.Range(0, 5) / 100;
 
             if (enemyCriticalHitPercent >= CharacterStats.Instance.GetStatValue(Stat.CritResist))
             {
                 isCriticalHit = true;
-
-                if (isCriticalHit)
-                    character.TakeDamage(damage * 2);
+                finalDamage *= 2;
             }
-            else
-                character.TakeDamage(damage);
         }
-        else
-            character.TakeDamage(damage);
+        
+        character.TakeDamage(damage);
     }
 
     public virtual void TakeDamage(int _damage, bool _isCriticalHit)
@@ -126,8 +131,7 @@ public abstract class Enemy : MonoBehaviour
         int realDamage = Mathf.Min(_damage, health);
         health -= realDamage;
 
-        if (this != null && gameObject != null)
-            OnDamageTaken?.Invoke(_damage, transform.position, _isCriticalHit);
+        OnDamageTaken?.Invoke(_damage, transform.position, _isCriticalHit);
 
         if (health <= 0 && this != null && gameObject != null)
             Die();
@@ -218,6 +222,92 @@ public abstract class Enemy : MonoBehaviour
         }
     }
 
+#region STATUS EFFECT FUNCTIONS
+    public void ModifyAccuracy(float modifier)
+    {
+        accuracyModifier = modifier;
+        Debug.Log($"Enemy accuracy modified to {accuracyModifier * 100}%.");
+    }
+
+    public void ModifyDamage(float modifier)
+    {
+        damageModifier = modifier;
+        Debug.Log($"Enemy damage modified to {damageModifier * 100}%.");
+    }
+
+    public void ModifyArmor(float modifier)
+    {
+        armorModifier = modifier;
+        Debug.Log($"Enemy armor modified to {armorModifier * 100}%.");
+    }
+
+    public void DisableAttacks()
+    {
+        attacksEnabled = false;
+        Debug.Log("Enemy attacks disabled.");
+    }
+
+    public void EnableAttacks()
+    {
+        attacksEnabled = true;
+        Debug.Log("Enemy attacks enabled.");
+    }
+
+    public void DisableAbilities()
+    {
+        // Logic to disable enemy-specific abilities
+        Debug.Log("Enemy abilities disabled.");
+    }
+
+    public void EnableAbilities()
+    {
+        // Logic to re-enable enemy-specific abilities
+        Debug.Log("Enemy abilities enabled.");
+    }
+
+    public void SetTargetToOtherEnemies()
+    {
+       playerTransform = null;
+
+        Enemy[] allEnemies = FindObjectsOfType<Enemy>();
+        List<Enemy> validTargets = new List<Enemy>();
+        foreach (var enemy in allEnemies)
+        {
+            if (enemy != this && enemy != null)
+            {
+                validTargets.Add(enemy);
+            }
+        }
+
+        if (validTargets.Count > 0)
+        {
+            int randomIndex = UnityEngine.Random.Range(0, validTargets.Count);
+            Transform newTarget = validTargets[randomIndex].transform;
+
+            Debug.Log($"Enemy target set to: {newTarget.name}");
+            movement?.SetTarget(newTarget);
+        }
+        else
+        {
+            Debug.Log("No other enemies available to target.");
+        }
+    }
+
+    public void ResetTarget()
+    {
+        if (character != null)
+        {
+            playerTransform = character.transform;
+            movement?.SetTarget(playerTransform);
+            Debug.Log("Enemy target reset to the player.");
+        }
+        else
+        {
+            Debug.LogWarning("Player character not found; cannot reset target.");
+        }
+    }
+
+#endregion
     private void OnDrawGizmos()
     {
         if (!showGizmos)

@@ -37,7 +37,7 @@ public class RangedEnemy : Enemy
         if(distanceToPlayer <= playerDetectionRadius)
             TryAttack();
         else
-            movement.FollowPlayer();
+            movement.FollowCurrentTarget();
     }
 
 

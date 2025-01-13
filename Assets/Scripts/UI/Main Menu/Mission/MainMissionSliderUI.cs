@@ -71,9 +71,19 @@ namespace SouthsideGames.DailyMissions
 
         }
 
-        private void HandleSliderItemPressed(int index)
+        private void HandleSliderItemPressed(int _index)
         {
-            Debug.Log($"Slider item {index} was pressed");
+            bool canOpen = lastRewardIndex > _index;
+
+            if(!canOpen)
+              return;
+
+            OpenReward(_index);
+        }
+
+        private void OpenReward(int _index)
+        {
+            itemsParent.GetChild(_index + 1).GetComponent<SliderItemUI>().StopAnimation();
         }
 
         private void InitSlider()

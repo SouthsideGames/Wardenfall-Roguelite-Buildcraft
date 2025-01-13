@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 //TODO: Add Teleport Feedback
@@ -9,7 +7,6 @@ public class TeleportEnemy : RangedEnemy
     [SerializeField] private float teleportCooldown = 5f;
     [SerializeField] private float teleportDistance = 5f;
     private float nextTeleportTime;
-    [SerializeField] private ParticleSystem teleportFeedback;
 
     protected override void Start()
     {
@@ -26,14 +23,12 @@ public class TeleportEnemy : RangedEnemy
 
         AttackLogic();
 
-        // Handle teleportation
         if (Time.time >= nextTeleportTime)
         {
             Teleport();
             nextTeleportTime = Time.time + teleportCooldown;
         }
 
-        // Flip enemy sprite depending on player position
         transform.localScale = character.transform.position.x > transform.position.x ? Vector3.one : Vector3.one.With(x: -1);
     }
 
@@ -53,6 +48,6 @@ public class TeleportEnemy : RangedEnemy
         if (distanceToPlayer <= playerDetectionRadius)
             TryAttack();
         else
-            movement.FollowPlayer();  // Keep following player if out of range
+            movement.FollowCurrentTarget();
     }
 }

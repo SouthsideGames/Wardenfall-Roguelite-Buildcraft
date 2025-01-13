@@ -30,7 +30,7 @@ public class MeleeEnemy : Enemy
         else
             Wait();
 
-        movement.FollowPlayer();
+        movement.FollowCurrentTarget();
     }
 
   
