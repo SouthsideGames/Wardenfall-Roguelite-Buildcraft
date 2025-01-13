@@ -1,56 +1,108 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class InGameCardUI : MonoBehaviour
+{
+    [Header("UI ELEMENTS:")]
+    [SerializeField] private Image icon;
+    [SerializeField] private Image overlay;
+    [SerializeField] private TextMeshProUGUI timer;
+
+    private CardSO cardSO;
+    private float activeTimer;
+    private float cooldownTimer;
+    private bool isActive;
+    private bool isCoolingDown;
+
+    public void Configure(CardSO _cardSO)
     {
-        [Header("UI ELEMENTS:")]
-        [SerializeField] private Image icon;  
-        [SerializeField] private Image overlay;   
-        [SerializeField] private TextMeshProUGUI timer; 
+        cardSO = _cardSO;
 
-        private CardSO cardSO;
+        activeTimer = 0;
+        cooldownTimer = 0;
+        isActive = false;
+        isCoolingDown = false;
 
-        public void Configure(CardSO _cardSO)
+        if (icon != null)
+            icon.sprite = cardSO.Icon;
+
+        Debug.Log($"Card {cardSO.CardName} configured. Ready to use.");
+        UpdateCardUI();
+    }
+
+    private void Update()
+    {
+        if (cardSO == null)
+            return;
+
+        if (isActive)
         {
-            cardSO = _cardSO;
+            activeTimer -= Time.deltaTime;
+            overlay.fillClockwise = true;
 
-            if (icon != null)
-                icon.sprite = cardSO.Icon;
+            if (activeTimer <= 0)
+            {
+                activeTimer = 0;
+                isActive = false;
+                CardEffect.Instance.DisableEffect(cardSO.EffectType);
 
-            UpdateCardUI();
+                // Start cooldown
+                cooldownTimer = cardSO.CooldownTime;
+                isCoolingDown = true;
+                Debug.Log($"Card {cardSO.CardName} effect ended. Cooldown started.");
+            }
+        }
+        else if (isCoolingDown)
+        {
+            cooldownTimer -= Time.deltaTime;
+            overlay.fillClockwise = false;
+
+            if (cooldownTimer <= 0)
+            {
+                cooldownTimer = 0;
+                isCoolingDown = false;
+                Debug.Log($"Card {cardSO.CardName} cooldown ended. Ready to use.");
+            }
         }
 
-        private void Update()
-        {
-            if (cardSO == null)
-                return;
+        UpdateCardUI();
+    }
 
-            UpdateCardUI();
+    public void OnCardButtonPressed()
+    {
+      Debug.Log($"Button for card {cardSO?.CardName} pressed."); // Add this line
+
+        if (!isActive && !isCoolingDown)
+        {
+            activeTimer = cardSO.ActiveTime;
+            isActive = true;
+            CardEffect.Instance.ActivateEffect(cardSO.EffectType, cardSO.ActiveTime);
+            Debug.Log($"Card {cardSO.CardName} activated for {cardSO.ActiveTime} seconds.");
         }
-
-        private void UpdateCardUI()
+        else
         {
-            if (cardSO.IsActive())
-            {
-           
-                overlay.fillAmount = cardSO.GetActiveTimeRemaining() / cardSO.ActiveTime;
-                timer.text = $"{Mathf.CeilToInt(cardSO.GetActiveTimeRemaining())}s";
-            }
-            else if (cardSO.IsCoolingDown())
-            {
-                
-                overlay.fillAmount = 1 - (cardSO.GetCooldownRemaining() / cardSO.CooldownTime);
-                timer.text = $"{Mathf.CeilToInt(cardSO.GetCooldownRemaining())}s";
-            }
-            else
-            {
-                
-                overlay.fillAmount = 0;
-                timer.text = "Ready";
-            }
+            Debug.Log($"Card {cardSO.CardName} is not ready to use. Active: {isActive}, Cooling down: {isCoolingDown}");
         }
     }
+
+    private void UpdateCardUI()
+    {
+        if (isActive)
+        {
+            overlay.fillAmount = activeTimer / cardSO.ActiveTime;
+            timer.text = $"{Mathf.CeilToInt(activeTimer)}s";
+        }
+        else if (isCoolingDown)
+        {
+            overlay.fillAmount = 1 - (cooldownTimer / cardSO.CooldownTime);
+            timer.text = $"{Mathf.CeilToInt(cooldownTimer)}s";
+        }
+        else
+        {
+            overlay.fillAmount = 0;
+            timer.text = "Ready";
+        }
+    }
+}
 

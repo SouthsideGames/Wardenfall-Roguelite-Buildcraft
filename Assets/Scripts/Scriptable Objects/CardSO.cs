@@ -8,18 +8,16 @@ using UnityEngine;
         public string ID => iD; 
         [SerializeField] private string cardName;  
         public string CardName => cardName;
-        [SerializeField] private string effectName;
-        public string EffectName => effectName;
         [SerializeField] private string description;   
         public string Description => description;      
         [SerializeField] private Sprite icon;    
         public Sprite Icon => icon;            
         [SerializeField] private int cost;
         public int Cost => cost;                
-        [SerializeField] private CardEffectType effectType; 
-        public CardEffectType EffectType => effectType; 
-        [SerializeField] private float effectValue;     
-        public float EffectValue => effectValue;   
+        [SerializeField] private CardType cardType; 
+        public CardType CardType => cardType; 
+        [SerializeField] private CardEffectType effectType;
+        public CardEffectType EffectType => effectType;
         [SerializeField] private Sprite effectIcon;     
         public Sprite EffectIcon => effectIcon;  
         [SerializeField] private CardRarityType rarity;     
@@ -34,93 +32,58 @@ using UnityEngine;
         public float CooldownTime => cooldownTime;
         private float activeEndTime;  
         private float cooldownEndTime; 
+        private bool isActive => Time.time < activeEndTime;
+        private bool isCoolingDown => Time.time < cooldownEndTime;
+
 
         [Header("EXTRA:")]
         [SerializeField] private GameObject SpawnPrefab;    
         [SerializeField] private AudioClip ActivationSound;  
 
+        public bool CanActivate() => !isActive && !isCoolingDown;
 
-        public void Activate(GameObject target)
+        public void ActivateEffect()
         {
-            if (IsCoolingDown())
-            {
-                Debug.LogWarning($"Card {CardName} is cooling down. Cooldown ends in {GetCooldownRemaining()} seconds.");
+            if (!CanActivate())
                 return;
-            }
 
-            Debug.Log($"Activating {CardName} on {target.name}");
             activeEndTime = Time.time + activeTime;
-            cooldownEndTime = activeEndTime + cooldownTime;
+            cooldownEndTime = Time.time + activeTime + cooldownTime;
 
-            switch (EffectType)
-            {
-                case CardEffectType.Damage:
-                    ApplyDamage(target, EffectValue);
-                    break;
-                case CardEffectType.Utility:
-                    ApplyBuff(target, EffectValue);
-                    break;
-                case CardEffectType.Support:
-                    SupportTarget(target, EffectValue);
-                    break;
-                case CardEffectType.Summon:
-                    SummonPrefab(target);
-                    break;
-                default:
-                    Debug.LogWarning("Unknown card effect type.");
-                    break;
-            }
-
-            if (ActivationSound)
-                AudioManager.Instance.PlaySFX(ActivationSound);
+            ExecuteEffect();
         }
 
-        public bool IsActive() => Time.time < activeEndTime;
-        public bool IsCoolingDown() => Time.time < cooldownEndTime && Time.time >= activeEndTime;
+        private void ExecuteEffect()
+        {
+            // Implement the specific effect logic based on the card type
+            switch (cardType)
+            {
+                case CardType.Damage:
+                    // Apply damage logic
+                    Debug.Log($"{cardName} activated! Dealing damage.");
+                    break;
+                case CardType.Utility:
+                    // Apply utility effect
+                    Debug.Log($"{cardName} activated! Utility effect applied.");
+                    break;
+                case CardType.Support:
+                    // Apply support effect
+                    Debug.Log($"{cardName} activated! Support effect applied.");
+                    break;
+                case CardType.Summon:
+                    // Summon objects
+                    Debug.Log($"{cardName} activated! Summoning objects.");
+                    break;
+            }
+        }
+
         public float GetActiveTimeRemaining() => Mathf.Max(0, activeEndTime - Time.time);
+
         public float GetCooldownRemaining() => Mathf.Max(0, cooldownEndTime - Time.time);
 
-        private void ApplyDamage(GameObject target, float damage)
-        {
-            Debug.Log($"Dealing {damage} damage to {target.name}");
-            // Implement damage logic here
-        }
+        public bool IsActive() => isActive;
 
-        private void ApplyBuff(GameObject target, float buffValue)
-        {
-            Debug.Log($"Applying buff of {buffValue} to {target.name}");
-            // Implement buff logic here
-        }
-
-        private void SupportTarget(GameObject target, float healAmount)
-        {
-            Debug.Log($"Healing {target.name} for {healAmount}");
-            // Implement heal logic here
-        }
-
-        private void SummonPrefab(GameObject target)
-        {
-            if (SpawnPrefab)
-            {
-                // Instantiate the prefab at the target's position or near the player
-                Vector3 spawnPosition = CharacterManager.Instance.transform.position; // Default to player's position
-                GameObject summonedObject = Instantiate(SpawnPrefab, spawnPosition, Quaternion.identity);
-
-                // Optional: Add logic to initialize the prefab (e.g., set duration, link to the player)
-                ISummonable summonable = summonedObject.GetComponent<ISummonable>();
-                if (summonable != null)
-                {
-                    summonable.Initialize(activeTime); // Pass active time for summoning duration
-                }
-
-                Debug.Log($"Summoned {SpawnPrefab.name} at {spawnPosition}");
-            }
-            else
-            {
-                Debug.LogWarning($"Card {CardName} has no prefab assigned to summon.");
-            }
-        }
-
+        public bool IsCoolingDown() => isCoolingDown;
         public void Collected()
         {
             isCollected = true;

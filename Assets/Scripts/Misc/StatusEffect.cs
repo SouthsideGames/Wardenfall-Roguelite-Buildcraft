@@ -5,8 +5,8 @@ public class StatusEffect
 
     public StatusEffectType EffectType;
     public float Duration;
-    public float Value; // For slow percentage or drain damage
-    public float Interval; // Used for drain effects
+    public float Value;
+    public float Interval;
 
     public StatusEffect(StatusEffectType type, float duration, float value = 0, float interval = 0)
     {

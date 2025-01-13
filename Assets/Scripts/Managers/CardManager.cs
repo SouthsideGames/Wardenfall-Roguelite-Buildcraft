@@ -6,10 +6,6 @@ using UnityEngine.UI;
 using SouthsideGames.SaveManager;
 using System;
 
-namespace SouthsideGames.CardSystem
-{
-    
-}
 public class CardManager : MonoBehaviour, IWantToBeSaved
 {
     public static CardManager Instance;
@@ -17,6 +13,8 @@ public class CardManager : MonoBehaviour, IWantToBeSaved
     [Header("ELEMENTS:")]
     [SerializeField] private Transform deckListContainer;
     [SerializeField] private GameObject cardDetailContainer;
+    [SerializeField] private Transform cardContainerParent;
+    [SerializeField] private GameObject inGameCardPrefab;
     public CardDetailUI cardDetailUI { get; private set; }
 
     [Header("CHARACTER ELEMENTS:")]
@@ -73,12 +71,11 @@ public class CardManager : MonoBehaviour, IWantToBeSaved
         Load();
 
         UpdateActiveDeckFromSavedIDs();
+        SpawnInGameCards();
         UpdateDeckLimitUI();
         FilterCards(CardEffectType.None);
         UpdateTotalCardsUI(CardEffectType.None);
     }
-
-    private void OnDisable() => Save();
 
     public void Save()
     {
@@ -277,6 +274,18 @@ public class CardManager : MonoBehaviour, IWantToBeSaved
         cardDetailContainer.SetActive(true);
         if (cardDetailUI != null)
             cardDetailUI.ShowDetail(card);
+    }
+
+    public void SpawnInGameCards()
+    {
+        cardContainerParent.Clear();
+
+        foreach (CardSO card in activeDeck)
+        {
+            GameObject inGameCard = Instantiate(inGameCardPrefab, cardContainerParent);
+            InGameCardUI cardUI = inGameCard.GetComponent<InGameCardUI>();
+            cardUI.Configure(card);
+        }
     }
 
     public void CloseCardDetails() => cardDetailContainer.SetActive(false);

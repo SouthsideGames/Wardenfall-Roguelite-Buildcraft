@@ -11,7 +11,6 @@ public class CardDetailUI : MonoBehaviour
     [SerializeField] private Image backgroundImage;
     [SerializeField] private Image effectAreaImage;
     [SerializeField] private TextMeshProUGUI cardNameText;
-    [SerializeField] private TextMeshProUGUI cardEffectName;
     [SerializeField] private TextMeshProUGUI cardEffectDescriptionText;
     [SerializeField] private TextMeshProUGUI cardRarityText;
     [SerializeField] private Image cardEffectIcon;
@@ -32,7 +31,6 @@ public class CardDetailUI : MonoBehaviour
 
         if (cardIcon != null) cardIcon.sprite = card.Icon;
         if (cardNameText != null) cardNameText.text = card.CardName;
-        if (cardEffectName != null) cardEffectName.text = card.EffectName;
         if (cardEffectDescriptionText != null) cardEffectDescriptionText.text = card.Description;
         if (cardRarityText != null) cardRarityText.text = card.Rarity.ToString();
         if (cardEffectIcon != null) cardEffectIcon.sprite = card.EffectIcon;

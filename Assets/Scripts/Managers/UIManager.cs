@@ -26,6 +26,9 @@ public class UIManager : MonoBehaviour, IGameStateListener
     [SerializeField] private GameObject missionPanel;
     [SerializeField] private GameObject deckbuilderPanel;
 
+    [Header("REFERENCES")]
+    [SerializeField] private CardManager cardManager;
+
     [Header("COUNTER TEXT:")]
     [SerializeField] private TextMeshProUGUI killCounterText;
 
@@ -227,6 +230,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
     public void HideDeckbuilderPanel()
     {
         deckbuilderPanel.SetActive(false);
+        cardManager.SpawnInGameCards();
         menuPanel.SetActive(true);
         TriggerPanelAction(menuPanel);
     }

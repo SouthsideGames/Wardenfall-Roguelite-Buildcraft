@@ -88,7 +88,7 @@ public enum RewardType
     Special_02 = 201
 }
 
-public enum CardEffectType
+public enum CardType
 {
     None,
     Damage,
@@ -144,6 +144,12 @@ public enum StatusEffectType
     Fear,
     ArmorBreak,
     Silence
+}
+
+public enum CardEffectType
+{
+    None,
+    Utility_EternalPause
 }
 
 public static class Enums
