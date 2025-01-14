@@ -4,10 +4,11 @@ using UnityEngine.UI;
 
 public class InGameCardUI : MonoBehaviour
 {
-     [Header("UI ELEMENTS:")]
+    [Header("UI ELEMENTS:")]
     [SerializeField] private Image icon;
     [SerializeField] private Image overlay;
-    [SerializeField] private TMPro.TextMeshProUGUI timer;
+    [SerializeField] private TextMeshProUGUI timer;
+
     private CardSO cardSO;
     private float activeTimer;
     private float cooldownTimer;
@@ -19,7 +20,14 @@ public class InGameCardUI : MonoBehaviour
         if (icon != null)
             icon.sprite = cardSO.Icon;
 
+        ResetTimers();
         UpdateCardUI();
+    }
+
+    private void ResetTimers()
+    {
+        activeTimer = 0;
+        cooldownTimer = 0;
     }
 
     private void Update()
