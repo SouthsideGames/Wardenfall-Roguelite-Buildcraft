@@ -65,9 +65,6 @@ public class EnemyStatus : MonoBehaviour
             case StatusEffectType.Fear:
                 ApplyFear(effect.Duration);
                 break;
-            case StatusEffectType.ArmorBreak:
-                ApplyArmorBreak(effect.Duration, effect.Value);
-                break;
             case StatusEffectType.Silence:
                 ApplySilence(effect.Duration);
                 break;
@@ -207,12 +204,6 @@ public class EnemyStatus : MonoBehaviour
         StartCoroutine(EffectDuration(() => { }, movement.ResetMovement, duration));
     }
 
-    // Reduces enemy defenses, making them more vulnerable to all attacks.
-    private void ApplyArmorBreak(float duration, float armorReduction)
-    {
-        enemy.ModifyArmor(-armorReduction);
-        StartCoroutine(EffectDuration(() => { }, () => enemy.ModifyArmor(armorReduction), duration));
-    }
 
     // Prevents enemies from using special abilities or skills temporarily.
     private void ApplySilence(float duration)

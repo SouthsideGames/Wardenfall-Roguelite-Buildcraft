@@ -1,5 +1,8 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 
 public class CardEffect : MonoBehaviour
 {
@@ -25,14 +28,18 @@ public class CardEffect : MonoBehaviour
 
         activeEffects[effectType] = duration;
 
+        // Perform the effect based on the enum
         switch (effectType)
         {
             case CardEffectType.Utility_EternalPause:
                 StopAllMovement(duration);
                 break;
+            case CardEffectType.Damage_FireballBarrage:
+                StartCoroutine(SpawnFireballs(duration));
+                break;
             default:
                 break;
-
+            // Add other cases for different card effects
         }
 
         Debug.Log($"{effectType} activated for {duration} seconds.");
@@ -74,9 +81,9 @@ public class CardEffect : MonoBehaviour
             DisableEffect(effectType);
     }
 
-    private void StopAllMovement(float duration)
+   private void StopAllMovement(float duration)
     {
-        foreach (Enemy enemy in Object.FindObjectsByType<Enemy>(FindObjectsSortMode.None))
+        foreach (Enemy enemy in FindObjectsByType<Enemy>(FindObjectsSortMode.None))
         {
             enemy.GetComponent<EnemyMovement>()?.DisableMovement(duration);
         }
@@ -84,9 +91,35 @@ public class CardEffect : MonoBehaviour
 
     private void ResumeAllMovement()
     {
-        foreach (Enemy enemy in Object.FindObjectsByType<Enemy>(FindObjectsSortMode.None))
+        foreach (Enemy enemy in FindObjectsByType<Enemy>(FindObjectsSortMode.None))
         {
             enemy.GetComponent<EnemyMovement>()?.EnableMovement();
         }
     }
+
+    private IEnumerator SpawnFireballs(float duration)
+    {
+        float interval = 0.5f; // Spawn fireballs every 0.5 seconds
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            SpawnFireball();
+            elapsedTime += interval;
+            yield return new WaitForSeconds(interval);
+        }
+    }
+
+    private void SpawnFireball()
+    {
+        GameObject fireball = Instantiate(Resources.Load<GameObject>("Prefabs/Fireball"));
+        fireball.transform.position = GetRandomSpawnPosition();
+    }
+
+    private Vector3 GetRandomSpawnPosition()
+    {
+        Vector3 randomOffset = new Vector3(UnityEngine.Random.Range(-5f, 5f), UnityEngine.Random.Range(-5f, 5f), 0);
+        return CharacterManager.Instance.transform.position + randomOffset;
+    }
 }
+

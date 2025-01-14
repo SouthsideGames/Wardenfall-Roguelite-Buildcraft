@@ -36,7 +36,7 @@ public class CollectableObject : Item
 
     protected override void Collected()
     {
-        CharacterObjects characterObjects = FindObjectOfType<CharacterObjects>();
+        CharacterObjects characterObjects = FindFirstObjectByType<CharacterObjects>();
 
         if (characterObjects == null)
         {

@@ -10,19 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0577d1c0d397e3c4e9f9619330fa23ad, type: 3}
-  m_Name: Fireball
+  m_Name: S-015
   m_EditorClassIdentifier: 
-  iD: Love
-  cardName: Fireball
-  description: 
-  icon: {fileID: 21300000, guid: 6b998a3f3acb24c5094619f59febb0f4, type: 3}
-  cost: 1
+  iD: S-015
+  cardName: Eternal Pause
+  description: Stops all spawned enemies movement for 10 seconds.
+  icon: {fileID: 0}
+  cost: 4
+  cardType: 2
   effectType: 1
-  effectValue: 50
-  effectIcon: {fileID: 0}
-  rarity: 0
+  effectIcon: {fileID: 21300000, guid: a788b899f7cb84d1f981804d813e6dcf, type: 3}
+  rarity: 2
   isCollected: 1
-  activeTime: 5
-  cooldownTime: 10
-  SpawnPrefab: {fileID: 0}
-  ActivationSound: {fileID: 0}
+  activeTime: 10
+  cooldownTime: 60

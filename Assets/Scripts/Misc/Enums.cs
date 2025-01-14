@@ -94,7 +94,7 @@ public enum CardType
     Damage,
     Utility,
     Support,
-    Summon
+    Special
 }
 
 public enum CardRarityType
@@ -117,6 +117,13 @@ public enum MiniCardRarityType
     Legendary,
     Mythic,
     Exalted
+}
+
+public enum CardEffectType
+{
+    None,
+    Utility_EternalPause,
+    Damage_FireballBarrage
 }
 
 public enum CharacterCardRarityType
@@ -146,11 +153,6 @@ public enum StatusEffectType
     Silence
 }
 
-public enum CardEffectType
-{
-    None,
-    Utility_EternalPause
-}
 
 public static class Enums
 {

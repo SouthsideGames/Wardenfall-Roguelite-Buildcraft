@@ -38,7 +38,7 @@ public class CollectableWeapon : Item
 
     protected override void Collected()
     {
-        CharacterWeapon characterWeapon = FindObjectOfType<CharacterWeapon>();
+        CharacterWeapon characterWeapon = FindFirstObjectByType<CharacterWeapon>();
 
         if (characterWeapon == null)
         {

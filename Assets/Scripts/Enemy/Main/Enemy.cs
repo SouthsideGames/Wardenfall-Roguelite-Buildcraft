@@ -45,7 +45,6 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] private bool canPerformCriticalHit;
     private float accuracyModifier = 1f;
     private float damageModifier = 1f;
-    private float armorModifier = 1f;
 
     [Header("EFFECTS:")]
     [SerializeField] protected ParticleSystem deathParticles;
@@ -108,19 +107,29 @@ public abstract class Enemy : MonoBehaviour
         isCriticalHit = false;
         attackTimer = 0;
 
-        int finalDamage = Mathf.CeilToInt(damage * damageModifier);
-        if (canPerformCriticalHit)
+        if(canPerformCriticalHit)
         {
             float enemyCriticalHitPercent = UnityEngine.Random.Range(0, 5) / 100;
 
             if (enemyCriticalHitPercent >= CharacterStats.Instance.GetStatValue(Stat.CritResist))
             {
                 isCriticalHit = true;
-                finalDamage *= 2;
+
+                if (isCriticalHit)
+                {
+                    character.TakeDamage(damage * 2);
+                }
+           
+            }
+            else
+            {
+                character.TakeDamage(damage);
             }
         }
-        
-        character.TakeDamage(damage);
+        else
+        {
+            character.TakeDamage(damage);
+        }
     }
 
     public virtual void TakeDamage(int _damage, bool _isCriticalHit)
@@ -235,12 +244,6 @@ public abstract class Enemy : MonoBehaviour
         Debug.Log($"Enemy damage modified to {damageModifier * 100}%.");
     }
 
-    public void ModifyArmor(float modifier)
-    {
-        armorModifier = modifier;
-        Debug.Log($"Enemy armor modified to {armorModifier * 100}%.");
-    }
-
     public void DisableAttacks()
     {
         attacksEnabled = false;
@@ -269,7 +272,7 @@ public abstract class Enemy : MonoBehaviour
     {
        playerTransform = null;
 
-        Enemy[] allEnemies = FindObjectsOfType<Enemy>();
+        Enemy[] allEnemies = FindObjectsByType<Enemy>(FindObjectsSortMode.None);
         List<Enemy> validTargets = new List<Enemy>();
         foreach (var enemy in allEnemies)
         {
