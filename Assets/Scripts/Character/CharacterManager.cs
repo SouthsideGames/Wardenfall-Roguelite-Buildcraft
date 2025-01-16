@@ -56,5 +56,18 @@ public class CharacterManager : MonoBehaviour
         StatisticsManager.Instance.RecordCharacterUsage(_characterData.ID);
         _sr.sprite = _characterData.Icon;
     } 
+
+    public Vector2 GetAimDirection()
+    {
+        Vector2 aimDirection = controller.MoveDirection;
+
+        if (aimDirection == Vector2.zero)
+        {
+            Debug.LogWarning("Character is not moving. Defaulting aim direction to Vector2.right.");
+            aimDirection = Vector2.right; // Default to right if stationary
+        }
+
+        return aimDirection.normalized;
+    }
         
 }

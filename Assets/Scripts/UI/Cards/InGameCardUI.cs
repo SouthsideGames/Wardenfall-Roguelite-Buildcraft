@@ -9,6 +9,16 @@ public class InGameCardUI : MonoBehaviour
     [SerializeField] private Image overlay;
     [SerializeField] private TextMeshProUGUI timer;
 
+    [Header("BACKGROUND ELEMENTS:")]
+    [SerializeField] private Image background;
+    [SerializeField] private Sprite commonBackgroundImage;
+    [SerializeField] private Sprite uncommonBackgroundImage;
+    [SerializeField] private Sprite rareBackgroundImage;
+    [SerializeField] private Sprite epicBackgroundImage;
+    [SerializeField] private Sprite legendaryBackgroundImage;
+    [SerializeField] private Sprite mythicBackgroundImage;
+    [SerializeField] private Sprite exaltedBackgroundImage;
+
     private CardSO cardSO;
     private float activeTimer;
     private float cooldownTimer;
@@ -16,6 +26,9 @@ public class InGameCardUI : MonoBehaviour
     public void Configure(CardSO _cardSO)
     {
         cardSO = _cardSO;
+
+        if(_cardSO.Rarity == CardRarityType.Common)
+           background.sprite = commonBackgroundImage;
 
         if (icon != null)
             icon.sprite = cardSO.Icon;
@@ -56,8 +69,8 @@ public class InGameCardUI : MonoBehaviour
     {
         if (activeTimer <= 0 && cooldownTimer <= 0)
         {
+            CardEffect.Instance.ActivateEffect(cardSO);
             activeTimer = cardSO.ActiveTime;
-            CardEffect.Instance.ActivateEffect(cardSO.EffectType, cardSO.ActiveTime);
         }
     }
 

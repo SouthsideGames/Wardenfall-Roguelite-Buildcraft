@@ -24,6 +24,8 @@ using UnityEngine;
         public CardRarityType Rarity => rarity;    
         [SerializeField] private bool isCollected;   
         public bool IsCollected => isCollected; 
+        [SerializeField] private int effectValue;
+        public int EffectValue => effectValue;  
 
         [Header("TIMERS")]
         [SerializeField] private float activeTime = 5f;

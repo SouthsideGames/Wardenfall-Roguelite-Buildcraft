@@ -6,7 +6,8 @@ using UnityEngine;
 
 public class CardEffect : MonoBehaviour
 {
-   public static CardEffect Instance;
+    public static CardEffect Instance;
+
     private Dictionary<CardEffectType, ICardEffect> activeEffects = new Dictionary<CardEffectType, ICardEffect>();
 
     private void Awake()
@@ -17,20 +18,20 @@ public class CardEffect : MonoBehaviour
             Destroy(gameObject);
     }
 
-    public void ActivateEffect(CardEffectType effectType, float duration)
+    public void ActivateEffect(CardSO cardSO)
     {
-        if (activeEffects.ContainsKey(effectType))
+        if (activeEffects.ContainsKey(cardSO.EffectType))
         {
-            Debug.LogWarning($"{effectType} is already active!");
+            Debug.LogWarning($"{cardSO.EffectType} is already active!");
             return;
         }
 
-        ICardEffect effect = CardEffectFactory.GetEffect(effectType);
+        ICardEffect effect = CardEffectFactory.GetEffect(cardSO.EffectType, cardSO);
         if (effect != null)
         {
-            activeEffects[effectType] = effect;
-            effect.Activate(duration);
-            Debug.Log($"{effectType} activated for {duration} seconds.");
+            activeEffects[cardSO.EffectType] = effect;
+            effect.Activate(cardSO.ActiveTime);
+            Debug.Log($"{cardSO.EffectType} activated for {cardSO.ActiveTime} seconds.");
         }
     }
 

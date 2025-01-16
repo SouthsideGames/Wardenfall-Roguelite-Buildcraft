@@ -123,7 +123,12 @@ public enum CardEffectType
 {
     None,
     Utility_EternalPause,
-    Damage_FireballBarrage
+    Damage_FireballBarrage,
+    Damage_EnergyBlast,
+    Damage_ThunderStrike,
+    Damage_ArcLightning,
+    Damage_BladeStorm,
+    Damage_PoisonCloud
 }
 
 public enum CharacterCardRarityType
