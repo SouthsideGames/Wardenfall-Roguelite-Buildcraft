@@ -20,10 +20,11 @@ public static class CardEffectFactory
             case CardEffectType.Damage_BladeStorm:
                 return new BladeStormEffect(Resources.Load<GameObject>("Prefabs/Blade"), 4, 5f);
            case CardEffectType.Damage_PoisonCloud:
-                return new PoisonCloudEffect(
-                    Resources.Load<GameObject>("Prefabs/Effects/Poison Cloud"),
-                    cardSO
-                );
+                return new PoisonCloudEffect(Resources.Load<GameObject>("Prefabs/Effects/Poison Cloud"), cardSO);
+            case CardEffectType.Damage_PlasmaBeam:
+                return new PlasmaBeamEffect(Resources.Load<GameObject>("Prefabs/PlasmaBeam"), cardSO);
+            case CardEffectType.Damage_DeathRay:
+                return new DeathRayEffect(Resources.Load<GameObject>("Prefabs/DeathRay"), cardSO);
             default:
                 Debug.LogWarning($"No effect defined for {effectType}.");
                 return null;

@@ -128,7 +128,9 @@ public enum CardEffectType
     Damage_ThunderStrike,
     Damage_ArcLightning,
     Damage_BladeStorm,
-    Damage_PoisonCloud
+    Damage_PoisonCloud,
+    Damage_PlasmaBeam,
+    Damage_DeathRay
 }
 
 public enum CharacterCardRarityType
