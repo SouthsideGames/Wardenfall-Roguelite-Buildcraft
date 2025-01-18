@@ -231,6 +231,8 @@ public abstract class Enemy : MonoBehaviour
         }
     }
 
+
+
 #region STATUS EFFECT FUNCTIONS
     public void ModifyAccuracy(float modifier)
     {

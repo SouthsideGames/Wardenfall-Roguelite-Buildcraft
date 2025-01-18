@@ -130,7 +130,9 @@ public enum CardEffectType
     Damage_BladeStorm,
     Damage_PoisonCloud,
     Damage_PlasmaBeam,
-    Damage_DeathRay
+    Damage_DeathRay,
+    Utility_TemporalReset,
+    Support_BetrayersCharm
 }
 
 public enum CharacterCardRarityType

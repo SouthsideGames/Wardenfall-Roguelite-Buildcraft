@@ -13,7 +13,7 @@ public class ArcLightningEffect : ICardEffect
 
     public void Activate(float duration)
     {
-       Enemy[] enemies = (Enemy[])Object.FindObjectsOfType(typeof(Enemy));
+        Enemy[] enemies = Object.FindObjectsByType<Enemy>(FindObjectsSortMode.None);
         if (enemies.Length == 0)
         {
             Debug.LogWarning("No enemies available for Arc Lightning.");

@@ -25,6 +25,8 @@ public static class CardEffectFactory
                 return new PlasmaBeamEffect(Resources.Load<GameObject>("Prefabs/PlasmaBeam"), cardSO);
             case CardEffectType.Damage_DeathRay:
                 return new DeathRayEffect(Resources.Load<GameObject>("Prefabs/DeathRay"), cardSO);
+            case CardEffectType.Utility_TemporalReset:
+                return new TemporalResetEffect();
             default:
                 Debug.LogWarning($"No effect defined for {effectType}.");
                 return null;

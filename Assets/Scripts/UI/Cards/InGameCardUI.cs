@@ -65,12 +65,22 @@ public class InGameCardUI : MonoBehaviour
         UpdateCardUI();
     }
 
-    public void OnCardButtonPressed()
+   public void OnCardButtonPressed()
     {
         if (activeTimer <= 0 && cooldownTimer <= 0)
         {
-            CardEffect.Instance.ActivateEffect(cardSO);
-            activeTimer = cardSO.ActiveTime;
+            if (cardSO.ActiveTime > 0)
+            {
+                // Start the active timer for cards with active time
+                activeTimer = cardSO.ActiveTime;
+                CardEffect.Instance.ActivateEffect(cardSO.EffectType, cardSO.ActiveTime, cardSO);
+            }
+            else
+            {
+                // One-shot card: directly activate and start cooldown
+                CardEffect.Instance.ActivateEffect(cardSO.EffectType, 0, cardSO); // Pass 0 since it's a one-shot
+                cooldownTimer = cardSO.CooldownTime;
+            }
         }
     }
 
@@ -86,11 +96,31 @@ public class InGameCardUI : MonoBehaviour
             overlay.fillAmount = 1 - (cooldownTimer / cardSO.CooldownTime);
             timer.text = $"{Mathf.CeilToInt(cooldownTimer)}s";
         }
+        else if (CardEffect.Instance.IsEffectActive(cardSO.EffectType))
+        {
+            overlay.fillAmount = 0;
+            timer.text = "Active";
+        }
         else
         {
             overlay.fillAmount = 0;
             timer.text = "Ready";
         }
     }
+
+    public bool IsCurrentCard()
+    {
+        return CardEffect.Instance.IsEffectActive(cardSO.EffectType);
+    }
+
+    public void ResetCooldown()
+    {
+        if (cooldownTimer > 0)
+        {
+            cooldownTimer = 0;
+            Debug.Log($"{cardSO.CardName} cooldown reset.");
+        }
+    }
+
 }
 

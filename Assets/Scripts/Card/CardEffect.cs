@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public class CardEffect : MonoBehaviour
 {
     public static CardEffect Instance;
@@ -18,21 +17,29 @@ public class CardEffect : MonoBehaviour
             Destroy(gameObject);
     }
 
-    public void ActivateEffect(CardSO cardSO)
+   public void ActivateEffect(CardEffectType effectType, float duration, CardSO _cardSO)
     {
-        if (activeEffects.ContainsKey(cardSO.EffectType))
+        if (activeEffects.ContainsKey(effectType))
         {
-            Debug.LogWarning($"{cardSO.EffectType} is already active!");
+            Debug.LogWarning($"{effectType} is already active!");
             return;
         }
 
-        ICardEffect effect = CardEffectFactory.GetEffect(cardSO.EffectType, cardSO);
-        
+        ICardEffect effect = CardEffectFactory.GetEffect(effectType, _cardSO);
         if (effect != null)
         {
-            activeEffects[cardSO.EffectType] = effect;
-            effect.Activate(cardSO.ActiveTime);
-            Debug.Log($"{cardSO.EffectType} activated for {cardSO.ActiveTime} seconds.");
+            if (duration > 0)
+            {
+                activeEffects[effectType] = effect;
+                effect.Activate(duration);
+            }
+            else
+            {
+                // One-shot effect
+                effect.Activate(0); // Pass 0 to signify one-shot
+            }
+
+            Debug.Log($"{effectType} activated for {duration} seconds.");
         }
     }
 
@@ -44,6 +51,11 @@ public class CardEffect : MonoBehaviour
         activeEffects[effectType].Disable();
         activeEffects.Remove(effectType);
         Debug.Log($"{effectType} disabled.");
+    }
+
+    public bool IsEffectActive(CardEffectType effectType)
+    {
+        return activeEffects.ContainsKey(effectType);
     }
 }
 
