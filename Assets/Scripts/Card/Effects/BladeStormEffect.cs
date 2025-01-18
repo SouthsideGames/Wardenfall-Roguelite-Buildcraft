@@ -1,31 +1,37 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BladeStormEffect : ICardEffect
 {
     private GameObject bladePrefab;
-    private int bladeCount;
-    private float spawnRadius;
+    private CardSO cardSO;
+    private List<GameObject> spawnedBlades = new List<GameObject>();   
 
-    public BladeStormEffect(GameObject bladePrefab, int bladeCount, float spawnRadius)
+    public BladeStormEffect(GameObject bladePrefab, CardSO _card)
     {
         this.bladePrefab = bladePrefab;
-        this.bladeCount = bladeCount;
-        this.spawnRadius = spawnRadius;
+        cardSO = _card;    
     }
 
     public void Activate(float duration)
     {
-        for (int i = 0; i < bladeCount; i++)
-        {
-            Vector2 spawnPosition = (Vector2)CharacterManager.Instance.transform.position + Random.insideUnitCircle * spawnRadius;
-            GameObject blade = Object.Instantiate(bladePrefab, spawnPosition, Quaternion.identity);
-        }
+        Vector2 spawnPosition = (Vector2)CharacterManager.Instance.transform.position + Random.insideUnitCircle * 4;
+        GameObject blade = Object.Instantiate(bladePrefab, spawnPosition, Quaternion.identity);
+        blade.GetComponent<Blade>().Configure(cardSO);
 
-        Debug.Log($"Blade Storm activated: {bladeCount} blades spawned.");
+         spawnedBlades.Add(blade);
     }
 
     public void Disable()
     {
-        Debug.Log("Blade Storm does not require a disable phase.");
+        foreach (var blade in spawnedBlades)
+        {
+            if (blade != null)
+            {
+                Object.Destroy(blade);
+            }
+        }
+
+        spawnedBlades.Clear();
     }
 }

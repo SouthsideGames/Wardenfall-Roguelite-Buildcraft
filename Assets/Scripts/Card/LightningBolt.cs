@@ -9,23 +9,21 @@ public class LightningBolt : MonoBehaviour
     [Tooltip("The delay between lightning jumps.")]
     [SerializeField] private float jumpDelay = 0.1f;
 
-    [Tooltip("The damage dealt by the lightning.")]
-    [SerializeField] private int damage = 100;
-
     [Tooltip("The layer mask for detecting enemies.")]
     [SerializeField] private LayerMask enemyMask;
 
     private LineRenderer lineRenderer;
-    private int damageMultiplier;
+    private int damage;
+
 
     private void Awake()
     {
         lineRenderer = GetComponent<LineRenderer>();
     }
 
-    public void Activate(Vector2 startPosition, int damageMultiplier)
+    public void Activate(Vector2 startPosition, CardSO _card)
     {
-        this.damageMultiplier = damageMultiplier;
+        damage = _card.EffectValue;
         StartCoroutine(ChainLightning(startPosition));
     }
 
@@ -50,7 +48,7 @@ public class LightningBolt : MonoBehaviour
             lineRenderer.SetPosition(lineRenderer.positionCount - 2, currentPosition);
             lineRenderer.SetPosition(lineRenderer.positionCount - 1, targetPosition);
 
-            target.TakeDamage(damage * damageMultiplier / 100, false);
+            target.TakeDamage(damage, false);
 
             currentPosition = targetPosition;
 

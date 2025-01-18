@@ -27,6 +27,7 @@ public class CardEffect : MonoBehaviour
         }
 
         ICardEffect effect = CardEffectFactory.GetEffect(cardSO.EffectType, cardSO);
+        
         if (effect != null)
         {
             activeEffects[cardSO.EffectType] = effect;

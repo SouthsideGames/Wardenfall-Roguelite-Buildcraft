@@ -3,10 +3,12 @@ using UnityEngine;
 public class ArcLightningEffect : ICardEffect
 {
     private GameObject lightningBoltPrefab;
+    private CardSO cardSO;  
 
-    public ArcLightningEffect(GameObject lightningBoltPrefab)
+    public ArcLightningEffect(GameObject lightningBoltPrefab, CardSO _cardSO)
     {
         this.lightningBoltPrefab = lightningBoltPrefab;
+        this.cardSO = _cardSO;  
     }
 
     public void Activate(float duration)
@@ -22,7 +24,7 @@ public class ArcLightningEffect : ICardEffect
         Vector2 startPosition = startTarget.transform.position;
 
         GameObject lightningBolt = Object.Instantiate(lightningBoltPrefab, startPosition, Quaternion.identity);
-        lightningBolt.GetComponent<LightningBolt>().Activate(startPosition, 200);
+        lightningBolt.GetComponent<LightningBolt>().Activate(startPosition, cardSO);
         Debug.Log("Arc Lightning activated!");
     }
 

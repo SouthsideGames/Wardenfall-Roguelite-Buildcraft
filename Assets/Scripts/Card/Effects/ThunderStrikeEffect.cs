@@ -2,11 +2,14 @@ using UnityEngine;
 
 public class ThunderStrikeEffect : ICardEffect
 {
-     private GameObject thunderboltPrefab;
+    private GameObject thunderboltPrefab;
 
-    public ThunderStrikeEffect(GameObject thunderboltPrefab)
+    private CardSO cardSO;
+
+    public ThunderStrikeEffect(GameObject thunderboltPrefab, CardSO _cardSO)
     {
         this.thunderboltPrefab = thunderboltPrefab;
+        this.cardSO = _cardSO;  
     }
 
     public void Activate(float duration)
@@ -19,7 +22,7 @@ public class ThunderStrikeEffect : ICardEffect
         }
 
         GameObject thunderbolt = Object.Instantiate(thunderboltPrefab, targetPosition, Quaternion.identity);
-        thunderbolt.GetComponent<Thunderbolt>().Strike(targetPosition, 500);
+        thunderbolt.GetComponent<Thunderbolt>().Strike(targetPosition, cardSO);
         Debug.Log("Thunder Strike activated!");
     }
 

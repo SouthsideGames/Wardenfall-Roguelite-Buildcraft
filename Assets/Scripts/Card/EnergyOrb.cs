@@ -10,9 +10,10 @@ public class EnergyOrb : MonoBehaviour
 
     private Vector2 direction;
 
-    public void Launch(Vector2 launchDirection)
+    public void Launch(Vector2 launchDirection, CardSO _card)
     {
         direction = launchDirection.normalized;
+        damage = _card.EffectValue;
     }
 
     private void Update()

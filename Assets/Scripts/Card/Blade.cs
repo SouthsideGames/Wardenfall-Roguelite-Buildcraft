@@ -2,20 +2,25 @@ using UnityEngine;
 
 public class Blade : MonoBehaviour
 {
-     [Tooltip("Damage dealt by the blade.")]
-    [SerializeField] private int damage = 10;
-
-    [Tooltip("Lifetime of the blade in seconds.")]
-    [SerializeField] private float lifetime = 2f;
     private float rotationSpeed = 360f;
 
     [Tooltip("Detection layer for enemies.")]
     [SerializeField] private LayerMask enemyMask;
 
+    private int damage = 10;
     private Collider2D[] colliders;
+    private CardSO cardSO;
+
+    public void Configure(CardSO _card)
+    {
+        this.cardSO = _card;
+    }
+
 
     private void Start()
     {
+        damage = cardSO.EffectValue;
+
 
         colliders = GetComponentsInChildren<Collider2D>();
 
@@ -23,8 +28,6 @@ public class Blade : MonoBehaviour
         {
             Debug.LogWarning("No colliders found on Blade or its children.");
         }
-
-        Destroy(gameObject, lifetime);
     }
 
     private void Update()
@@ -52,5 +55,10 @@ public class Blade : MonoBehaviour
                 enemy.TakeDamage(damage, false);
             }
         }
+    }
+
+    public void Destroy()
+    {
+        Destroy(gameObject);
     }
 }

@@ -3,19 +3,16 @@ using UnityEngine;
 
 public class FireballBarrageEffect : ICardEffect
 {
-     private GameObject fireballPrefab;
-    private int fireballCount;
-    private float spawnRadius;
-    private int baseDamage;
-    private bool isCriticalHit;
+    private GameObject fireballPrefab;
+    private int fireballCount = 5;
+    private float spawnRadius = 10;
+    private int damage;
 
-    public FireballBarrageEffect(GameObject fireballPrefab, int fireballCount, float spawnRadius, int baseDamage, bool isCriticalHit = false)
+    public FireballBarrageEffect(GameObject fireballPrefab, CardSO _card)
     {
         this.fireballPrefab = fireballPrefab;
-        this.fireballCount = fireballCount;
-        this.spawnRadius = spawnRadius;
-        this.baseDamage = baseDamage;
-        this.isCriticalHit = isCriticalHit;
+
+        this.damage = _card.EffectValue;
     }
 
     public void Activate(float duration)
@@ -32,7 +29,7 @@ public class FireballBarrageEffect : ICardEffect
             GameObject fireball = Object.Instantiate(fireballPrefab, spawnPosition, Quaternion.identity);
             Vector2 direction = (targetPosition - spawnPosition).normalized;
 
-            fireball.GetComponent<Fireball>().Launch(baseDamage, direction, isCriticalHit);
+            fireball.GetComponent<Fireball>().Launch(damage, direction);
         }
 
         Debug.Log($"Fireball Barrage activated: {fireballCount} fireballs launched.");

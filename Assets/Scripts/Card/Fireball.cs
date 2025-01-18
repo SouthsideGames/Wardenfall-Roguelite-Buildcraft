@@ -7,11 +7,9 @@ public class Fireball : MonoBehaviour
     [SerializeField] private float lifetime = 3f;
     [SerializeField] private LayerMask enemyMask;
     [SerializeField] private GameObject explosionPrefab; // Optional explosion effect
-    [SerializeField] private int baseDamage = 10;
 
     private Rigidbody2D rb;
     private int damage;
-    private bool isCriticalHit;
     private Vector2 direction;
 
     private void Awake()
@@ -19,25 +17,18 @@ public class Fireball : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
 
-    /// <summary>
-    /// Launches the fireball in a specific direction with given damage and critical hit status.
-    /// </summary>
-    /// <param name="_damage">The damage the fireball will deal.</param>
-    /// <param name="_direction">The direction to launch the fireball.</param>
-    /// <param name="_isCriticalHit">Whether this is a critical hit.</param>
-    public void Launch(int _damage, Vector2 _direction, bool _isCriticalHit)
+    public void Launch(int _damage, Vector2 _direction)
     {
         damage = _damage;
         direction = _direction.normalized;
-        isCriticalHit = _isCriticalHit;
 
         rb.linearVelocity = direction * moveSpeed;
         Invoke(nameof(DestroyFireball), lifetime);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnParticleCollision(GameObject collision) 
     {
-        if (IsInLayerMask(collision.gameObject.layer, enemyMask))
+         if (IsInLayerMask(collision.gameObject.layer, enemyMask))
         {
             Enemy enemy = collision.GetComponent<Enemy>();
             if (enemy != null)
@@ -48,13 +39,9 @@ public class Fireball : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Applies damage to the target enemy.
-    /// </summary>
-    /// <param name="enemy">The enemy to apply damage to.</param>
     private void ApplyDamage(Enemy enemy)
     {
-        enemy.TakeDamage(damage, isCriticalHit);
+        enemy.TakeDamage(damage, false);
     }
 
     /// <summary>

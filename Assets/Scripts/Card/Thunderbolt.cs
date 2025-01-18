@@ -5,16 +5,13 @@ public class Thunderbolt : MonoBehaviour
     [Tooltip("The radius of the AoE damage.")]
     [SerializeField] private float explosionRadius = 3f;
 
-    [Tooltip("The amount of damage dealt.")]
-    [SerializeField] private int damage = 100;
-
     [Tooltip("The particle effect for impact.")]
     [SerializeField] private ParticleSystem impactEffect;
 
     [Tooltip("LayerMask for detecting enemies.")]
     [SerializeField] private LayerMask enemyMask;
 
-    public void Strike(Vector2 targetPosition, int damageMultiplier)
+    public void Strike(Vector2 targetPosition, CardSO _card)
     {
         transform.position = targetPosition;
 
@@ -25,7 +22,7 @@ public class Thunderbolt : MonoBehaviour
 
         foreach (var enemy in hitEnemies)
         {
-            enemy.GetComponent<Enemy>()?.TakeDamage(damage * damageMultiplier / 100, false);
+            enemy.GetComponent<Enemy>()?.TakeDamage(_card.EffectValue, false);
         }
 
         Destroy(gameObject, 0.5f);
