@@ -27,6 +27,8 @@ public static class CardEffectFactory
                 return new DeathRayEffect(Resources.Load<GameObject>("Prefabs/DeathRay"), cardSO);
             case CardEffectType.Utility_TemporalReset:
                 return new TemporalResetEffect();
+            case CardEffectType.Support_SecondLife:
+                return new SecondLifeEffect(Resources.Load<GameObject>("Prefabs/Effects/Explosion"), cardSO);
             default:
                 Debug.LogWarning($"No effect defined for {effectType}.");
                 return null;

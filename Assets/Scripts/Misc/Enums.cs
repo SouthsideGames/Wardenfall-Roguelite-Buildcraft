@@ -132,7 +132,7 @@ public enum CardEffectType
     Damage_PlasmaBeam,
     Damage_DeathRay,
     Utility_TemporalReset,
-    Support_BetrayersCharm
+    Support_SecondLife
 }
 
 public enum CharacterCardRarityType

@@ -22,16 +22,28 @@ using UnityEngine;
         public Sprite EffectIcon => effectIcon;  
         [SerializeField] private CardRarityType rarity;     
         public CardRarityType Rarity => rarity;    
+
+        [Header("SETTINGS")]
         [SerializeField] private bool isCollected;   
         public bool IsCollected => isCollected; 
-        [SerializeField] private int effectValue;
-        public int EffectValue => effectValue;  
+        [SerializeField] private bool isAutoActivated;
+        public bool IsAutoActivated => isAutoActivated;
+        [SerializeField] private bool isActive = true;
+        public bool IsActive => isActive;
 
         [Header("TIMERS")]
+        
+        [SerializeField] private int effectValue;
+        public int EffectValue => effectValue;  
         [SerializeField] private float activeTime = 5f;
         public float ActiveTime => activeTime;  
         [SerializeField] private float cooldownTime = 10f;
         public float CooldownTime => cooldownTime;
+
+        public void Deactivate()
+        {
+            isActive = false;
+        }
 
        
         public void Collected()

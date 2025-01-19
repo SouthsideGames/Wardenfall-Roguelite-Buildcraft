@@ -86,6 +86,14 @@ public class InGameCardUI : MonoBehaviour
 
     private void UpdateCardUI()
     {
+        if (!cardSO.IsActive)
+        {
+            overlay.fillAmount = 0;
+            timer.text = "Inactive";
+            gameObject.SetActive(false); // Disable the card UI
+            return;
+        }
+
         if (activeTimer > 0)
         {
             overlay.fillAmount = activeTimer / cardSO.ActiveTime;
@@ -96,15 +104,10 @@ public class InGameCardUI : MonoBehaviour
             overlay.fillAmount = 1 - (cooldownTimer / cardSO.CooldownTime);
             timer.text = $"{Mathf.CeilToInt(cooldownTimer)}s";
         }
-        else if (CardEffect.Instance.IsEffectActive(cardSO.EffectType))
-        {
-            overlay.fillAmount = 0;
-            timer.text = "Active";
-        }
         else
         {
             overlay.fillAmount = 0;
-            timer.text = "Ready";
+            timer.text = "";
         }
     }
 

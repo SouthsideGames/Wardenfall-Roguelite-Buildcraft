@@ -19,7 +19,7 @@ public class CharacterHealth : MonoBehaviour, IStats
     [SerializeField] private int baseMaxHealth;
 
     [Header("STATS:")]
-    private float maxHealth;
+    public float maxHealth {get; private set;}
     private float health;
     private float armor;
     private float lifeSteal;
@@ -84,8 +84,18 @@ public class CharacterHealth : MonoBehaviour, IStats
 
     private void Die()
     {
+         var secondLifeCard = CharacterManager.Instance.deck.GetEquippedCards()
+        .Find(card => card.EffectType == CardEffectType.Support_SecondLife);
+
+        if (secondLifeCard != null && secondLifeCard.IsAutoActivated && !CardEffect.Instance.IsEffectActive(secondLifeCard.EffectType))
+        {
+            // Automatically activate the card
+            CardEffect.Instance.ActivateEffect(secondLifeCard.EffectType, 0, secondLifeCard);
+            return; // Skip death logic
+        }
+
         OnCharacterDeath?.Invoke();
-       
+
         if (GameModeManager.Instance.CurrentGameMode == GameMode.Survival)
         {
             GameManager.Instance.SetGameState(GameState.SurvivalStageCompleted);

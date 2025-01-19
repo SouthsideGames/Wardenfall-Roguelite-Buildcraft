@@ -28,15 +28,13 @@ public class CardEffect : MonoBehaviour
         ICardEffect effect = CardEffectFactory.GetEffect(effectType, _cardSO);
         if (effect != null)
         {
-            if (duration > 0)
+            activeEffects[effectType] = effect;
+            effect.Activate(duration);
+
+            // Deactivate the card if it has no cooldown
+            if (_cardSO.CooldownTime <= 0)
             {
-                activeEffects[effectType] = effect;
-                effect.Activate(duration);
-            }
-            else
-            {
-                // One-shot effect
-                effect.Activate(0); // Pass 0 to signify one-shot
+                _cardSO.Deactivate();
             }
 
             Debug.Log($"{effectType} activated for {duration} seconds.");

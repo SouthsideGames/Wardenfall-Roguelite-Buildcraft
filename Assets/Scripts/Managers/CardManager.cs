@@ -278,13 +278,19 @@ public class CardManager : MonoBehaviour, IWantToBeSaved
 
     public void SpawnInGameCards()
     {
-        cardContainerParent.Clear();
+        foreach (Transform child in cardContainerParent)
+        {
+            Destroy(child.gameObject);
+        }
 
         foreach (CardSO card in activeDeck)
         {
-            GameObject inGameCard = Instantiate(inGameCardPrefab, cardContainerParent);
-            InGameCardUI cardUI = inGameCard.GetComponent<InGameCardUI>();
-            cardUI.Configure(card);
+            if (!card.IsActive)
+                continue;
+
+            GameObject cardUI = Instantiate(inGameCardPrefab, cardContainerParent);
+            InGameCardUI cardUIScript = cardUI.GetComponent<InGameCardUI>();
+            cardUIScript.Configure(card);
         }
     }
 
@@ -309,6 +315,18 @@ public class CardManager : MonoBehaviour, IWantToBeSaved
         totalCardsText.text = $"Cards: {purchasedCards}/{totalCardsInResources}";
     }
     
+   public void DeactivateCard(CardSO cardSO)
+    {
+        if (activeDeck.Contains(cardSO))
+        {
+            activeDeck.Remove(cardSO);
+            Debug.Log($"{cardSO.CardName} has been deactivated and removed from the active deck.");
+        }
+        else
+        {
+            Debug.LogWarning($"Attempted to deactivate {cardSO.CardName}, but it is not in the active deck.");
+        }
+    }
 
 }
 
