@@ -27,9 +27,5 @@ public class DeathRayEffect : ICardEffect
         Debug.Log("Death Cloud does not require a disable phase.");
     }
 
-      public void ApplySynergy(float synergyBonus)
-    {
-        throw new System.NotImplementedException();
-    }
 
 }

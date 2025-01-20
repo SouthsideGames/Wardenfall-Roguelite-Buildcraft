@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class CardEffect : MonoBehaviour
 {
-    public static CardEffect Instance;
+  public static CardEffect Instance;
 
     private Dictionary<CardEffectType, ICardEffect> activeEffects = new Dictionary<CardEffectType, ICardEffect>();
 
@@ -17,9 +17,9 @@ public class CardEffect : MonoBehaviour
             Destroy(gameObject);
     }
 
-   public void ActivateEffect(CardEffectType effectType, float duration, CardSO _cardSO)
+    public void ActivateEffect(CardEffectType effectType, float duration, CardSO _cardSO)
     {
-        if(activeEffects.ContainsKey(effectType))
+        if (activeEffects.ContainsKey(effectType))
             return;
 
         ICardEffect effect = CardEffectFactory.GetEffect(effectType, _cardSO);
@@ -27,18 +27,6 @@ public class CardEffect : MonoBehaviour
         {
             activeEffects[effectType] = effect;
             effect.Activate(duration);
-
-            // Check if the card has any synergy and apply the bonus if applicable
-            if (_cardSO != null && _cardSO.HasSynergy)
-            {
-                foreach (var synergy in _cardSO.Synergies)
-                {
-                    if (IsEffectActive(synergy.EffectType))
-                    {
-                        ApplySynergyEffect(synergy.EffectType, synergy.SynergyBonus);
-                    }
-                }
-            }
         }
         else
         {
@@ -58,15 +46,6 @@ public class CardEffect : MonoBehaviour
     public bool IsEffectActive(CardEffectType effectType)
     {
         return activeEffects.ContainsKey(effectType);
-    }
-
-    private void ApplySynergyEffect(CardEffectType synergyEffectType, float synergyBonus)
-    {
-        if (activeEffects.TryGetValue(synergyEffectType, out ICardEffect effect))
-        {
-            effect.ApplySynergy(synergyBonus);
-            Debug.Log($"Applying synergy effect: {synergyEffectType} with bonus: {synergyBonus}");
-        }
     }
 }
 

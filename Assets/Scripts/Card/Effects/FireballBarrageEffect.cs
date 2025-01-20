@@ -40,9 +40,5 @@ public class FireballBarrageEffect : ICardEffect
         Debug.Log("Fireball Barrage does not require a disable phase.");
     }
 
-      public void ApplySynergy(float synergyBonus)
-    {
-        throw new System.NotImplementedException();
-    }
 
 }

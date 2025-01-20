@@ -40,13 +40,6 @@ using UnityEngine;
     [SerializeField] private float cooldownTime = 10f;
     public float CooldownTime => cooldownTime;
 
-    [Header("SYNERGY")]
-    [SerializeField] private List<CardSynergy> synergies = new List<CardSynergy>(); // Add this field
-    public List<CardSynergy> Synergies => synergies;
-
-    [SerializeField] private bool hasSynergy = false;
-    public bool HasSynergy => hasSynergy;
-
     public void Deactivate()
     {
         isActive = false;
@@ -58,10 +51,5 @@ using UnityEngine;
         SouthsideGames.SaveManager.SaveManager.Save(this, iD, isCollected);
     }
 }
-    [System.Serializable]
-    public class CardSynergy
-    {
-        public CardEffectType EffectType; // The effect type to synergize with
-        public float SynergyBonus;       // Bonus multiplier or additional effect
-    }
+
 

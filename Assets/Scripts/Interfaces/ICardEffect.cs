@@ -4,5 +4,4 @@ public interface ICardEffect
 {
     void Activate(float duration);
     void Disable();
-    void ApplySynergy(float synergyBonus);
 }

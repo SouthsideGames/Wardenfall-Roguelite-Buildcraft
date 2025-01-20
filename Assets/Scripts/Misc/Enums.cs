@@ -121,18 +121,22 @@ public enum MiniCardRarityType
 
 public enum CardEffectType
 {
-    None,
-    Utility_EternalPause,
-    Damage_FireballBarrage,
-    Damage_EnergyBlast,
-    Damage_ThunderStrike,
-    Damage_ArcLightning,
-    Damage_BladeStorm,
-    Damage_PoisonCloud,
-    Damage_PlasmaBeam,
-    Damage_DeathRay,
-    Utility_TemporalReset,
-    Support_SecondLife
+    None = 000,
+    Damage_FireballBarrage = 001,
+    Damage_EnergyBlast = 002,
+    Damage_ThunderStrike = 003,
+    Damage_ArcLightning = 004,
+    Damage_BladeStorm = 005,
+    Damage_PoisonCloud = 006,
+    Damage_PlasmaBeam = 007,
+    Damage_DeathRay = 008,
+    Damage_GravityCollapse = 009,
+    Support_SecondLife = 100,
+    Support_PrecisionFocus = 101,
+    Support_AdrenalineSurge = 102,
+    Support_BerserkerRage = 103,
+    Utility_EternalPause = 200,
+    Utility_TemporalReset = 201
 }
 
 public enum CharacterCardRarityType

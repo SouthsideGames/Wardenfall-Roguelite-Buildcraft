@@ -11,11 +11,6 @@ public class EternalPauseEffect : ICardEffect
         Debug.Log("Eternal Pause activated: All movement stopped.");
     }
 
-    public void ApplySynergy(float synergyBonus)
-    {
-        throw new System.NotImplementedException();
-    }
-
     public void Disable()
     {
         foreach (Enemy enemy in UnityEngine.Object.FindObjectsByType<Enemy>(FindObjectsSortMode.None))
@@ -24,4 +19,6 @@ public class EternalPauseEffect : ICardEffect
         }
         Debug.Log("Eternal Pause disabled: Movement resumed.");
     }
+
+    
 }

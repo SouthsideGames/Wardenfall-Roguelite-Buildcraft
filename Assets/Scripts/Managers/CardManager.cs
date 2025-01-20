@@ -8,7 +8,7 @@ using System;
 
 public class CardManager : MonoBehaviour, IWantToBeSaved
 {
-    public static CardManager Instance;
+   public static CardManager Instance;
 
     [Header("ELEMENTS:")]
     [SerializeField] private Transform deckListContainer;
@@ -232,7 +232,7 @@ public class CardManager : MonoBehaviour, IWantToBeSaved
 
     private void UpdateDeckLimitUI()
     {
-        int currentDeckCost = activeDeck.Sum(card => card.Cost); // Correct total cost
+        int currentDeckCost = activeDeck.Sum(card => card.Cost); 
         deckLimitText.text = $"Deck Limit: {currentDeckCost}/{deckLimitMax}";
     }
 
@@ -327,18 +327,6 @@ public class CardManager : MonoBehaviour, IWantToBeSaved
             Debug.LogWarning($"Attempted to deactivate {cardSO.CardName}, but it is not in the active deck.");
         }
     }
-
-   public bool IsEffectActive(CardEffectType effectType)
-    {
-        if (CardEffect.Instance != null)
-        {
-            return CardEffect.Instance.IsEffectActive(effectType);
-        }
-
-        Debug.LogWarning("CardEffect instance is not initialized.");
-        return false;
-    }
-
 }
 
 [Serializable]

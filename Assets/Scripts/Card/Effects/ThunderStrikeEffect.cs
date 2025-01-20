@@ -36,9 +36,4 @@ public class ThunderStrikeEffect : ICardEffect
         return targetEnemy.transform.position;
     }
 
-    public void ApplySynergy(float synergyBonus)
-    {
-        throw new System.NotImplementedException();
-    }
-
 }

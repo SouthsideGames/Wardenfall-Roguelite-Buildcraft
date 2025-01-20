@@ -16,6 +16,7 @@ public class CharacterStats : MonoBehaviour
     private Dictionary<Stat, float> addends = new Dictionary<Stat, float>();
     private Dictionary<Stat, float> stats = new Dictionary<Stat, float>();
     private Dictionary<Stat, float> objectAddends = new Dictionary<Stat, float>();
+    private Dictionary<Stat, float> boostedStats = new Dictionary<Stat, float>();
 
     private void Awake()
     {
@@ -32,6 +33,7 @@ public class CharacterStats : MonoBehaviour
         {
             addends.Add(kvp.Key, 0);
             objectAddends.Add(kvp.Key, 0);
+            boostedStats.Add(kvp.Key, 0);
         }
     }
 
@@ -89,6 +91,36 @@ public class CharacterStats : MonoBehaviour
         stats = characterData.BaseStats;
 
         UpdateStats();
+    }
+
+    public void BoostStat(Stat _stat, float _value)
+    {
+        if (boostedStats.ContainsKey(_stat))
+        {
+            float currentAddend = addends[_stat];
+            boostedStats[_stat] = currentAddend;
+
+            addends[_stat] += _value;
+            UpdateStats();
+        }
+        else
+        {
+            Debug.LogError($"Stat {_stat} not found for boosting.");
+        }
+    }
+
+    public void RevertBoost(Stat _stat)
+    {
+        if (boostedStats.ContainsKey(_stat))
+        {
+            addends[_stat] = boostedStats[_stat];
+            boostedStats[_stat] = 0; 
+            UpdateStats();
+        }
+        else
+        {
+            Debug.LogError($"Stat {_stat} not found for reverting boost.");
+        }
     }
 
 }
