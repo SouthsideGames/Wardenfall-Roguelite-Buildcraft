@@ -28,4 +28,10 @@ public class SecondLifeEffect : ICardEffect
     {
         
     }
+
+    public void ApplySynergy(float synergyBonus)
+    {
+        throw new System.NotImplementedException();
+    }
+
 }

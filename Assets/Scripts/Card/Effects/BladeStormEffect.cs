@@ -34,4 +34,10 @@ public class BladeStormEffect : ICardEffect
 
         spawnedBlades.Clear();
     }
+
+      public void ApplySynergy(float synergyBonus)
+    {
+        throw new System.NotImplementedException();
+    }
+
 }

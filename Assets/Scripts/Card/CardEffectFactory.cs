@@ -4,6 +4,8 @@ public static class CardEffectFactory
 {
     public static ICardEffect GetEffect(CardEffectType effectType,  CardSO cardSO)
     {
+        ICardEffect effect = null;
+
         switch (effectType)
         {
             case CardEffectType.Utility_EternalPause:
@@ -29,9 +31,26 @@ public static class CardEffectFactory
                 return new TemporalResetEffect();
             case CardEffectType.Support_SecondLife:
                 return new SecondLifeEffect(Resources.Load<GameObject>("Prefabs/Effects/Explosion"), cardSO);
-            default:
-                Debug.LogWarning($"No effect defined for {effectType}.");
-                return null;
+        }
+
+        if(effect != null && cardSO.Synergies.Count > 0)
+        {
+            ApplySynergies(effect, cardSO);
+        }
+
+        return effect;
+
+    }
+
+    private static void ApplySynergies(ICardEffect effect, CardSO cardSO)
+    {
+        foreach (var synergy in cardSO.Synergies)
+        {
+            if (CardManager.Instance.IsEffectActive(synergy.EffectType))
+            {
+                effect.ApplySynergy(synergy.SynergyBonus);
+                Debug.Log($"Synergy applied! {synergy.EffectType} enhanced with bonus: {synergy.SynergyBonus}");
+            }
         }
     }
 }

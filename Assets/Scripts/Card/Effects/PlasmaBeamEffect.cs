@@ -23,4 +23,10 @@ public class PlasmaBeamEffect : ICardEffect
     }
 
     public void Disable() {}
+
+    public void ApplySynergy(float synergyBonus)
+    {
+        throw new System.NotImplementedException();
+    }
+
 }

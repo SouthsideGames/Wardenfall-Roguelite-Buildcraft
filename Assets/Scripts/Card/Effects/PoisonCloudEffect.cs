@@ -36,4 +36,10 @@ public class PoisonCloudEffect : ICardEffect
     {
         Debug.Log("Poison Cloud does not require a disable phase.");
     }
+
+    public void ApplySynergy(float synergyBonus)
+    {
+        throw new System.NotImplementedException();
+    }
+
 }

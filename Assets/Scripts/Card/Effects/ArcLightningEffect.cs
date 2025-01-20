@@ -32,4 +32,9 @@ public class ArcLightningEffect : ICardEffect
     {
         Debug.Log("Arc Lightning does not require a disable phase.");
     }
+    public void ApplySynergy(float synergyBonus)
+    {
+        throw new System.NotImplementedException();
+    }
+
 }

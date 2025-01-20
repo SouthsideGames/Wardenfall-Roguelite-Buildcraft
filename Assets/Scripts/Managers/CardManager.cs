@@ -328,6 +328,17 @@ public class CardManager : MonoBehaviour, IWantToBeSaved
         }
     }
 
+   public bool IsEffectActive(CardEffectType effectType)
+    {
+        if (CardEffect.Instance != null)
+        {
+            return CardEffect.Instance.IsEffectActive(effectType);
+        }
+
+        Debug.LogWarning("CardEffect instance is not initialized.");
+        return false;
+    }
+
 }
 
 [Serializable]

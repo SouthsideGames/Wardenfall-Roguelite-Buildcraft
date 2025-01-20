@@ -26,4 +26,10 @@ public class EnergyBlastEffect : ICardEffect
     {
         Debug.Log("Energy Blast has no disable phase.");
     }
+
+      public void ApplySynergy(float synergyBonus)
+    {
+        throw new System.NotImplementedException();
+    }
+
 }

@@ -35,4 +35,10 @@ public class ThunderStrikeEffect : ICardEffect
         Enemy targetEnemy = enemies[Random.Range(0, enemies.Length)];
         return targetEnemy.transform.position;
     }
+
+    public void ApplySynergy(float synergyBonus)
+    {
+        throw new System.NotImplementedException();
+    }
+
 }
