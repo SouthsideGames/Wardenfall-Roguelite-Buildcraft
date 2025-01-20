@@ -19,11 +19,8 @@ public class CardEffect : MonoBehaviour
 
    public void ActivateEffect(CardEffectType effectType, float duration, CardSO _cardSO)
     {
-        if (activeEffects.ContainsKey(effectType))
-        {
-            Debug.LogWarning($"{effectType} is already active!");
+        if(activeEffects.ContainsKey(effectType))
             return;
-        }
 
         ICardEffect effect = CardEffectFactory.GetEffect(effectType, _cardSO);
         if (effect != null)
@@ -31,13 +28,21 @@ public class CardEffect : MonoBehaviour
             activeEffects[effectType] = effect;
             effect.Activate(duration);
 
-            // Deactivate the card if it has no cooldown
-            if (_cardSO.CooldownTime <= 0)
+            // Check if the card has any synergy and apply the bonus if applicable
+            if (_cardSO != null && _cardSO.HasSynergy)
             {
-                _cardSO.Deactivate();
+                foreach (var synergy in _cardSO.Synergies)
+                {
+                    if (IsEffectActive(synergy.EffectType))
+                    {
+                        ApplySynergyEffect(synergy.EffectType, synergy.SynergyBonus);
+                    }
+                }
             }
-
-            Debug.Log($"{effectType} activated for {duration} seconds.");
+        }
+        else
+        {
+            Debug.LogWarning($"Effect creation failed for type: {effectType}");
         }
     }
 
@@ -48,12 +53,20 @@ public class CardEffect : MonoBehaviour
 
         activeEffects[effectType].Disable();
         activeEffects.Remove(effectType);
-        Debug.Log($"{effectType} disabled.");
     }
 
     public bool IsEffectActive(CardEffectType effectType)
     {
         return activeEffects.ContainsKey(effectType);
+    }
+
+    private void ApplySynergyEffect(CardEffectType synergyEffectType, float synergyBonus)
+    {
+        if (activeEffects.TryGetValue(synergyEffectType, out ICardEffect effect))
+        {
+            effect.ApplySynergy(synergyBonus);
+            Debug.Log($"Applying synergy effect: {synergyEffectType} with bonus: {synergyBonus}");
+        }
     }
 }
 
