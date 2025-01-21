@@ -39,7 +39,7 @@ public class ItemManager : MonoBehaviour
         Enemy.OnDeath += EnemyDeathCallback;
         Enemy.OnBossDeath += BossDeathCallback;
         Meat.OnCollected += ReleaseMeat;
-        Cash.onCollected += ReleaseCash;
+        Cash.OnCollected += ReleaseCash;
         Chest.OnCollected += ReleaseChest;
         Gem.OnCollected += ReleaseGem;
     }
@@ -82,7 +82,7 @@ public class ItemManager : MonoBehaviour
         Enemy.OnDeath -= EnemyDeathCallback;
         Enemy.OnBossDeath -= BossDeathCallback;
         Meat.OnCollected -= ReleaseMeat;
-        Cash.onCollected -= ReleaseCash;
+        Cash.OnCollected -= ReleaseCash;
         Chest.OnCollected -= ReleaseChest;
         Gem.OnCollected -= ReleaseGem;
     }

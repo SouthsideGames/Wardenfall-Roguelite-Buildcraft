@@ -136,7 +136,10 @@ public enum CardEffectType
     Support_AdrenalineSurge = 102,
     Support_BerserkerRage = 103,
     Utility_EternalPause = 200,
-    Utility_TemporalReset = 201
+    Utility_TemporalReset = 201,
+    Utility_DoubleItemValue = 202,
+    Special_MoltenTrail = 300,
+    Special_MinionSwarm = 301
 }
 
 public enum CharacterCardRarityType

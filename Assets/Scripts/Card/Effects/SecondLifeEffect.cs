@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class SecondLifeEffect : ICardEffect
 {
-     private GameObject explosionPrefab;
+    private GameObject explosionPrefab;
     private CardSO cardSO;
 
     public SecondLifeEffect(GameObject explosionPrefab, CardSO cardSO)
@@ -15,10 +15,8 @@ public class SecondLifeEffect : ICardEffect
     {
         CharacterHealth playerHealth = CharacterManager.Instance.health;
 
-        // Restore player health to half
         playerHealth.Heal(Mathf.RoundToInt(playerHealth.maxHealth / 2));
 
-        // Spawn an explosion effect
         GameObject explosion = GameObject.Instantiate(explosionPrefab, CharacterManager.Instance.transform.position, Quaternion.identity);
         Explosion explosionScript = explosion.GetComponent<Explosion>();
         explosionScript.SetDamage(Mathf.RoundToInt(playerHealth.maxHealth));

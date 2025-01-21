@@ -6,8 +6,6 @@ public static class CardEffectFactory
     {
         switch (effectType)
         {
-            case CardEffectType.Utility_EternalPause:
-                return new EternalPauseEffect();
             case CardEffectType.Damage_FireballBarrage:
                 GameObject fireballPrefab = Resources.Load<GameObject>("Prefabs/Fireball");
                 return new FireballBarrageEffect(fireballPrefab, cardSO);
@@ -25,8 +23,12 @@ public static class CardEffectFactory
                 return new PlasmaBeamEffect(Resources.Load<GameObject>("Prefabs/PlasmaBeam"), cardSO);
             case CardEffectType.Damage_DeathRay:
                 return new DeathRayEffect(Resources.Load<GameObject>("Prefabs/DeathRay"), cardSO);
+            case CardEffectType.Utility_EternalPause:
+                return new EternalPauseEffect();
             case CardEffectType.Utility_TemporalReset:
                 return new TemporalResetEffect();
+            case CardEffectType.Utility_DoubleItemValue:
+                return new DoubleItemValueEffect(cardSO.ActiveTime);
             case CardEffectType.Support_SecondLife:
                 return new SecondLifeEffect(Resources.Load<GameObject>("Prefabs/Effects/Explosion"), cardSO);
             case CardEffectType.Support_PrecisionFocus:
@@ -37,6 +39,11 @@ public static class CardEffectFactory
                 return new BerserkerRageEffect(cardSO);
             case CardEffectType.Damage_GravityCollapse:
                 return new GravityCollapseEffect(Resources.Load<GameObject>("Prefabs/Effects/Gravity Field"), cardSO, _pullRadius: 5f);
+            case CardEffectType.Special_MoltenTrail:
+                return new MoltenTrailEffect(Resources.Load<GameObject>("Prefabs/Effects/MoltenTrail"), cardSO);
+            case CardEffectType.Special_MinionSwarm:
+                GameObject minionPrefab = Resources.Load<GameObject>("Prefabs/Allies/Minion");
+                return new MinionSwarmEffect(minionPrefab, CharacterManager.Instance.transform, minionDamage: cardSO.EffectValue, minionCount: 5, spawnInterval: 1f);
             default:
                 Debug.LogWarning($"No effect defined for {effectType}.");
                 return null;

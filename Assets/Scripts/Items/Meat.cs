@@ -14,4 +14,5 @@ public class Meat : Item
         MissionManager.Increment(MissionType.currencyCollected, 1);
         OnCollected?.Invoke(this);
     }   
+
 }

@@ -53895,6 +53895,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 717850832}
+  - {fileID: 2092228926}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1924221098
@@ -57528,6 +57529,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2087524905}
   m_CullTransparentMesh: 1
+--- !u!1 &2092228925
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2092228926}
+  - component: {fileID: 2092228927}
+  m_Layer: 0
+  m_Name: Coroutine Runner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2092228926
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2092228925}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1917116788}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2092228927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2092228925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94bdaeebe8e31b242b70cc772d76d48c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2093262395
 GameObject:
   m_ObjectHideFlags: 0
@@ -58531,6 +58576,7 @@ GameObject:
   - component: {fileID: 2122840537}
   - component: {fileID: 2122840535}
   - component: {fileID: 2122840538}
+  - component: {fileID: 2122840546}
   - component: {fileID: 2122840539}
   - component: {fileID: 2122840534}
   - component: {fileID: 2122840540}
@@ -58541,7 +58587,6 @@ GameObject:
   - component: {fileID: 2122840544}
   - component: {fileID: 2122840547}
   - component: {fileID: 2122840548}
-  - component: {fileID: 2122840546}
   m_Layer: 7
   m_Name: Character
   m_TagString: Untagged
@@ -71884,6 +71929,7 @@ GameObject:
   - component: {fileID: 4616558960480061918}
   - component: {fileID: 4616558960480061916}
   - component: {fileID: 4616558960480061919}
+  - component: {fileID: 4616558960480061920}
   m_Layer: 5
   m_Name: Character
   m_TagString: Untagged
@@ -71948,6 +71994,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4616558960480061920
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4616558960480061913}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8eb0d394bcab0ff4ba8e2614bb4d7194, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &4616558960583453442
 MonoBehaviour:
   m_ObjectHideFlags: 0
