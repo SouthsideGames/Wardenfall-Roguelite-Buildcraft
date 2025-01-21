@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
 
 public class HapticFeedbackUI : MonoBehaviour
@@ -27,8 +26,6 @@ public class HapticFeedbackUI : MonoBehaviour
     {
         if(!canVibrate)
             return;
-        else
-            CandyCoded.HapticFeedback.HapticFeedback.LightFeedback();
     }
 
     public void MediumVibrate() 
@@ -36,7 +33,6 @@ public class HapticFeedbackUI : MonoBehaviour
         if(!canVibrate)
            return;
 
-        CandyCoded.HapticFeedback.HapticFeedback.MediumFeedback();
     }
 
     public void HighVibrate()
@@ -44,7 +40,6 @@ public class HapticFeedbackUI : MonoBehaviour
         if (!canVibrate)
             return;
 
-        CandyCoded.HapticFeedback.HapticFeedback.HeavyFeedback();
 
     }
 
