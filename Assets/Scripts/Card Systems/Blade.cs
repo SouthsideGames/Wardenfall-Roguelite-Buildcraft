@@ -7,7 +7,7 @@ public class Blade : MonoBehaviour
     [Tooltip("Detection layer for enemies.")]
     [SerializeField] private LayerMask enemyMask;
 
-    private int damage = 10;
+    private float damage;
     private Collider2D[] colliders;
     private CardSO cardSO;
 
@@ -52,7 +52,7 @@ public class Blade : MonoBehaviour
             Enemy enemy = collider.GetComponent<Enemy>();
             if (enemy != null)
             {
-                enemy.TakeDamage(damage, false);
+                enemy.TakeDamage((int)damage, false);
             }
         }
     }

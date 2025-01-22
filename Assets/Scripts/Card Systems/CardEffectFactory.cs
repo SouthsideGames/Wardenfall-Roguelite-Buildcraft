@@ -23,12 +23,16 @@ public static class CardEffectFactory
                 return new PlasmaBeamEffect(Resources.Load<GameObject>("Prefabs/PlasmaBeam"), cardSO);
             case CardEffectType.Damage_DeathRay:
                 return new DeathRayEffect(Resources.Load<GameObject>("Prefabs/DeathRay"), cardSO);
+            case CardEffectType.Damage_GravityCollapse:
+                return new GravityCollapseEffect(Resources.Load<GameObject>("Prefabs/Effects/Gravity Field"), cardSO, _pullRadius: 5f);
             case CardEffectType.Utility_EternalPause:
                 return new EternalPauseEffect();
             case CardEffectType.Utility_TemporalReset:
                 return new TemporalResetEffect();
             case CardEffectType.Utility_DoubleItemValue:
                 return new DoubleItemValueEffect(cardSO.ActiveTime);
+            case CardEffectType.Utility_ItemBooster:
+                return new ItemBoosterEffect(cardSO.EffectValue);
             case CardEffectType.Support_SecondLife:
                 return new SecondLifeEffect(Resources.Load<GameObject>("Prefabs/Effects/Explosion"), cardSO);
             case CardEffectType.Support_PrecisionFocus:
@@ -37,13 +41,13 @@ public static class CardEffectFactory
                 return new AdrenalineSurgeEffect(cardSO);
             case CardEffectType.Support_BerserkerRage:
                 return new BerserkerRageEffect(cardSO);
-            case CardEffectType.Damage_GravityCollapse:
-                return new GravityCollapseEffect(Resources.Load<GameObject>("Prefabs/Effects/Gravity Field"), cardSO, _pullRadius: 5f);
             case CardEffectType.Special_MoltenTrail:
                 return new MoltenTrailEffect(Resources.Load<GameObject>("Prefabs/Effects/MoltenTrail"), cardSO);
             case CardEffectType.Special_MinionSwarm:
                 GameObject minionPrefab = Resources.Load<GameObject>("Prefabs/Allies/Minion");
-                return new MinionSwarmEffect(minionPrefab, CharacterManager.Instance.transform, minionDamage: cardSO.EffectValue, minionCount: 5, spawnInterval: 1f);
+                 return new MinionSwarmEffect(minionPrefab, CharacterManager.Instance.transform, minionDamage: (int)cardSO.EffectValue, minionCount: 5, spawnInterval: 1f);
+            case CardEffectType.Special_NecromancersCall:
+                return new NecromancerCallEffect(Resources.Load<GameObject>("Prefabs/Allies/Undead Minion"),CharacterManager.Instance.transform, cardSO);
             default:
                 Debug.LogWarning($"No effect defined for {effectType}.");
                 return null;

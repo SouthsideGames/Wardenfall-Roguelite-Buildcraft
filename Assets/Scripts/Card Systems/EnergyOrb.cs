@@ -3,7 +3,7 @@ using UnityEngine;
 public class EnergyOrb : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 5f; // Orb speed
-    [SerializeField] private int damage = 50;     // Damage dealt
+    [SerializeField] private float damage = 50;     // Damage dealt
     [SerializeField] private float explosionRadius = 2f; // Explosion radius
     [SerializeField] private ParticleSystem explosionEffect; // Visual effect on impact
     [SerializeField] private LayerMask enemyMask; // Targets affected by the explosion
@@ -37,7 +37,7 @@ public class EnergyOrb : MonoBehaviour
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(transform.position, explosionRadius, enemyMask);
         foreach (var enemy in hitEnemies)
         {
-            enemy.GetComponent<Enemy>()?.TakeDamage(damage, false);
+            enemy.GetComponent<Enemy>()?.TakeDamage((int)damage, false);
         }
 
         Destroy(gameObject);

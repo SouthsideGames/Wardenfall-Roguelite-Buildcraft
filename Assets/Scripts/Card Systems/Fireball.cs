@@ -12,10 +12,7 @@ public class Fireball : MonoBehaviour
     private int damage;
     private Vector2 direction;
 
-    private void Awake()
-    {
-        rb = GetComponent<Rigidbody2D>();
-    }
+    private void Awake() => rb = GetComponent<Rigidbody2D>();
 
     public void Launch(int _damage, Vector2 _direction)
     {
@@ -44,9 +41,6 @@ public class Fireball : MonoBehaviour
         enemy.TakeDamage(damage, false);
     }
 
-    /// <summary>
-    /// Handles the explosion logic, including creating a visual effect and destroying the fireball.
-    /// </summary>
     private void Explode()
     {
         if (explosionPrefab != null)
@@ -57,17 +51,11 @@ public class Fireball : MonoBehaviour
         DestroyFireball();
     }
 
-    /// <summary>
-    /// Destroys the fireball and stops its movement.
-    /// </summary>
     private void DestroyFireball()
     {
         rb.linearVelocity = Vector2.zero;
         gameObject.SetActive(false);
     }
 
-    private bool IsInLayerMask(int layer, LayerMask layerMask)
-    {
-        return (layerMask.value & (1 << layer)) != 0;
-    }
+    private bool IsInLayerMask(int layer, LayerMask layerMask) => (layerMask.value & (1 << layer)) != 0;
 }

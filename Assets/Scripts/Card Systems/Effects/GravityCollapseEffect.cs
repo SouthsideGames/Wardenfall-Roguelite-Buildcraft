@@ -3,7 +3,7 @@ using UnityEngine;
 public class GravityCollapseEffect : ICardEffect
 {
     private GameObject gravityFieldPrefab;
-    private int damage;
+    private float damage;
     private float duration;
     private float pullRadius;
 
@@ -24,7 +24,7 @@ public class GravityCollapseEffect : ICardEffect
 
         if (gravityScript != null)
         {
-            gravityScript.Configure(damage, duration, pullRadius);
+            gravityScript.Configure((int)damage, duration, pullRadius);
         }
 
         Debug.Log($"Gravity Collapse activated! Pulling all enemies into the center and dealing {damage} damage.");

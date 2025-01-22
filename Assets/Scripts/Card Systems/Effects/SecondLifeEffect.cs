@@ -5,10 +5,10 @@ public class SecondLifeEffect : ICardEffect
     private GameObject explosionPrefab;
     private CardSO cardSO;
 
-    public SecondLifeEffect(GameObject explosionPrefab, CardSO cardSO)
+    public SecondLifeEffect(GameObject _explosionPrefab, CardSO _cardSO)
     {
-        this.explosionPrefab = explosionPrefab;
-        this.cardSO = cardSO;
+        explosionPrefab = _explosionPrefab;
+        cardSO = _cardSO;
     }
 
     public void Activate(float duration)

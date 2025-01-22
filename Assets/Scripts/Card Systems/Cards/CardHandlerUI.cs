@@ -27,6 +27,7 @@ public class CardHandlerUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     {
         cardData = cardSO;
         deckManager = manager;
+        Debug.Log($"Card configured: {cardSO?.CardName}");
     }
 
     private void Awake()
@@ -40,6 +41,7 @@ public class CardHandlerUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     {
         pointerDownTime = Time.time;
         isDragging = false;
+        Debug.Log("Pointer down on card");
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -89,10 +91,13 @@ public class CardHandlerUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         cardRectTransform.SetParent(originalParent, true);
     }
 
+
     public void OnPointerUp(PointerEventData eventData)
     {
+        Debug.Log("PointerUp called");
         if (!isDragging && Time.time - pointerDownTime <= ClickThreshold)
         {
+            Debug.Log($"Card clicked: {cardData?.CardName}");
             OnButtonPressed?.Invoke(cardData);
         }
     }

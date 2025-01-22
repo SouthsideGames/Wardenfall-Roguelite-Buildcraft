@@ -22,12 +22,12 @@ public class CardDescriptionUI : MonoBehaviour
     [SerializeField] private Sprite mythicBackgroundImage;
     [SerializeField] private Sprite exaltedBackgroundImage;
 
-    private void OnEnable()
+    private void Awake()
     {
         CardHandlerUI.OnButtonPressed += Configure; 
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
         CardHandlerUI.OnButtonPressed -= Configure;
     }
@@ -35,6 +35,7 @@ public class CardDescriptionUI : MonoBehaviour
 
     public void Configure(CardSO _card)
     {
+        Debug.Log($"Button Pressed for Card: ");
         if (_card == null)
         {
             Debug.LogError("CardSO is null. Cannot configure card UI.");

@@ -46,8 +46,11 @@ public class CardManager : MonoBehaviour, IWantToBeSaved
         else
             Destroy(gameObject);
 
+        Debug.Log("CardManager Awake called");
+
         CharacterSelectionManager.OnCharacterSelected += UpdateDeckForCharacter;
         CardHandlerUI.OnButtonPressed += ShowCardDetails;
+        Debug.Log("Subscribed to OnButtonPressed in CardManager");
 
         cardDetailUI = cardDetailContainer.GetComponent<CardDetailUI>();
         InitializeCardFrames();
@@ -73,6 +76,8 @@ public class CardManager : MonoBehaviour, IWantToBeSaved
         UpdateDeckLimitUI();
         FilterCards(CardType.None);
         UpdateTotalCardsUI(CardType.None);
+
+        Debug.Log("CardManager Start called");
     }
 
     public void Save()
@@ -264,9 +269,16 @@ public class CardManager : MonoBehaviour, IWantToBeSaved
 
     public void ShowCardDetails(CardSO card)
     {
+        Debug.Log($"ShowCardDetails called for card: {card?.CardName}");
         cardDetailContainer.SetActive(true);
         if (cardDetailUI != null)
+        {
             cardDetailUI.ShowDetail(card);
+        }
+        else
+        {
+            Debug.LogError("cardDetailUI is null!");
+        }
     }
 
     public void SpawnInGameCards()

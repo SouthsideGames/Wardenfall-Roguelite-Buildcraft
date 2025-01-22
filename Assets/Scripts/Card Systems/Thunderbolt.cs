@@ -22,7 +22,7 @@ public class Thunderbolt : MonoBehaviour
 
         foreach (var enemy in hitEnemies)
         {
-            enemy.GetComponent<Enemy>()?.TakeDamage(_card.EffectValue, false);
+            enemy.GetComponent<Enemy>()?.TakeDamage((int)_card.EffectValue, false);
         }
 
         Destroy(gameObject, 0.5f);

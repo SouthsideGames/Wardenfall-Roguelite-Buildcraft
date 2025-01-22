@@ -33,8 +33,8 @@ using UnityEngine;
     public bool IsActive => isActive;
 
     [Header("TIMERS")]
-    [SerializeField] private int effectValue;
-    public int EffectValue => effectValue;
+    [SerializeField] private float effectValue;
+    public float EffectValue => effectValue;
     [SerializeField] private float activeTime = 5f;
     public float ActiveTime => activeTime;
     [SerializeField] private float cooldownTime = 10f;

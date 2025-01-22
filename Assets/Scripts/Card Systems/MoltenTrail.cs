@@ -7,7 +7,7 @@ public class MoltenTrail : MonoBehaviour
     [Tooltip("Detection layer for enemies.")]
     [SerializeField] private LayerMask enemyMask;
 
-    private int damage;
+    private float damage;
     private float duration;
 
     private void Start()
@@ -31,7 +31,7 @@ public class MoltenTrail : MonoBehaviour
             fireZone.transform.position = CharacterManager.Instance.transform.position;
 
             FireZone fireZoneScript = fireZone.AddComponent<FireZone>();
-            fireZoneScript.Initialize(damage, enemyMask);
+            fireZoneScript.Initialize((int)damage, enemyMask);
 
             yield return new WaitForSeconds(0.5f); 
         }

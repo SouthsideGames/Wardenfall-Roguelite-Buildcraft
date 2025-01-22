@@ -24,7 +24,7 @@ public class Explosion : MonoBehaviour
             }
         }
 
-        Destroy(gameObject); // Remove explosion effect after execution
+        Destroy(gameObject);
     }
 
     private void OnDrawGizmosSelected()

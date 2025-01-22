@@ -17,7 +17,7 @@ public class PlasmaBeamEffect : ICardEffect
         GameObject plasmaBeam = Object.Instantiate(plasmaBeamPrefab, playerPosition, Quaternion.identity);
 
         PlasmaBeam beamScript = plasmaBeam.GetComponent<PlasmaBeam>();
-        beamScript.Configure(cardSO.EffectValue, cardSO.ActiveTime);
+        beamScript.Configure((int)cardSO.EffectValue, cardSO.ActiveTime);
 
         Debug.Log($"Plasma Beam activated for {cardSO.ActiveTime}s, dealing {cardSO.EffectValue} damage per tick.");
     }

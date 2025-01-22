@@ -6,13 +6,13 @@ public class FireballBarrageEffect : ICardEffect
     private GameObject fireballPrefab;
     private int fireballCount = 5;
     private float spawnRadius = 10;
-    private int damage;
+    private float damage;
 
     public FireballBarrageEffect(GameObject fireballPrefab, CardSO _card)
     {
         this.fireballPrefab = fireballPrefab;
 
-        this.damage = _card.EffectValue;
+        damage = _card.EffectValue;
     }
 
     public void Activate(float duration)
@@ -29,7 +29,7 @@ public class FireballBarrageEffect : ICardEffect
             GameObject fireball = Object.Instantiate(fireballPrefab, spawnPosition, Quaternion.identity);
             Vector2 direction = (targetPosition - spawnPosition).normalized;
 
-            fireball.GetComponent<Fireball>().Launch(damage, direction);
+            fireball.GetComponent<Fireball>().Launch((int)damage, direction);
         }
 
         Debug.Log($"Fireball Barrage activated: {fireballCount} fireballs launched.");

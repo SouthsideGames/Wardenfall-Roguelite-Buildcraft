@@ -5,10 +5,10 @@ public class PoisonCloudEffect : ICardEffect
     private GameObject poisonCloudPrefab;
     private CardSO card;
 
-    public PoisonCloudEffect(GameObject poisonCloudPrefab, CardSO card)
+    public PoisonCloudEffect(GameObject poisonCloudPrefab, CardSO _card)
     {
         this.poisonCloudPrefab = poisonCloudPrefab;
-        this.card = card;
+        card = _card;
     }
 
     public void Activate(float activeTime)
@@ -21,7 +21,7 @@ public class PoisonCloudEffect : ICardEffect
         if (cloudScript != null)
         {
             cloudScript.Configure(
-                card.EffectValue, // Damage per second
+                (int)card.EffectValue, // Damage per second
                 card.ActiveTime,                   // Duration
                 0.3f,                              // Poison chance (30%)
                 5f,                                // Poison duration

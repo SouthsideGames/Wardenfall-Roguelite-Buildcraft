@@ -13,7 +13,7 @@ public class LightningBolt : MonoBehaviour
     [SerializeField] private LayerMask enemyMask;
 
     private LineRenderer lineRenderer;
-    private int damage;
+    private float damage;
 
 
     private void Awake()
@@ -48,7 +48,7 @@ public class LightningBolt : MonoBehaviour
             lineRenderer.SetPosition(lineRenderer.positionCount - 2, currentPosition);
             lineRenderer.SetPosition(lineRenderer.positionCount - 1, targetPosition);
 
-            target.TakeDamage(damage, false);
+            target.TakeDamage((int)damage, false);
 
             currentPosition = targetPosition;
 
