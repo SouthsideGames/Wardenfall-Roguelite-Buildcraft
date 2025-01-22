@@ -120,8 +120,10 @@ public class CurrencyManager : MonoBehaviour, IWantToBeSaved
 
     public bool HasEnoughCurrency(int _amount) => Currency >= _amount;
     public void UseCurrency(int _amount) => AdjustCurrency(-_amount);
+
     public bool HasEnoughPremiumCurrency(int _amount) => PremiumCurrency >= _amount;
     public void UsePremiumCurrency(int _amount) => AdjustPremiumCurrency(-_amount);
+    
     public void UseGemCurrency(int _amount) => AdjustGemCurrency(-_amount);
     public bool HasEnoughGem(int _amount) => GemCurrency >= _amount;
 

@@ -4,7 +4,7 @@ using UnityEngine;
 public class MinionManager : MonoBehaviour
 {
     [Header("SETTINGS:")]
-    [SerializeField] private Sprite characterSprite;
+    [SerializeField] private SpriteRenderer characterSprite;
     private float lifetime;
     private int damage;
 
@@ -12,7 +12,7 @@ public class MinionManager : MonoBehaviour
     
     public void InitializeMinion(float _lifetime, int _damage)
     {
-        characterSprite = CharacterStats.Instance.CharacterData.Icon;
+        characterSprite.sprite = CharacterStats.Instance.CharacterData.Icon;
         lifetime = _lifetime;
         damage = _damage;
     }

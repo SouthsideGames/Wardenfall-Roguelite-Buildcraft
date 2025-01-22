@@ -104,6 +104,7 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
 
     private void CharacterSelectCallback(int _index)
     {
+        
         selectedCharacterIndex = _index;
         CharacterDataSO characterData = characterDatas[_index];
 
@@ -111,23 +112,26 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
         {
             lastSelectedCharacterIndex = _index;
             characterInfo.Button.interactable = false;
+            characterSelectImage.sprite = characterData.Icon;
             Save();
             OnCharacterSelected?.Invoke(characterData);
         }
         else
         {
+    
             characterInfo.Button.interactable = CurrencyManager.Instance.HasEnoughPremiumCurrency(characterData.PurchasePrice);
         }
 
-        characterSelectImage.sprite = characterData.Icon;
         characterInfo.ConfigureInfoPanel(characterData, characterUnlockStates[_index]);
     }
 
     private void PurchaseSelectedCharacter()
     {
         int price = characterDatas[selectedCharacterIndex].PurchasePrice;
-        CurrencyManager.Instance.AdjustPremiumCurrency(-price);
+        CurrencyManager.Instance.UsePremiumCurrency(price);
+
         characterUnlockStates[selectedCharacterIndex] = true;
+        
         characterButtonParent.GetChild(selectedCharacterIndex).GetComponent<CharacterContainerUI>().Unlock();
         CharacterSelectCallback(selectedCharacterIndex);
         Save();
@@ -136,14 +140,24 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
     public void Load()
     {
         characterDatas = ResourceManager.Characters;
+
+        characterUnlockStates.Clear();
         for (int i = 0; i < characterDatas.Length; i++)
             characterUnlockStates.Add(i == 0);
 
         if (SaveManager.TryLoad(this, characterUnlockedStatesKey, out object characterUnlockedStatesObject))
-            characterUnlockStates = (List<bool>)characterUnlockedStatesObject;
+        {
+            List<bool> loadedUnlockStates = (List<bool>)characterUnlockedStatesObject;
+
+
+            if (loadedUnlockStates.Count == characterDatas.Length)
+                characterUnlockStates = loadedUnlockStates;
+        }
 
         if (SaveManager.TryLoad(this, lastSelectedCharacterKey, out object lastSelectedCharacterStatesObject))
             lastSelectedCharacterIndex = (int)lastSelectedCharacterStatesObject;
+        else
+            lastSelectedCharacterIndex = 0;
     }
 
     public void Save()
