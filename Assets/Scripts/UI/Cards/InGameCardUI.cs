@@ -27,14 +27,31 @@ public class InGameCardUI : MonoBehaviour
     {
         cardSO = _cardSO;
 
-        if(_cardSO.Rarity == CardRarityType.Common)
-           background.sprite = commonBackgroundImage;
+        ChangeBackground(_cardSO);
 
         if (icon != null)
             icon.sprite = cardSO.Icon;
 
         ResetTimers();
         UpdateCardUI();
+    }
+
+    private void ChangeBackground(CardSO _cardSO)
+    {
+        if (_cardSO.Rarity == CardRarityType.Common)
+            background.sprite = commonBackgroundImage;
+        else if (_cardSO.Rarity == CardRarityType.Uncommon)
+            background.sprite = uncommonBackgroundImage;
+        else if (_cardSO.Rarity == CardRarityType.Rare)
+            background.sprite = rareBackgroundImage;
+        else if (_cardSO.Rarity == CardRarityType.Epic)
+            background.sprite = epicBackgroundImage;
+        else if (_cardSO.Rarity == CardRarityType.Legendary)
+            background.sprite = legendaryBackgroundImage;
+        else if (_cardSO.Rarity == CardRarityType.Mythic)
+            background.sprite = mythicBackgroundImage;
+        else if (_cardSO.Rarity == CardRarityType.Exalted)
+            background.sprite = exaltedBackgroundImage;
     }
 
     private void ResetTimers()

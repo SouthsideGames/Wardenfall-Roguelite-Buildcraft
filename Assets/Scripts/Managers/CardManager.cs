@@ -18,8 +18,6 @@ public class CardManager : MonoBehaviour, IWantToBeSaved
     public CardDetailUI cardDetailUI { get; private set; }
 
     [Header("CHARACTER ELEMENTS:")]
-    [SerializeField] private Image characterIcon;
-    [SerializeField] private TextMeshProUGUI characterNameText;
     [SerializeField] private TextMeshProUGUI deckLimitText;
     [SerializeField] private TextMeshProUGUI totalCardsText;
     [SerializeField] private Transform activeDeckParent;
@@ -39,7 +37,7 @@ public class CardManager : MonoBehaviour, IWantToBeSaved
     private Dictionary<MiniCardRarityType, GameObject> miniCardFrameDictionary;
     private int currentDeckLimit;
     private int deckLimitMax = 10;
-    private CardEffectType currentFilter;
+    private CardType currentFilter;
 
     private void Awake()
     {
@@ -73,8 +71,8 @@ public class CardManager : MonoBehaviour, IWantToBeSaved
         UpdateActiveDeckFromSavedIDs();
         SpawnInGameCards();
         UpdateDeckLimitUI();
-        FilterCards(CardEffectType.None);
-        UpdateTotalCardsUI(CardEffectType.None);
+        FilterCards(CardType.None);
+        UpdateTotalCardsUI(CardType.None);
     }
 
     public void Save()
@@ -179,7 +177,7 @@ public class CardManager : MonoBehaviour, IWantToBeSaved
         return newCard;
     }
 
-    public void FilterCards(CardEffectType effectType)
+    public void FilterCards(CardType effectType)
     {
         currentFilter = effectType;
         UpdateTotalCardsUI(effectType);
@@ -190,7 +188,7 @@ public class CardManager : MonoBehaviour, IWantToBeSaved
         foreach (CardSO card in allCards)
         {
             if (!activeDeck.Contains(card) && 
-                (effectType == CardEffectType.None || card.EffectType == effectType))
+                (effectType == CardType.None || card.CardType == effectType))
             {
                 if (!cardFrameDictionary.TryGetValue(card.Rarity, out GameObject framePrefab))
                     continue;
@@ -236,12 +234,7 @@ public class CardManager : MonoBehaviour, IWantToBeSaved
         deckLimitText.text = $"Deck Limit: {currentDeckCost}/{deckLimitMax}";
     }
 
-    private void UpdateDeckForCharacter(CharacterDataSO _characterData)
-    {
-        characterIcon.sprite = _characterData.Icon;
-        characterNameText.text = _characterData.Name;
-        UpdateDeckLimitUI();   
-    }
+    private void UpdateDeckForCharacter(CharacterDataSO _characterData) => UpdateDeckLimitUI();
 
     public float GetCanvasScaleFactor() => canvas != null ? canvas.scaleFactor : 1f;
 
@@ -257,7 +250,7 @@ public class CardManager : MonoBehaviour, IWantToBeSaved
 
         Destroy(miniCard.gameObject);
 
-        if (currentFilter == card.EffectType && 
+        if (currentFilter == card.CardType && 
             cardFrameDictionary.TryGetValue(card.Rarity, out GameObject framePrefab))
         {
             GameObject newCard = Instantiate(framePrefab, deckListContainer);
@@ -296,20 +289,20 @@ public class CardManager : MonoBehaviour, IWantToBeSaved
 
     public void CloseCardDetails() => cardDetailContainer.SetActive(false);
 
-    private void UpdateTotalCardsUI(CardEffectType effectType)
+    private void UpdateTotalCardsUI(CardType effectType)
     {
         int totalCardsInResources;
         int purchasedCards;
 
-        if (effectType == CardEffectType.None)
+        if (effectType == CardType.None)
         {
             totalCardsInResources = allCards.Count;
             purchasedCards = activeDeck.Count;
         }
         else
         {
-            totalCardsInResources = allCards.Count(card => card.EffectType == effectType);
-            purchasedCards = activeDeck.Count(card => card.EffectType == effectType);
+            totalCardsInResources = allCards.Count(card => card.CardType == effectType);
+            purchasedCards = activeDeck.Count(card => card.CardType == effectType);
         }
 
         totalCardsText.text = $"Cards: {purchasedCards}/{totalCardsInResources}";

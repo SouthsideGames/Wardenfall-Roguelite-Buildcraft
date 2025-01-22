@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class CardFilterButtonUI : MonoBehaviour
 {
-    [SerializeField] private CardEffectType effectType;
+    [SerializeField] private CardType effectType;
 
     public void AssignEffectType() => CardManager.Instance.FilterCards(effectType);
 }

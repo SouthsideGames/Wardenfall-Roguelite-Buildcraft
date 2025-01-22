@@ -121,7 +121,6 @@ public enum MiniCardRarityType
 
 public enum CardEffectType
 {
-    None = 000,
     Damage_FireballBarrage = 001,
     Damage_EnergyBlast = 002,
     Damage_ThunderStrike = 003,
