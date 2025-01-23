@@ -25,7 +25,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
     [SerializeField] private GameObject codexPanel;
     [SerializeField] private GameObject missionPanel;
     [SerializeField] private GameObject loadoutPanel;
-    [SerializeField] private GameObject cardShopPanel;
+    [SerializeField] private GameObject menuShopPanel;
 
     [Header("REFERENCES")]
     [SerializeField] private CardManager cardManager;
@@ -65,7 +65,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
         HideSettingsPanel();
         HideMissionPanel();
         HideDeckbuilderPanel();
-        HideCardShopPanel();
+        HideMenuShopPanel();
     
     }
 
@@ -237,16 +237,16 @@ public class UIManager : MonoBehaviour, IGameStateListener
         TriggerPanelAction(menuPanel);
     }
 
-    public void ShowCardShopPanel()
+    public void ShowMenuShopPanel()
     {
-        cardShopPanel.SetActive(true);
+        menuShopPanel.SetActive(true);
         menuPanel.SetActive(false);
         
     }
 
-    public void HideCardShopPanel()
+    public void HideMenuShopPanel()
     {
-        cardShopPanel.SetActive(false);
+        menuShopPanel.SetActive(false);
         menuPanel.SetActive(true);
     }
 
