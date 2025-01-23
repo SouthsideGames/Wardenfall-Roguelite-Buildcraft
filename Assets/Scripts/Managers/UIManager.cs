@@ -24,7 +24,8 @@ public class UIManager : MonoBehaviour, IGameStateListener
     [SerializeField] private GameObject settingPanel;
     [SerializeField] private GameObject codexPanel;
     [SerializeField] private GameObject missionPanel;
-    [SerializeField] private GameObject deckbuilderPanel;
+    [SerializeField] private GameObject loadoutPanel;
+    [SerializeField] private GameObject cardShopPanel;
 
     [Header("REFERENCES")]
     [SerializeField] private CardManager cardManager;
@@ -64,6 +65,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
         HideSettingsPanel();
         HideMissionPanel();
         HideDeckbuilderPanel();
+        HideCardShopPanel();
     
     }
 
@@ -223,16 +225,29 @@ public class UIManager : MonoBehaviour, IGameStateListener
 
     public void ShowDeckbuilderPanel()
     {
-        deckbuilderPanel.SetActive(true);
-        TriggerPanelAction(deckbuilderPanel);
+        loadoutPanel.SetActive(true);
+        TriggerPanelAction(loadoutPanel);
         menuPanel.SetActive(false);
     }
     public void HideDeckbuilderPanel()
     {
-        deckbuilderPanel.SetActive(false);
+        loadoutPanel.SetActive(false);
         cardManager.SpawnInGameCards();
         menuPanel.SetActive(true);
         TriggerPanelAction(menuPanel);
+    }
+
+    public void ShowCardShopPanel()
+    {
+        cardShopPanel.SetActive(true);
+        menuPanel.SetActive(false);
+        
+    }
+
+    public void HideCardShopPanel()
+    {
+        cardShopPanel.SetActive(false);
+        menuPanel.SetActive(true);
     }
 
     private void TriggerPanelAction(GameObject _panelObject)
