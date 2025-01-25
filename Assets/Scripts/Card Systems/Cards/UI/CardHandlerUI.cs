@@ -27,7 +27,6 @@ public class CardHandlerUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     {
         cardData = cardSO;
         deckManager = manager;
-        Debug.Log($"Card configured: {cardSO?.CardName}");
     }
 
     private void Awake()

@@ -5,10 +5,10 @@ public class EnergyBlastEffect : ICardEffect
     private GameObject energyOrbPrefab;
     private CardSO cardSO;
 
-    public EnergyBlastEffect(GameObject energyOrbPrefab, CardSO cardSO)
+    public EnergyBlastEffect(GameObject _energyOrbPrefab, CardSO _cardSO)
     {
-        this.energyOrbPrefab = energyOrbPrefab;
-        this.cardSO = cardSO;
+        energyOrbPrefab = _energyOrbPrefab;
+        cardSO = _cardSO;
     }
 
     public void Activate(float duration)
@@ -18,13 +18,10 @@ public class EnergyBlastEffect : ICardEffect
 
         GameObject orb = Object.Instantiate(energyOrbPrefab, spawnPosition, Quaternion.identity);
         orb.GetComponent<EnergyOrb>().Launch(direction, cardSO);
-
-        Debug.Log("Energy Blast activated! Orb launched.");
     }
 
     public void Disable()
     {
-        Debug.Log("Energy Blast has no disable phase.");
     }
 
 

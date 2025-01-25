@@ -87,11 +87,7 @@ GameObject:
   - component: {fileID: 2804482079934013076}
   - component: {fileID: 7674108836266317472}
   - component: {fileID: 3128583511421719335}
-  - component: {fileID: 2724608540965875975}
-  - component: {fileID: 3522682809772232393}
-  - component: {fileID: 2829694173641492029}
-  - component: {fileID: 7099163838097718906}
-  - component: {fileID: 6586744174430724243}
+  - component: {fileID: 4740859208978257720}
   m_Layer: 0
   m_Name: CardShopFrame03_Rare
   m_TagString: Untagged
@@ -189,7 +185,7 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
---- !u!114 &2724608540965875975
+--- !u!114 &4740859208978257720
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -198,65 +194,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1426587132891355647}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9bc1556fa597c324da48e1ee3f0f9042, type: 3}
+  m_Script: {fileID: 11500000, guid: d6727384094049e418e0f26c7d1d45a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &3522682809772232393
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1426587132891355647}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3be25d32fc4ff4c88b3fd3e3a2eb1231, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2829694173641492029
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1426587132891355647}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e6ceddbebe779ac479c65cf1d3917114, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  clipToPlay: {fileID: 8300000, guid: 1f48773f9d0f44dcf9e4009b8cec61c5, type: 3}
---- !u!114 &7099163838097718906
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1426587132891355647}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6efad0b487f4774d9dcc549a4fec4c9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  canvas: {fileID: 0}
-  cardRectTransform: {fileID: 3454692963607480797}
-  canvasGroup: {fileID: 3128583511421719335}
---- !u!114 &6586744174430724243
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1426587132891355647}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42f2db5c366248b4ca32fc81144da111, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  icon: {fileID: 5755332291870104036}
+  cardIcon: {fileID: 5755332291870104036}
+  effectIcon: {fileID: 4992468185234882918}
   cardNameText: {fileID: 291726081729727194}
   costText: {fileID: 3230204970719090617}
-  effectIcon: {fileID: 4992468185234882918}
+  purchasePriceText: {fileID: 9194781569498012979}
+  purchaseButton: {fileID: 1037674113149101184}
 --- !u!1 &2020611502996084002
 GameObject:
   m_ObjectHideFlags: 0
@@ -487,6 +433,8 @@ GameObject:
   - component: {fileID: 7108434837184156665}
   - component: {fileID: 1037674113149101184}
   - component: {fileID: 8787968329316476478}
+  - component: {fileID: 7038701397571975120}
+  - component: {fileID: 3649914733286962289}
   m_Layer: 5
   m_Name: Purchase Button
   m_TagString: Untagged
@@ -611,6 +559,31 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.2}
   m_EffectDistance: {x: 0, y: -8}
   m_UseGraphicAlpha: 1
+--- !u!114 &7038701397571975120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3635757264494395759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bc1556fa597c324da48e1ee3f0f9042, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3649914733286962289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3635757264494395759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6ceddbebe779ac479c65cf1d3917114, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clipToPlay: {fileID: 8300000, guid: 1f48773f9d0f44dcf9e4009b8cec61c5, type: 3}
 --- !u!1 &3973338693333188895
 GameObject:
   m_ObjectHideFlags: 0

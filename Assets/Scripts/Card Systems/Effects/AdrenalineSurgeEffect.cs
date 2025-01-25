@@ -14,15 +14,12 @@ public class AdrenalineSurgeEffect : ICardEffect
     public void Activate(float activeDuration)
     {
         CharacterStats.Instance.BoostStat(Stat.MoveSpeed, speedBoostValue);
-
-        Debug.Log($"Adrenaline Surge activated! Movement speed increased by {speedBoostValue} for {duration} seconds.");
         CharacterManager.Instance.StartCoroutine(DeactivateAfterDuration());
     }
 
     public void Disable()
     {
         CharacterStats.Instance.RevertBoost(Stat.MoveSpeed);
-        Debug.Log("Adrenaline Surge ended. Movement speed boost reverted.");
     }
 
     private System.Collections.IEnumerator DeactivateAfterDuration()

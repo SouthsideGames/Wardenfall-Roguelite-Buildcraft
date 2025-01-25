@@ -11,13 +11,13 @@ public class MinionSwarmEffect : ICardEffect
     private int minionCount;
     private float spawnInterval;
 
-    public MinionSwarmEffect(GameObject minionPrefab, Transform spawnPoint, int minionDamage, int minionCount, float spawnInterval)
+    public MinionSwarmEffect(GameObject _minionPrefab, Transform _spawnPoint, int _minionDamage, int _minionCount, float _spawnInterval)
     {
-        this.minionPrefab = minionPrefab;
-        this.spawnPoint = spawnPoint;
-        this.minionDamage = minionDamage;
-        this.minionCount = minionCount;
-        this.spawnInterval = spawnInterval;
+        minionPrefab = _minionPrefab;
+        spawnPoint = _spawnPoint;
+        minionDamage = _minionDamage;
+        minionCount = _minionCount;
+        spawnInterval = _spawnInterval;
     }
 
     public void Activate(float duration)
@@ -28,7 +28,6 @@ public class MinionSwarmEffect : ICardEffect
 
     public void Disable()
     {
-        Debug.Log("Minion Swarm effect disabled.");
     }
 
     private IEnumerator SpawnMinions()
@@ -48,6 +47,5 @@ public class MinionSwarmEffect : ICardEffect
             yield return new WaitForSeconds(spawnInterval);
         }
 
-        Debug.Log($"Spawned {spawnedCount} minions.");
     }
 }

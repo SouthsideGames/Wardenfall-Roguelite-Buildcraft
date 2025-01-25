@@ -5,10 +5,10 @@ public class ArcLightningEffect : ICardEffect
     private GameObject lightningBoltPrefab;
     private CardSO cardSO;  
 
-    public ArcLightningEffect(GameObject lightningBoltPrefab, CardSO _cardSO)
+    public ArcLightningEffect(GameObject _lightningBoltPrefab, CardSO _cardSO)
     {
-        this.lightningBoltPrefab = lightningBoltPrefab;
-        this.cardSO = _cardSO;  
+        lightningBoltPrefab = _lightningBoltPrefab;
+        cardSO = _cardSO;  
     }
 
     public void Activate(float duration)
@@ -25,12 +25,10 @@ public class ArcLightningEffect : ICardEffect
 
         GameObject lightningBolt = Object.Instantiate(lightningBoltPrefab, startPosition, Quaternion.identity);
         lightningBolt.GetComponent<LightningBolt>().Activate(startPosition, cardSO);
-        Debug.Log("Arc Lightning activated!");
     }
 
     public void Disable()
     {
-        Debug.Log("Arc Lightning does not require a disable phase.");
     }
 
 }

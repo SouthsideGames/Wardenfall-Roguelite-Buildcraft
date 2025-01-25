@@ -19,8 +19,6 @@ public class PrecisionFocusEffect : ICardEffect
         CharacterStats.Instance.BoostStat(Stat.CritChance, critChanceBoost);
         CharacterStats.Instance.BoostStat(Stat.CritDamage, critDamageBoost);
 
-        Debug.Log($"Precision Focus activated: +{critChanceBoost}% Crit Chance, +{critDamageBoost}% Crit Damage for {duration} seconds.");
-
         CharacterManager.Instance.StartCoroutine(RevertAfterDuration());
     }
 
@@ -29,8 +27,6 @@ public class PrecisionFocusEffect : ICardEffect
        
         CharacterStats.Instance.RevertBoost(Stat.CritChance);
         CharacterStats.Instance.RevertBoost(Stat.CritDamage);
-
-        Debug.Log("Precision Focus disabled: Critical chance and damage boosts removed.");
     }
 
     private IEnumerator RevertAfterDuration()

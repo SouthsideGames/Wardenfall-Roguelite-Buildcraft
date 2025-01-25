@@ -46,11 +46,8 @@ public class CardManager : MonoBehaviour, IWantToBeSaved
         else
             Destroy(gameObject);
 
-        Debug.Log("CardManager Awake called");
-
         CharacterSelectionManager.OnCharacterSelected += UpdateDeckForCharacter;
         CardHandlerUI.OnButtonPressed += ShowCardDetails;
-        Debug.Log("Subscribed to OnButtonPressed in CardManager");
 
         cardDetailUI = cardDetailContainer.GetComponent<CardDetailUI>();
         InitializeCardFrames();
@@ -76,16 +73,13 @@ public class CardManager : MonoBehaviour, IWantToBeSaved
         UpdateDeckLimitUI();
         FilterCards(CardType.None);
         UpdateTotalCardsUI(CardType.None);
-
-        Debug.Log("CardManager Start called");
     }
 
     public void Save()
     {
-        savedCardIDs = activeDeck.Select(card => card.ID).ToList();
+        savedCardIDs = activeDeck.Where(card => card.IsCollected).Select(card => card.ID).ToList();
 
         SaveManager.Save(this, "ActiveDeckCardIDs", savedCardIDs);
-        Debug.Log($"Saved Active Deck IDs: {string.Join(", ", savedCardIDs)}");
     }
 
     public void Load()
@@ -125,7 +119,7 @@ public class CardManager : MonoBehaviour, IWantToBeSaved
 
         foreach (string cardID in savedCardIDs)
         {
-            CardSO matchingCard = allCards.FirstOrDefault(card => card.ID == cardID);
+            CardSO matchingCard = allCards.FirstOrDefault(card => card.ID == cardID && card.IsCollected); // Only load collected cards
             if (matchingCard != null)
             {
                 activeDeck.Add(matchingCard);
@@ -133,8 +127,8 @@ public class CardManager : MonoBehaviour, IWantToBeSaved
                 AddMiniCard(matchingCard);
             }
         }
-        
-        CharacterManager.Instance.deck.FillEquippedCardsFromSavedIDs(allCards, savedCardIDs);
+
+        CharacterManager.Instance.deck.FillEquippedCardsFromSavedIDs(allCards.Where(card => card.IsCollected).ToList(), savedCardIDs);
         UpdateDeckLimitUI();
     }
 
@@ -192,7 +186,8 @@ public class CardManager : MonoBehaviour, IWantToBeSaved
 
         foreach (CardSO card in allCards)
         {
-            if (!activeDeck.Contains(card) && 
+            // Only show cards that are not in the active deck and have been collected
+            if (!activeDeck.Contains(card) && card.IsCollected &&
                 (effectType == CardType.None || card.CardType == effectType))
             {
                 if (!cardFrameDictionary.TryGetValue(card.Rarity, out GameObject framePrefab))
@@ -269,7 +264,6 @@ public class CardManager : MonoBehaviour, IWantToBeSaved
 
     public void ShowCardDetails(CardSO card)
     {
-        Debug.Log($"ShowCardDetails called for card: {card?.CardName}");
         cardDetailContainer.SetActive(true);
         if (cardDetailUI != null)
         {
@@ -323,14 +317,7 @@ public class CardManager : MonoBehaviour, IWantToBeSaved
    public void DeactivateCard(CardSO cardSO)
     {
         if (activeDeck.Contains(cardSO))
-        {
             activeDeck.Remove(cardSO);
-            Debug.Log($"{cardSO.CardName} has been deactivated and removed from the active deck.");
-        }
-        else
-        {
-            Debug.LogWarning($"Attempted to deactivate {cardSO.CardName}, but it is not in the active deck.");
-        }
     }
 }
 

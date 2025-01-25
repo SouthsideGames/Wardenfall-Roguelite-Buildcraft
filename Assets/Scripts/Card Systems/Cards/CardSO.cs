@@ -31,6 +31,8 @@ using UnityEngine;
     public bool IsAutoActivated => isAutoActivated;
     [SerializeField] private bool isActive = true;
     public bool IsActive => isActive;
+    [SerializeField] private int purchasePrice;
+    public int PurchasePrice => purchasePrice;
 
     [Header("TIMERS")]
     [SerializeField] private float effectValue;

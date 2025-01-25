@@ -7,9 +7,9 @@ public class BladeStormEffect : ICardEffect
     private CardSO cardSO;
     private List<GameObject> spawnedBlades = new List<GameObject>();   
 
-    public BladeStormEffect(GameObject bladePrefab, CardSO _card)
+    public BladeStormEffect(GameObject _bladePrefab, CardSO _card)
     {
-        this.bladePrefab = bladePrefab;
+        bladePrefab = _bladePrefab;
         cardSO = _card;    
     }
 

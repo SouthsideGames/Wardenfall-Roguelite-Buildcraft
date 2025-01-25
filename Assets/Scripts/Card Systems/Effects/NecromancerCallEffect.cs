@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class NecromancerCallEffect : ICardEffect
 {
-      private GameObject undeadMinionPrefab;
+    private GameObject undeadMinionPrefab;
     private Transform spawnPoint;
     private float activeTime;
     private int minionCount = 5;
@@ -25,7 +25,6 @@ public class NecromancerCallEffect : ICardEffect
 
     public void Disable()
     {
-        Debug.Log("Necromancer’s Call effect disabled.");
     }
 
     private IEnumerator SpawnUndeadMinions()
@@ -36,8 +35,6 @@ public class NecromancerCallEffect : ICardEffect
         while (timer < activeTime && spawnedCount < minionCount)
         {
             GameObject minion = Object.Instantiate(undeadMinionPrefab, spawnPoint.position, Quaternion.identity);
-
-            // Initialize minion with explosion damage
             UndeadMinion minionManager = minion.GetComponent<UndeadMinion>();
             minionManager.InitializeMinion(activeTime - timer, cardSO);
 
@@ -47,6 +44,5 @@ public class NecromancerCallEffect : ICardEffect
             yield return new WaitForSeconds(spawnInterval);
         }
 
-        Debug.Log($"Spawned {spawnedCount} undead minions.");
     }
 }

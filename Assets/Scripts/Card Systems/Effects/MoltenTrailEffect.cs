@@ -23,6 +23,5 @@ public class MoltenTrailEffect : ICardEffect
 
     public void Disable()
     {
-        Debug.Log("Molten Trail does not require a disable phase.");
     }
 }

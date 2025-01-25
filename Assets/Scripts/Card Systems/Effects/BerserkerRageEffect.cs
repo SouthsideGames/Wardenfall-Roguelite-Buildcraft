@@ -14,15 +14,12 @@ public class BerserkerRageEffect : ICardEffect
     public void Activate(float activeDuration)
     {
         CharacterStats.Instance.BoostStat(Stat.Attack, attackBoostValue);
-
-        Debug.Log($"Berserker Rage activated! Attack increased by {attackBoostValue} for {duration} seconds.");
         CharacterManager.Instance.StartCoroutine(DeactivateAfterDuration());
     }
 
     public void Disable()
     {
         CharacterStats.Instance.RevertBoost(Stat.Attack);
-        Debug.Log("Berserker Rage ended. Attack boost reverted.");
     }
 
     private System.Collections.IEnumerator DeactivateAfterDuration()

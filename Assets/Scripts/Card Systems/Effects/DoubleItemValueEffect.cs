@@ -8,9 +8,9 @@ public class DoubleItemValueEffect : ICardEffect
     public static Action OnDoubleValueDeactivated;
    private float duration;
 
-    public DoubleItemValueEffect(float duration)
+    public DoubleItemValueEffect(float _duration)
     {
-        this.duration = duration;
+        duration = _duration;
     }
 
     public void Activate(float duration)

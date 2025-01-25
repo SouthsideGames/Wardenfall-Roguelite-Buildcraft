@@ -7,9 +7,9 @@ public class GravityCollapseEffect : ICardEffect
     private float duration;
     private float pullRadius;
 
-    public GravityCollapseEffect(GameObject gravityFieldPrefab, CardSO _cardSO, float _pullRadius)
+    public GravityCollapseEffect(GameObject _gravityFieldPrefab, CardSO _cardSO, float _pullRadius)
     {
-        this.gravityFieldPrefab = gravityFieldPrefab;
+        gravityFieldPrefab = _gravityFieldPrefab;
         damage = _cardSO.EffectValue;
         duration = _cardSO.ActiveTime;
         pullRadius = _pullRadius;
@@ -23,15 +23,10 @@ public class GravityCollapseEffect : ICardEffect
         GravityField gravityScript = gravityField.GetComponent<GravityField>();
 
         if (gravityScript != null)
-        {
             gravityScript.Configure((int)damage, duration, pullRadius);
-        }
-
-        Debug.Log($"Gravity Collapse activated! Pulling all enemies into the center and dealing {damage} damage.");
     }
 
     public void Disable()
     {
-        Debug.Log("Gravity Collapse does not require a disable phase.");
     }
 }

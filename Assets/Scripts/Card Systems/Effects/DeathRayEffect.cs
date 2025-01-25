@@ -5,10 +5,10 @@ public class DeathRayEffect : ICardEffect
     private GameObject deathCloudPrefab;
     private CardSO cardSO;
 
-    public DeathRayEffect(GameObject deathCloudPrefab, CardSO cardSO)
+    public DeathRayEffect(GameObject _deathCloudPrefab, CardSO _cardSO)
     {
-        this.deathCloudPrefab = deathCloudPrefab;
-        this.cardSO = cardSO;
+        deathCloudPrefab = _deathCloudPrefab;
+        cardSO = _cardSO;
     }
 
     public void Activate(float duration)
@@ -19,12 +19,11 @@ public class DeathRayEffect : ICardEffect
         DeathRay cloudScript = deathCloud.GetComponent<DeathRay>();
         cloudScript.Configure(duration);
 
-        Debug.Log($"Death Cloud activated for {duration}s. Beams will randomly strike enemies.");
     }
 
     public void Disable()
     {
-        Debug.Log("Death Cloud does not require a disable phase.");
+
     }
 
 

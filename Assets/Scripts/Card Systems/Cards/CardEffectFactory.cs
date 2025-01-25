@@ -45,7 +45,7 @@ public static class CardEffectFactory
                 return new MoltenTrailEffect(Resources.Load<GameObject>("Prefabs/Effects/MoltenTrail"), cardSO);
             case CardEffectType.Special_MinionSwarm:
                 GameObject minionPrefab = Resources.Load<GameObject>("Prefabs/Allies/Minion");
-                 return new MinionSwarmEffect(minionPrefab, CharacterManager.Instance.transform, minionDamage: (int)cardSO.EffectValue, minionCount: 5, spawnInterval: 1f);
+                 return new MinionSwarmEffect(minionPrefab, CharacterManager.Instance.transform, _minionDamage: (int)cardSO.EffectValue, _minionCount: 5, _spawnInterval: 1f);
             case CardEffectType.Special_NecromancersCall:
                 return new NecromancerCallEffect(Resources.Load<GameObject>("Prefabs/Allies/Undead Minion"),CharacterManager.Instance.transform, cardSO);
             default:

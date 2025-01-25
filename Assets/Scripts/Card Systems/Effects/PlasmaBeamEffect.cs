@@ -5,10 +5,10 @@ public class PlasmaBeamEffect : ICardEffect
     private GameObject plasmaBeamPrefab;
     private CardSO cardSO;
 
-    public PlasmaBeamEffect(GameObject plasmaBeamPrefab, CardSO cardSO)
+    public PlasmaBeamEffect(GameObject _plasmaBeamPrefab, CardSO _cardSO)
     {
-        this.plasmaBeamPrefab = plasmaBeamPrefab;
-        this.cardSO = cardSO;
+        plasmaBeamPrefab = _plasmaBeamPrefab;
+        cardSO = _cardSO;
     }
 
     public void Activate(float duration)
@@ -19,7 +19,6 @@ public class PlasmaBeamEffect : ICardEffect
         PlasmaBeam beamScript = plasmaBeam.GetComponent<PlasmaBeam>();
         beamScript.Configure((int)cardSO.EffectValue, cardSO.ActiveTime);
 
-        Debug.Log($"Plasma Beam activated for {cardSO.ActiveTime}s, dealing {cardSO.EffectValue} damage per tick.");
     }
 
     public void Disable() {}
