@@ -1,7 +1,6 @@
 using System;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using SouthsideGames.DailyMissions;
 
@@ -28,6 +27,7 @@ public class CharacterHealth : MonoBehaviour, IStats
     private float healthRecoveryValue;
     private float healthRecoveryTimer;
     private float healthRecoveryDuration;
+    private int damageAbsorption = 0;
 
     private void Awake() => Enemy.OnDamageTaken += EnemyDamageCallback;
 
@@ -39,6 +39,7 @@ public class CharacterHealth : MonoBehaviour, IStats
            RecoverHealth();
     }
 
+    public void SetDamageAbsorption(int percentage) => damageAbsorption = Mathf.Clamp(percentage, 0, 100);
     public void TakeDamage(int _damage)
     {
 
@@ -47,10 +48,11 @@ public class CharacterHealth : MonoBehaviour, IStats
             OnDodge?.Invoke(transform.position);  
             return;
         }
-        
-        float realDamage = _damage * Mathf.Clamp(1 - (armor / 1000), 0, 10000);
-        realDamage = Mathf.Min(realDamage, health);
-        health -= realDamage;  
+          
+        float absorbedDamage = _damage * (damageAbsorption / 100f);
+        float actualDamage = _damage - absorbedDamage;
+
+        health -= Mathf.Min(actualDamage, health);
 
         UpdateHealthUI();
 

@@ -41,6 +41,9 @@ public static class CardEffectFactory
                 return new AdrenalineSurgeEffect(cardSO);
             case CardEffectType.Support_BerserkerRage:
                 return new BerserkerRageEffect(cardSO);
+            case CardEffectType.Support_GuardianSpirit:
+                return new GuardianSpiritEffect(Resources.Load<GameObject>("Prefabs/Allies/GuardianSpirit"), CharacterManager.Instance.transform, cardSO.EffectValue);
+
             case CardEffectType.Special_MoltenTrail:
                 return new MoltenTrailEffect(Resources.Load<GameObject>("Prefabs/Effects/MoltenTrail"), cardSO);
             case CardEffectType.Special_MinionSwarm:

@@ -6,28 +6,26 @@ public class GuardianSpiritEffect : ICardEffect
     private GameObject spiritPrefab;
     private GameObject activeSpirit;
     private Transform playerTransform;
-    private int damageAbsorptionPercentage;
+    private float damageAbsorptionPercentage;
     private float activeTime;
 
-    public GuardianSpiritEffect(GameObject spiritPrefab, Transform playerTransform, int damageAbsorptionPercentage)
+    public GuardianSpiritEffect(GameObject _spiritPrefab, Transform _playerTransform, float _damageAbsorptionPercentage)
     {
-        this.spiritPrefab = spiritPrefab;
-        this.playerTransform = playerTransform;
-        this.damageAbsorptionPercentage = damageAbsorptionPercentage;
+        spiritPrefab = _spiritPrefab;
+        playerTransform = _playerTransform;
+        damageAbsorptionPercentage = _damageAbsorptionPercentage;
     }
 
     public void Activate(float duration)
     {
         activeTime = duration;
 
-        // Spawn the Guardian Spirit
         activeSpirit = Object.Instantiate(spiritPrefab, playerTransform.position, Quaternion.identity);
         activeSpirit.transform.SetParent(playerTransform);
 
         CharacterHealth characterHealth = CharacterManager.Instance.health;
-        characterHealth.SetDamageAbsorption(damageAbsorptionPercentage);
+        characterHealth.SetDamageAbsorption((int)damageAbsorptionPercentage);
 
-        // Start a timer to disable the effect after the active time
         CoroutineRunner.Instance.StartCoroutine(DisableAfterDuration(characterHealth));
     }
 
@@ -39,7 +37,7 @@ public class GuardianSpiritEffect : ICardEffect
         }
 
         CharacterHealth characterHealth = CharacterManager.Instance.health;
-        characterHealth.SetDamageAbsorption(0); // Reset damage absorption
+        characterHealth.SetDamageAbsorption(0); 
     }
 
     private IEnumerator DisableAfterDuration(CharacterHealth characterHealth)

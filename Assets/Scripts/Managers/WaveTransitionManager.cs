@@ -39,10 +39,7 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
     }
 
 
-    private void OnDestroy() 
-    {
-        Chest.OnCollected -= ChestCollectedCallback;
-    }
+    private void OnDestroy() => Chest.OnCollected -= ChestCollectedCallback;
 
     public void GameStateChangedCallback(GameState _gameState)
     {
@@ -217,11 +214,7 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
         return () => CharacterStats.Instance.AddStat(_characterStat, value);    
     }
 
-    private void ChestCollectedCallback(Chest chest)
-    {
-        chestsCollected++;
-        Debug.Log("We now have " + chestsCollected + "chest");
-    }
+    private void ChestCollectedCallback(Chest chest) => chestsCollected++;
 
     public bool HasCollectedChest() => chestsCollected > 0;
 

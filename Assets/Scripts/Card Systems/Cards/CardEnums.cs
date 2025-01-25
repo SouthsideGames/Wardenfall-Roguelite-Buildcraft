@@ -46,6 +46,7 @@ using UnityEngine;
         Support_PrecisionFocus = 101,
         Support_AdrenalineSurge = 102,
         Support_BerserkerRage = 103,
+        Support_GuardianSpirit = 104,
         Utility_EternalPause = 200,
         Utility_TemporalReset = 201,
         Utility_DoubleItemValue = 202,
