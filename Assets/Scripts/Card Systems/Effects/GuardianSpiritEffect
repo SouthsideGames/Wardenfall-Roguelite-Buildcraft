@@ -1,0 +1,50 @@
+using System.Collections;
+using UnityEngine;
+
+public class GuardianSpiritEffect : ICardEffect
+{
+    private GameObject spiritPrefab;
+    private GameObject activeSpirit;
+    private Transform playerTransform;
+    private int damageAbsorptionPercentage;
+    private float activeTime;
+
+    public GuardianSpiritEffect(GameObject spiritPrefab, Transform playerTransform, int damageAbsorptionPercentage)
+    {
+        this.spiritPrefab = spiritPrefab;
+        this.playerTransform = playerTransform;
+        this.damageAbsorptionPercentage = damageAbsorptionPercentage;
+    }
+
+    public void Activate(float duration)
+    {
+        activeTime = duration;
+
+        // Spawn the Guardian Spirit
+        activeSpirit = Object.Instantiate(spiritPrefab, playerTransform.position, Quaternion.identity);
+        activeSpirit.transform.SetParent(playerTransform);
+
+        CharacterHealth characterHealth = CharacterManager.Instance.health;
+        characterHealth.SetDamageAbsorption(damageAbsorptionPercentage);
+
+        // Start a timer to disable the effect after the active time
+        CoroutineRunner.Instance.StartCoroutine(DisableAfterDuration(characterHealth));
+    }
+
+    public void Disable()
+    {
+        if (activeSpirit != null)
+        {
+            Object.Destroy(activeSpirit);
+        }
+
+        CharacterHealth characterHealth = CharacterManager.Instance.health;
+        characterHealth.SetDamageAbsorption(0); // Reset damage absorption
+    }
+
+    private IEnumerator DisableAfterDuration(CharacterHealth characterHealth)
+    {
+        yield return new WaitForSeconds(activeTime);
+        Disable();
+    }
+}
