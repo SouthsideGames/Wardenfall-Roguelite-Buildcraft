@@ -10,7 +10,9 @@ using Random = UnityEngine.Random;
 /// </summary>
 public class ItemManager : MonoBehaviour
 {
-   [Header("ELEMENTS:")]
+    public static ItemManager Instance;
+
+    [Header("ELEMENTS:")]
     [SerializeField] private Meat meatPrefab;
     [SerializeField] private Cash cashPrefab;
     [SerializeField] private Chest chestPrefab;
@@ -19,13 +21,18 @@ public class ItemManager : MonoBehaviour
 
     [Header("SETTINGS:")]
     [Range(0, 100)]
-    [SerializeField] private int cashDropChance;
+    [SerializeField] private int baseCashDropChance;
     [Range(0, 100)]
-    [SerializeField] private int chestDropChance;
+    [SerializeField] private int baseChestDropChance;
     [Range(0, 100)]
-    [SerializeField] private int gemDropChance;
+    [SerializeField] private int baseGemDropChance;
     [Range(0, 100)]
-    [SerializeField] private int survivorBoxDropChance;
+    [SerializeField] private int baseSurvivorBoxDropChance;
+
+    private float cashDropChanceMultiplier = 1f;
+    private float chestDropChanceMultiplier = 1f;
+    private float gemDropChanceMultiplier = 1f;
+    private float survivorBoxDropChanceMultiplier = 1f;
 
     [Header("Pooling")]
     private ObjectPool<Meat> meatPool;
@@ -36,15 +43,35 @@ public class ItemManager : MonoBehaviour
 
     private void Awake()
     {
+         if(Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
+
         Enemy.OnDeath += EnemyDeathCallback;
         Enemy.OnBossDeath += BossDeathCallback;
         Meat.OnCollected += ReleaseMeat;
-        Cash.onCollected += ReleaseCash;
+        Cash.OnCollected += ReleaseCash;
         Chest.OnCollected += ReleaseChest;
         Gem.OnCollected += ReleaseGem;
     }
 
     private void Start()
+    {
+        InitializePools();
+    }
+
+    private void OnDestroy()
+    {
+        Enemy.OnDeath -= EnemyDeathCallback;
+        Enemy.OnBossDeath -= BossDeathCallback;
+        Meat.OnCollected -= ReleaseMeat;
+        Cash.OnCollected -= ReleaseCash;
+        Chest.OnCollected -= ReleaseChest;
+        Gem.OnCollected -= ReleaseGem;
+    }
+
+    private void InitializePools()
     {
         meatPool = new ObjectPool<Meat>(
             MeatCreateFunction,
@@ -77,20 +104,36 @@ public class ItemManager : MonoBehaviour
             SurvivorBoxActionOnDestroy);
     }
 
-    private void OnDestroy()
+    public void ApplyItemBoost(float multiplier, float duration)
     {
-        Enemy.OnDeath -= EnemyDeathCallback;
-        Enemy.OnBossDeath -= BossDeathCallback;
-        Meat.OnCollected -= ReleaseMeat;
-        Cash.onCollected -= ReleaseCash;
-        Chest.OnCollected -= ReleaseChest;
-        Gem.OnCollected -= ReleaseGem;
+        cashDropChanceMultiplier = multiplier;
+        chestDropChanceMultiplier = multiplier;
+        gemDropChanceMultiplier = multiplier;
+        survivorBoxDropChanceMultiplier = multiplier;
+
+        CancelInvoke(nameof(ResetItemBoost));
+        Invoke(nameof(ResetItemBoost), duration);
+
+        Debug.Log($"Item drop chances boosted by {multiplier * 100}% for {duration} seconds.");
+    }
+
+    private void ResetItemBoost()
+    {
+        cashDropChanceMultiplier = 1f;
+        chestDropChanceMultiplier = 1f;
+        gemDropChanceMultiplier = 1f;
+        survivorBoxDropChanceMultiplier = 1f;
+
+        Debug.Log("Item drop chances reset to default.");
     }
 
     private void EnemyDeathCallback(Vector2 _enemyPosition)
     {
-        Item itemToDrop = Random.Range(0f, 100f) < cashDropChance ? cashPool.Get() :
-                          Random.Range(0f, 100f) < gemDropChance ? gemPool.Get() : meatPool.Get();
+        int cashChance = Mathf.RoundToInt(baseCashDropChance * cashDropChanceMultiplier);
+        int gemChance = Mathf.RoundToInt(baseGemDropChance * gemDropChanceMultiplier);
+
+        Item itemToDrop = Random.Range(0f, 100f) < cashChance ? cashPool.Get() :
+                          Random.Range(0f, 100f) < gemChance ? gemPool.Get() : meatPool.Get();
 
         if (itemToDrop != null)
         {
@@ -111,20 +154,22 @@ public class ItemManager : MonoBehaviour
     {
         if (GameModeManager.Instance.CurrentGameMode == GameMode.Survival)
         {
-            bool shouldSpawnBox = Random.Range(0, 101) <= survivorBoxDropChance;
+            int survivorBoxChance = Mathf.RoundToInt(baseSurvivorBoxDropChance * survivorBoxDropChanceMultiplier);
+            bool shouldSpawnBox = Random.Range(0, 101) <= survivorBoxChance;
 
             if (shouldSpawnBox)
             {
                 SurvivorBox box = survivorBoxPool.Get();
                 box.transform.position = spawnPosition;
-                box.Activate(); // Assume this method starts the box's timer and initializes its health.
+                box.Activate();
             }
         }
     }
 
     private void TryDropChest(Vector2 _spawnPosition)
     {
-        bool shouldSpawnChest = Random.Range(0, 101) <= chestDropChance;
+        int chestChance = Mathf.RoundToInt(baseChestDropChance * chestDropChanceMultiplier);
+        bool shouldSpawnChest = Random.Range(0, 101) <= chestChance;
 
         if (!shouldSpawnChest)
             return;

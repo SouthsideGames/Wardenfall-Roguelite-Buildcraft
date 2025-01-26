@@ -20,8 +20,6 @@ public class CharacterLevel : MonoBehaviour
     private void Awake() => Meat.OnCollected += MeatCollectedCallback;
     private void OnDestroy() => Meat.OnCollected -= MeatCollectedCallback;
 
-
-    // Start is called before the first frame update
     void Start()
     {
         UpdateRequiredXP();

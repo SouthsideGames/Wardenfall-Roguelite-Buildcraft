@@ -24,7 +24,19 @@ public class CharacterInfoPanelUI : MonoBehaviour
         icon.sprite = _characterDataSO.Icon;
         nameText.text = _characterDataSO.Name;
         priceText.text = _characterDataSO.PurchasePrice.ToString();
-        priceContainer.SetActive(!unlocked);
+        
+         if (priceContainer != null)
+        {
+            priceContainer.SetActive(!unlocked);
+            if (!unlocked)
+            {
+                priceText.text = _characterDataSO.PurchasePrice.ToString();
+            }
+        }
+        else
+        {
+            Debug.LogWarning("Price container is not assigned in the inspector.");
+        }
 
         StatContainerManager.GenerateStatContainers(_characterDataSO.NonNeutralStats, statsParent);
 

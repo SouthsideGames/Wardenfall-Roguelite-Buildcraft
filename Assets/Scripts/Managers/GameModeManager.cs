@@ -13,9 +13,7 @@ public class GameModeManager : MonoBehaviour
     [SerializeField] private Transform buttonContainer;
     [SerializeField] private GameModeContainerUI gameModeContainerPrefab;
     [SerializeField] private WaveManager waveManager;
-
     public GameMode CurrentGameMode { get; private set; }
-
     private GameModeDataSO[] gameModeDatas;
 
     private void Awake()

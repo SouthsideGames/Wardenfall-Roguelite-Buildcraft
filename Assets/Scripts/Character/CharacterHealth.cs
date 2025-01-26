@@ -1,7 +1,6 @@
 using System;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using SouthsideGames.DailyMissions;
 
@@ -28,17 +27,11 @@ public class CharacterHealth : MonoBehaviour, IStats
     private float healthRecoveryValue;
     private float healthRecoveryTimer;
     private float healthRecoveryDuration;
+    private int damageAbsorption = 0;
 
-    private void Awake()
-    {
-        Enemy.OnDamageTaken += EnemyDamageCallback;
-        
-    }
+    private void Awake() => Enemy.OnDamageTaken += EnemyDamageCallback;
 
-    private void OnDestroy() 
-    {
-        Enemy.OnDamageTaken -= EnemyDamageCallback;
-    }
+    private void OnDestroy() => Enemy.OnDamageTaken -= EnemyDamageCallback;
 
     private void Update()
     {
@@ -46,6 +39,7 @@ public class CharacterHealth : MonoBehaviour, IStats
            RecoverHealth();
     }
 
+    public void SetDamageAbsorption(int percentage) => damageAbsorption = Mathf.Clamp(percentage, 0, 100);
     public void TakeDamage(int _damage)
     {
 
@@ -54,11 +48,11 @@ public class CharacterHealth : MonoBehaviour, IStats
             OnDodge?.Invoke(transform.position);  
             return;
         }
-        
-        
-        float realDamage = _damage * Mathf.Clamp(1 - (armor / 1000), 0, 10000);
-        realDamage = Mathf.Min(realDamage, health);
-        health -= realDamage;  
+          
+        float absorbedDamage = _damage * (damageAbsorption / 100f);
+        float actualDamage = _damage - absorbedDamage;
+
+        health -= Mathf.Min(actualDamage, health);
 
         UpdateHealthUI();
 
@@ -89,9 +83,8 @@ public class CharacterHealth : MonoBehaviour, IStats
 
         if (secondLifeCard != null && secondLifeCard.IsAutoActivated && !CardEffect.Instance.IsEffectActive(secondLifeCard.EffectType))
         {
-            // Automatically activate the card
             CardEffect.Instance.ActivateEffect(secondLifeCard.EffectType, 0, secondLifeCard);
-            return; // Skip death logic
+            return; 
         }
 
         OnCharacterDeath?.Invoke();
@@ -136,10 +129,9 @@ public class CharacterHealth : MonoBehaviour, IStats
 
     public void UpdateWeaponStats(CharacterStats _statsManager)
     {
-        // Retrieve the MaxHealth value from the character stats manager and add it to baseMaxHealth
         float addedHealth = _statsManager.GetStatValue(Stat.MaxHealth);
         maxHealth = baseMaxHealth + (int)addedHealth;
-        maxHealth = Mathf.Max(maxHealth, 1); // Calculate the new max health and ensure it is not less than 1
+        maxHealth = Mathf.Max(maxHealth, 1);
 
         health = maxHealth;
         UpdateHealthUI();
@@ -148,7 +140,6 @@ public class CharacterHealth : MonoBehaviour, IStats
         lifeSteal = _statsManager.GetStatValue(Stat.LifeSteal) / 100;
         dodge = _statsManager.GetStatValue(Stat.Dodge);
 
-        // Calculate Health Recovery Speed and ensure it is not zero (minimum of .0001f)
         healthRecoverySpeed = MathF.Max(.0001f, _statsManager.GetStatValue(Stat.RegenSpeed));
         healthRecoveryDuration = 1f / healthRecoverySpeed;
         healthRecoveryValue = _statsManager.GetStatValue(Stat.RegenValue);
