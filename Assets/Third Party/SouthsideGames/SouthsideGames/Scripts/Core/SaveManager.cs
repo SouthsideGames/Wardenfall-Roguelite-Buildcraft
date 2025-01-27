@@ -106,24 +106,25 @@ namespace SouthsideGames.SaveManager
 
         public static bool TryLoad(object sender, string key, out object value)
         {
-            string fullKey = GetFullKey(sender, key);
+           string fullKey = GetFullKey(sender, key);
+            Debug.Log($"Attempting to load key: {fullKey}");
 
             if (GameData.TryGetValue(fullKey, out Type dataType, out string data))
             {
                 DeserializeSettings settings = new DeserializeSettings();
 
                 JSON jsonObject = JSON.ParseString(data);
-
                 value = jsonObject.zDeserialize(dataType, "fieldName", settings);
 
                 FieldInfo myObject = value.GetType().GetField("myObject");
-
                 value = myObject.GetValue(value);
 
+                Debug.Log($"Successfully loaded key: {fullKey}, value: {value}");
                 return true;
             }
 
             value = null;
+            Debug.LogWarning($"Failed to load key: {fullKey}");
             return false;
         }
 

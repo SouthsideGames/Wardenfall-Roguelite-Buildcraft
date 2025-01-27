@@ -32,7 +32,6 @@ public class CurrencyManager : MonoBehaviour, IWantToBeSaved
         Cash.OnCollected += CashCollectedCallback;  
         Gem.OnCollected += GemCollectedCallback;
 
-        // Listen for DoubleItemValue effect
         DoubleItemValueEffect.OnDoubleValueActivated += EnableDoubleValue;
         DoubleItemValueEffect.OnDoubleValueDeactivated += DisableDoubleValue;
     }
@@ -43,7 +42,6 @@ public class CurrencyManager : MonoBehaviour, IWantToBeSaved
         Cash.OnCollected -= CashCollectedCallback;  
         Gem.OnCollected -= GemCollectedCallback;
 
-        // Unsubscribe from DoubleItemValue effect
         DoubleItemValueEffect.OnDoubleValueActivated -= EnableDoubleValue;
         DoubleItemValueEffect.OnDoubleValueDeactivated -= DisableDoubleValue;
     }
@@ -82,17 +80,14 @@ public class CurrencyManager : MonoBehaviour, IWantToBeSaved
     private void UpdateUI()
     {
         CurrencyUI[] currencyUIs = FindObjectsByType<CurrencyUI>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-
         foreach (CurrencyUI currencyUI in currencyUIs)
             currencyUI.UpdateText(Currency.ToString());
 
         PremiumCurrencyUI[] premiumCurrencyUIs = FindObjectsByType<PremiumCurrencyUI>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-
         foreach (PremiumCurrencyUI premiumCurrencyUI in premiumCurrencyUIs)
             premiumCurrencyUI.UpdateText(PremiumCurrency.ToString());
 
         GemCurrencyUI[] gemCurrencyUIs = FindObjectsByType<GemCurrencyUI>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-
         foreach (GemCurrencyUI gemCurrencyUI in gemCurrencyUIs)
             gemCurrencyUI.UpdateText(GemCurrency.ToString());
     }

@@ -51,6 +51,7 @@ using UnityEngine;
         Utility_TemporalReset = 201,
         Utility_DoubleItemValue = 202,
         Utility_ItemBooster = 203,
+        Utility_EnergyLink = 204,
         Special_MoltenTrail = 300,
         Special_MinionSwarm = 301,
         Special_NecromancersCall = 302

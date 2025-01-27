@@ -33,6 +33,8 @@ public static class CardEffectFactory
                 return new DoubleItemValueEffect(cardSO.ActiveTime);
             case CardEffectType.Utility_ItemBooster:
                 return new ItemBoosterEffect(cardSO.EffectValue);
+            case CardEffectType.Utility_EnergyLink:
+                return new EnergyLinkEffect(CharacterManager.Instance.transform, CharacterManager.Instance.GetComponent<LineRenderer>(), (int)cardSO.EffectValue);
             case CardEffectType.Support_SecondLife:
                 return new SecondLifeEffect(Resources.Load<GameObject>("Prefabs/Effects/Explosion"), cardSO);
             case CardEffectType.Support_PrecisionFocus:
@@ -43,7 +45,6 @@ public static class CardEffectFactory
                 return new BerserkerRageEffect(cardSO);
             case CardEffectType.Support_GuardianSpirit:
                 return new GuardianSpiritEffect(Resources.Load<GameObject>("Prefabs/Allies/GuardianSpirit"), CharacterManager.Instance.transform, cardSO.EffectValue);
-
             case CardEffectType.Special_MoltenTrail:
                 return new MoltenTrailEffect(Resources.Load<GameObject>("Prefabs/Effects/MoltenTrail"), cardSO);
             case CardEffectType.Special_MinionSwarm:
