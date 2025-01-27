@@ -2,6 +2,7 @@ using System;
 using NaughtyAttributes;
 using UnityEngine;
 using SouthsideGames.SaveManager;
+using UnityEngine.Purchasing;
 
 public class CurrencyManager : MonoBehaviour, IWantToBeSaved
 {
@@ -68,11 +69,15 @@ public class CurrencyManager : MonoBehaviour, IWantToBeSaved
         UpdateVisuals();
     }  
 
+    public void BuyPremiumCurrency(Product _product) => AdjustPremiumCurrency((int)_product.definition.payout.quantity, true);
+
     public void AdjustGemCurrency(int _amount, bool save = true)
     {
         GemCurrency += isDoubleValueActive ? _amount * 2 : _amount;
         UpdateVisuals();
     }  
+
+    public void BuyGemCurrency(Product _product) => AdjustGemCurrency((int)_product.definition.payout.quantity, true);
 
     private void UpdateUI()
     {
