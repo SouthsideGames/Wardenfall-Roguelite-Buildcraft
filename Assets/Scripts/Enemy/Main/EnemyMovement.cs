@@ -9,10 +9,10 @@ public class EnemyMovement : MonoBehaviour
     [Header("SETTINGS:")]
     public float moveSpeed;
     private bool canMove = true;
-
+    private bool isKnockedBack = false;
+    
     private Vector2 knockbackDirection;
     private float knockbackSpeed = 0f;
-    private bool isKnockedBack = false;
 
     public void StorePlayer(CharacterManager _player)
     {
@@ -29,9 +29,7 @@ public class EnemyMovement : MonoBehaviour
         if (!canMove || currentTarget == null || isKnockedBack) return;
 
         Vector2 direction = ((Vector2)currentTarget.position - (Vector2)transform.position).normalized;
-        Vector2 targetPosition = (Vector2)transform.position + direction * moveSpeed * Time.deltaTime;
-
-        transform.position = targetPosition;
+        transform.position += (Vector3)(direction * moveSpeed * Time.deltaTime);
     }
 
     public void MoveAwayFromCurrentTarget()
@@ -39,9 +37,7 @@ public class EnemyMovement : MonoBehaviour
         if (!canMove || currentTarget == null || isKnockedBack) return;
 
         Vector2 direction = ((Vector2)transform.position - (Vector2)currentTarget.position).normalized;
-        Vector2 targetPosition = (Vector2)transform.position + direction * moveSpeed * Time.deltaTime;
-
-        transform.position = targetPosition;
+        transform.position += (Vector3)(direction * moveSpeed * Time.deltaTime);
     }
 
     public void DisableMovement(float duration)
@@ -61,12 +57,13 @@ public class EnemyMovement : MonoBehaviour
         canMove = true;
     }
 
-    public void ApplyKnockback(Vector2 direction, float force, float duration)
+    public void ApplyKnockback(Vector2 direction, float force, float duration, bool isBoss = false)
     {
         if (!isKnockedBack)
         {
             knockbackDirection = direction.normalized;
-            knockbackSpeed = force;
+
+            knockbackSpeed = isBoss ? force * 0.5f : force;
             StartCoroutine(KnockbackMovement(duration));
         }
     }
@@ -91,24 +88,13 @@ public class EnemyMovement : MonoBehaviour
         if (currentTarget != null)
         {
             Vector2 direction = ((Vector2)transform.position - (Vector2)currentTarget.position).normalized;
-            Vector2 targetPosition = (Vector2)transform.position + direction * moveSpeed * Time.deltaTime;
-
-            transform.position = targetPosition;
+            transform.position += (Vector3)(direction * moveSpeed * Time.deltaTime);
         }
     }
 
     public void ResetMovement()
     {
-        if (currentTarget != null)
-        {
-            Vector2 direction = ((Vector2)currentTarget.position - (Vector2)transform.position).normalized;
-            Vector2 targetPosition = (Vector2)transform.position + direction * moveSpeed * Time.deltaTime;
-
-            transform.position = targetPosition;
-        }
-
         canMove = true;
         isKnockedBack = false;
     }
-
 }

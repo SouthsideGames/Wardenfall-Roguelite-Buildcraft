@@ -1,22 +1,26 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ChargeEnemy : Enemy
 {
-    [Header("Charger Specific")]
+    [Header("CHARGE SPECIFICS:")]
     [SerializeField] private float chargeTime = 2f; 
     [SerializeField] private float growFactor = 1.5f;
     [SerializeField] private float chargeSpeed = 20f; 
     [SerializeField] private float chargeDistance = 10f;
     [SerializeField] private float cooldownTime = 3f;
 
-    [Header("Attack")]
+    [Header("EFFECTS:")]
+    [SerializeField] private GameObject objectToSpawn;
     private bool attackPerformed = false; 
-
     private Vector3 originalScale; 
     private Vector2 chargeDirection;
-    private bool isCharging = false; 
+    private bool isCharging = true; 
+
+    private void Awake() => OnSpawnCompleted += SpawnCompletedActions;
+    private void OnDestroy() => OnSpawnCompleted -= SpawnCompletedActions; 
 
     protected override void Start()
     {
@@ -27,6 +31,7 @@ public class ChargeEnemy : Enemy
     protected override void Update()
     {
         base.Update();
+        AnimationLogic();
 
         if (!isCharging)
           StartCoroutine(ChargeRoutine());
@@ -36,9 +41,6 @@ public class ChargeEnemy : Enemy
     {
         isCharging = true; 
         attackPerformed = false; 
-
-        yield return new WaitForSeconds(1f);
-
         yield return StartCoroutine(Grow());
 
         LocatePlayer();
@@ -53,7 +55,8 @@ public class ChargeEnemy : Enemy
     }
 
     private IEnumerator Grow()
-    {
+    {     
+        
         float elapsed = 0f;
         Vector3 targetScale = originalScale * growFactor;
 
@@ -90,6 +93,8 @@ public class ChargeEnemy : Enemy
 
             TryAttack(); 
 
+            SpawnEffect();
+
             yield return null;
         }
     }
@@ -122,6 +127,21 @@ public class ChargeEnemy : Enemy
         base.Attack();
         attackPerformed = true; 
     }
+
+    protected override void ChangeDirections()
+    {
+        if (playerTransform != null)
+        {
+            if (playerTransform.position.x > transform.position.x && !attackPerformed )
+                _spriteRenderer.flipX = true;
+            else
+                _spriteRenderer.flipX = false;
+        }
+    }
+
+    private void SpawnEffect() => Instantiate(objectToSpawn, transform.position, Quaternion.identity);
+    private void AnimationLogic() => anim.SetBool("isIdle", !attackPerformed);
+    private void SpawnCompletedActions() => isCharging = false;
 
     private void OnDrawGizmosSelected()
     {

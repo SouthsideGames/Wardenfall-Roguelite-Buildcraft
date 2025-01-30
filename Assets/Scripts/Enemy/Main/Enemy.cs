@@ -7,7 +7,7 @@ using UnityEngine;
 [RequireComponent(typeof(EnemyStatus))]
 public abstract class Enemy : MonoBehaviour
 {
- [Header("ACTIONS:")]
+    [Header("ACTIONS:")]
     public static Action<int, Vector2, bool> OnDamageTaken;
     public static Action<Vector2> OnDeath;
     public static Action<Vector2> OnBossDeath;
@@ -17,9 +17,9 @@ public abstract class Enemy : MonoBehaviour
     [Header("ELEMENTS:")]
     protected CharacterManager character;
     protected EnemyMovement movement;
+    [SerializeField] protected Animator anim;
     [SerializeField] protected SpriteRenderer _spriteRenderer;
     [SerializeField] private SpriteRenderer spawnIndicator;
-
     [SerializeField] private Collider2D _collider;
     protected bool hasSpawned = false;
 
@@ -82,19 +82,24 @@ public abstract class Enemy : MonoBehaviour
     {
         if (!attacksEnabled) return;
 
-        if (playerTransform != null)
-        {
-            if (playerTransform.position.x > transform.position.x)
-                _spriteRenderer.flipX = true; 
-            else
-                _spriteRenderer.flipX = false;
-        }
+        ChangeDirections();
 
         DetectSurvivorBox();
 
         if (detectedBox != null && CanAttack())
         {
             AttackBox();
+        }
+    }
+
+    protected virtual void ChangeDirections()
+    {
+        if (playerTransform != null)
+        {
+            if (playerTransform.position.x > transform.position.x)
+                _spriteRenderer.flipX = true;
+            else
+                _spriteRenderer.flipX = false;
         }
     }
 

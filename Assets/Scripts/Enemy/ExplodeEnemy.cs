@@ -15,14 +15,13 @@ public class ExplodeEnemy : Enemy
         if (!hasSpawned || !CanAttack() || isExploding)
             return;
 
-        // Check if it's close enough to explode
         if (IsPlayerTooClose())
         {
             Explode();
         }
         else
         {
-            // Move towards the player
+        
             movement.FollowCurrentTarget();
         }
     }
@@ -37,36 +36,35 @@ public class ExplodeEnemy : Enemy
 
     private void Explode()
     {
-        if (isExploding) return; // Prevent multiple explosions
+       
+        if (isExploding) return;
         isExploding = true;
 
-        // Play explosion effect
+        anim.SetTrigger("Explode");
+     
         if (explosionEffect != null)
         {
             ParticleSystem effect = Instantiate(explosionEffect, transform.position, Quaternion.identity);
             effect.Play();
         }
 
-        // Find all objects within explosion radius
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, explosionRadius);
 
         foreach (Collider2D hit in hits)
         {
-            // Check if the hit object can take damage
+  
             if (hit.TryGetComponent<Enemy>(out Enemy enemy) && enemy != this)
             {
                 enemy.TakeDamage(explosionDamage, false);
             }
 
-            // Damage the player if within range
+
             if (hit.TryGetComponent<CharacterManager>(out CharacterManager player))
             {
                 player.TakeDamage(explosionDamage);
             }
         }
 
-        // Destroy the enemy after exploding
-        Die();
     }
 
     private void OnDrawGizmosSelected()
