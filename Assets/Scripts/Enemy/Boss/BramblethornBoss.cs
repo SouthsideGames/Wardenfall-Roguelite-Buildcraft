@@ -64,19 +64,27 @@ public class BramblethornBoss : Enemy
 
     private IEnumerator RootSlam()
     {
-        Debug.Log("Bramblethorn: Root Slam!");
+         Debug.Log("Bramblethorn: Root Slam!");
         PlayAnimation("RootSlam");
+
+        // Disable movement during the attack
         enemyMovement.DisableMovement(attackSettings.attackPauseTime);
-        rootSlamFeedback?.PlayFeedbacks();
+        rootSlamFeedback?.PlayFeedbacks(); // FEEL Effect
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1f); // Wind-up time
 
+        // ✅ Damage enemies in an area
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(transform.position, attackSettings.rootSlamRadius);
         foreach (Collider2D enemy in hitEnemies)
         {
             if (enemy.CompareTag("Player"))
                 enemy.GetComponent<CharacterHealth>().TakeDamage(attackSettings.slamDamage);
         }
+
+        // ✅ Spawn spikes in a radial pattern
+        SpawnRootSlamSpikes();
+
+        yield return new WaitForSeconds(attackSettings.attackPauseTime);
     }
 
     private IEnumerator ThornBarrage()
@@ -137,9 +145,31 @@ public class BramblethornBoss : Enemy
             ActivateRegrowthArmor();
     }
 
+    private void SpawnRootSlamSpikes()
+    {
+        float angleStep = 360f / attackSettings.numberOfSpikes;
+
+        for (int i = 0; i < attackSettings.numberOfSpikes; i++)
+        {
+            float angle = i * angleStep;
+            Vector2 direction = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad));
+
+            GameObject spike = Instantiate(attackSettings.spikePrefab, transform.position, Quaternion.identity);
+            Rigidbody2D rb = spike.GetComponent<Rigidbody2D>();
+
+            if (rb != null)
+            {
+                rb.linearVelocity = direction * attackSettings.spikeSpeed;
+            }
+
+            Destroy(spike, attackSettings.spikeLifetime); 
+        }
+    }
+
     private void PlayAnimation(string animationName)
     {
         if (anim)
             anim.Play(animationName);
     }
 }
+

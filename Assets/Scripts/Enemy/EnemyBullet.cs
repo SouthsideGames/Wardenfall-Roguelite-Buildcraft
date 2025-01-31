@@ -73,7 +73,6 @@ public class EnemyBullet : MonoBehaviour
         rb.angularVelocity = 0;
         col.enabled = true;
 
-        // Cancel any existing tweens to prevent duplicate calls
         LeanTween.cancel(gameObject);
 
         // Schedule delayed release with the flag check
