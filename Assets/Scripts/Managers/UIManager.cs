@@ -29,6 +29,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
 
     [Header("REFERENCES")]
     [SerializeField] private CardManager cardManager;
+    [SerializeField] private MainMenuShopUpdateUI mainMenuShopManagerUI;
 
     [Header("COUNTER TEXT:")]
     [SerializeField] private TextMeshProUGUI killCounterText;
@@ -249,6 +250,19 @@ public class UIManager : MonoBehaviour, IGameStateListener
         menuShopPanel.SetActive(false);
         menuPanel.SetActive(true);
     }
+
+    public void GemMenuShopPanel()
+    {
+        menuShopPanel.SetActive(true);
+        mainMenuShopManagerUI.OpenGemContainer();
+    }
+
+    public void CashMenuShopPanel()
+    {
+        menuShopPanel.SetActive(true);
+        mainMenuShopManagerUI.OpenCashContainer();
+    }
+
 
     private void TriggerPanelAction(GameObject _panelObject)
     {

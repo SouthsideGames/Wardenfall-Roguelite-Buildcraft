@@ -19,7 +19,7 @@ public abstract class Enemy : MonoBehaviour
     protected EnemyMovement movement;
     [SerializeField] protected Animator anim;
     [SerializeField] protected SpriteRenderer _spriteRenderer;
-    [SerializeField] private SpriteRenderer spawnIndicator;
+    [SerializeField] protected SpriteRenderer spawnIndicator;
     [SerializeField] private Collider2D _collider;
     protected bool hasSpawned = false;
 

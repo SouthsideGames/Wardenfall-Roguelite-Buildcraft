@@ -3,14 +3,12 @@ using UnityEngine.UI;
 using TMPro;
 using Random = UnityEngine.Random;
 
-[RequireComponent(typeof(RangedEnemyAttack))]
 public class Boss : Enemy
 {
     [Header("ADD. ELEMENTS:")]
     [SerializeField] private Slider healthBar;
     [SerializeField] private TextMeshProUGUI healthText;
-    [SerializeField] protected Animator anim;
-
+    
     protected BossState bossState;
 
     [Header("IDLE STATE:")]
@@ -19,7 +17,6 @@ public class Boss : Enemy
     private float idleTimer;
 
     [Header("MOVING STATE:")]
-    [SerializeField] protected float moveSpeed;
     protected Vector2 targetPosition;
 
     private void Awake()
@@ -41,7 +38,7 @@ public class Boss : Enemy
     protected override void Start()
     {
         base.Start();
-        InitializeBoss(); // For boss-specific setup
+        InitializeBoss();
     }
 
     protected override void Update()
@@ -49,7 +46,7 @@ public class Boss : Enemy
         ManageStates();
     }
 
-    private void ManageStates()
+    protected virtual void ManageStates()
     {
         switch (bossState)
         {
@@ -70,7 +67,7 @@ public class Boss : Enemy
         }
     }
 
-    private void SetIdleState()
+    protected void SetIdleState()
     {
         bossState = BossState.Idle;
 
@@ -79,7 +76,7 @@ public class Boss : Enemy
         anim.Play("Idle");
     }
 
-    private void ManageIdleState()
+    protected virtual void ManageIdleState()
     {
         idleTimer += Time.deltaTime;
 
@@ -90,7 +87,7 @@ public class Boss : Enemy
         }
     }
 
-    private void StartMovingState()
+    protected virtual void StartMovingState()
     {
         bossState = BossState.Moving;
 
@@ -98,22 +95,21 @@ public class Boss : Enemy
         anim.Play("Move");
     }
 
-    private void ManageMovingState()
+    protected virtual void ManageMovingState()
     {
-        transform.position = Vector2.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+        transform.position = Vector2.MoveTowards(transform.position, targetPosition, movement.moveSpeed * Time.deltaTime);
 
         if (Vector2.Distance(transform.position, targetPosition) < 0.1f)
             StartAttackingState();
     }
 
-    private void StartAttackingState()
+    protected void StartAttackingState()
     {
         bossState = BossState.Attacking;
         anim.Play("Attack");
-        ExecuteAttack(); // Boss-specific attack logic
+        ExecuteAttack();
     }
 
-    // Override this in child classes
     protected virtual void ExecuteAttack()
     {
 
@@ -123,7 +119,6 @@ public class Boss : Enemy
     {
         if (bossState == BossState.Attacking)
         {
-            // Default Attack Delay - Override in derived classes
             Invoke("SetIdleState", 1.5f);
         }
     }
@@ -160,7 +155,6 @@ public class Boss : Enemy
 
     private void DamageTakenCallback(int _damage, Vector2 _position, bool _isCriticalHit) => UpdateHealthUI();
 
-    // Boss-specific initialization
     protected virtual void InitializeBoss() { }
 
 }

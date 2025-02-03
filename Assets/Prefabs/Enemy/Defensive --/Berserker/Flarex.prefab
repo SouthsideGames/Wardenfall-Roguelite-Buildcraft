@@ -4904,6 +4904,7 @@ GameObject:
   - component: {fileID: 5592513278735401760}
   - component: {fileID: 1297417035062969690}
   - component: {fileID: 8379832437275754500}
+  - component: {fileID: 8728186590605405664}
   m_Layer: 6
   m_Name: Flarex
   m_TagString: Enemy
@@ -4941,6 +4942,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a4522f0db4acd445b75a35b87c8e116, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  anim: {fileID: 8728186590605405664}
   _spriteRenderer: {fileID: 3622649619894333103}
   spawnIndicator: {fileID: 332598301848273570}
   _collider: {fileID: 8379832437275754500}
@@ -5020,6 +5022,28 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: -0.03999999, y: 0.33399773}
   m_Radius: 0.45600224
+--- !u!95 &8728186590605405664
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 831428353397795802}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 21945e8f128240345a34cbe8908030e5, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &3144578653033657039
 GameObject:
   m_ObjectHideFlags: 0

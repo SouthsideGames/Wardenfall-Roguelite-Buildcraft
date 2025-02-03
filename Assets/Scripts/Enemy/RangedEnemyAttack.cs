@@ -3,7 +3,7 @@ using UnityEngine.Pool;
 
 public class RangedEnemyAttack : MonoBehaviour
 {
-    [Header("ELLEMENTS:")]
+    [Header("ELEMENTS:")]
     [SerializeField] private Transform firePoint;
     [SerializeField] private EnemyBullet bulletPrefab;
     private CharacterManager player;

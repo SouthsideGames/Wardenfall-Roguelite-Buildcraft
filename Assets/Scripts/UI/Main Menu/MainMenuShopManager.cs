@@ -79,5 +79,7 @@ public class MainMenuShopUpdateUI : MonoBehaviour
         }
     } 
 
+    public void OpenGemContainer() => SwitchShopSection(gemsContainer);
+    public void OpenCashContainer() => SwitchShopSection(cashContainer);
    
 }

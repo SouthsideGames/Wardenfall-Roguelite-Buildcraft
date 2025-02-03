@@ -55,7 +55,8 @@ public enum BossState
     None,
     Idle,
     Moving,
-    Attacking
+    Attacking,
+    Transitioning
 }
 
 public enum GameMode
