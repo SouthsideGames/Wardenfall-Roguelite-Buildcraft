@@ -8,7 +8,7 @@ public class Boss : Enemy
     [Header("ADD. ELEMENTS:")]
     [SerializeField] private Slider healthBar;
     [SerializeField] private TextMeshProUGUI healthText;
-    
+
     protected BossState bossState;
 
     [Header("IDLE STATE:")]
@@ -19,10 +19,14 @@ public class Boss : Enemy
     [Header("MOVING STATE:")]
     protected Vector2 targetPosition;
 
+    [Header("BOSS STAGE SYSTEM")]
+    [SerializeField] private float attackCooldown = 3f; // Time between attacks
+    [SerializeField] private int maxStages = 3; // Number of phases
+    protected int currentStage = 1;
+
     private void Awake()
     {
         bossState = BossState.None;
-
         healthBar.gameObject.SetActive(false);
 
         OnSpawnCompleted += SpawnCompletedCallback;
@@ -39,13 +43,22 @@ public class Boss : Enemy
     {
         base.Start();
         InitializeBoss();
+        attackTimer = attackCooldown;
     }
 
     protected override void Update()
     {
-        base.Update();  
-        
+        base.Update();
         ManageStates();
+
+        // Decrease the attack cooldown timer
+        attackTimer -= Time.deltaTime;
+
+        if (attackTimer <= 0 && bossState == BossState.Attacking)
+        {
+            ExecuteStage();
+            attackTimer = attackCooldown; // Reset attack cooldown
+        }
     }
 
     protected virtual void ManageStates()
@@ -55,15 +68,12 @@ public class Boss : Enemy
             case BossState.Idle:
                 ManageIdleState();
                 break;
-
             case BossState.Moving:
                 ManageMovingState();
                 break;
-
             case BossState.Attacking:
                 ManageAttackingState();
                 break;
-
             default:
                 break;
         }
@@ -72,16 +82,13 @@ public class Boss : Enemy
     protected void SetIdleState()
     {
         bossState = BossState.Idle;
-
         idleDuration = Random.Range(1f, maxIdleDuration);
-
         anim.Play("Idle");
     }
 
     protected virtual void ManageIdleState()
     {
         idleTimer += Time.deltaTime;
-
         if (idleTimer >= idleDuration)
         {
             idleTimer = 0;
@@ -92,7 +99,6 @@ public class Boss : Enemy
     protected virtual void StartMovingState()
     {
         bossState = BossState.Moving;
-
         targetPosition = GetRandomPosition();
         anim.Play("Move");
     }
@@ -109,12 +115,7 @@ public class Boss : Enemy
     {
         bossState = BossState.Attacking;
         anim.Play("Attack");
-        ExecuteAttack();
-    }
-
-    protected virtual void ExecuteAttack()
-    {
-
+        ExecuteStage(); // Calls a stage attack based on the current phase
     }
 
     private void ManageAttackingState()
@@ -122,6 +123,43 @@ public class Boss : Enemy
         if (bossState == BossState.Attacking)
         {
             Invoke("SetIdleState", 1.5f);
+        }
+    }
+
+    private void ExecuteStage()
+    {
+        int stageToExecute = Random.Range(1, currentStage + 1); // Randomly select a stage up to the current one
+
+        switch (stageToExecute)
+        {
+            case 1:
+                ExecuteStageOne();
+                break;
+            case 2:
+                ExecuteStageTwo();
+                break;
+            case 3:
+                ExecuteStageThree();
+                break;
+            default:
+                Debug.LogWarning("Invalid Stage Selected");
+                break;
+        }
+    }
+
+    protected virtual void ExecuteStageOne() { }
+    protected virtual void ExecuteStageTwo() { }
+    protected virtual void ExecuteStageThree() { }
+
+    // Call this to progress to the next stage
+    protected void AdvanceToNextStage()
+    {
+        if (currentStage < maxStages)
+        {
+            currentStage++;
+            Debug.Log($"Boss advanced to Stage {currentStage}");
+
+            SetIdleState();
         }
     }
 
@@ -135,17 +173,14 @@ public class Boss : Enemy
     {
         UpdateHealthUI();
         healthBar.gameObject.SetActive(true);
-
         SetIdleState();
     }
 
     private Vector2 GetRandomPosition()
     {
         Vector2 targetPosition = Vector2.zero;
-
         targetPosition.x = Random.Range(-Constants.arenaSize.x / 3, Constants.arenaSize.x / 3);
         targetPosition.y = Random.Range(-Constants.arenaSize.y / 3, Constants.arenaSize.y / 3);
-
         return targetPosition;
     }
 
@@ -156,7 +191,6 @@ public class Boss : Enemy
     }
 
     private void DamageTakenCallback(int _damage, Vector2 _position, bool _isCriticalHit) => UpdateHealthUI();
-
     protected virtual void InitializeBoss() { }
 
 }

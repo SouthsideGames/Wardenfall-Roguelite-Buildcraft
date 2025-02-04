@@ -17,7 +17,6 @@ public class EyeFangBoss : Boss
     [SerializeField] private int knockbackForce = 5;
     [SerializeField] private int burstDamage = 20;
 
-    private int currentStage = 1;
     private bool isAttacking;
     private Vector3 originalScale;
     private RangedEnemyAttack rangedAttack;
@@ -27,7 +26,6 @@ public class EyeFangBoss : Boss
         base.InitializeBoss();
         originalScale = transform.localScale;
         rangedAttack = GetComponent<RangedEnemyAttack>();
-        StartCoroutine(AttackLoop());
     }
 
     protected override void ManageStates()
@@ -46,19 +44,6 @@ public class EyeFangBoss : Boss
             case BossState.Attacking:
                 ExecuteAttack();
                 break;
-
-            case BossState.Transitioning:
-                ManageTransition();
-                break;
-        }
-    }
-
-    private IEnumerator AttackLoop()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(attackCooldown);
-            if (bossState == BossState.Idle) StartAttackingState();
         }
     }
 
@@ -68,63 +53,45 @@ public class EyeFangBoss : Boss
         transform.position += new Vector3(Mathf.Sin(Time.time * 3), Mathf.Cos(Time.time * 3), 0) * Time.deltaTime * erraticMoveSpeed;
     }
 
-    // === Transition to Next Stage ===
-    private void ManageTransition()
-    {
-        StartCoroutine(TransitionSequence());
-    }
-
-    private IEnumerator TransitionSequence()
-    {
-        // Stop movement and grow larger
-        bossState = BossState.Transitioning;
-        movement.DisableMovement(1.5f);
-        transform.localScale *= 1.2f;
-        yield return new WaitForSeconds(1.5f);
-
-        currentStage++;
-        Debug.Log($"Eyefang Prime advanced to Stage {currentStage}!");
-
-        // Reset scale slightly for balance
-        transform.localScale = originalScale * (1f + (currentStage * 0.2f));
-        movement.EnableMovement();
-
-        SetIdleState();
-    }
 
     // === ATTACKS ===
-    protected override void ExecuteAttack()
+    protected override void ExecuteStageOne()
     {
-        isAttacking = true;
-
-        switch (currentStage)
+        if (!isAttacking)
         {
-            case 1:
-                StartCoroutine(FireProjectileAttack());
-                break;
-            case 2:
-                StartCoroutine(RadialBeamAttack());
-                break;
-            case 3:
-                StartCoroutine(KnockbackBurst());
-                break;
+            isAttacking = true;
+            FireProjectileAttack();
         }
     }
 
-    private IEnumerator FireProjectileAttack()
+    protected override void ExecuteStageTwo()
     {
-        anim.Play("Shoot");
-        yield return new WaitForSeconds(0.2f);
-
-        rangedAttack.AutoAim(); // Fire a projectile at the player
-
-        SetIdleState();
+        if (!isAttacking)
+        {
+            isAttacking = true;
+            RadialBeamAttack();
+        }
     }
 
-    private IEnumerator RadialBeamAttack()
+    protected override void ExecuteStageThree()
+    {
+        if (!isAttacking)
+        {
+            isAttacking = true;
+            KnockbackBurst();
+        }
+    }
+
+    private void FireProjectileAttack()
+    {
+        anim.Play("Shoot");
+        rangedAttack.AutoAim(); // Fire a projectile at the player
+        isAttacking = false;
+    }
+
+    private void RadialBeamAttack()
     {
         anim.Play("Expand");
-        yield return new WaitForSeconds(0.5f);
 
         float angleStep = 360f / beamCount;
         for (int i = 0; i < beamCount; i++)
@@ -133,13 +100,12 @@ public class EyeFangBoss : Boss
             Instantiate(beamPrefab, transform.position, Quaternion.Euler(0, 0, angle));
         }
 
-        SetIdleState();
+        isAttacking = false;
     }
 
-    private IEnumerator KnockbackBurst()
+    private void KnockbackBurst()
     {
         anim.Play("Deflate");
-        yield return new WaitForSeconds(0.3f);
 
         Collider2D[] hitObjects = Physics2D.OverlapCircleAll(transform.position, burstRadius);
         foreach (Collider2D hit in hitObjects)
@@ -151,7 +117,6 @@ public class EyeFangBoss : Boss
         }
 
         anim.Play("Inflate");
-        yield return new WaitForSeconds(0.3f);
-        SetIdleState();
+        isAttacking = false;
     }
 }
