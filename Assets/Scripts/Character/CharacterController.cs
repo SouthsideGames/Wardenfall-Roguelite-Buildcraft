@@ -4,6 +4,7 @@ using UnityEngine;
 public class CharacterController : MonoBehaviour, IStats
 {
     private Rigidbody2D _rb;
+    private bool isMovementDisabled = false;
 
     [Header("SETTINGS:")]
     [SerializeField] private float baseMoveSpeed;
@@ -13,12 +14,11 @@ public class CharacterController : MonoBehaviour, IStats
     private Vector2 moveDirection;
     public Vector2 MoveDirection => moveDirection;
 
-
     void Start() => _rb = GetComponent<Rigidbody2D>(); 
 
     private void FixedUpdate()
     {
-        if (!GameManager.Instance.InGameState())
+        if (!GameManager.Instance.InGameState() || isMovementDisabled)
         {
             _rb.linearVelocity = Vector2.zero;
             return;
@@ -32,5 +32,17 @@ public class CharacterController : MonoBehaviour, IStats
     {
         float moveSpeedPercent = _statsManager.GetStatValue(Stat.MoveSpeed) / 100;
         moveSpeed = baseMoveSpeed * (1 + moveSpeedPercent);
+    }
+
+    public void DisableMovement(float duration)
+    {
+        isMovementDisabled = true;
+        _rb.linearVelocity = Vector2.zero;
+        Invoke(nameof(EnableMovement), duration);
+    }
+
+    public void EnableMovement()
+    {
+        isMovementDisabled = false;
     }
 }
