@@ -4,7 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(RangedEnemyAttack))]
 public class EyeFangBoss : Boss
 {
-    [Header("Eyefang Prime Settings")]
+   [Header("Eyefang Prime Settings")]
     [SerializeField] private float erraticMoveSpeed = 3f;
     [SerializeField] private float attackCooldown = 3f;
 
@@ -37,55 +37,47 @@ public class EyeFangBoss : Boss
                 break;
 
             case BossState.Moving:
-                if (currentStage >= 2) MoveErratically();
+                if (currentStage >= 2) MoveErratically(); 
                 else ManageMovingState();
                 break;
 
             case BossState.Attacking:
-                ExecuteAttack();
+                ExecuteStage(); 
                 break;
         }
     }
 
-    // === Movement for Later Stages ===
     private void MoveErratically()
     {
-        transform.position += new Vector3(Mathf.Sin(Time.time * 3), Mathf.Cos(Time.time * 3), 0) * Time.deltaTime * erraticMoveSpeed;
+        transform.position += new Vector3(
+            Mathf.Sin(Time.time * 3), 
+            Mathf.Cos(Time.time * 3), 
+            0) * Time.deltaTime * erraticMoveSpeed;
     }
 
-
-    // === ATTACKS ===
-    protected override void ExecuteStageOne()
+    protected override void ExecuteStage()
     {
-        if (!isAttacking)
-        {
-            isAttacking = true;
-            FireProjectileAttack();
-        }
-    }
+        if (isAttacking) return;
+        isAttacking = true;
 
-    protected override void ExecuteStageTwo()
-    {
-        if (!isAttacking)
+        switch (currentStage)
         {
-            isAttacking = true;
-            RadialBeamAttack();
-        }
-    }
-
-    protected override void ExecuteStageThree()
-    {
-        if (!isAttacking)
-        {
-            isAttacking = true;
-            KnockbackBurst();
+            case 1:
+                FireProjectileAttack();
+                break;
+            case 2:
+                RadialBeamAttack();
+                break;
+            case 3:
+                KnockbackBurst();
+                break;
         }
     }
 
     private void FireProjectileAttack()
     {
         anim.Play("Shoot");
-        rangedAttack.AutoAim(); // Fire a projectile at the player
+        rangedAttack.AutoAim(); 
         isAttacking = false;
     }
 

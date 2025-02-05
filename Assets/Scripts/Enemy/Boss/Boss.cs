@@ -22,7 +22,7 @@ public class Boss : Enemy
     [Header("BOSS STAGE SYSTEM")]
     [SerializeField] private float attackCooldown = 3f; // Time between attacks
     [SerializeField] private int maxStages = 3; // Number of phases
-    protected int currentStage = 1;
+    [SerializeField] protected int currentStage = 1;
 
     private void Awake()
     {
@@ -49,6 +49,7 @@ public class Boss : Enemy
     protected override void Update()
     {
         base.Update();
+        UpdateHealthUI();
         ManageStates();
 
         // Decrease the attack cooldown timer
@@ -126,7 +127,7 @@ public class Boss : Enemy
         }
     }
 
-    private void ExecuteStage()
+    protected virtual void ExecuteStage()
     {
         int stageToExecute = Random.Range(1, currentStage + 1); // Randomly select a stage up to the current one
 
@@ -152,7 +153,7 @@ public class Boss : Enemy
     protected virtual void ExecuteStageThree() { }
 
     // Call this to progress to the next stage
-    protected void AdvanceToNextStage()
+    protected virtual void AdvanceToNextStage()
     {
         if (currentStage < maxStages)
         {

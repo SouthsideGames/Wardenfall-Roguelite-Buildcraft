@@ -8,7 +8,7 @@ public class FallingSpike : MonoBehaviour
     [SerializeField] private GameObject impactPrefab;
     [SerializeField] private Collider2D col;
     private bool hasLanded = false;
-    private GameObject shadowInstance; // Store reference to the shadow
+    private GameObject shadowInstance;
 
     private void Start() => CreateShadow();
 
@@ -25,7 +25,7 @@ public class FallingSpike : MonoBehaviour
         Vector2 groundPosition = new Vector2(transform.position.x, Camera.main.ViewportToWorldPoint(new Vector2(0.5f, 0f)).y + 0.5f);
         shadowInstance = Instantiate(shadowPrefab, groundPosition, Quaternion.identity);
     }
-
+ 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.TryGetComponent(out CharacterManager player))
@@ -33,6 +33,7 @@ public class FallingSpike : MonoBehaviour
             player.TakeDamage(damage);
             col.enabled = false;
             Destroy(gameObject);
+            Destroy(shadowInstance);
         }
         else if (shadowInstance != null && other.gameObject == shadowInstance)
         {

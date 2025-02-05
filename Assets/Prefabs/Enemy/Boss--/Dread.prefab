@@ -572,14 +572,16 @@ MonoBehaviour:
   healthBar: {fileID: 7675460580734076481}
   healthText: {fileID: 8363562929251521764}
   maxIdleDuration: 2
+  attackCooldown: 3
+  maxStages: 3
+  currentStage: 1
   slamCooldown: 30
   spikePrefab: {fileID: 7397484310347760145, guid: 3802d284a7cc7c94988d20495f111e7b, type: 3}
   webPrefab: {fileID: 5321382712317316223, guid: 4cfd8661aaba49149867af1410ecc504, type: 3}
   spikeFallRange: 5
-  numSpikes: 1
+  numSpikes: 3
   numWebs: 3
-  webDuration: 5
-  webEffectDuration: 2
+  webDuration: 40
 --- !u!1 &6803853838322453418
 GameObject:
   m_ObjectHideFlags: 0

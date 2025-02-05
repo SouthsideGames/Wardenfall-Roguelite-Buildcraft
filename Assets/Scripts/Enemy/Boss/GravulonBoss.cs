@@ -4,9 +4,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GravulonBoss : Enemy
+public class GravulonBoss : Boss
 {
-    [Header("Gravulon Settings")]
+     [Header("Gravulon Settings")]
     [SerializeField] private float moveSpeed = 1.5f;
     [SerializeField] private float rollSpeed = 6f;
     [SerializeField] private float rollCooldown = 3f;
@@ -20,67 +20,66 @@ public class GravulonBoss : Enemy
     [SerializeField] private float knockbackForce = 5f; // How much the player gets knocked back
     [SerializeField] private float slamCooldown = 6f;
 
-    
-    [Header("ADD. ELEMENTS:")]
-    [SerializeField] private Slider healthBar;
-    [SerializeField] private TextMeshProUGUI healthText;
-
     private EnemyMovement enemyMovement;
-    private bool isRolling;
     private bool isSlamming;
+    private float slamTimer; 
+    private Vector3 originalScale;
 
-    private void Awake()
-    {
-        healthBar.gameObject.SetActive(false);
-        OnSpawnCompleted += SpawnCompletedCallback;
-        OnDamageTaken += DamageTakenCallback;
-    }
 
-    private void OnDestroy()
-    {
-        OnSpawnCompleted -= SpawnCompletedCallback;
-        OnDamageTaken -= DamageTakenCallback;
-    }
-
-   protected override void Start()
+    protected override void Start()
     {
         base.Start();
         enemyMovement = GetComponent<EnemyMovement>();
-        StartCoroutine(SlamRoutine());
+        originalScale = transform.localScale;
+        slamTimer = slamCooldown; // Start cooldown timer
     }
 
     protected override void Update()
     {
-        if (!hasSpawned || isRolling || isSlamming) return;
+        if (!hasSpawned || isSlamming) return;
 
-        enemyMovement.FollowCurrentTarget();
+        slamTimer -= Time.deltaTime; // Countdown for slam attack
+
+        if (slamTimer <= 0)
+        {
+            ExecuteStageOne(); // Only one stage, so always execute this attack
+            slamTimer = slamCooldown; // Reset cooldown timer
+        }
+        else
+        {
+            enemyMovement.FollowCurrentTarget();
+        }
     }
 
-    private IEnumerator SlamRoutine()
+    // === SINGLE-STAGE ATTACK: SHOCKWAVE SLAM ===
+    protected override void ExecuteStageOne()
     {
-        while (true)
-        {
-            yield return new WaitForSeconds(slamCooldown);
+        if (isSlamming) return;
 
-            if (!hasSpawned || isSlamming) continue;
+        isSlamming = true;
+        enemyMovement.DisableMovement(1.5f); // Stop movement
 
-            isSlamming = true;
-            enemyMovement.DisableMovement(1.5f); // Temporarily stop movement
+        // **1. Prepare for the Slam**
+        transform.localScale = new Vector3(originalScale.x * 1.2f, originalScale.y * 0.8f, originalScale.z);
 
-            // **1. Prepare for the Slam**
-            transform.localScale = new Vector3(transform.localScale.x * 1.2f, transform.localScale.y * 0.8f, transform.localScale.z);
-            yield return new WaitForSeconds(0.5f); // Short delay before slamming
+        // **2. Slam Down**
+        Invoke(nameof(PerformSlam), 0.5f); // Delay for animation
+    }
 
-            // **2. Slam Down**
-            transform.localScale = new Vector3(transform.localScale.x * 0.8f, transform.localScale.y * 1.2f, transform.localScale.z);
-            DealShockwaveDamage(); // Apply the area-of-effect damage
-            yield return new WaitForSeconds(0.3f);
+    private void PerformSlam()
+    {
+        transform.localScale = new Vector3(originalScale.x * 0.8f, originalScale.y * 1.2f, originalScale.z);
+        DealShockwaveDamage();
 
-            // **3. Recover & Reset**
-            transform.localScale = Vector3.one;
-            isSlamming = false;
-            enemyMovement.EnableMovement();
-        }
+        // **3. Reset size and allow movement again**
+        Invoke(nameof(ResetAfterSlam), 0.3f);
+    }
+
+    private void ResetAfterSlam()
+    {
+        transform.localScale = originalScale;
+        isSlamming = false;
+        enemyMovement.EnableMovement();
     }
 
     private void DealShockwaveDamage()
@@ -92,7 +91,6 @@ public class GravulonBoss : Enemy
             if (hit.CompareTag("Player"))
             {
                 character.TakeDamage(slamDamage);
-                Vector2 knockbackDirection = (hit.transform.position - transform.position).normalized;
                 Debug.Log("Gravulon slammed the player!");
             }
             else if (hit.CompareTag("Enemy"))
@@ -122,20 +120,5 @@ public class GravulonBoss : Enemy
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, slamRange);
     }
-    
-    private void SpawnCompletedCallback()
-    {
-        UpdateHealthUI();
-        healthBar.gameObject.SetActive(true);
 
-    }
-
-
-    private void UpdateHealthUI()
-    {
-        healthBar.value = (float)health / maxHealth;
-        healthText.text = $"{health} / {maxHealth}";
-    }
-
-    private void DamageTakenCallback(int _damage, Vector2 _position, bool _isCriticalHit) => UpdateHealthUI();
 }
