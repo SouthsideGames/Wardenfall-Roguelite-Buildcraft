@@ -1,76 +1,77 @@
 using UnityEngine;
 
 [RequireComponent(typeof(EnemyMovement))]
-[RequireComponent(typeof(RangedEnemyAttack))]
 public class ShellshockBoss : Boss
 {
-    [Header("STAGE 2")]
-    [SerializeField] private float stageTwoCooldown = 1.5f; 
-    [SerializeField] private float stageTwoHealthThreshold = 0.5f;
+    [Header("BOSS MOVEMENT SETTINGS")]
+    [SerializeField] private float moveDuration = 3f;  // How long the boss moves before stopping
+    [SerializeField] private float stopDuration = 1.5f; // How long the boss stops before attacking
+    [SerializeField] private float moveRange = 5f; // Random movement range
 
-    private RangedEnemyAttack rangedAttack;
-    private bool isEnraged;
+    [Header("BOSS ATTACK SETTINGS")]
+    [SerializeField] private GameObject homingBulletPrefab;
+    [SerializeField] private Transform firePoint;
+
+    private EnemyMovement enemyMovement;
+    private Vector2 randomTargetPosition;
+    private bool isMoving = true;
+    private bool isAttacking = false;
 
     protected override void InitializeBoss()
     {
         base.InitializeBoss();
-        rangedAttack = GetComponent<RangedEnemyAttack>();
-        playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
-        attackTimer = attackCooldown;
-        rangedAttack.StorePlayer(character); // Ensure player targeting
+        enemyMovement = GetComponent<EnemyMovement>();
+        PickNewRandomTarget();
     }
 
     protected override void Update()
     {
         base.Update();
 
-        if (!hasSpawned) return;
+        if (!hasSpawned || isAttacking) return;
 
-        attackTimer -= Time.deltaTime;
-
-        // **Check if Stage 2 should activate**
-        if (!isEnraged && (float)health / maxHealth <= stageTwoHealthThreshold)
+        if (isMoving)
         {
-            AdvanceToNextStage();
+            MoveToTarget();
         }
 
-        // **Check if boss should attack**
-        if (attackTimer <= 0)
-        {
-            ExecuteStage();
-            attackTimer = isEnraged ? stageTwoCooldown : attackCooldown;
-        }
-
-        // **Follow the player if not attacking**
-        movement.FollowCurrentTarget();
+        if(isAttacking)
+            FireHomingBullet();
     }
 
-    protected override void ExecuteStage()
+    private void MoveToTarget()
     {
-        if (isEnraged)
+        enemyMovement.SetTargetPosition(randomTargetPosition);
+
+        if (Vector2.Distance(transform.position, randomTargetPosition) < 0.2f)
         {
-            // **Stage 2: Fires a burst of 3 shots**
-            for (int i = 0; i < 3; i++)
-            {
-                Invoke(nameof(FireBullet), i * 0.2f); // Small delay between shots
-            }
-        }
-        else
-        {
-            // **Stage 1: Fires a single shot**
-            FireBullet();
+            StopAndAttack();
         }
     }
 
-    private void FireBullet()
+    private void StopAndAttack()
     {
-        rangedAttack.AutoAim(); // Uses the RangedEnemyAttack system to fire
+        isMoving = false;
+        isAttacking = true;
+        enemyMovement.DisableMovement(stopDuration);
+        Invoke(nameof(ResumeMovement), stopDuration);
     }
 
-    protected override void AdvanceToNextStage()
+    private void FireHomingBullet() => Instantiate(homingBulletPrefab, firePoint.position, Quaternion.identity);
+
+    private void ResumeMovement()
     {
-        isEnraged = true;
-        Debug.Log("Ranged Boss is now in Stage 2!");
-        transform.localScale *= 1.2f; // Slightly grows
+        isMoving = true;
+        isAttacking = false;
+        PickNewRandomTarget();
+    }
+
+    private void PickNewRandomTarget()
+    {
+        Vector2 bossPosition = transform.position;
+        randomTargetPosition = new Vector2(
+            bossPosition.x + Random.Range(-moveRange, moveRange),
+            bossPosition.y + Random.Range(-moveRange, moveRange)
+        );
     }
 }

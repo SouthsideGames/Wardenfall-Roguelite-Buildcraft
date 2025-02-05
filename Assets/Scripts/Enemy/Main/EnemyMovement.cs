@@ -5,6 +5,8 @@ public class EnemyMovement : MonoBehaviour
 {
     [Header("ELEMENTS:")]
     private Transform currentTarget;
+    private Vector2 targetPosition;
+    private bool isTargetPositionSet = false;
 
     [Header("SETTINGS:")]
     public float moveSpeed;
@@ -22,22 +24,34 @@ public class EnemyMovement : MonoBehaviour
     public void SetTarget(Transform newTarget)
     {
         currentTarget = newTarget;
+        isTargetPositionSet = false; // Disable target position when following a transform
+    }
+
+    public void SetTargetPosition(Vector2 newPosition)
+    {
+        targetPosition = newPosition;
+        isTargetPositionSet = true; // Enable movement toward a fixed position
     }
 
     public void FollowCurrentTarget()
     {
-        if (!canMove || currentTarget == null || isKnockedBack) return;
+        if (!canMove || currentTarget == null || isKnockedBack || isTargetPositionSet) return;
 
         Vector2 direction = ((Vector2)currentTarget.position - (Vector2)transform.position).normalized;
         transform.position += (Vector3)(direction * moveSpeed * Time.deltaTime);
     }
 
-    public void MoveAwayFromCurrentTarget()
+    public void MoveToTargetPosition()
     {
-        if (!canMove || currentTarget == null || isKnockedBack) return;
+        if (!canMove || !isTargetPositionSet || isKnockedBack) return;
 
-        Vector2 direction = ((Vector2)transform.position - (Vector2)currentTarget.position).normalized;
+        Vector2 direction = (targetPosition - (Vector2)transform.position).normalized;
         transform.position += (Vector3)(direction * moveSpeed * Time.deltaTime);
+
+        if (Vector2.Distance(transform.position, targetPosition) < 0.1f)
+        {
+            isTargetPositionSet = false; // Reset to allow new movement
+        }
     }
 
     public void DisableMovement(float duration)
@@ -55,6 +69,27 @@ public class EnemyMovement : MonoBehaviour
         canMove = false;
         yield return new WaitForSeconds(duration);
         canMove = true;
+    }
+
+    public void SetRunAwayFromPlayer()
+    {
+        if (currentTarget != null)
+        {
+            Vector2 direction = ((Vector2)transform.position - (Vector2)currentTarget.position).normalized;
+            transform.position += (Vector3)(direction * moveSpeed * Time.deltaTime);
+        }
+    }
+
+    public void ResetMovement()
+    {
+        if (currentTarget != null)
+        {
+            Vector2 direction = ((Vector2)currentTarget.position - (Vector2)transform.position).normalized;
+            transform.position += (Vector3)(direction * moveSpeed * Time.deltaTime);
+        }
+
+        canMove = true;
+        isKnockedBack = false;
     }
 
     public void ApplyKnockback(Vector2 direction, float force, float duration, bool isBoss = false)
@@ -83,18 +118,8 @@ public class EnemyMovement : MonoBehaviour
         isKnockedBack = false;
     }
 
-    public void SetRunAwayFromPlayer()
-    {
-        if (currentTarget != null)
-        {
-            Vector2 direction = ((Vector2)transform.position - (Vector2)currentTarget.position).normalized;
-            transform.position += (Vector3)(direction * moveSpeed * Time.deltaTime);
-        }
-    }
 
-    public void ResetMovement()
-    {
-        canMove = true;
-        isKnockedBack = false;
-    }
+    
+
+    
 }

@@ -1,51 +1,72 @@
 using UnityEngine;
 
-public class HomingBullet : EnemyBullet
+public class HomingBullet : MonoBehaviour
 {
-     [Header("Homing Spike Settings")]
-    [SerializeField] private float pauseDuration = 0.5f;
-    [SerializeField] private float homingSpeed = 12f;
-    
+    [Header("Homing Bullet Settings")]
+    [SerializeField] private float pauseDuration = 0.5f;  // Time before moving
+    [SerializeField] private float speed = 12f;           // Speed after launching
+
     private Vector2 targetPosition;
     private bool isLockedOn = false;
-    private bool hasFired = false;
+    private Rigidbody2D rb;
+    private float currentPauseDuration;
 
-    public void Initialize(Vector2 playerPosition)
+    private void Awake()
     {
-        targetPosition = playerPosition;
-        isLockedOn = false;
-        hasFired = false;
+        rb = GetComponent<Rigidbody2D>();
+        currentPauseDuration = pauseDuration;
+    }
 
-        rb.linearVelocity = Vector2.zero; // Stop movement during pause
-        Invoke(nameof(LockOnAndFire), pauseDuration);
+    private void OnEnable()
+    {
+        rb.linearVelocity = Vector2.zero;
+        isLockedOn = false;
     }
 
     private void LockOnAndFire()
     {
-        isLockedOn = true;
-        hasFired = true;
+        GameObject player = CharacterManager.Instance.gameObject;
+
+        if (player != null)
+        {
+            targetPosition = player.transform.position;
+            isLockedOn = true;
+        }
+        else
+        {
+            Destroy(gameObject); 
+        }
     }
 
     private void Update()
     {
-        if (isLockedOn && hasFired)
-        {
-            rb.linearVelocity = (targetPosition - (Vector2)transform.position).normalized * homingSpeed;
-            
-            if (Vector2.Distance(transform.position, targetPosition) < 0.1f)
-            {
-                ReleaseBullet(); // Return to pool instead of destroying
-            }
-        }
-    }
+        if (pauseDuration >= 0)
+            pauseDuration -= Time.deltaTime;    
+        else
+            LockOnAndFire();
 
-    // Handle collisions (inherits from EnemyBullet)
+        if(isLockedOn)
+           MoveTowardsPlayer();
+    }
+    
+
     private void OnTriggerEnter2D(Collider2D collider)
     {
         if (collider.CompareTag("Player"))
         {
-            collider.GetComponent<CharacterManager>().TakeDamage(damage);
-            ReleaseBullet();
+            collider.GetComponent<CharacterManager>().TakeDamage(10); // Apply damage
+            Destroy(gameObject); // Destroy on hit
+        }
+    }
+
+    private void MoveTowardsPlayer()
+    {
+        Vector2 moveDirection = (targetPosition - (Vector2)transform.position).normalized;
+        rb.linearVelocity = moveDirection * speed;
+
+        if (Vector2.Distance(transform.position, targetPosition) < 0.2f)
+        {
+            Destroy(gameObject);
         }
     }
 }

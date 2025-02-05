@@ -164,7 +164,7 @@ public class Boss : Enemy
         }
     }
 
-    private void UpdateHealthUI()
+    protected void UpdateHealthUI()
     {
         healthBar.value = (float)health / maxHealth;
         healthText.text = $"{health} / {maxHealth}";
