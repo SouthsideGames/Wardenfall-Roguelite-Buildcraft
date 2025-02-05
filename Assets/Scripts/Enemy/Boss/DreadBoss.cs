@@ -3,14 +3,14 @@ using UnityEngine;
 
 public class DreadBoss : Boss
 {
-   [Header("Dread Settings")]
+   [Header("STAGE 1")]
     [SerializeField] private float slamCooldown = 5f;
     [SerializeField] private GameObject spikePrefab;
     [SerializeField] private GameObject webPrefab;
     [SerializeField] private float spikeFallRange = 5f;
     [SerializeField] private int numSpikes = 6;
 
-    [Header("Web Trap Settings")]
+    [Header("STAGE 2")]
     [SerializeField] private int numWebs = 3;
     [SerializeField] private float webDuration = 5f;
 

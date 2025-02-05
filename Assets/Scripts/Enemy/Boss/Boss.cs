@@ -20,7 +20,7 @@ public class Boss : Enemy
     protected Vector2 targetPosition;
 
     [Header("BOSS STAGE SYSTEM")]
-    [SerializeField] private float attackCooldown = 3f; // Time between attacks
+    [SerializeField] protected float attackCooldown = 3f; // Time between attacks
     [SerializeField] private int maxStages = 3; // Number of phases
     [SerializeField] protected int currentStage = 1;
 

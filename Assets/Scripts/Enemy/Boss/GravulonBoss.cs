@@ -6,18 +6,18 @@ using UnityEngine.UI;
 
 public class GravulonBoss : Boss
 {
-     [Header("Gravulon Settings")]
+    [Header("STAGE 1")]
     [SerializeField] private float moveSpeed = 1.5f;
     [SerializeField] private float rollSpeed = 6f;
     [SerializeField] private float rollCooldown = 3f;
     [SerializeField] private float rollDuration = 0.8f;
     [SerializeField] private int rollDamage = 20;
 
-    [Header("Shockwave Slam")]
-    [SerializeField] private float slamRange = 3f; // Radius of the shockwave
-    [SerializeField] private int slamDamage = 25; // Damage dealt by the shockwave
-    [SerializeField] private float stunDuration = 1.5f; // How long enemies are stunned
-    [SerializeField] private float knockbackForce = 5f; // How much the player gets knocked back
+    [Header("STAGE 2")]
+    [SerializeField] private float slamRange = 3f;
+    [SerializeField] private int slamDamage = 25;
+    [SerializeField] private float stunDuration = 1.5f;
+    [SerializeField] private float knockbackForce = 5f; 
     [SerializeField] private float slamCooldown = 6f;
 
     private EnemyMovement enemyMovement;

@@ -4,27 +4,24 @@ using UnityEngine;
 [RequireComponent(typeof(RangedEnemyAttack))]
 public class EyeFangBoss : Boss
 {
-   [Header("Eyefang Prime Settings")]
+    [Header("STAGE 1")]
     [SerializeField] private float erraticMoveSpeed = 3f;
-    [SerializeField] private float attackCooldown = 3f;
 
-    [Header("Stage 2: Radial Beams")]
+    [Header("STAGE 2")]
     [SerializeField] private GameObject beamPrefab;
     [SerializeField] private int beamCount = 8;
 
-    [Header("Stage 3: Knockback Burst")]
+    [Header("STAGE 3")]
     [SerializeField] private float burstRadius = 3f;
     [SerializeField] private int knockbackForce = 5;
     [SerializeField] private int burstDamage = 20;
 
     private bool isAttacking;
-    private Vector3 originalScale;
     private RangedEnemyAttack rangedAttack;
 
     protected override void InitializeBoss()
     {
         base.InitializeBoss();
-        originalScale = transform.localScale;
         rangedAttack = GetComponent<RangedEnemyAttack>();
     }
 

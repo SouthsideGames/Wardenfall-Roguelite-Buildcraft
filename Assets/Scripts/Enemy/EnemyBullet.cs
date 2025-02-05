@@ -7,14 +7,14 @@ public class EnemyBullet : MonoBehaviour
 {
 
     [Header("ELEMENTS:")]
-    private Rigidbody2D rb;
+    protected Rigidbody2D rb;
     private Collider2D col;
     private RangedEnemyAttack rangedEnemyAttack;
 
     [Header("SETTINGS:")]
     [SerializeField] private float moveSpeed;
     [SerializeField] private float angularSpeed;
-    private int damage;
+    protected int damage;
 
     // Added flag to prevent multiple releases
     private bool isReleased = false;
@@ -83,7 +83,7 @@ public class EnemyBullet : MonoBehaviour
     }
 
     // New method to handle safe release
-    private void ReleaseBullet()
+    protected void ReleaseBullet()
     {
         if (!isReleased) // Prevent multiple releases
         {
