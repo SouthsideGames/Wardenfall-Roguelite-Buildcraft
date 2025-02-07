@@ -84,7 +84,6 @@ public class Boss : Enemy
     {
         bossState = BossState.Idle;
         idleDuration = Random.Range(1f, maxIdleDuration);
-        anim.Play("Idle");
     }
 
     protected virtual void ManageIdleState()
@@ -101,7 +100,6 @@ public class Boss : Enemy
     {
         bossState = BossState.Moving;
         targetPosition = GetRandomPosition();
-        anim.Play("Move");
     }
 
     protected virtual void ManageMovingState()
@@ -115,7 +113,7 @@ public class Boss : Enemy
     protected void StartAttackingState()
     {
         bossState = BossState.Attacking;
-        anim.Play("Attack");
+       
         ExecuteStage(); // Calls a stage attack based on the current phase
     }
 

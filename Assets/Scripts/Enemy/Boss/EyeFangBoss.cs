@@ -4,19 +4,17 @@ using UnityEngine;
 [RequireComponent(typeof(RangedEnemyAttack))]
 public class EyeFangBoss : Boss
 {
-    [Header("STAGE 1")]
+     [Header("STAGE 1 - Normal Attack")]
     [SerializeField] private float erraticMoveSpeed = 3f;
 
-    [Header("STAGE 2")]
+    [Header("STAGE 2 - Radial Beams")]
     [SerializeField] private GameObject beamPrefab;
     [SerializeField] private int beamCount = 8;
 
-    [Header("STAGE 3")]
+    [Header("STAGE 3 - Knockback Burst")]
     [SerializeField] private float burstRadius = 3f;
-    [SerializeField] private int knockbackForce = 5;
     [SerializeField] private int burstDamage = 20;
 
-    private bool isAttacking;
     private RangedEnemyAttack rangedAttack;
 
     protected override void InitializeBoss()
@@ -34,7 +32,7 @@ public class EyeFangBoss : Boss
                 break;
 
             case BossState.Moving:
-                if (currentStage >= 2) MoveErratically(); 
+                if (currentStage >= 2) MoveErratically();
                 else ManageMovingState();
                 break;
 
@@ -44,6 +42,7 @@ public class EyeFangBoss : Boss
         }
     }
 
+    // === MOVEMENT ===
     private void MoveErratically()
     {
         transform.position += new Vector3(
@@ -52,30 +51,27 @@ public class EyeFangBoss : Boss
             0) * Time.deltaTime * erraticMoveSpeed;
     }
 
-    protected override void ExecuteStage()
+    // === STAGE EXECUTION SYSTEM ===
+    protected override void ExecuteStageOne()
     {
-        if (isAttacking) return;
-        isAttacking = true;
-
-        switch (currentStage)
-        {
-            case 1:
-                FireProjectileAttack();
-                break;
-            case 2:
-                RadialBeamAttack();
-                break;
-            case 3:
-                KnockbackBurst();
-                break;
-        }
+        FireProjectileAttack();
     }
 
+    protected override void ExecuteStageTwo()
+    {
+        RadialBeamAttack();
+    }
+
+    protected override void ExecuteStageThree()
+    {
+        KnockbackBurst();
+    }
+
+    // === ATTACKS ===
     private void FireProjectileAttack()
     {
         anim.Play("Shoot");
-        rangedAttack.AutoAim(); 
-        isAttacking = false;
+        rangedAttack.AutoAim();
     }
 
     private void RadialBeamAttack()
@@ -88,8 +84,6 @@ public class EyeFangBoss : Boss
             float angle = i * angleStep;
             Instantiate(beamPrefab, transform.position, Quaternion.Euler(0, 0, angle));
         }
-
-        isAttacking = false;
     }
 
     private void KnockbackBurst()
@@ -106,6 +100,5 @@ public class EyeFangBoss : Boss
         }
 
         anim.Play("Inflate");
-        isAttacking = false;
     }
 }

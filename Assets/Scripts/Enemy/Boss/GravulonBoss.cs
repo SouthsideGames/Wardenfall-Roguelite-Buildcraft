@@ -6,43 +6,38 @@ using UnityEngine.UI;
 
 public class GravulonBoss : Boss
 {
-    [Header("STAGE 1")]
-    [SerializeField] private float moveSpeed = 1.5f;
-    [SerializeField] private float rollSpeed = 6f;
-    [SerializeField] private float rollCooldown = 3f;
-    [SerializeField] private float rollDuration = 0.8f;
-    [SerializeField] private int rollDamage = 20;
 
-    [Header("STAGE 2")]
+     [Header("STAGE 1 - Shockwave Slam")]
     [SerializeField] private float slamRange = 3f;
     [SerializeField] private int slamDamage = 25;
     [SerializeField] private float stunDuration = 1.5f;
-    [SerializeField] private float knockbackForce = 5f; 
     [SerializeField] private float slamCooldown = 6f;
 
     private EnemyMovement enemyMovement;
     private bool isSlamming;
-    private float slamTimer; 
+    private float slamTimer;
     private Vector3 originalScale;
 
-
-    protected override void Start()
+    protected override void InitializeBoss()
     {
-        base.Start();
+        base.InitializeBoss();
         enemyMovement = GetComponent<EnemyMovement>();
         originalScale = transform.localScale;
-        slamTimer = slamCooldown; // Start cooldown timer
+        slamTimer = slamCooldown;
     }
 
     protected override void Update()
     {
+        base.Update();
+
         if (!hasSpawned || isSlamming) return;
 
-        slamTimer -= Time.deltaTime; // Countdown for slam attack
+        // Reduce attack cooldown
+        slamTimer -= Time.deltaTime;
 
         if (slamTimer <= 0)
         {
-            ExecuteStageOne(); // Only one stage, so always execute this attack
+            ExecuteStage(); // Calls the correct attack (Stage 1)
             slamTimer = slamCooldown; // Reset cooldown timer
         }
         else
@@ -57,7 +52,8 @@ public class GravulonBoss : Boss
         if (isSlamming) return;
 
         isSlamming = true;
-        enemyMovement.DisableMovement(1.5f); // Stop movement
+        enemyMovement.DisableMovement(1.5f);
+        Debug.Log("Gravulon: Preparing Slam!");
 
         // **1. Prepare for the Slam**
         transform.localScale = new Vector3(originalScale.x * 1.2f, originalScale.y * 0.8f, originalScale.z);
@@ -69,6 +65,7 @@ public class GravulonBoss : Boss
     private void PerformSlam()
     {
         transform.localScale = new Vector3(originalScale.x * 0.8f, originalScale.y * 1.2f, originalScale.z);
+        Debug.Log("Gravulon: SHOCKWAVE SLAM!");
         DealShockwaveDamage();
 
         // **3. Reset size and allow movement again**
@@ -120,5 +117,4 @@ public class GravulonBoss : Boss
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, slamRange);
     }
-
 }

@@ -5,15 +5,17 @@ using UnityEngine.UI;
 
 public class HiveTyrantBoss : Boss
 {   
-    [Header("STAGE 1")]
-    [SerializeField] private float dashSpeed = 10f;
+   [Header("STAGE 1 - Dashing")]
     [SerializeField] private float dashCooldown = 3f;
+    [SerializeField] private float dashDistance = 3f;
+    
+    [Header("STAGE 2 - Enraged Mode")]
     [SerializeField] private float enragedDashCooldown = 2f;
     [SerializeField] private float enragedSpawnInterval = 3f;
     [SerializeField] private float enragedSpeedMultiplier = 1.3f;
     [SerializeField] private float stageTwoHealthThreshold = 0.5f; 
 
-    [Header("STAGE 2")]
+    [Header("Minion Spawning")]
     [SerializeField] private GameObject stingletPrefab;
     [SerializeField] private int maxMinions = 3;
     [SerializeField] private float spawnInterval = 5f;
@@ -41,53 +43,55 @@ public class HiveTyrantBoss : Boss
 
         if (!hasSpawned || isDashing) return;
 
+        // Transition to Stage 2 if health is low
         if (currentStage == 1 && (float)health / maxHealth <= stageTwoHealthThreshold)
         {
             AdvanceToNextStage();
         }
-
-        float currentDashCooldown = (currentStage == 2) ? enragedDashCooldown : dashCooldown;
-        float currentSpawnInterval = (currentStage == 2) ? enragedSpawnInterval : spawnInterval;
 
         dashTimer -= Time.deltaTime;
         spawnTimer -= Time.deltaTime;
 
         if (dashTimer <= 0)
         {
-            ExecuteStage();
-            dashTimer = currentDashCooldown;
+            ExecuteStage();  // **Automatically calls the correct attack phase**
+            dashTimer = (currentStage == 2) ? enragedDashCooldown : dashCooldown;
         }
-        else if (spawnTimer <= 0 && activeMinions < maxMinions)
+
+        if (currentStage == 2 && spawnTimer <= 0 && activeMinions < maxMinions)
         {
-            SpawnMinion();
-            spawnTimer = currentSpawnInterval;
-        }
-        else
-        {
-            enemyMovement.FollowCurrentTarget();
+            ExecuteStageTwo(); // Only spawn minions in Stage 2
+            spawnTimer = enragedSpawnInterval;
         }
     }
 
-    protected override void ExecuteStage()
+    protected override void ExecuteStageOne()
     {
-        if (!isDashing)
-        {
-            isDashing = true;
-            enemyMovement.DisableMovement(0.6f);
+        PerformDash();
+    }
 
-            transform.localScale = new Vector3(originalScale.x * 1.5f, originalScale.y * 0.7f, originalScale.z);
-
-            Invoke(nameof(PerformDash), 0.2f);
-        }
+    protected override void ExecuteStageTwo()
+    {
+        SpawnMinion();
     }
 
     private void PerformDash()
     {
-        Vector2 dashDirection = (playerTransform.position - transform.position).normalized;
-        transform.position += (Vector3)(dashDirection * 3f);
+        if (isDashing) return;
 
-        transform.localScale = new Vector3(originalScale.x * 0.7f, originalScale.y * 1.3f, originalScale.z);
-        Invoke(nameof(ResetAfterDash), 0.1f);
+        isDashing = true;
+        enemyMovement.DisableMovement(0.6f);
+        Debug.Log("Hive Tyrant: DASH ATTACK!");
+
+        // Stretch before dashing
+        transform.localScale = new Vector3(originalScale.x * 1.5f, originalScale.y * 0.7f, originalScale.z);
+
+        // Get dash direction
+        Vector2 dashDirection = (playerTransform.position - transform.position).normalized;
+        Vector2 dashTarget = (Vector2)transform.position + dashDirection * dashDistance;
+
+        enemyMovement.SetTargetPosition(dashTarget);
+        Invoke(nameof(ResetAfterDash), 0.5f);
     }
 
     private void ResetAfterDash()
@@ -98,6 +102,9 @@ public class HiveTyrantBoss : Boss
 
     private void SpawnMinion()
     {
+        if (activeMinions >= maxMinions) return;
+
+        Debug.Log("Hive Tyrant: Summoning Stinglets!");
         Instantiate(stingletPrefab, transform.position, Quaternion.identity);
         activeMinions++;
     }
@@ -113,6 +120,5 @@ public class HiveTyrantBoss : Boss
             transform.localScale *= 1.2f; 
         }
     }
-
 
 }

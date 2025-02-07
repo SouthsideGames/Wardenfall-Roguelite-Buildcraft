@@ -4,7 +4,6 @@ using UnityEngine;
 public class DreadBoss : Boss
 {
    [Header("STAGE 1")]
-    [SerializeField] private float slamCooldown = 5f;
     [SerializeField] private GameObject spikePrefab;
     [SerializeField] private GameObject webPrefab;
     [SerializeField] private float spikeFallRange = 5f;

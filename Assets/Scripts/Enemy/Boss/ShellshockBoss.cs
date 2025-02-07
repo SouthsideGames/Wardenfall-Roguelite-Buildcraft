@@ -1,14 +1,14 @@
+using UnityEditor.EditorTools;
 using UnityEngine;
 
 [RequireComponent(typeof(EnemyMovement))]
 public class ShellshockBoss : Boss
 {
-    [Header("BOSS MOVEMENT SETTINGS")]
-    [SerializeField] private float moveDuration = 3f;  // How long the boss moves before stopping
-    [SerializeField] private float stopDuration = 1.5f; // How long the boss stops before attacking
-    [SerializeField] private float moveRange = 5f; // Random movement range
+     [Header("MOVEMENT SETTINGS")]
+    [SerializeField] private float stopDuration = 1.5f;
+    [SerializeField] private float moveRange = 5f;
 
-    [Header("BOSS ATTACK SETTINGS")]
+    [Header("ATTACK SETTINGS")]
     [SerializeField] private GameObject homingBulletPrefab;
     [SerializeField] private Transform firePoint;
 
@@ -24,6 +24,11 @@ public class ShellshockBoss : Boss
         PickNewRandomTarget();
     }
 
+    protected override void ExecuteStageOne()
+    {
+        FireHomingBullet();
+    }
+
     protected override void Update()
     {
         base.Update();
@@ -34,9 +39,6 @@ public class ShellshockBoss : Boss
         {
             MoveToTarget();
         }
-
-        if(isAttacking)
-            FireHomingBullet();
     }
 
     private void MoveToTarget()
@@ -52,12 +54,16 @@ public class ShellshockBoss : Boss
     private void StopAndAttack()
     {
         isMoving = false;
-        isAttacking = true;
         enemyMovement.DisableMovement(stopDuration);
         Invoke(nameof(ResumeMovement), stopDuration);
+        ExecuteStageOne();
     }
 
-    private void FireHomingBullet() => Instantiate(homingBulletPrefab, firePoint.position, Quaternion.identity);
+    private void FireHomingBullet()
+    {
+        Debug.Log("Shellshock: Firing Homing Bullet!");
+        Instantiate(homingBulletPrefab, firePoint.position, Quaternion.identity);
+    }
 
     private void ResumeMovement()
     {
