@@ -5,17 +5,16 @@ using UnityEngine;
 [RequireComponent(typeof(RangedEnemyAttack))]
 public class BramblethornBoss : Boss
 {
-     [Header("MOVEMENT SETTINGS")]
-    [SerializeField] private float normalSpeed = 1.5f;
-    [SerializeField] private float chargeSpeedMultiplier = 3f;
-
-    [Header("ATTACK SETTINGS")]
+    [Header("STAGE 1")]
     [SerializeField] private GameObject spikePrefab;
     [SerializeField] private Transform firePoint;
 
-    [Header("PHASE SETTINGS")]
-    [SerializeField] private float thornBarrageSpeed = 6f;
+    [Header("STAGE 2")]
     [SerializeField] private float chargeDuration = 1.5f;
+
+    [Header("STAGE 3")]
+    [SerializeField] private float normalSpeed = 1.5f;
+    [SerializeField] private float chargeSpeedMultiplier = 3f;
 
     private EnemyMovement enemyMovement;
     private bool isAttacking = false;

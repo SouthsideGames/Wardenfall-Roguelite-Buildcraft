@@ -8,7 +8,7 @@ public class BlackHole : MonoBehaviour
 
     private void Start()
     {
-        player = FindFirstObjectByType<CharacterManager>().transform;
+        player = CharacterManager.Instance.gameObject.transform;
         Destroy(gameObject, duration);
     }
 

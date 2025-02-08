@@ -4,21 +4,16 @@ using UnityEngine;
 [RequireComponent(typeof(RangedEnemyAttack))]
 public class VoidStalkerBoss : Boss
 {
-     [Header("STAGE 1: ENERGY ORBS")]
-    [SerializeField] private GameObject homingOrbPrefab;
-    [SerializeField] private Transform firePoint;
-    [SerializeField] private float orbFireRate = 2f;
+     [Header("STAGE 1")]
     [SerializeField] private float teleportCooldown = 5f;
     private float teleportTimer;
 
-    [Header("STAGE 2: SPATIAL RIFT")]
+    [Header("STAGE 2")]
     [SerializeField] private GameObject voidRiftPrefab;
     [SerializeField] private float riftExplosionDelay = 2f;
-    [SerializeField] private float shieldDuration = 3f;
 
-    [Header("STAGE 3: REALITY TEAR")]
+    [Header("STAGE 3")]
     [SerializeField] private GameObject blackHolePrefab;
-    [SerializeField] private GameObject spinningProjectilePrefab;
     [SerializeField] private float blackHoleDuration = 5f;
 
     private bool isAttacking;
@@ -37,11 +32,22 @@ public class VoidStalkerBoss : Boss
 
     protected override void Update()
     {
-        base.Update();
-        
+        UpdateHealthUI();
+        ManageStates();
+
+        ChangeDirections();
+
+        DetectSurvivorBox();
+
+        if (detectedBox != null && CanAttack())
+        {
+            AttackBox();
+        }
+
         if (!hasSpawned || isAttacking) return;
 
         teleportTimer -= Time.deltaTime;
+
         if (teleportTimer <= 0)
         {
             Teleport();
@@ -70,10 +76,9 @@ public class VoidStalkerBoss : Boss
         SpawnBlackHole();
     }
 
-    // === STAGE 1: Fire Homing Orbs ===
     private void FireHomingOrbs()
     {
-        Instantiate(homingOrbPrefab, firePoint.position, Quaternion.identity);
+        rangedEnemyAttack.AutoAim();
         isAttacking = false;
     }
 
@@ -84,15 +89,7 @@ public class VoidStalkerBoss : Boss
         Teleport();
         GameObject rift = Instantiate(voidRiftPrefab, previousPosition, Quaternion.identity);
         Destroy(rift, riftExplosionDelay);
-        StartCoroutine(ActivateShield());
         isAttacking = false;
-    }
-
-    private IEnumerator ActivateShield()
-    {
-        // Activate shield logic
-        yield return new WaitForSeconds(shieldDuration);
-        // Deactivate shield
     }
 
     // === STAGE 3: Spawn Black Hole ===
@@ -100,16 +97,7 @@ public class VoidStalkerBoss : Boss
     {
         GameObject blackHole = Instantiate(blackHolePrefab, transform.position, Quaternion.identity);
         Destroy(blackHole, blackHoleDuration);
-        FireSpinningProjectiles();
         isAttacking = false;
-    }
-
-    private void FireSpinningProjectiles()
-    {
-        for (int i = 0; i < 8; i++)
-        {
-            Instantiate(spinningProjectilePrefab, transform.position, Quaternion.Euler(0, 0, i * 45));
-        }
     }
 
     // === TELEPORTATION ===
@@ -121,5 +109,7 @@ public class VoidStalkerBoss : Boss
             transform.position.z
         );
         transform.position = randomPosition;
+
+        ExecuteStage();
     }
 }

@@ -6,9 +6,12 @@ public class VoidRift : MonoBehaviour
     [SerializeField] private int damage = 30;
     [SerializeField] private float delay = 2f;
 
+    private CharacterManager player;
+
     private void Start()
     {
         Invoke(nameof(Explode), delay);
+        
     }
 
     private void Explode()

@@ -54,7 +54,7 @@ public abstract class Enemy : MonoBehaviour
 
     private EnemyStatus status;
     protected Transform playerTransform;
-    private SurvivorBox detectedBox;
+    protected SurvivorBox detectedBox;
 
     protected virtual void Start()
     {
@@ -209,7 +209,7 @@ public abstract class Enemy : MonoBehaviour
         OnSpawnCompleted?.Invoke();
     }
 
-    private void DetectSurvivorBox()
+    protected void DetectSurvivorBox()
     {
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, boxDetectionRadius);
         foreach (Collider2D collider in colliders)
@@ -223,7 +223,7 @@ public abstract class Enemy : MonoBehaviour
         detectedBox = null;
     }
 
-    private void AttackBox()
+    protected void AttackBox()
     {
         if (detectedBox != null)
         {
