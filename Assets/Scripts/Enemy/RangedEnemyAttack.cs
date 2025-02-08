@@ -10,7 +10,7 @@ public class RangedEnemyAttack : MonoBehaviour
 
 
     [Header("SETTINGS:")]
-    [SerializeField] private int damage;
+    [SerializeField] private int bulletDamage;
     [SerializeField] private float fireRate;
     [SerializeField] private float attackDelay;
     [SerializeField] private float bulletSpeed;
@@ -53,7 +53,7 @@ public class RangedEnemyAttack : MonoBehaviour
     public void InstantShoot(Vector2 direction)
     {
         EnemyBullet bullet = bulletPool.Get();
-        bullet.Shoot(damage, direction);
+        bullet.Shoot(bulletDamage, direction);
     }
 
     public void ReleaseBullet(EnemyBullet _bullet) => bulletPool.Release(_bullet);

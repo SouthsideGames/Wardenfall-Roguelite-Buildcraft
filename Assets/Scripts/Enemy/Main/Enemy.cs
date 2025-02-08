@@ -24,7 +24,7 @@ public abstract class Enemy : MonoBehaviour
     protected bool hasSpawned = false;
 
     [Header("ATTACK:")]
-    [SerializeField] protected int damage;
+    [SerializeField] protected int contactDamage;
     [SerializeField] protected float playerDetectionRadius;
     protected float boxDetectionRadius;
     protected float attackTimer;
@@ -122,18 +122,18 @@ public abstract class Enemy : MonoBehaviour
 
                 if (isCriticalHit)
                 {
-                    character.TakeDamage(damage * 2);
+                    character.TakeDamage(contactDamage * 2);
                 }
            
             }
             else
             {
-                character.TakeDamage(damage);
+                character.TakeDamage(contactDamage);
             }
         }
         else
         {
-            character.TakeDamage(damage);
+            character.TakeDamage(contactDamage);
         }
     }
 
@@ -230,7 +230,7 @@ public abstract class Enemy : MonoBehaviour
             attackTimer -= Time.deltaTime;
             if (attackTimer <= 0)
             {
-                detectedBox.TakeDamage(damage);
+                detectedBox.TakeDamage(contactDamage);
                 attackTimer = 1f; 
             }
         }

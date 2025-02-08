@@ -50,7 +50,7 @@ public class BerserkerEnemy : Enemy
 
     private void Enrage()
     {
-        damage = Mathf.RoundToInt(damage * enragedAttackMultiplier);
+        contactDamage = Mathf.RoundToInt(contactDamage * enragedAttackMultiplier);
         movement.moveSpeed *= enragedSpeedMultiplier;
 
         hasEnraged = true;

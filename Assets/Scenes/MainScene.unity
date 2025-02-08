@@ -29784,6 +29784,71 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 788630264}
   m_CullTransparentMesh: 1
+--- !u!1001 &795953131
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5102898031856181220, guid: 22b7bf5ccd67c2340bc9fd7d7dc867ee, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5102898031856181220, guid: 22b7bf5ccd67c2340bc9fd7d7dc867ee, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5424207264188696762, guid: 22b7bf5ccd67c2340bc9fd7d7dc867ee, type: 3}
+      propertyPath: m_Name
+      value: Bramblethorn
+      objectReference: {fileID: 0}
+    - target: {fileID: 6118759569874807039, guid: 22b7bf5ccd67c2340bc9fd7d7dc867ee, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -8.803136
+      objectReference: {fileID: 0}
+    - target: {fileID: 6118759569874807039, guid: 22b7bf5ccd67c2340bc9fd7d7dc867ee, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -3.7510936
+      objectReference: {fileID: 0}
+    - target: {fileID: 6118759569874807039, guid: 22b7bf5ccd67c2340bc9fd7d7dc867ee, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6118759569874807039, guid: 22b7bf5ccd67c2340bc9fd7d7dc867ee, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6118759569874807039, guid: 22b7bf5ccd67c2340bc9fd7d7dc867ee, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6118759569874807039, guid: 22b7bf5ccd67c2340bc9fd7d7dc867ee, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6118759569874807039, guid: 22b7bf5ccd67c2340bc9fd7d7dc867ee, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6118759569874807039, guid: 22b7bf5ccd67c2340bc9fd7d7dc867ee, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6118759569874807039, guid: 22b7bf5ccd67c2340bc9fd7d7dc867ee, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6118759569874807039, guid: 22b7bf5ccd67c2340bc9fd7d7dc867ee, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 22b7bf5ccd67c2340bc9fd7d7dc867ee, type: 3}
 --- !u!1 &810517034
 GameObject:
   m_ObjectHideFlags: 0
@@ -35060,7 +35125,7 @@ MonoBehaviour:
     segments:
     - spawnPercentage: {x: 0, y: 100}
       spawnFrequency: 0.5
-      prefab: {fileID: 5829535922412643463, guid: 52d8d00f7e20f0546bbdd77942577be7, type: 3}
+      prefab: {fileID: 5424207264188696762, guid: 22b7bf5ccd67c2340bc9fd7d7dc867ee, type: 3}
       spawnOnce: 0
       tStart: 0
       tEnd: 0
@@ -70090,7 +70155,7 @@ GameObject:
   - component: {fileID: 2122840549}
   m_Layer: 7
   m_Name: Character
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -94775,3 +94840,4 @@ SceneRoots:
   - {fileID: 1917116788}
   - {fileID: 1718953529}
   - {fileID: 401419032}
+  - {fileID: 795953131}

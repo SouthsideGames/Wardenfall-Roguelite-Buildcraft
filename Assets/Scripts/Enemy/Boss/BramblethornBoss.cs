@@ -1,28 +1,49 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(EnemyMovement))]
+[RequireComponent(typeof(RangedEnemyAttack))]
 public class BramblethornBoss : Boss
 {
-    [Header("MOVEMENT SETTINGS")]
+     [Header("MOVEMENT SETTINGS")]
     [SerializeField] private float normalSpeed = 1.5f;
     [SerializeField] private float chargeSpeedMultiplier = 3f;
-    
+
     [Header("ATTACK SETTINGS")]
-    [SerializeField] private GameObject thornProjectilePrefab;
     [SerializeField] private GameObject spikePrefab;
     [SerializeField] private Transform firePoint;
-    
+
     [Header("PHASE SETTINGS")]
     [SerializeField] private float thornBarrageSpeed = 6f;
     [SerializeField] private float chargeDuration = 1.5f;
 
     private EnemyMovement enemyMovement;
     private bool isAttacking = false;
+    private RangedEnemyAttack rangedEnemyAttack;
 
     protected override void InitializeBoss()
     {
         base.InitializeBoss();
         enemyMovement = GetComponent<EnemyMovement>();
+        rangedEnemyAttack = GetComponent<RangedEnemyAttack>();  
+    }
+
+    protected override void Update()
+    {
+        base.Update();
+        
+        if (!hasSpawned || isAttacking) return;
+
+        float distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
+
+        if (distanceToPlayer <= playerDetectionRadius)
+        {
+            ExecuteStage();
+        }
+        else
+        {
+            enemyMovement.FollowCurrentTarget();
+        }
     }
 
     protected override void ExecuteStageOne()
@@ -49,12 +70,6 @@ public class BramblethornBoss : Boss
         Debug.Log("Bramblethorn: ROOT SLAM!");
 
         Instantiate(spikePrefab, transform.position, Quaternion.identity);
-        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(transform.position, 2.5f);
-        foreach (Collider2D hit in hitEnemies)
-        {
-            if (hit.CompareTag("Player"))
-                hit.GetComponent<CharacterManager>().TakeDamage(15);
-        }
 
         Invoke(nameof(ResetAttack), 1f);
     }
@@ -67,10 +82,7 @@ public class BramblethornBoss : Boss
         Debug.Log("Bramblethorn: THORN BARRAGE!");
 
         for (int i = 0; i < 5; i++)
-        {
-            GameObject thorn = Instantiate(thornProjectilePrefab, firePoint.position, Quaternion.identity);
-            thorn.GetComponent<Rigidbody2D>().linearVelocity = (playerTransform.position - transform.position).normalized * thornBarrageSpeed;
-        }
+            rangedEnemyAttack.AutoAim();
 
         Invoke(nameof(ResetAttack), 1.5f);
     }
