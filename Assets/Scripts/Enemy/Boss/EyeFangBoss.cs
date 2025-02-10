@@ -4,14 +4,14 @@ using UnityEngine;
 [RequireComponent(typeof(RangedEnemyAttack))]
 public class EyeFangBoss : Boss
 {
-     [Header("STAGE 1 - Normal Attack")]
+    [Header("STAGE 1")]
     [SerializeField] private float erraticMoveSpeed = 3f;
 
-    [Header("STAGE 2 - Radial Beams")]
+    [Header("STAGE 2")]
     [SerializeField] private GameObject beamPrefab;
     [SerializeField] private int beamCount = 8;
 
-    [Header("STAGE 3 - Knockback Burst")]
+    [Header("STAGE 3")]
     [SerializeField] private float burstRadius = 3f;
     [SerializeField] private int burstDamage = 20;
 
@@ -32,7 +32,7 @@ public class EyeFangBoss : Boss
                 break;
 
             case BossState.Moving:
-                if (currentStage >= 2) MoveErratically();
+                if (stageToExecute >= 2) MoveErratically();
                 else ManageMovingState();
                 break;
 
@@ -42,32 +42,18 @@ public class EyeFangBoss : Boss
         }
     }
 
-    // === MOVEMENT ===
     private void MoveErratically()
     {
         transform.position += new Vector3(
-            Mathf.Sin(Time.time * 3), 
-            Mathf.Cos(Time.time * 3), 
+            Mathf.Sin(Time.time * 3),
+            Mathf.Cos(Time.time * 3),
             0) * Time.deltaTime * erraticMoveSpeed;
     }
 
-    // === STAGE EXECUTION SYSTEM ===
-    protected override void ExecuteStageOne()
-    {
-        FireProjectileAttack();
-    }
+    protected override void ExecuteStageOne() => FireProjectileAttack();
+    protected override void ExecuteStageTwo() => RadialBeamAttack();
+    protected override void ExecuteStageThree() => KnockbackBurst();
 
-    protected override void ExecuteStageTwo()
-    {
-        RadialBeamAttack();
-    }
-
-    protected override void ExecuteStageThree()
-    {
-        KnockbackBurst();
-    }
-
-    // === ATTACKS ===
     private void FireProjectileAttack()
     {
         anim.Play("Shoot");
@@ -94,9 +80,7 @@ public class EyeFangBoss : Boss
         foreach (Collider2D hit in hitObjects)
         {
             if (hit.CompareTag("Player"))
-            {
                 character.TakeDamage(burstDamage);
-            }
         }
 
         anim.Play("Inflate");

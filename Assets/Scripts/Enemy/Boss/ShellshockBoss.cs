@@ -1,18 +1,17 @@
 using UnityEditor.EditorTools;
 using UnityEngine;
+using System.Collections;
 
 [RequireComponent(typeof(EnemyMovement))]
+[RequireComponent(typeof(RangedEnemyAttack))]
 public class ShellshockBoss : Boss
 {
-     [Header("MOVEMENT SETTINGS")]
+    [Header("MOVEMENT SETTINGS")]
     [SerializeField] private float stopDuration = 1.5f;
     [SerializeField] private float moveRange = 5f;
 
-    [Header("ATTACK SETTINGS")]
-    [SerializeField] private GameObject homingBulletPrefab;
-    [SerializeField] private Transform firePoint;
-
     private EnemyMovement enemyMovement;
+    private RangedEnemyAttack rangedAttack;
     private Vector2 randomTargetPosition;
     private bool isMoving = true;
     private bool isAttacking = false;
@@ -21,12 +20,10 @@ public class ShellshockBoss : Boss
     {
         base.InitializeBoss();
         enemyMovement = GetComponent<EnemyMovement>();
-        PickNewRandomTarget();
-    }
+        rangedAttack = GetComponent<RangedEnemyAttack>();
 
-    protected override void ExecuteStageOne()
-    {
-        FireHomingBullet();
+        rangedAttack.StorePlayer(character);
+        PickNewRandomTarget();
     }
 
     protected override void Update()
@@ -36,9 +33,7 @@ public class ShellshockBoss : Boss
         if (!hasSpawned || isAttacking) return;
 
         if (isMoving)
-        {
             MoveToTarget();
-        }
     }
 
     private void MoveToTarget()
@@ -46,24 +41,20 @@ public class ShellshockBoss : Boss
         enemyMovement.SetTargetPosition(randomTargetPosition);
 
         if (Vector2.Distance(transform.position, randomTargetPosition) < 0.2f)
-        {
             StopAndAttack();
-        }
     }
 
     private void StopAndAttack()
     {
         isMoving = false;
+        isAttacking = true;
         enemyMovement.DisableMovement(stopDuration);
+
+        Invoke(nameof(StartAutoAim), stopDuration * 0.5f);
         Invoke(nameof(ResumeMovement), stopDuration);
-        ExecuteStageOne();
     }
 
-    private void FireHomingBullet()
-    {
-        Debug.Log("Shellshock: Firing Homing Bullet!");
-        Instantiate(homingBulletPrefab, firePoint.position, Quaternion.identity);
-    }
+    private void StartAutoAim() => rangedAttack.AutoAim();
 
     private void ResumeMovement()
     {

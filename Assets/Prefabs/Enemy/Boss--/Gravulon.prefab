@@ -792,7 +792,7 @@ MonoBehaviour:
   _spriteRenderer: {fileID: 6455084394197434225}
   spawnIndicator: {fileID: 7008401377191656658}
   _collider: {fileID: 1387390043221689501}
-  damage: 0
+  contactDamage: 0
   playerDetectionRadius: 0
   maxHealth: 1000
   health: 0
@@ -803,18 +803,15 @@ MonoBehaviour:
   canPerformCriticalHit: 0
   deathParticles: {fileID: 9061881940990480455}
   showGizmos: 0
-  moveSpeed: 1.5
-  rollSpeed: 6
-  rollCooldown: 3
-  rollDuration: 0.8
-  rollDamage: 20
+  healthBar: {fileID: 3396575867674869432}
+  healthText: {fileID: 7309490945321270001}
+  maxIdleDuration: 1
+  attackCooldown: 3
+  numberOfStages: 1
   slamRange: 3
   slamDamage: 25
   stunDuration: 1.5
-  knockbackForce: 5
   slamCooldown: 6
-  healthBar: {fileID: 3396575867674869432}
-  healthText: {fileID: 7309490945321270001}
 --- !u!1 &6378806998035929997
 GameObject:
   m_ObjectHideFlags: 0

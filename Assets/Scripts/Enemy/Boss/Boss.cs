@@ -20,9 +20,9 @@ public class Boss : Enemy
     protected Vector2 targetPosition;
 
     [Header("BOSS STAGE SYSTEM")]
-    [SerializeField] protected float attackCooldown = 3f; // Time between attacks
-    [SerializeField] private int maxStages = 3; // Number of phases
-    [SerializeField] protected int currentStage = 1;
+    [SerializeField] protected float attackCooldown = 3f;
+    [SerializeField] private int numberOfStages = 3;
+    protected int stageToExecute; 
 
     private void Awake()
     {
@@ -52,13 +52,12 @@ public class Boss : Enemy
         UpdateHealthUI();
         ManageStates();
 
-        // Decrease the attack cooldown timer
         attackTimer -= Time.deltaTime;
 
         if (attackTimer <= 0 && bossState == BossState.Attacking)
         {
             ExecuteStage();
-            attackTimer = attackCooldown; // Reset attack cooldown
+            attackTimer = attackCooldown;
         }
     }
 
@@ -113,7 +112,6 @@ public class Boss : Enemy
     protected void StartAttackingState()
     {
         bossState = BossState.Attacking;
-       
         ExecuteStage(); // Calls a stage attack based on the current phase
     }
 
@@ -127,7 +125,7 @@ public class Boss : Enemy
 
     protected virtual void ExecuteStage()
     {
-        int stageToExecute = Random.Range(1, currentStage + 1); // Randomly select a stage up to the current one
+        stageToExecute = Random.Range(1, numberOfStages + 1); // Randomly select a stage from 1 to `numberOfStages`
 
         switch (stageToExecute)
         {
@@ -150,18 +148,6 @@ public class Boss : Enemy
     protected virtual void ExecuteStageTwo() { }
     protected virtual void ExecuteStageThree() { }
 
-    // Call this to progress to the next stage
-    protected virtual void AdvanceToNextStage()
-    {
-        if (currentStage < maxStages)
-        {
-            currentStage++;
-            Debug.Log($"Boss advanced to Stage {currentStage}");
-
-            SetIdleState();
-        }
-    }
-
     protected void UpdateHealthUI()
     {
         healthBar.value = (float)health / maxHealth;
@@ -177,10 +163,10 @@ public class Boss : Enemy
 
     private Vector2 GetRandomPosition()
     {
-        Vector2 targetPosition = Vector2.zero;
-        targetPosition.x = Random.Range(-Constants.arenaSize.x / 3, Constants.arenaSize.x / 3);
-        targetPosition.y = Random.Range(-Constants.arenaSize.y / 3, Constants.arenaSize.y / 3);
-        return targetPosition;
+        return new Vector2(
+            Random.Range(-Constants.arenaSize.x / 3, Constants.arenaSize.x / 3),
+            Random.Range(-Constants.arenaSize.y / 3, Constants.arenaSize.y / 3)
+        );
     }
 
     protected override void Die()
@@ -191,5 +177,4 @@ public class Boss : Enemy
 
     private void DamageTakenCallback(int _damage, Vector2 _position, bool _isCriticalHit) => UpdateHealthUI();
     protected virtual void InitializeBoss() { }
-
 }

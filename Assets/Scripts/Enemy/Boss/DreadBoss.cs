@@ -42,12 +42,8 @@ public class DreadBoss : Boss
 
     private void GroundSlam()
     {
-        // **1. Play Slam Animation**
         anim.Play("Slam");
         transform.localScale = new Vector3(originalScale.x * 1.2f, originalScale.y * 0.8f, originalScale.z);
-
-        // **2. Spawn EXACTLY numSpikes at the top of the screen**
-        Debug.Log($"Dreadfang Ground Slam - Spawning {numSpikes} Spikes");
 
         for (int i = 0; i < numSpikes; i++)
         {
@@ -55,17 +51,14 @@ public class DreadBoss : Boss
             Instantiate(spikePrefab, spawnPosition, Quaternion.identity);
         }
 
-        // **3. Reset size and continue**
         transform.localScale = originalScale;
         isAttacking = false;
     }
 
     private void WebTrap()
     {
-        // **1. Play Summoning Web Animation**
         anim.Play("SummonWebs");
 
-        // **2. Spawn Webs**
         for (int i = 0; i < numWebs; i++)
         {
             Vector2 webPosition = new Vector2(

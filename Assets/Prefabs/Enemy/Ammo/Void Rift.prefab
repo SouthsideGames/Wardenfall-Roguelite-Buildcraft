@@ -125,7 +125,7 @@ ParticleSystem:
   serializedVersion: 8
   lengthInSec: 1
   simulationSpeed: 1
-  stopAction: 0
+  stopAction: 2
   cullingMode: 1
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
@@ -4901,7 +4901,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   explosionRadius: 3
   damage: 30
-  delay: 2
+  delay: 5
+  explosionPrefab: {fileID: 1603737452902559102, guid: 242c0cf5c868d454eaf78de94323ebd9, type: 3}
 --- !u!1 &2813468408060370447
 GameObject:
   m_ObjectHideFlags: 0
@@ -9863,7 +9864,7 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 1, g: 0.88446933, b: 0.5882353, a: 1}
-  m_Intensity: 2.7600179
+  m_Intensity: 2.77071
   m_Range: 6
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.802082

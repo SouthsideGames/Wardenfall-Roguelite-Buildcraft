@@ -5,17 +5,11 @@ using UnityEngine.UI;
 
 public class HiveTyrantBoss : Boss
 {   
-   [Header("STAGE 1 - Dashing")]
+    [Header("STAGE 1")]
     [SerializeField] private float dashCooldown = 3f;
     [SerializeField] private float dashDistance = 3f;
     
-    [Header("STAGE 2 - Enraged Mode")]
-    [SerializeField] private float enragedDashCooldown = 2f;
-    [SerializeField] private float enragedSpawnInterval = 3f;
-    [SerializeField] private float enragedSpeedMultiplier = 1.3f;
-    [SerializeField] private float stageTwoHealthThreshold = 0.5f; 
-
-    [Header("Minion Spawning")]
+    [Header("STAGE 2")]
     [SerializeField] private GameObject stingletPrefab;
     [SerializeField] private int maxMinions = 3;
     [SerializeField] private float spawnInterval = 5f;
@@ -43,37 +37,18 @@ public class HiveTyrantBoss : Boss
 
         if (!hasSpawned || isDashing) return;
 
-        // Transition to Stage 2 if health is low
-        if (currentStage == 1 && (float)health / maxHealth <= stageTwoHealthThreshold)
-        {
-            AdvanceToNextStage();
-        }
-
         dashTimer -= Time.deltaTime;
         spawnTimer -= Time.deltaTime;
 
         if (dashTimer <= 0)
         {
-            ExecuteStage();  // **Automatically calls the correct attack phase**
-            dashTimer = (currentStage == 2) ? enragedDashCooldown : dashCooldown;
-        }
-
-        if (currentStage == 2 && spawnTimer <= 0 && activeMinions < maxMinions)
-        {
-            ExecuteStageTwo(); // Only spawn minions in Stage 2
-            spawnTimer = enragedSpawnInterval;
+            ExecuteStage(); 
+            dashTimer = dashCooldown;
         }
     }
 
-    protected override void ExecuteStageOne()
-    {
-        PerformDash();
-    }
-
-    protected override void ExecuteStageTwo()
-    {
-        SpawnMinion();
-    }
+    protected override void ExecuteStageOne() =>  PerformDash();
+    protected override void ExecuteStageTwo() =>  SpawnMinion();
 
     private void PerformDash()
     {
@@ -81,12 +56,9 @@ public class HiveTyrantBoss : Boss
 
         isDashing = true;
         enemyMovement.DisableMovement(0.6f);
-        Debug.Log("Hive Tyrant: DASH ATTACK!");
 
-        // Stretch before dashing
         transform.localScale = new Vector3(originalScale.x * 1.5f, originalScale.y * 0.7f, originalScale.z);
 
-        // Get dash direction
         Vector2 dashDirection = (playerTransform.position - transform.position).normalized;
         Vector2 dashTarget = (Vector2)transform.position + dashDirection * dashDistance;
 
@@ -104,21 +76,8 @@ public class HiveTyrantBoss : Boss
     {
         if (activeMinions >= maxMinions) return;
 
-        Debug.Log("Hive Tyrant: Summoning Stinglets!");
         Instantiate(stingletPrefab, transform.position, Quaternion.identity);
         activeMinions++;
-    }
-
-    protected override void AdvanceToNextStage()
-    {
-        if (currentStage < 2)
-        {
-            currentStage = 2;
-            Debug.Log("Hive Tyrant has entered Stage 2!");
-
-            enemyMovement.moveSpeed *= enragedSpeedMultiplier;
-            transform.localScale *= 1.2f; 
-        }
     }
 
 }

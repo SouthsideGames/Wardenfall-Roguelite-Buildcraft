@@ -4,13 +4,13 @@ using UnityEngine;
 [RequireComponent(typeof(RangedEnemyAttack))]
 public class VoidStalkerBoss : Boss
 {
-     [Header("STAGE 1")]
+    [Header("STAGE 1")]
     [SerializeField] private float teleportCooldown = 5f;
     private float teleportTimer;
 
     [Header("STAGE 2")]
     [SerializeField] private GameObject voidRiftPrefab;
-    [SerializeField] private float riftExplosionDelay = 2f;
+    [SerializeField] private float voidRiftDuration = 2f;
 
     [Header("STAGE 3")]
     [SerializeField] private GameObject blackHolePrefab;
@@ -19,31 +19,17 @@ public class VoidStalkerBoss : Boss
     private bool isAttacking;
     private RangedEnemyAttack rangedEnemyAttack;
 
-    private void Awake() 
-    {
-        rangedEnemyAttack = GetComponent<RangedEnemyAttack>();  
-    }
-
     protected override void InitializeBoss()
     {
         base.InitializeBoss();
         teleportTimer = teleportCooldown;
+        rangedEnemyAttack = GetComponent<RangedEnemyAttack>();
+        rangedEnemyAttack.StorePlayer(character);
     }
 
     protected override void Update()
     {
-        UpdateHealthUI();
-        ManageStates();
-
-        ChangeDirections();
-
-        DetectSurvivorBox();
-
-        if (detectedBox != null && CanAttack())
-        {
-            AttackBox();
-        }
-
+        base.Update();
         if (!hasSpawned || isAttacking) return;
 
         teleportTimer -= Time.deltaTime;
@@ -55,61 +41,62 @@ public class VoidStalkerBoss : Boss
         }
     }
 
-    protected override void ExecuteStageOne()
-    {
-        if (isAttacking) return;
-        isAttacking = true;
-        FireHomingOrbs();
-    }
-
-    protected override void ExecuteStageTwo()
-    {
-        if (isAttacking) return;
-        isAttacking = true;
-        TeleportWithVoidRift();
-    }
-
-    protected override void ExecuteStageThree()
-    {
-        if (isAttacking) return;
-        isAttacking = true;
-        SpawnBlackHole();
-    }
+    protected override void ExecuteStageOne() => FireHomingOrbs();
+    protected override void ExecuteStageTwo() => TeleportWithVoidRift();
+    protected override void ExecuteStageThree() => SpawnBlackHole();
 
     private void FireHomingOrbs()
     {
+        if (isAttacking) return;
+        isAttacking = true;
         rangedEnemyAttack.AutoAim();
-        isAttacking = false;
+        Invoke(nameof(ResetAttack), 1f);
     }
 
-    // === STAGE 2: Teleport and Spawn Void Rift ===
+
     private void TeleportWithVoidRift()
     {
+        if (isAttacking) return;
+        isAttacking = true;
+
         Vector3 previousPosition = transform.position;
         Teleport();
+
         GameObject rift = Instantiate(voidRiftPrefab, previousPosition, Quaternion.identity);
-        Destroy(rift, riftExplosionDelay);
-        isAttacking = false;
+        Destroy(rift, voidRiftDuration);
+
+        Invoke(nameof(ResetAttack), 1.5f);
     }
 
-    // === STAGE 3: Spawn Black Hole ===
     private void SpawnBlackHole()
     {
+        if (isAttacking) return;
+        isAttacking = true;
+
         GameObject blackHole = Instantiate(blackHolePrefab, transform.position, Quaternion.identity);
         Destroy(blackHole, blackHoleDuration);
-        isAttacking = false;
+
+        Invoke(nameof(ResetAttack), 2f);
     }
 
-    // === TELEPORTATION ===
     private void Teleport()
     {
-        Vector3 randomPosition = new Vector3(
-            Random.Range(-5f, 5f),
-            Random.Range(-5f, 5f),
-            transform.position.z
-        );
+        Debug.Log("Void Stalker: TELEPORT!");
+        Vector3 randomPosition = GetRandomTeleportPosition();
         transform.position = randomPosition;
 
-        ExecuteStage();
+        ExecuteStage(); 
     }
+
+    private Vector3 GetRandomTeleportPosition()
+    {
+        float teleportRange = 5f;
+        return new Vector3(
+            Random.Range(-teleportRange, teleportRange),
+            Random.Range(-teleportRange, teleportRange),
+            transform.position.z
+        );
+    }
+
+    private void ResetAttack() => isAttacking = false;
 }

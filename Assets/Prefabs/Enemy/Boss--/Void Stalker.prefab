@@ -5346,14 +5346,11 @@ MonoBehaviour:
   healthText: {fileID: 4497351472038675705}
   maxIdleDuration: 1
   attackCooldown: 3
-  maxStages: 3
-  currentStage: 1
+  numberOfStages: 3
   teleportCooldown: 5
-  voidRiftPrefab: {fileID: 0}
-  riftExplosionDelay: 2
-  shieldDuration: 3
+  voidRiftPrefab: {fileID: 384078192021385705, guid: 523056783f895440288865c1c9fa3d83, type: 3}
+  voidRiftDuration: 2
   blackHolePrefab: {fileID: 2691954698479297628, guid: fe8a3316be12a441f93b9805bc331807, type: 3}
-  spinningProjectilePrefab: {fileID: 0}
   blackHoleDuration: 5
 --- !u!114 &1625990491047038937
 MonoBehaviour:
@@ -5367,8 +5364,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d418cfad4450c5479bc4b82436a299c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firePoint: {fileID: 0}
-  bulletPrefab: {fileID: 0}
+  firePoint: {fileID: 7906035679387183578}
+  bulletPrefab: {fileID: 4821930258780714043, guid: b2b3517c93645a14e8388135ead3d88c, type: 3}
   bulletDamage: 0
   fireRate: 0
   attackDelay: 0

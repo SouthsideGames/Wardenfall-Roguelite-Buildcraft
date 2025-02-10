@@ -624,7 +624,7 @@ MonoBehaviour:
   _spriteRenderer: {fileID: 2659399004584219606}
   spawnIndicator: {fileID: 2028771633142741421}
   _collider: {fileID: 6774666950356627255}
-  damage: 0
+  contactDamage: 0
   playerDetectionRadius: 0
   maxHealth: 1500
   health: 0
@@ -638,12 +638,12 @@ MonoBehaviour:
   healthBar: {fileID: 4186090598299740352}
   healthText: {fileID: 3173374523869408944}
   maxIdleDuration: 1
-  erraticMoveSpeed: 3
   attackCooldown: 3
+  numberOfStages: 3
+  erraticMoveSpeed: 3
   beamPrefab: {fileID: 5579916199222765347, guid: a05cafc750796430e83d9597bca7434f, type: 3}
   beamCount: 8
   burstRadius: 3
-  knockbackForce: 5
   burstDamage: 20
 --- !u!114 &1004411882718598240
 MonoBehaviour:
@@ -658,8 +658,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   firePoint: {fileID: 8864039958143943054}
-  bulletPrefab: {fileID: 0}
-  damage: 5
+  bulletPrefab: {fileID: 4821930258780714043, guid: b2b3517c93645a14e8388135ead3d88c, type: 3}
+  bulletDamage: 0
   fireRate: 2
   attackDelay: 1
   bulletSpeed: 10

@@ -558,7 +558,7 @@ MonoBehaviour:
   _spriteRenderer: {fileID: 8066399581404021439}
   spawnIndicator: {fileID: 8914187161983144560}
   _collider: {fileID: 1677275618575709345}
-  damage: 0
+  contactDamage: 0
   playerDetectionRadius: 0
   maxHealth: 0
   health: 0
@@ -573,9 +573,7 @@ MonoBehaviour:
   healthText: {fileID: 8363562929251521764}
   maxIdleDuration: 2
   attackCooldown: 3
-  maxStages: 3
-  currentStage: 1
-  slamCooldown: 30
+  numberOfStages: 2
   spikePrefab: {fileID: 7397484310347760145, guid: 3802d284a7cc7c94988d20495f111e7b, type: 3}
   webPrefab: {fileID: 5321382712317316223, guid: 4cfd8661aaba49149867af1410ecc504, type: 3}
   spikeFallRange: 5

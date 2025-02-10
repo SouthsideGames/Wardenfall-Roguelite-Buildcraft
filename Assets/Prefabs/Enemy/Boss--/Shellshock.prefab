@@ -5097,6 +5097,7 @@ GameObject:
   - component: {fileID: 7066067720450072675}
   - component: {fileID: 1969873319376816778}
   - component: {fileID: 4778504599208135756}
+  - component: {fileID: 6054851436047455091}
   m_Layer: 6
   m_Name: Shellshock
   m_TagString: Enemy
@@ -5224,7 +5225,7 @@ MonoBehaviour:
   _spriteRenderer: {fileID: 8752888432016882076}
   spawnIndicator: {fileID: 7134393198149721410}
   _collider: {fileID: 7912901263690595757}
-  damage: 0
+  contactDamage: 0
   playerDetectionRadius: 0
   maxHealth: 1000
   health: 0
@@ -5239,14 +5240,27 @@ MonoBehaviour:
   healthText: {fileID: 2094369329037036263}
   maxIdleDuration: 1
   attackCooldown: 3
-  maxStages: 3
-  currentStage: 2
-  moveDuration: 3
+  numberOfStages: 3
   stopDuration: 1.5
   moveRange: 5
-  homingBulletPrefab: {fileID: 8148010796086320320, guid: 8c42922a78478b64281a0acaf653504d, type: 3}
+--- !u!114 &6054851436047455091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2340492655594630733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d418cfad4450c5479bc4b82436a299c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   firePoint: {fileID: 8142401422616059122}
-  fireRate: 0.8
+  bulletPrefab: {fileID: 4821930258780714043, guid: b2b3517c93645a14e8388135ead3d88c, type: 3}
+  bulletDamage: 0
+  fireRate: 0
+  attackDelay: 0
+  bulletSpeed: 0
 --- !u!1 &2381212996664272875
 GameObject:
   m_ObjectHideFlags: 0
