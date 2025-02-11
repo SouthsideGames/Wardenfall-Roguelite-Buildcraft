@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class HomingBullet : MonoBehaviour
+public class HomingBullet : EnemyBullet
 {
     [Header("Homing Bullet Settings")]
     [SerializeField] private float pauseDuration = 0.5f;  // Time before moving
