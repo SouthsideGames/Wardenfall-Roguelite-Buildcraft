@@ -15,6 +15,7 @@ namespace SouthsideGames.DailyMissions
         [SerializeField] private SliderItemUI uIAttractorItemPrefab;
         [SerializeField] private SliderItemUI sliderItemPrefab;
         [SerializeField] private RectTransform itemsParent;
+        [SerializeField] private MissionRewardPopUpUI rewardPopUp;
         private TextMeshProUGUI xpText;
 
         [Header("DATA:")]
@@ -84,6 +85,12 @@ namespace SouthsideGames.DailyMissions
         private void OpenReward(int _index)
         {
             itemsParent.GetChild(_index + 1).GetComponent<SliderItemUI>().StopAnimation();
+
+            MissionRewardPopUpUI popup = PopUpManager.Show(rewardPopUp) as MissionRewardPopUpUI;
+            popup.Configure(data.RewardMilestoneDatas[_index].rewards);
+
+
+
         }
 
         private void InitSlider()
