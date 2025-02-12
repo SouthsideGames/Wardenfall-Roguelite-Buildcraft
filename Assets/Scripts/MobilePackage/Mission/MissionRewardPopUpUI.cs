@@ -1,5 +1,4 @@
 using SouthsideGames.DailyMissions;
-using Unity.Android.Gradle.Manifest;
 using UnityEngine;
 using UnityEngine.UI;
 

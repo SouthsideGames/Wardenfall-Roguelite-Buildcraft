@@ -22,6 +22,7 @@ namespace SouthsideGames.DailyMissions
         [SerializeField] private RewardGroupDataSO data;
         [SerializeField] private Sprite currencyIcon;
         private int lastRewardIndex;
+        private bool[] rewardOpened;
 
         private void Awake() 
         {
@@ -38,6 +39,7 @@ namespace SouthsideGames.DailyMissions
             Init();
 
             lastRewardIndex = 0;
+            rewardOpened = new bool[data.RewardMilestoneDatas.Length];
         }
 
         private void Init()
@@ -84,6 +86,8 @@ namespace SouthsideGames.DailyMissions
 
         private void OpenReward(int _index)
         {
+            rewardOpened[_index] = true;
+            
             itemsParent.GetChild(_index + 1).GetComponent<SliderItemUI>().StopAnimation();
 
             MissionRewardPopUpUI popup = PopUpManager.Show(rewardPopUp) as MissionRewardPopUpUI;
