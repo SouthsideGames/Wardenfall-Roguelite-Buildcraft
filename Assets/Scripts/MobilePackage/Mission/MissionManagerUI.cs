@@ -18,11 +18,21 @@ namespace SouthsideGames.DailyMissions
             for (int i = 0; i < _activeMissions.Length; i++)
             {
                 MissionContainerUI containerInstance = Instantiate(missionContainerPrefab, missionContainersParent);
+
                 int _i = i;
                 containerInstance.Configure(_activeMissions[i], () => ClaimMission(_i));
 
                 activeMissionContainers.Add(containerInstance);
             }
+
+            Reorder();
+        }
+
+        private void Reorder()
+        {
+            for(int i = 0; i < activeMissionContainers.Count; i++)
+                if(activeMissionContainers[i].IsClaimed)
+                    activeMissionContainers[i].transform.SetAsFirstSibling();
         }
 
         private void ClaimMission(int _index)

@@ -1,4 +1,5 @@
 using System;
+using System.Security.Claims;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -23,6 +24,8 @@ namespace SouthsideGames.DailyMissions
 
         private Mission mission;
 
+        public bool IsClaimed => mission.IsClaimed;
+
         public void Configure(Mission _mission, Action _callback)
         {
             mission = _mission; 
@@ -35,6 +38,9 @@ namespace SouthsideGames.DailyMissions
             claimButton.onClick.AddListener(() => _callback?.Invoke());
 
             UpdateVisuals();
+
+            if(mission.IsClaimed)
+                ClaimMission();
         }
 
         public void UpdateVisuals()

@@ -41,9 +41,13 @@ namespace SouthsideGames.DailyMissions
 
         public MissionType Type => data.Type;
 
-        public Mission(MissionDataSO _data)
+        public Mission(MissionDataSO _data, int _amount, bool _claimedState)
         {
-            this.data = _data;  
+            this.data = _data; 
+            this.amount = _amount;
+
+            if(_claimedState)
+               Claim();
         }    
 
         public void CompleteMission()

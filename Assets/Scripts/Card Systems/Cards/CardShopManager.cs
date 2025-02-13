@@ -19,13 +19,13 @@ public class CardShopManager : MonoBehaviour, IWantToBeSaved
 
     private Dictionary<CardRarityType, GameObject> shopCardFrameDictionary; 
     private List<CardSO> allCards; 
-    private List<CardSO> currentShopCards; 
+    private List<CardSO> currentShopCards;
 
     private void Start()
     {
         InitializeCardFrames();
         LoadAllCards();
-        Load(); // Load saved shop data
+        Load(); 
         CheckWeeklyRefresh();
         PopulateShop();
     }
@@ -128,6 +128,9 @@ public class CardShopManager : MonoBehaviour, IWantToBeSaved
 
     public void Load()
     {
+        if (allCards == null || allCards.Count == 0)
+            allCards = new List<CardSO>();
+
         if (SaveManager.TryLoad(this, WeeklyShopCardsKey, out object savedCards) && savedCards is List<string> cardIDs)
         {
             currentShopCards = allCards.Where(card => cardIDs.Contains(card.ID)).ToList();
@@ -137,6 +140,7 @@ public class CardShopManager : MonoBehaviour, IWantToBeSaved
             currentShopCards = new List<CardSO>();
         }
     }
+
 
     [Button("Refresh Shop")]
     public void TestRefreshShop()

@@ -3,9 +3,12 @@ using Coffee.UIExtensions;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections.Generic;
+using System.Collections;
 
 namespace SouthsideGames.DailyMissions
 {
+    using SouthsideGames.SaveManager;
     public class MainMissionSliderUI : MonoBehaviour
     {
         public static Action<UIParticleAttractor> OnAttractorInit;
@@ -21,36 +24,48 @@ namespace SouthsideGames.DailyMissions
         [Header("DATA:")]
         [SerializeField] private RewardGroupDataSO data;
         [SerializeField] private Sprite currencyIcon;
+        private List<SliderItemUI> sliderItems = new List<SliderItemUI>();
         private int lastRewardIndex;
         private bool[] rewardOpened;
+        private const string lastRewardIndexKey     = "MissionLastRewardIndex";
+        private const string rewardOpenedKey         = "MissionRewardsOpened"; 
 
-        private void Awake() 
-        {
-            MissionManager.xpUpdated += OnXpUpdated;
-        }
+        private void Awake() => MissionManager.xpUpdated += OnXpUpdated;
+        private void OnDestroy() => MissionManager.xpUpdated -= OnXpUpdated;
 
-        private void OnDestroy()
+        private IEnumerator Start() 
         {
-            MissionManager.xpUpdated -= OnXpUpdated;
-        }
-
-        private void Start() 
-        {
-            Init();
+            yield return null;
 
             lastRewardIndex = 0;
             rewardOpened = new bool[data.RewardMilestoneDatas.Length];
+
+            Load();
+            Init();
         }
 
         private void Init()
         {
             GenerateSliderItems();
             InitSlider();
+            UpdateVisuals(MissionManager.Instance.Xp);
+
+            CheckForUnopenedReward();
+        }
+
+        private void CheckForUnopenedReward()
+        {
+            for (int i = 0; i < sliderItems.Count; i++)
+            {
+                if(!rewardOpened[i] && slider.value >= data.RewardMilestoneDatas[i].requiredXP)
+                   sliderItems[i].Animate();
+            }
         }
 
         private void GenerateSliderItems()
         {
             itemsParent.Clear();
+            sliderItems.Clear();
 
             SliderItemUI attractorItem = Instantiate(uIAttractorItemPrefab, itemsParent);
             attractorItem.Configure(currencyIcon, 0.ToString());
@@ -68,6 +83,8 @@ namespace SouthsideGames.DailyMissions
 
                 int _i = i;
                 itemInstance.Button.onClick.AddListener(() => HandleSliderItemPressed(_i));
+
+                sliderItems.Add(itemInstance);
             }
 
             PlaceItems();
@@ -77,8 +94,9 @@ namespace SouthsideGames.DailyMissions
         private void HandleSliderItemPressed(int _index)
         {
             bool canOpen = lastRewardIndex > _index;
+            bool isOpened = rewardOpened[_index];
 
-            if(!canOpen)
+            if(!canOpen || isOpened)
               return;
 
             OpenReward(_index);
@@ -88,12 +106,12 @@ namespace SouthsideGames.DailyMissions
         {
             rewardOpened[_index] = true;
             
-            itemsParent.GetChild(_index + 1).GetComponent<SliderItemUI>().StopAnimation();
+            sliderItems[_index].StopAnimation();
 
             MissionRewardPopUpUI popup = PopUpManager.Show(rewardPopUp) as MissionRewardPopUpUI;
             popup.Configure(data.RewardMilestoneDatas[_index].rewards);
 
-
+            Save();
 
         }
 
@@ -118,11 +136,17 @@ namespace SouthsideGames.DailyMissions
 
         private void OnXpUpdated(int _xp)
         {
-            slider.value = _xp;
-            xpText.text = _xp.ToString();
+            UpdateVisuals(_xp);
 
             CheckForRewards();
         }
+
+        private void UpdateVisuals(int _xp)
+        {
+            slider.value = _xp;
+            xpText.text = _xp.ToString();
+        }
+
 
         private void CheckForRewards()
         {
@@ -135,10 +159,24 @@ namespace SouthsideGames.DailyMissions
 
         private void EnableReward()
         {
-            SliderItemUI item = itemsParent.GetChild(lastRewardIndex + 1).GetComponent<SliderItemUI>();
-            item.Animate();
+            sliderItems[lastRewardIndex].Animate();
 
             lastRewardIndex++;
+        }
+
+        private void Load()
+        {
+            if(SaveManager.TryLoad(this, lastRewardIndexKey, out object _lastRewardIndex))
+                lastRewardIndex = (int)_lastRewardIndex;
+
+            if(SaveManager.TryLoad(this, rewardOpenedKey, out object _rewardsOpened))
+                rewardOpened = (bool[])_rewardsOpened;
+        }
+
+        private void Save()
+        {
+            SaveManager.Save(this, lastRewardIndexKey, lastRewardIndex);
+            SaveManager.Save(this, rewardOpenedKey, rewardOpened);
         }
     }
 

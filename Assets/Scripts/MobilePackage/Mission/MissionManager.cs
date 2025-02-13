@@ -6,7 +6,10 @@ using Coffee.UIExtensions;
 
 namespace SouthsideGames.DailyMissions
 {
+    using SouthsideGames.SaveManager;
+
     [RequireComponent(typeof(MissionManagerUI))]
+    [RequireComponent(typeof(MissionTimer))]
     public class MissionManager : MonoBehaviour
     {
         public static MissionManager Instance;
@@ -14,6 +17,7 @@ namespace SouthsideGames.DailyMissions
 
         [Header("COMPONENTS:")]
         private MissionManagerUI uI;
+        private MissionTimer timer;
 
         [Header("DATA:")]
         [SerializeField] private MissionDataSO[] missionDatas;
@@ -24,9 +28,14 @@ namespace SouthsideGames.DailyMissions
         [SerializeField] private Transform particleParent;
         private UIParticleAttractor uIParticleAttractor;
 
-
         private int xp;
         public int Xp => xp;    
+
+        private int[] amounts;
+        private bool[] claimedStates;
+        private const string amountsKey         = "MissionDataAmounts";
+        private const string claimedStatesKey   = "MissionClaimedStates";
+        private const string xpkey              = "MissionXp";
 
         private void Awake() 
         {
@@ -36,6 +45,7 @@ namespace SouthsideGames.DailyMissions
                 Destroy(gameObject);
 
             uI = GetComponent<MissionManagerUI>();  
+            timer = GetComponent<MissionTimer>();   
 
             Mission.updateMission                   += OnMissionUpdated;
             Mission.completeMission                 += OnCompleteMission;
@@ -45,10 +55,13 @@ namespace SouthsideGames.DailyMissions
 
         private void Start() 
         {
+            Load();
+
             for(int i = 0; i < missionDatas.Length; i++)
-                activeMissions.Add(new Mission(missionDatas[i]));
+                activeMissions.Add(new Mission(missionDatas[i], amounts[i], claimedStates[i]));
 
             uI.Init(activeMissions.ToArray());
+            timer.Init(this);
         }
 
         private void Destroy()
@@ -78,6 +91,8 @@ namespace SouthsideGames.DailyMissions
 
             collectParticlesInstance.emission.SetBurst(0, new ParticleSystem.Burst(0, particleCount));
             collectParticlesInstance.Play();
+
+            Save();
         }
 
         private void OnMissionUpdated(Mission _mission)
@@ -92,6 +107,8 @@ namespace SouthsideGames.DailyMissions
 
         public static void Increment(MissionType _missionType, int _amount)
         {
+            bool incremented = false;
+
             for (int i = 0; i < Instance.activeMissions.Count; i++)
             {
                 if(Instance.activeMissions[i].IsComplete || Instance.activeMissions[i].IsClaimed)
@@ -99,13 +116,53 @@ namespace SouthsideGames.DailyMissions
                     
                 if(Instance.activeMissions[i].Type == _missionType)
                    Instance.activeMissions[i].Amount += _amount;
+
+                incremented = true;
             }
+
+            if(incremented)
+                Instance.Save();
         }
 
         private void OnCollectedParticleAttracted()
         {
             xp++;
             xpUpdated?.Invoke(xp);
+
+            Save();
+        }
+
+        public void ResetMissions()
+        {
+
+        }
+
+        private void Load()
+        {
+            amounts = new int[missionDatas.Length];
+            claimedStates = new bool[missionDatas.Length];
+
+            if(SaveManager.TryLoad(this, amountsKey, out object _amounts))
+               amounts = (int[])_amounts;
+
+            if(SaveManager.TryLoad(this, claimedStatesKey, out object _claimedStates))
+               claimedStates = (bool[])_claimedStates;
+
+            if(SaveManager.TryLoad(this, xpkey, out object _xp))
+               xp = (int)_xp;
+        }
+
+        private void Save()
+        {
+            for(int i = 0; i < activeMissions.Count; i++)
+            {
+                amounts[i] = activeMissions[i].Amount;
+                claimedStates[i] = activeMissions[i].IsClaimed;
+            }
+
+            SaveManager.Save(this, amountsKey, amounts);
+            SaveManager.Save(this, claimedStatesKey, claimedStates);
+            SaveManager.Save(this, xpkey, xp);
         }
 
     }
