@@ -136,6 +136,12 @@ namespace SouthsideGames.SaveManager
             return fullKey;
         }
 
+        public static void Remove(object sender, string key)
+        {
+            string fullKey = GetFullKey(sender, key);
+            GameData.Remove(fullKey);
+        }
+
         [NaughtyAttributes.Button]
         public static void ClearData()
         {

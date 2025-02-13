@@ -14,6 +14,7 @@ namespace SouthsideGames.DailyMissions
     {
         public static MissionManager Instance;
         public static Action<int> xpUpdated;
+        public static Action reset;
 
         [Header("COMPONENTS:")]
         private MissionManagerUI uI;
@@ -30,7 +31,7 @@ namespace SouthsideGames.DailyMissions
 
         private int xp;
         public int Xp => xp;    
-
+        private bool shouldSave;
         private int[] amounts;
         private bool[] claimedStates;
         private const string amountsKey         = "MissionDataAmounts";
@@ -50,6 +51,8 @@ namespace SouthsideGames.DailyMissions
             Mission.updateMission                   += OnMissionUpdated;
             Mission.completeMission                 += OnCompleteMission;
             MainMissionSliderUI.OnAttractorInit     += OnAttractorInit;
+
+            StartCoroutine("SaveCoroutine");
 
         }
 
@@ -129,12 +132,29 @@ namespace SouthsideGames.DailyMissions
             xp++;
             xpUpdated?.Invoke(xp);
 
-            Save();
+            shouldSave = true;
         }
 
         public void ResetMissions()
         {
+            amounts = new int[missionDatas.Length];
+            claimedStates = new bool[missionDatas.Length];
+            xp = 0;
 
+            SaveManager.Remove(this, amountsKey);
+            SaveManager.Remove(this, claimedStatesKey);
+            SaveManager.Remove(this, xpkey);
+
+            activeMissions.Clear(); 
+
+            for (int i = 0; i < missionDatas.Length; i++)
+               activeMissions.Add(new Mission(missionDatas[i]));
+
+            uI.Init(activeMissions.ToArray());
+
+            //timer.ResetSelf();
+
+            reset?.Invoke();
         }
 
         private void Load()
@@ -163,6 +183,21 @@ namespace SouthsideGames.DailyMissions
             SaveManager.Save(this, amountsKey, amounts);
             SaveManager.Save(this, claimedStatesKey, claimedStates);
             SaveManager.Save(this, xpkey, xp);
+        }
+
+        IEnumerator SaveCoroutine()
+        {
+            while(true)
+            {
+                yield return new WaitForSeconds(5);
+
+                if(shouldSave)
+                {
+                    shouldSave = false;
+                    Save();
+                }
+                   
+            }
         }
 
     }
