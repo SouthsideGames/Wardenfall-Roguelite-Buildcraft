@@ -52165,7 +52165,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1507552838
 Transform:
   m_ObjectHideFlags: 0
@@ -52193,6 +52193,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c02dc77be72a1b34b895e2be56f84023, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  alertObject: {fileID: 4616558960035113848}
   missionDatas:
   - {fileID: 11400000, guid: 6254050441e7751429fbc2e8b2a16fb6, type: 2}
   - {fileID: 11400000, guid: 6e1358bd5ad792c4c9e5cc165b1e0118, type: 2}
@@ -80826,16 +80827,16 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4616558959588912209}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: 0.008996754, w: 0.9999595}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4616558959681271879}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 1.031}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 39.7}
+  m_AnchoredPosition: {x: 0.00012207031, y: 39.700027}
   m_SizeDelta: {x: 100.5, y: 117.47}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &4616558959588912215
@@ -80927,6 +80928,18 @@ MonoBehaviour:
       - m_Target: {fileID: 1350216646}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: ShowMissionPanel
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1507552839}
+        m_TargetAssemblyTypeName: SouthsideGames.DailyMissions.MissionManager, Assembly-CSharp
+        m_MethodName: RemoveAlert
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -84275,7 +84288,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: MISSION
+  m_text: MISSIONS
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ca247a3092b7b404dbaa6f4ab43e450c, type: 2}
   m_sharedMaterial: {fileID: -403277894513911722, guid: ca247a3092b7b404dbaa6f4ab43e450c, type: 2}
@@ -85636,7 +85649,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -160, y: -58}
-  m_SizeDelta: {x: 0, y: 50}
+  m_SizeDelta: {x: 138.53, y: 50}
   m_Pivot: {x: 1, y: 1}
 --- !u!222 &4742827812132133644
 CanvasRenderer:
@@ -86308,7 +86321,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4742827812784145219
 RectTransform:
   m_ObjectHideFlags: 0
@@ -86348,7 +86361,7 @@ RectTransform:
   m_Father: {fileID: 4742827812354954651}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0.335, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -86457,7 +86470,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0.0008239746, y: 962.3003}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 42, y: 20}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &4742827812871809711
 MonoBehaviour:

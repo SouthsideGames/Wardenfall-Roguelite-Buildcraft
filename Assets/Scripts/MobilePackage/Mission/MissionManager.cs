@@ -19,6 +19,7 @@ namespace SouthsideGames.DailyMissions
         [Header("COMPONENTS:")]
         private MissionManagerUI uI;
         private MissionTimer timer;
+        [SerializeField] private GameObject alertObject;
 
         [Header("DATA:")]
         [SerializeField] private MissionDataSO[] missionDatas;
@@ -37,6 +38,7 @@ namespace SouthsideGames.DailyMissions
         private const string amountsKey         = "MissionDataAmounts";
         private const string claimedStatesKey   = "MissionClaimedStates";
         private const string xpkey              = "MissionXp";
+        private const string alertKey           = "MissionAlertState";
 
         private void Awake() 
         {
@@ -105,7 +107,8 @@ namespace SouthsideGames.DailyMissions
         
         private void OnCompleteMission(Mission _mission)
         {
- 
+            alertObject.SetActive(true);
+            SaveManager.Save(this, alertKey, true);
         }
 
         public static void Increment(MissionType _missionType, int _amount)
@@ -154,6 +157,9 @@ namespace SouthsideGames.DailyMissions
 
             timer.ResetSelf();
 
+            alertObject.SetActive(true);
+            SaveManager.Save(this, alertKey, true);
+
             reset?.Invoke();
         }
 
@@ -170,6 +176,18 @@ namespace SouthsideGames.DailyMissions
 
             if(SaveManager.TryLoad(this, xpkey, out object _xp))
                xp = (int)_xp;
+
+            if (SaveManager.TryLoad(this, alertKey, out object alertState))
+            {
+                alertObject.SetActive((bool)alertState);
+            }
+            else
+            {
+                alertObject.SetActive(true);
+                SaveManager.Save(this, alertKey, true);
+            }
+
+    
         }
 
         private void Save()
@@ -198,6 +216,12 @@ namespace SouthsideGames.DailyMissions
                 }
                    
             }
+        }
+
+        public void RemoveAlert()
+        {
+            alertObject.SetActive(false);
+            SaveManager.Save(this, alertKey, false);
         }
 
     }
