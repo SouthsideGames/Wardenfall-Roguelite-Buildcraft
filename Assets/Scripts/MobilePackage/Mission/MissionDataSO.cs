@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace SouthsideGames.DailyMissions
 {
-    [CreateAssetMenu(fileName = "Mission Data", menuName = "Scriptable Objects/New Mission Data", order = 7)]
+    [CreateAssetMenu(fileName = "Mission Data", menuName = "Scriptable Objects/Daily Missions/New Mission Data", order = 1)]
     public class MissionDataSO : ScriptableObject
     {
         [SerializeField] private MissionType type;

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using SouthsideGames.DailyMissions;
 using UnityEngine;
 
 public class EnemyStatus : MonoBehaviour
@@ -39,7 +40,9 @@ public class EnemyStatus : MonoBehaviour
                 ApplyDrain((int)effect.Value, effect.Duration, effect.Interval);
                 break;
             case StatusEffectType.Burn:
-                ApplyBurn((int)effect.Value, effect.Duration, effect.Interval);
+                int value = (int)effect.Value;
+                MissionManager.Increment(MissionType.burnThemDown, value);
+                ApplyBurn(value, effect.Duration, effect.Interval);
                 break;
             case StatusEffectType.Freeze:
                 ApplyFreeze(effect.Duration);
@@ -126,7 +129,6 @@ public class EnemyStatus : MonoBehaviour
         }
     }
 
-    // Inflicts periodic damage over time, simulating the effect of being set on fire.
     private void ApplyBurn(int damage, float duration, float interval)
     {
         if (isBurned) return;

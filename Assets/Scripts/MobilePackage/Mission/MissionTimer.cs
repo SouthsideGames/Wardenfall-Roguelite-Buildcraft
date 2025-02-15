@@ -171,6 +171,16 @@ namespace SouthsideGames.DailyMissions
 
         }
 
+        
+        public void ResetSelf()
+        {
+            SaveManager.Remove(this, startTimeKey);
+            SaveManager.Remove(this, endTimeKey);
+
+            StartTimer();
+        }
+
+
         [Button]
         private void AddOneHour() => AddHours(1);
 

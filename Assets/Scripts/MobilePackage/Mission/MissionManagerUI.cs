@@ -15,6 +15,9 @@ namespace SouthsideGames.DailyMissions
 
         public void Init(Mission[] _activeMissions)
         {
+            missionContainersParent.Clear();    
+            activeMissionContainers.Clear();
+
             for (int i = 0; i < _activeMissions.Length; i++)
             {
                 MissionContainerUI containerInstance = Instantiate(missionContainerPrefab, missionContainersParent);

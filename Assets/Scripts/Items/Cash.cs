@@ -8,7 +8,8 @@ public class Cash : Item
     public static Action<Cash> OnCollected;
     protected override void Collected()
     {
-        MissionManager.Increment(MissionType.currencyCollected, 1);
+        MissionManager.Increment(MissionType.premiumCurrencyCollected, 1);
+        MissionManager.Increment(MissionType.premiumCurrencyCollected2, 1);
         OnCollected?.Invoke(this);
     }   
 }

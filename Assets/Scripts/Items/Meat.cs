@@ -12,6 +12,7 @@ public class Meat : Item
     protected override void Collected()
     {
         MissionManager.Increment(MissionType.currencyCollected, 1);
+        MissionManager.Increment(MissionType.currencyCollected2, 1);
         OnCollected?.Invoke(this);
     }   
 

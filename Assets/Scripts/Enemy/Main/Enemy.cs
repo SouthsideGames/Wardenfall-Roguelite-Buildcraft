@@ -165,12 +165,16 @@ public abstract class Enemy : MonoBehaviour
         OnDeath?.Invoke(transform.position);
         OnEnemyKilled?.Invoke();
 
-        // Debug before calling increment
-        Debug.Log("MissionManager.Increment called with MissionType.enemiesPopped, 1");
-
-
-        MissionManager.Increment(MissionType.enemiesPopped, 1);
+        MissionIncrement();
         DieAfterWave();
+    }
+
+    private void MissionIncrement()
+    {
+        MissionManager.Increment(MissionType.eliminate100Enemies, 1);
+        MissionManager.Increment(MissionType.eliminate500Enemies, 1);
+        MissionManager.Increment(MissionType.eliminate1000Enemies, 1);
+        MissionManager.Increment(MissionType.eliminate2000Enemies, 1);
     }
 
     public void DieAfterWave()

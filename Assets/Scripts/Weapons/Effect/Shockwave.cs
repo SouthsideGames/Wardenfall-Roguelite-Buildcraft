@@ -1,4 +1,5 @@
 using System.Collections;
+using SouthsideGames.DailyMissions;
 using UnityEngine;
 
 public class Shockwave : MonoBehaviour
@@ -45,6 +46,7 @@ public class Shockwave : MonoBehaviour
                 if (enemy != null)
                 {
                     enemy.TakeDamage(damage, false);
+                    MissionManager.Increment(MissionType.shockwaveSpecialist, damage);
                 }
             }
 

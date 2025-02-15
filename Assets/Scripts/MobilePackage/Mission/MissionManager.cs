@@ -152,7 +152,7 @@ namespace SouthsideGames.DailyMissions
 
             uI.Init(activeMissions.ToArray());
 
-            //timer.ResetSelf();
+            timer.ResetSelf();
 
             reset?.Invoke();
         }
@@ -184,7 +184,7 @@ namespace SouthsideGames.DailyMissions
             SaveManager.Save(this, claimedStatesKey, claimedStates);
             SaveManager.Save(this, xpkey, xp);
         }
-
+        
         IEnumerator SaveCoroutine()
         {
             while(true)

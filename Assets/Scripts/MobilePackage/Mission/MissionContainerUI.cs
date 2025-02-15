@@ -32,7 +32,7 @@ namespace SouthsideGames.DailyMissions
 
             rewardImage.sprite = _mission.Data.Icon;
             rewardText.text = "x" + _mission.Data.RewardXp;
-            labelText.text = GetMissionLabel(_mission.Data);
+            labelText.text = MissionDescriptionMapper.GetDescription(mission.Data);
 
             claimButton.onClick.RemoveAllListeners();
             claimButton.onClick.AddListener(() => _callback?.Invoke());
@@ -77,32 +77,6 @@ namespace SouthsideGames.DailyMissions
             inProgress.SetActive(false);
         }
 
-
-        private string GetMissionLabel(MissionDataSO _data)
-        {
-            switch (_data.Type)
-            {
-                case MissionType.survivalPlayed:
-                    return $"Play Survival Mode {_data.Target} times";
-                case MissionType.waveBasedPlayed:
-                    return $"Play Wave Based Mode {_data.Target} times";
-                case MissionType.bossRushPlayed:
-                    return $"Play Boss Rush Mode {_data.Target} times";
-                case MissionType.enemiesPopped:
-                    return $"Defeat {_data.Target} enemies";
-                case MissionType.wavesCompleted:
-                    return $"Complete {_data.Target} waves";
-                case MissionType.currencyCollected:
-                    return $"Collect {_data.Target} meat";
-                case MissionType.premiumCurrencyCollected:
-                    return $"Collect {_data.Target} cash";
-                case MissionType.gemCollected:
-                    return $"Collect {_data.Target} gems";
-                default:
-                    Debug.LogError("No label for this mission type : " + _data.Type);
-                    return "";
-            }
-        }
     }
 }
 

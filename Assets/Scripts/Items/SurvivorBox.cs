@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using SouthsideGames.DailyMissions;
 
 /// <summary>
 /// A destructible box with a timer that spawns either a CollectableWeapon or CollectableObject
@@ -50,6 +51,8 @@ public class SurvivorBox : MonoBehaviour
 
             if (timer <= 0)
             {
+                MissionManager.Increment(MissionType.explorationExpert, 1);
+                MissionManager.Increment(MissionType.survivorBoxProtector, 1);
                 SpawnRandomItem();
                 DestroyBox();
             }

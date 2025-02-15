@@ -3,7 +3,7 @@ using SouthsideGames.DailyMissions;
 
 namespace SouthsideGames.DailyMissions
 {
-    [CreateAssetMenu(fileName = "Reward Group Data", menuName = "Scriptable Objects/New Reward Group Data", order = 8)]
+    [CreateAssetMenu(fileName = "Reward Group Data", menuName = "Scriptable Objects/Daily Missions/New Reward Group Data", order = 4)]
     public class RewardGroupDataSO : ScriptableObject
     {
         [SerializeField] private RewardMilestoneData[] rewardMilestoneDatas;

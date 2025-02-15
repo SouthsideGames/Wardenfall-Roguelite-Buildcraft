@@ -1,4 +1,5 @@
 using SouthsideGames.DailyMissions;
+using Unity.Android.Gradle.Manifest;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -33,10 +34,10 @@ public class MissionRewardPopUpUI : PopupBaseUI
     {
         for(int i = 0; i < rewards.Length; i++)
         {
-            RewardEntryData rewardEntry = rewards[i];
+            RewardEntryData data = rewards[i];
 
             MissionRewardContainerUI containerInstance = Instantiate(rewardContainerPrefab, rewardContainersParent);
-            containerInstance.Configure(placeholderIcon, rewardEntry.amount.ToString());
+            containerInstance.Configure(RewardSpriteMapper.GetSprite(data.type), data.amount.ToString());
         }
     }
 

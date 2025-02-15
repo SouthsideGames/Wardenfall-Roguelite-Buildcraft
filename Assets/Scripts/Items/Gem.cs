@@ -8,7 +8,8 @@ public class Gem : Item
     public static Action<Gem> OnCollected;
     protected override void Collected()
     {
-        MissionManager.Increment(MissionType.currencyCollected, 1);
+        MissionManager.Increment(MissionType.gemCollected, 1);
+        MissionManager.Increment(MissionType.gemCollected2, 1);
         OnCollected?.Invoke(this);
     }   
 }

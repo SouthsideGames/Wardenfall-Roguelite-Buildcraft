@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Random = UnityEngine.Random;
+using SouthsideGames.DailyMissions;
 
 public class Boss : Enemy
 {
@@ -171,6 +172,7 @@ public class Boss : Enemy
 
     protected override void Die()
     {
+        MissionManager.Increment(MissionType.bossHunter, 1);
         OnBossDeath?.Invoke(transform.position);
         DieAfterWave();
     }

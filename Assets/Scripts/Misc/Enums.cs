@@ -66,27 +66,12 @@ public enum GameMode
     BossRush
 }
 
-public enum MissionType
-{
-    wavesCompleted = 0,
-    enemiesPopped = 1,
-    premiumCurrencyCollected = 2,
-    currencyCollected = 3,
-    waveBasedPlayed = 4,
-    survivalPlayed = 5,
-    bossRushPlayed = 6,
-    gemCollected = 7
-    
-}
 
 public enum RewardType
 {
     Currency_01 = 0,
     Currency_02 = 1,
-    Currency_03 = 2,
-
-    Special_01 = 200,
-    Special_02 = 201
+    Special_01 = 200
 }
 
 

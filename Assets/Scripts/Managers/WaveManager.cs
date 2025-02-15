@@ -149,7 +149,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     {
         OnWaveCompleted?.Invoke();
 
-        MissionManager.Increment(MissionType.wavesCompleted, 1);
+        MissionIncrement();
         DefeatAllEnemies();
         hasWaveStarted = false;
         currentWaveIndex++;
@@ -326,6 +326,15 @@ public class WaveManager : MonoBehaviour, IGameStateListener
             GameManager.Instance.SetGameState(GameState.GameOver);
         }
     }
+
+    private void MissionIncrement()
+    {
+        MissionManager.Increment(MissionType.complete50Waves, 1);
+        MissionManager.Increment(MissionType.complete100Waves, 1);
+        MissionManager.Increment(MissionType.complete200Waves, 1);
+        MissionManager.Increment(MissionType.complete300Waves, 1);
+    }
+
 }
 
 public static class Extensions

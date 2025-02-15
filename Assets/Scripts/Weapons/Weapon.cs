@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using SouthsideGames.DailyMissions;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -77,6 +78,7 @@ public abstract class Weapon : MonoBehaviour, IStats
         if (Random.Range(0, 101) <= criticalHitChance)
         {
             isCriticalHit = true;
+            MissionManager.Increment(MissionType.criticalHitMastery, 1);
             return Mathf.RoundToInt(damage * criticalHitDamageAmount);
         }
 

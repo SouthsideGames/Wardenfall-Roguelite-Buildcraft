@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using SouthsideGames.DailyMissions;
 
 public class WeaponFuserManager : MonoBehaviour
 {
@@ -64,6 +65,8 @@ public class WeaponFuserManager : MonoBehaviour
 
         Weapon weapon = weaponsToFuse[0];
         weaponsToFuse.Clear();
+
+        MissionManager.Increment(MissionType.fusionFanatic, 1);
 
         onFuse?.Invoke(weapon);
     }

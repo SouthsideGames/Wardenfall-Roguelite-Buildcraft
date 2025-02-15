@@ -12,6 +12,7 @@ namespace SouthsideGames.DailyMissions
     public class MainMissionSliderUI : MonoBehaviour
     {
         public static Action<UIParticleAttractor> OnAttractorInit;
+        public static Action<RewardEntryData[]> rewarded;
 
         [Header("ELEMENTS:")]
         [SerializeField] private Slider slider;
@@ -30,8 +31,16 @@ namespace SouthsideGames.DailyMissions
         private const string lastRewardIndexKey     = "MissionLastRewardIndex";
         private const string rewardOpenedKey         = "MissionRewardsOpened"; 
 
-        private void Awake() => MissionManager.xpUpdated += OnXpUpdated;
-        private void OnDestroy() => MissionManager.xpUpdated -= OnXpUpdated;
+        private void Awake()
+        {
+            MissionManager.xpUpdated    += OnXpUpdated;
+            MissionManager.reset        += ResetSelf;
+        }
+        private void OnDestroy()
+        {
+            MissionManager.xpUpdated    -= OnXpUpdated;
+            MissionManager.reset        -= ResetSelf;
+        }
 
         private IEnumerator Start() 
         {
@@ -113,6 +122,8 @@ namespace SouthsideGames.DailyMissions
 
             Save();
 
+            rewarded?.Invoke(data.RewardMilestoneDatas[_index].rewards);
+
         }
 
         private void InitSlider()
@@ -177,6 +188,14 @@ namespace SouthsideGames.DailyMissions
         {
             SaveManager.Save(this, lastRewardIndexKey, lastRewardIndex);
             SaveManager.Save(this, rewardOpenedKey, rewardOpened);
+        }
+
+        private void ResetSelf()
+        {
+            SaveManager.Remove(this, lastRewardIndexKey);
+            SaveManager.Remove(this, rewardOpenedKey);
+
+            StartCoroutine("Start");
         }
     }
 

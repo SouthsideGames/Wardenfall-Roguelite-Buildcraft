@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using SouthsideGames.DailyMissions;
 using UnityEngine;
 
 public class MeleeWeapon : Weapon
@@ -83,6 +84,7 @@ public class MeleeWeapon : Weapon
                 int damage = GetDamage(out bool isCriticalHit);
                 enemy.TakeDamage(damage, isCriticalHit);
                 damagedEnemies.Add(enemy);
+                MissionManager.Increment(MissionType.weaponSpecialist, damage);
             }
         }
     }
