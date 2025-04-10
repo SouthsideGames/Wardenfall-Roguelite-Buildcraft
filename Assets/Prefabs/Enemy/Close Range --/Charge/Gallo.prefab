@@ -4978,6 +4978,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
+--- !u!1 &4617703542216335958
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4972180350574372205}
+  m_Layer: 0
+  m_Name: EffectIconAnchor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4972180350574372205
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4617703542216335958}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.75, z: 0}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7962292353472070201}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4838427843806296356
 GameObject:
   m_ObjectHideFlags: 0
@@ -4992,6 +5023,7 @@ GameObject:
   - component: {fileID: 1641444976117695089}
   - component: {fileID: 8154387181794706216}
   - component: {fileID: 7382393630559290276}
+  - component: {fileID: -6903256014510598490}
   m_Layer: 6
   m_Name: Gallo
   m_TagString: Enemy
@@ -5015,6 +5047,7 @@ Transform:
   - {fileID: 4746447366018096443}
   - {fileID: 3854823493251125266}
   - {fileID: 6174135268798150639}
+  - {fileID: 4972180350574372205}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &1115717940247550522
@@ -5091,7 +5124,7 @@ MonoBehaviour:
   _spriteRenderer: {fileID: 4171277772667265588}
   spawnIndicator: {fileID: 7310978342789289596}
   _collider: {fileID: 3478709589087782155}
-  damage: 18
+  contactDamage: 0
   playerDetectionRadius: 4
   maxHealth: 100
   health: 0
@@ -5133,6 +5166,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bac90ab437da2d343a676dcf53fb750f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-6903256014510598490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4838427843806296356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3165d87863467546938ec1ce28b0bc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  iconAnchor: {fileID: 4972180350574372205}
+  iconPrefab: {fileID: 1392284909096632975, guid: f467db2eb45e6534a851dea04057a0f5, type: 3}
 --- !u!1 &5280339864739325919
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,4 +1,6 @@
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
 public class BerserkerRageEffect : ICardEffect
 {
@@ -14,15 +16,12 @@ public class BerserkerRageEffect : ICardEffect
     public void Activate(float activeDuration)
     {
         CharacterStats.Instance.BoostStat(Stat.Attack, attackBoostValue);
-        CharacterManager.Instance.StartCoroutine(DeactivateAfterDuration());
+        CoroutineRunner.Instance.RunPooled(DeactivateAfterDuration());
     }
 
-    public void Disable()
-    {
-        CharacterStats.Instance.RevertBoost(Stat.Attack);
-    }
+    public void Disable() => CharacterStats.Instance.RevertBoost(Stat.Attack);
 
-    private System.Collections.IEnumerator DeactivateAfterDuration()
+    private IEnumerator DeactivateAfterDuration()
     {
         yield return new WaitForSeconds(duration);
         Disable();

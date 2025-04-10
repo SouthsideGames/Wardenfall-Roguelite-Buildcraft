@@ -1,5 +1,6 @@
 using UnityEngine;
-
+using System.Collections;
+using System.Collections.Generic;
 public class AdrenalineSurgeEffect : ICardEffect
 {
     private readonly float speedBoostValue;
@@ -14,7 +15,7 @@ public class AdrenalineSurgeEffect : ICardEffect
     public void Activate(float activeDuration)
     {
         CharacterStats.Instance.BoostStat(Stat.MoveSpeed, speedBoostValue);
-        CharacterManager.Instance.StartCoroutine(DeactivateAfterDuration());
+        CoroutineRunner.Instance.RunPooled(DeactivateAfterDuration());  
     }
 
     public void Disable()
@@ -22,7 +23,7 @@ public class AdrenalineSurgeEffect : ICardEffect
         CharacterStats.Instance.RevertBoost(Stat.MoveSpeed);
     }
 
-    private System.Collections.IEnumerator DeactivateAfterDuration()
+    private IEnumerator DeactivateAfterDuration()
     {
         yield return new WaitForSeconds(duration);
         Disable();

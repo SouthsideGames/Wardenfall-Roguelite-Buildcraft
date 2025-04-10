@@ -14,7 +14,7 @@ public class GravityField : MonoBehaviour
         this.duration = duration;
         this.pullRadius = pullRadius;
 
-        StartCoroutine(ActivateGravity());
+        CoroutineRunner.Instance.StartCoroutine(ActivateGravity()); 
     }
 
     private IEnumerator ActivateGravity()

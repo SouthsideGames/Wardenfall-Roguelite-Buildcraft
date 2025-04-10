@@ -19,7 +19,7 @@ public class PrecisionFocusEffect : ICardEffect
         CharacterStats.Instance.BoostStat(Stat.CritChance, critChanceBoost);
         CharacterStats.Instance.BoostStat(Stat.CritDamage, critDamageBoost);
 
-        CharacterManager.Instance.StartCoroutine(RevertAfterDuration());
+        CoroutineRunner.Instance.RunPooled(RevertAfterDuration());
     }
 
     public void Disable()

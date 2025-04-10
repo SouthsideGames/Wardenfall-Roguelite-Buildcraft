@@ -50,7 +50,7 @@ namespace SouthsideGames.DailyMissions
 
             UpdateTimerText();
 
-            StartCoroutine("TimerCoroutine");
+            CoroutineRunner.Instance.RunPooled(TimerCoroutine());
 
             TimerIsActive = true;
         }
@@ -67,7 +67,7 @@ namespace SouthsideGames.DailyMissions
 
             UpdateTimerText();
 
-            StartCoroutine("TimerCoroutine");
+            CoroutineRunner.Instance.RunPooled(TimerCoroutine());
         }
 
         private IEnumerator TimerCoroutine()

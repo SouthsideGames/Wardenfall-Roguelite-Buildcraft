@@ -195,7 +195,7 @@ namespace SouthsideGames.DailyMissions
             SaveManager.Remove(this, lastRewardIndexKey);
             SaveManager.Remove(this, rewardOpenedKey);
 
-            StartCoroutine("Start");
+            CoroutineRunner.Instance.RunPooled(Start());
         }
     }
 

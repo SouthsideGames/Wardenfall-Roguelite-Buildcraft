@@ -17,7 +17,7 @@ public class FireWall : MonoBehaviour
     {
         damage = _damage;
         duration = _duration;
-        StartCoroutine(DestroyAfterDuration());
+        CoroutineRunner.Instance.StartCoroutine(DestroyAfterDuration());
     }
 
     private IEnumerator DestroyAfterDuration()
@@ -28,7 +28,6 @@ public class FireWall : MonoBehaviour
 
     void OnParticleCollision(GameObject other)
     {
-        // Check if collided object has Enemy component
         Enemy enemy = other.GetComponent<Enemy>();
 
         if (enemy != null && !affectedEnemies.Contains(enemy))

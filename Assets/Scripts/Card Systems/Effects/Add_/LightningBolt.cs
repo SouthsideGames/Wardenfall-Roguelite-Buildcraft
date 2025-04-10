@@ -16,15 +16,13 @@ public class LightningBolt : MonoBehaviour
     private float damage;
 
 
-    private void Awake()
-    {
-        lineRenderer = GetComponent<LineRenderer>();
-    }
+    private void Awake() => lineRenderer = GetComponent<LineRenderer>();
+
 
     public void Activate(Vector2 startPosition, CardSO _card)
     {
         damage = _card.EffectValue;
-        StartCoroutine(ChainLightning(startPosition));
+        CoroutineRunner.Instance.RunPooled(ChainLightning(startPosition));
     }
 
     private IEnumerator ChainLightning(Vector2 startPosition)

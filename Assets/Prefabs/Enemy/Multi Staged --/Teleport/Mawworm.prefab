@@ -4905,6 +4905,7 @@ GameObject:
   - component: {fileID: 3209966156504915730}
   - component: {fileID: 1737991944601084861}
   - component: {fileID: 9095330309024375354}
+  - component: {fileID: 683466642723086564}
   m_Layer: 6
   m_Name: Mawworm
   m_TagString: Enemy
@@ -4925,6 +4926,7 @@ Transform:
   m_LocalScale: {x: 1.25, y: 1.25, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 3436709568422676908}
   - {fileID: 5864121586460473305}
   - {fileID: 1755968854493450320}
   - {fileID: 7508428819929035577}
@@ -4944,10 +4946,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee99e8be3abff204184af3ad94523e81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  anim: {fileID: 0}
   _spriteRenderer: {fileID: 5849116310684472047}
   spawnIndicator: {fileID: 4646277414147585081}
   _collider: {fileID: 1737991944601084861}
-  damage: 10
+  contactDamage: 0
   playerDetectionRadius: 3
   maxHealth: 70
   health: 0
@@ -4960,7 +4963,6 @@ MonoBehaviour:
   showGizmos: 0
   teleportCooldown: 3
   teleportDistance: 5
-  teleportFeedback: {fileID: 8817265034741890676}
 --- !u!114 &7180160589192734761
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4975,11 +4977,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   firePoint: {fileID: 7349613174165020262}
   bulletPrefab: {fileID: 4821930258780714043, guid: f216b62c23b579840b54e709a7582ca3, type: 3}
-  damage: 10
+  bulletDamage: 0
   fireRate: 1.5
   attackDelay: 4
   bulletSpeed: 10
-  shooterType: 0
 --- !u!114 &3209966156504915730
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5041,6 +5042,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bac90ab437da2d343a676dcf53fb750f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &683466642723086564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2533266184513460296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3165d87863467546938ec1ce28b0bc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  iconAnchor: {fileID: 3436709568422676908}
+  iconPrefab: {fileID: 1392284909096632975, guid: f467db2eb45e6534a851dea04057a0f5, type: 3}
 --- !u!1 &3578727239604292453
 GameObject:
   m_ObjectHideFlags: 0
@@ -10050,6 +10065,37 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!1 &5092848612879129032
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3436709568422676908}
+  m_Layer: 0
+  m_Name: EffectIconAnchor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3436709568422676908
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5092848612879129032}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -11.008, y: 4.076, z: 0}
+  m_LocalScale: {x: 0.24, y: 0.24, z: 0.19999999}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7181145349571083936}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7784952589545639806
 GameObject:
   m_ObjectHideFlags: 0

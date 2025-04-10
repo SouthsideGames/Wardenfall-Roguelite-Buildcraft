@@ -94,6 +94,13 @@ public enum StatusEffectType
     Silence
 }
 
+public enum StackBehavior
+{
+    Refresh,
+    Extend,
+    AddValue
+}
+
 
 public static class Enums
 {

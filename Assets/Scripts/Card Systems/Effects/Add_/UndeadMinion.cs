@@ -17,7 +17,7 @@ public class UndeadMinion : MonoBehaviour
     {
         lifetime = _lifetime;
         explosionDamage = _card.EffectValue;
-        StartCoroutine(LifetimeCountdown());
+        CoroutineRunner.Instance.RunPooled(LifetimeCountdown());
     }
 
     private IEnumerator LifetimeCountdown()

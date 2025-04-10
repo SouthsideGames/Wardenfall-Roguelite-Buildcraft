@@ -19,14 +19,13 @@ public class PlasmaBeam : MonoBehaviour
 
     private void Start()
     {
-        InitializeBeam(); // Set up the beam direction
-        Destroy(gameObject, beamDuration); // Destroy the plasma beam object after its duration
-        StartCoroutine(DamageEnemies());
+        InitializeBeam(); 
+        Destroy(gameObject, beamDuration); 
+        CoroutineRunner.Instance.RunPooled(DamageEnemies());
     }
 
     private void InitializeBeam()
     {
-        // Set the beam start and end positions based on its orientation
         Vector3 startPosition = transform.position;
         Vector3 endPosition;
 

@@ -4891,6 +4891,37 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!1 &3325667996912841224
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8675926267136256885}
+  m_Layer: 0
+  m_Name: EffectIconAnchor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8675926267136256885
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3325667996912841224}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -5, y: 0.725, z: 0}
+  m_LocalScale: {x: 0.29999998, y: 0.29999998, z: 0.19999999}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4041176825780023014}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4520080397357250823
 GameObject:
   m_ObjectHideFlags: 0
@@ -5079,6 +5110,7 @@ GameObject:
   - component: {fileID: 3180440092509416933}
   - component: {fileID: 951805749075738495}
   - component: {fileID: 4126111764515117940}
+  - component: {fileID: 8526613227171589975}
   m_Layer: 6
   m_Name: Clobberon
   m_TagString: Enemy
@@ -5099,6 +5131,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 8675926267136256885}
   - {fileID: 3870731570974628253}
   - {fileID: 7435607206804301716}
   - {fileID: 3108819421424067718}
@@ -5120,7 +5153,7 @@ MonoBehaviour:
   _spriteRenderer: {fileID: 9109697679892941901}
   spawnIndicator: {fileID: 8016728417625361805}
   _collider: {fileID: 951805749075738495}
-  damage: 20
+  contactDamage: 0
   playerDetectionRadius: 3.5
   maxHealth: 120
   health: 0
@@ -5215,3 +5248,17 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8526613227171589975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5829535922412643463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3165d87863467546938ec1ce28b0bc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  iconAnchor: {fileID: 8675926267136256885}
+  iconPrefab: {fileID: 1392284909096632975, guid: f467db2eb45e6534a851dea04057a0f5, type: 3}

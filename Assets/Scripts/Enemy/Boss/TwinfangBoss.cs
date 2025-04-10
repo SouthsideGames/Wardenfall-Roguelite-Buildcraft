@@ -9,12 +9,10 @@ public class TwinfangBoss : Boss
     [SerializeField] private float attackRange = 3f;
     [SerializeField] private float lungeSpeed = 8f;
     [SerializeField] private float retreatSpeed = 6f;
-    [SerializeField] private float attackCooldown = 2f;
 
     private EnemyMovement enemyMovement;
     private bool isAttacking;
     private Vector3 originalScale;
-    private float attackTimer;
 
     protected override void InitializeBoss()
     {
@@ -41,7 +39,7 @@ public class TwinfangBoss : Boss
             enemyMovement.FollowCurrentTarget();
     }
 
-    protected override void ExecuteStageOne() => StartCoroutine(LungeAttack());
+    protected override void ExecuteStageOne() => CoroutineRunner.Instance.RunPooled(LungeAttack());
 
     private IEnumerator LungeAttack()
     {

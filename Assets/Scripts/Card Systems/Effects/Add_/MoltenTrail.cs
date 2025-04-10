@@ -13,7 +13,7 @@ public class MoltenTrail : MonoBehaviour
     private void Start()
     {
         Destroy(gameObject, duration);
-        StartCoroutine(SpawnTrail());
+        CoroutineRunner.Instance.RunPooled(SpawnTrail());
     }
 
     public void Initialize(CardSO _card)

@@ -4978,6 +4978,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
+--- !u!1 &4097871404595091605
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5926235080992579446}
+  m_Layer: 0
+  m_Name: EffectIconAnchor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5926235080992579446
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4097871404595091605}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 2.625, z: 0}
+  m_LocalScale: {x: 0.29999998, y: 0.29999998, z: 0.19999999}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7962292353472070201}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4838427843806296356
 GameObject:
   m_ObjectHideFlags: 0
@@ -4992,6 +5023,7 @@ GameObject:
   - component: {fileID: 7382393630559290276}
   - component: {fileID: 8154387181794706216}
   - component: {fileID: 675317277519339230}
+  - component: {fileID: -2026641638055877420}
   m_Layer: 6
   m_Name: Tuskbolt
   m_TagString: Enemy
@@ -5012,6 +5044,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 5926235080992579446}
   - {fileID: 4746447366018096443}
   - {fileID: 3854823493251125266}
   - {fileID: 6174135268798150639}
@@ -5069,7 +5102,7 @@ MonoBehaviour:
   _spriteRenderer: {fileID: 4171277772667265588}
   spawnIndicator: {fileID: 7310978342789289596}
   _collider: {fileID: 3478709589087782155}
-  damage: 12
+  contactDamage: 0
   playerDetectionRadius: 3.5
   maxHealth: 60
   health: 0
@@ -5133,6 +5166,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-2026641638055877420
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4838427843806296356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3165d87863467546938ec1ce28b0bc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  iconAnchor: {fileID: 5926235080992579446}
+  iconPrefab: {fileID: 1392284909096632975, guid: f467db2eb45e6534a851dea04057a0f5, type: 3}
 --- !u!1 &5280339864739325919
 GameObject:
   m_ObjectHideFlags: 0

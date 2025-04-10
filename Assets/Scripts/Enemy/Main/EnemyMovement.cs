@@ -16,10 +16,7 @@ public class EnemyMovement : MonoBehaviour
     private Vector2 knockbackDirection;
     private float knockbackSpeed = 0f;
 
-    public void StorePlayer(CharacterManager _player)
-    {
-        currentTarget = _player.transform;
-    }
+    public void StorePlayer(CharacterManager _player) => currentTarget = _player.transform;
 
     public void SetTarget(Transform newTarget)
     {
@@ -56,7 +53,7 @@ public class EnemyMovement : MonoBehaviour
 
     public void DisableMovement(float duration)
     {
-        StartCoroutine(DisableMovementTemporarily(duration));
+        CoroutineRunner.Instance.RunPooled(DisableMovementTemporarily(duration));
     }
 
     public void EnableMovement()

@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ChargeEnemy : Enemy
@@ -34,29 +33,25 @@ public class ChargeEnemy : Enemy
         AnimationLogic();
 
         if (!isCharging)
-          StartCoroutine(ChargeRoutine());
+            CoroutineRunner.Instance.RunPooled(ChargeRoutine());
     }
 
     private IEnumerator ChargeRoutine()
     {
         isCharging = true; 
         attackPerformed = false; 
-        yield return StartCoroutine(Grow());
 
+        yield return Grow();
         LocatePlayer();
-
-        yield return StartCoroutine(DashTowardsPlayer());
-
-        yield return StartCoroutine(Shrink());
+        yield return DashTowardsPlayer();
+        yield return Shrink();
 
         yield return new WaitForSeconds(cooldownTime);
-
         isCharging = false; 
     }
 
     private IEnumerator Grow()
     {     
-        
         float elapsed = 0f;
         Vector3 targetScale = originalScale * growFactor;
 
@@ -92,7 +87,6 @@ public class ChargeEnemy : Enemy
             distanceTraveled += step;
 
             TryAttack(); 
-
             SpawnEffect();
 
             yield return null;
@@ -119,7 +113,7 @@ public class ChargeEnemy : Enemy
         float distanceToPlayer = Vector2.Distance(transform.position, character.transform.position);
 
         if (distanceToPlayer <= playerDetectionRadius && !attackPerformed)
-           Attack();
+            Attack();
     }
 
     protected override void Attack()
@@ -132,7 +126,7 @@ public class ChargeEnemy : Enemy
     {
         if (playerTransform != null)
         {
-            if (playerTransform.position.x > transform.position.x && !attackPerformed )
+            if (playerTransform.position.x > transform.position.x && !attackPerformed)
                 _spriteRenderer.flipX = true;
             else
                 _spriteRenderer.flipX = false;

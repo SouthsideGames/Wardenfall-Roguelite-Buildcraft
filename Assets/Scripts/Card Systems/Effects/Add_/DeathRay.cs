@@ -21,8 +21,8 @@ public class DeathRay : MonoBehaviour
 
     private void Start()
     {
-        Destroy(gameObject, duration); // Destroy the cloud after its duration
-        StartCoroutine(SpawnDeathBeams());
+        Destroy(gameObject, duration); 
+        CoroutineRunner.Instance.RunPooled(SpawnDeathBeams());
     }
 
     private IEnumerator SpawnDeathBeams()
@@ -45,15 +45,11 @@ public class DeathRay : MonoBehaviour
             Collider2D target = enemies[Random.Range(0, enemies.Length)];
             Vector2 targetPosition = target.transform.position;
 
-            // Spawn the death beam at the target's position
             GameObject beam = Instantiate(deathBeamPrefab, targetPosition, Quaternion.identity);
 
-            // Configure the beam to target the selected enemy
             DeathBeam beamScript = beam.GetComponent<DeathBeam>();
             if (beamScript != null)
-            {
                 beamScript.Configure(target.gameObject);
-            }
 
             Debug.Log($"Death beam spawned at {targetPosition} targeting {target.name}!");
         }

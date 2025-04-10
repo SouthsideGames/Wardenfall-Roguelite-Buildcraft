@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using System.Collections;   
 using System.Collections.Generic;
 
 [RequireComponent(typeof(LineRenderer))]
@@ -29,7 +30,7 @@ public class ChainBullet : BulletBase
 
         ChainToTarget(transform.position, _damage, 0);
 
-        StartCoroutine(ClearChainEffect());
+        CoroutineRunner.Instance.RunPooled(ClearChainEffect());
         DestroyBullet();
     }
 
@@ -84,7 +85,7 @@ public class ChainBullet : BulletBase
         lineRenderer.SetPosition(positionCount + 1, end);
     }
 
-    private System.Collections.IEnumerator ClearChainEffect()
+    private IEnumerator ClearChainEffect()
     {
         yield return new WaitForSeconds(chainEffectDuration);
         lineRenderer.positionCount = 0;

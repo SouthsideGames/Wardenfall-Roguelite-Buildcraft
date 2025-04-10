@@ -187,6 +187,7 @@ GameObject:
   - component: {fileID: 2632007060129678738}
   - component: {fileID: 1905146589038196524}
   - component: {fileID: 1122862972469765393}
+  - component: {fileID: 8191167800269847758}
   m_Layer: 6
   m_Name: Gnash
   m_TagString: Enemy
@@ -207,6 +208,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 26691920275503504}
   - {fileID: 7992817913016638673}
   - {fileID: 7909169461744528427}
   - {fileID: 1450146992094887542}
@@ -261,10 +263,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2180b1eee45ed5445b126a4f1e4d6f53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  anim: {fileID: 0}
   _spriteRenderer: {fileID: 3120268767642104266}
   spawnIndicator: {fileID: 1882422145411493699}
   _collider: {fileID: 3380606989215897294}
-  damage: 8
+  contactDamage: 0
   playerDetectionRadius: 6.5
   maxHealth: 45
   health: 0
@@ -303,6 +306,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bac90ab437da2d343a676dcf53fb750f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8191167800269847758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2145636691612748121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3165d87863467546938ec1ce28b0bc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  iconAnchor: {fileID: 26691920275503504}
+  iconPrefab: {fileID: 1392284909096632975, guid: f467db2eb45e6534a851dea04057a0f5, type: 3}
 --- !u!1 &2512326149274488663
 GameObject:
   m_ObjectHideFlags: 0
@@ -390,6 +407,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &4272977775409493492
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 26691920275503504}
+  m_Layer: 0
+  m_Name: EffectIconAnchor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &26691920275503504
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4272977775409493492}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -13.63, y: 6.185, z: 0}
+  m_LocalScale: {x: 0.29999998, y: 0.29999998, z: 0.19999999}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5165552451859010802}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5422234902751891346
 GameObject:
   m_ObjectHideFlags: 0

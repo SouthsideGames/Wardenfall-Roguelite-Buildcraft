@@ -54,7 +54,7 @@ namespace SouthsideGames.DailyMissions
             Mission.completeMission                 += OnCompleteMission;
             MainMissionSliderUI.OnAttractorInit     += OnAttractorInit;
 
-            StartCoroutine("SaveCoroutine");
+            CoroutineRunner.Instance.RunPooled(SaveCoroutine());
 
         }
 
