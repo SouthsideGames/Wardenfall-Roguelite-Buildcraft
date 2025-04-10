@@ -35,7 +35,6 @@ public class GameManager : MonoBehaviour
     }
 
     public void StartMainMenu() => SetGameState(GameState.Menu);
-    public void StartGameModeSelect() => SetGameState(GameState.GameModeSelect);   
     public void StartWeaponSelect() => SetGameState(GameState.WeaponSelect);
     public void StartShop() => SetGameState(GameState.Shop);    
     public void StartGameOver() => SetGameState(GameState.GameOver);  

@@ -112,9 +112,6 @@ public class AudioManager : MonoBehaviour, IGameStateListener
             case GameState.StageCompleted:
                 ChangeMusic(stageCompleteMusic);
                 break;
-            case GameState.SurvivalStageCompleted:
-                ChangeMusic(stageCompleteMusic);
-                break;
             case GameState.WaveTransition:
                 DecreaseMusicVolume();
                 break;

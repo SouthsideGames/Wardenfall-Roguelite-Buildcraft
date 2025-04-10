@@ -26,7 +26,6 @@ public abstract class Enemy : MonoBehaviour
     [Header("ATTACK:")]
     [SerializeField] protected int contactDamage;
     [SerializeField] protected float playerDetectionRadius;
-    protected float boxDetectionRadius;
     protected float attackTimer;
     private bool isCriticalHit;
     private bool attacksEnabled = true;
@@ -54,7 +53,6 @@ public abstract class Enemy : MonoBehaviour
 
     private EnemyStatus status;
     protected Transform playerTransform;
-    protected SurvivorBox detectedBox;
 
     protected virtual void Start()
     {
@@ -74,8 +72,6 @@ public abstract class Enemy : MonoBehaviour
 
         Spawn();
 
-        boxDetectionRadius = playerDetectionRadius;
-
     }
 
     protected virtual void Update()
@@ -84,12 +80,6 @@ public abstract class Enemy : MonoBehaviour
 
         ChangeDirections();
 
-        DetectSurvivorBox();
-
-        if (detectedBox != null && CanAttack())
-        {
-            AttackBox();
-        }
     }
 
     protected virtual void ChangeDirections()
@@ -213,34 +203,6 @@ public abstract class Enemy : MonoBehaviour
         OnSpawnCompleted?.Invoke();
     }
 
-    protected void DetectSurvivorBox()
-    {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, boxDetectionRadius);
-        foreach (Collider2D collider in colliders)
-        {
-            if (collider.CompareTag("SurvivorBox"))
-            {
-                detectedBox = collider.GetComponent<SurvivorBox>();
-                return;
-            }
-        }
-        detectedBox = null;
-    }
-
-    protected void AttackBox()
-    {
-        if (detectedBox != null)
-        {
-            attackTimer -= Time.deltaTime;
-            if (attackTimer <= 0)
-            {
-                detectedBox.TakeDamage(contactDamage);
-                attackTimer = 1f; 
-            }
-        }
-    }
-
-
 
 #region STATUS EFFECT FUNCTIONS
     public void ModifyAccuracy(float modifier)
@@ -330,7 +292,6 @@ public abstract class Enemy : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, playerDetectionRadius);
         Gizmos.color = Color.yellow; 
-        Gizmos.DrawWireSphere(transform.position, boxDetectionRadius);
     }
 
     public Vector2 GetCenter() => (Vector2)transform.position + _collider.offset;

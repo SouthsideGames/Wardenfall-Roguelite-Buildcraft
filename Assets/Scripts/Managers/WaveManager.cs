@@ -10,15 +10,10 @@ using UnityEngine.Pool;
 public class WaveManager : MonoBehaviour, IGameStateListener
 {
     public static Action OnWaveCompleted;
-    public static Action OnSurvivalCompleted;
 
     [Header("ELEMENTS:")]
     [SerializeField] private CharacterManager character;
     private WaveUI ui;
-
-    [Header("DIFFICULTY SETTINGS:")]
-    [SerializeField] private float difficultyMultiplier = 1.0f;
-    [SerializeField] private float difficultyIncrement = 0.1f;
 
     [Header("SETTINGS:")]
     [SerializeField] private float waveDuration;
@@ -28,28 +23,9 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 
     [Header("WAVES BASED SETTINGS:")]
     [SerializeField] private Wave[] wave;
-
-    [Header("BOSS RUSH SETTINGS:")]
-    [SerializeField] private Wave[] bossWaves;
     private List<float> localCounters = new List<float>();
 
-    [Header("SURVIVAL MODE SETTINGS:")]
-    [SerializeField] private float spawnFrequency = 2.0f;
-    [SerializeField] private List<SurvivalWaveGroup> survivalGroups;
-    [SerializeField] private List<GameObject> bossPrefabs;
-    [SerializeField] private float bossSpawnInterval = 180f; // 3 minutes
-    private bool bossSpawned;
-    public float survivalTimer { get; private set; }
-    private float survivalScalingTimer;
-    private float nextBossSpawnTime;
-    public float SurvivalTime => survivalTimer;
-
-    [Header("GAME MODE:")]
-    public GameMode selectedGameMode { get; private set; }
-
-
     private Wave currentWave;
-    private int waveCompletionCount;
 
     private void Awake()
     {
@@ -66,36 +42,18 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     {
         if (!hasWaveStarted) return;
 
-        switch (selectedGameMode)
-        {
-            case GameMode.Survival:
-                HandleSurvivalMode();
-                break;
-
-            default:
-                if (timer < waveDuration)
-                    HandleWaveProgression();
-                else
-                    HandleWaveTransition();
-                break;
-        }
+        if (timer < waveDuration)
+            HandleWaveProgression();
+        else
+            HandleWaveTransition();
 
     }
 
     private void StartWave(int waveIndex)
     {
-        if (selectedGameMode == GameMode.Survival && hasWaveStarted) return;
-
         InitializeWave(waveIndex);
         hasWaveStarted = true;
         timer = 0;
-
-        if (selectedGameMode == GameMode.Survival)
-        {
-            survivalTimer = 0;
-            survivalScalingTimer = 0;
-            nextBossSpawnTime = bossSpawnInterval;
-        }
 
         UpdateUIForWaveStart();
     }
@@ -103,7 +61,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     private void InitializeWave(int waveIndex)
     {
         localCounters.Clear();
-        currentWave = (selectedGameMode == GameMode.BossRush) ? bossWaves[waveIndex] : wave[waveIndex];
+        currentWave = wave[waveIndex];
 
         for (int i = 0; i < currentWave.segments.Count; i++)
         {
@@ -111,9 +69,6 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 
             segment.tStart = segment.spawnPercentage.x / 100 * waveDuration;
             segment.tEnd = segment.spawnPercentage.y / 100 * waveDuration;
-
-            if (selectedGameMode == GameMode.Survival)
-                segment.spawnFrequency *= difficultyMultiplier;
 
             currentWave.segments[i] = segment;
             localCounters.Add(0);
@@ -154,16 +109,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         hasWaveStarted = false;
         currentWaveIndex++;
 
-        switch (selectedGameMode)
-        {
-            case GameMode.WaveBased:
-                HandleWaveBasedTransition();
-                break;
-
-            case GameMode.BossRush:
-                HandleBossRushTransition();
-                break;
-        }
+       HandleWaveBasedTransition();
     }
 
     private void HandleWaveBasedTransition()
@@ -174,68 +120,6 @@ public class WaveManager : MonoBehaviour, IGameStateListener
             GameManager.Instance.WaveCompletedCallback();
     }
 
-    private void HandleBossRushTransition()
-    {
-        waveCompletionCount++;
-
-        if (currentWaveIndex >= bossWaves.Length)
-            EndWaveBasedStage();
-        else
-            StartWave(currentWaveIndex);
-    }
-
-    private void HandleSurvivalMode()
-    {
-         survivalTimer += Time.deltaTime;
-        survivalScalingTimer += Time.deltaTime;
-
-        if (survivalTimer >= nextBossSpawnTime)
-        {
-            SpawnSurvivalBoss();
-            nextBossSpawnTime += Mathf.Max(60f, bossSpawnInterval * 0.9f);
-        }
-
-        if (survivalScalingTimer >= 120f)
-        {
-            ApplySurvivalDifficultyScaling();
-            survivalScalingTimer = 0;
-        }
-
-        SpawnSurvivalEnemies();
-
-        ui.UpdateTimerText($"{(int)survivalTimer / 60:D2}:{(int)survivalTimer % 60:D2}");
-    }
-
-    private void SpawnSurvivalEnemies()
-    {
-        var group = GetCurrentSurvivalGroup();
-        if (group != null && Time.time >= timer)
-        {
-            var enemyPrefab = group.enemies[UnityEngine.Random.Range(0, group.enemies.Count)];
-            Instantiate(enemyPrefab, GetSpawnPosition(), Quaternion.identity, transform);
-            timer = Time.time + 1f / spawnFrequency;
-        }
-    }
-
-    private SurvivalWaveGroup GetCurrentSurvivalGroup()
-    {
-        foreach (var group in survivalGroups)
-        {
-            if (survivalTimer >= group.startTime && survivalTimer < group.endTime)
-            {
-                return group;
-            }
-        }
-        return null;
-    }
-
-    private void SpawnSurvivalBoss()
-    {
-        if (bossPrefabs.Count == 0) return;
-
-        GameObject boss = bossPrefabs[UnityEngine.Random.Range(0, bossPrefabs.Count)];
-        Instantiate(boss, GetSpawnPosition(), Quaternion.identity, transform);
-    }
 
     private void UpdateWaveTimer()
     {
@@ -249,24 +133,6 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         GameManager.Instance.SetGameState(GameState.StageCompleted);
     }
 
-    private void EndSurvivalStage()
-    {
-        ui.StageCompleted();
-        GameManager.Instance.SetGameState(GameState.SurvivalStageCompleted);
-        OnSurvivalCompleted?.Invoke();
-
-        survivalTimer = 0;
-        survivalScalingTimer = 0;
-        nextBossSpawnTime = bossSpawnInterval;
-    }
-
-    private void ApplySurvivalDifficultyScaling()
-    {
-        difficultyMultiplier += difficultyIncrement;
-
-        spawnFrequency = Mathf.Clamp(spawnFrequency + 0.1f, 0.5f, 10f);
-        Debug.Log($"Difficulty scaled. Multiplier: {difficultyMultiplier}, Spawn Frequency: {spawnFrequency}");
-    }
 
     private Vector2 GetSpawnPosition()
     {
@@ -275,13 +141,8 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         return (Vector2)character.transform.position + offset;
     }
 
-    private void UpdateUIForWaveStart()
-    {
-        if (selectedGameMode == GameMode.BossRush)
-            ui.UpdateWaveText($"Boss Wave {currentWaveIndex + 1}");
-        else
-            ui.UpdateWaveText($"Wave {currentWaveIndex + 1} / {wave.Length}");
-    }
+    private void UpdateUIForWaveStart() => ui.UpdateWaveText($"Wave {currentWaveIndex + 1} / {wave.Length}");
+    
 
     private void DefeatAllEnemies()
     {
@@ -300,31 +161,14 @@ public class WaveManager : MonoBehaviour, IGameStateListener
                 hasWaveStarted = false;
                 DefeatAllEnemies();
                 break;
-            case GameState.SurvivalStageCompleted:
-                hasWaveStarted = false;
-                DefeatAllEnemies();
-                break;
         }
     }
 
-    public void SetGameMode(GameMode mode)
-    {
-        selectedGameMode = mode;
-        Debug.Log($"Game mode set to: {selectedGameMode}");
-    }
 
     private void CharacterDeathCallback()
     {
-        character.health.OnCharacterDeathMission(selectedGameMode);
-
-        if (selectedGameMode == GameMode.Survival)
-        {
-            EndSurvivalStage(); // Trigger survival completion
-        }
-        else
-        {
-            GameManager.Instance.SetGameState(GameState.GameOver);
-        }
+        character.health.OnCharacterDeathMission();
+        GameManager.Instance.SetGameState(GameState.GameOver);
     }
 
     private void MissionIncrement()
@@ -368,13 +212,4 @@ public struct WaveSegment
 
     [HideInInspector] public float tStart;
     [HideInInspector] public float tEnd;
-}
-
-[Serializable]
-public class SurvivalWaveGroup
-{
-    public string name;
-    public float startTime;
-    public float endTime;
-    public List<GameObject> enemies;
 }

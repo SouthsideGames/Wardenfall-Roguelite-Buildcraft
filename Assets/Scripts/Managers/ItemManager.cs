@@ -17,7 +17,6 @@ public class ItemManager : MonoBehaviour
     [SerializeField] private Cash cashPrefab;
     [SerializeField] private Chest chestPrefab;
     [SerializeField] private Gem gemPrefab;
-    [SerializeField] private SurvivorBox survivorBoxPrefab;
 
     [Header("SETTINGS:")]
     [Range(0, 100)]
@@ -26,20 +25,16 @@ public class ItemManager : MonoBehaviour
     [SerializeField] private int baseChestDropChance;
     [Range(0, 100)]
     [SerializeField] private int baseGemDropChance;
-    [Range(0, 100)]
-    [SerializeField] private int baseSurvivorBoxDropChance;
 
     private float cashDropChanceMultiplier = 1f;
     private float chestDropChanceMultiplier = 1f;
     private float gemDropChanceMultiplier = 1f;
-    private float survivorBoxDropChanceMultiplier = 1f;
 
     [Header("Pooling")]
     private ObjectPool<Meat> meatPool;
     private ObjectPool<Cash> cashPool;
     private ObjectPool<Chest> chestPool;
     private ObjectPool<Gem> gemPool;
-    private ObjectPool<SurvivorBox> survivorBoxPool;
 
     private void Awake()
     {
@@ -96,12 +91,6 @@ public class ItemManager : MonoBehaviour
             GemActionOnGet,
             GemActionOnRelease,
             GemActionOnDestroy);
-
-        survivorBoxPool = new ObjectPool<SurvivorBox>(
-            SurvivorBoxCreateFunction,
-            SurvivorBoxActionOnGet,
-            SurvivorBoxActionOnRelease,
-            SurvivorBoxActionOnDestroy);
     }
 
     public void ApplyItemBoost(float multiplier, float duration)
@@ -109,7 +98,6 @@ public class ItemManager : MonoBehaviour
         cashDropChanceMultiplier = multiplier;
         chestDropChanceMultiplier = multiplier;
         gemDropChanceMultiplier = multiplier;
-        survivorBoxDropChanceMultiplier = multiplier;
 
         CancelInvoke(nameof(ResetItemBoost));
         Invoke(nameof(ResetItemBoost), duration);
@@ -122,7 +110,6 @@ public class ItemManager : MonoBehaviour
         cashDropChanceMultiplier = 1f;
         chestDropChanceMultiplier = 1f;
         gemDropChanceMultiplier = 1f;
-        survivorBoxDropChanceMultiplier = 1f;
 
         Debug.Log("Item drop chances reset to default.");
     }
@@ -140,31 +127,10 @@ public class ItemManager : MonoBehaviour
             itemToDrop.transform.position = _enemyPosition;
         }
 
-        TryDropSurvivorBox(_enemyPosition);
         TryDropChest(_enemyPosition);
     }
 
-    private void BossDeathCallback(Vector2 _bossPosition)
-    {
-        DropChest(_bossPosition);
-        TryDropSurvivorBox(_bossPosition);
-    }
-
-    private void TryDropSurvivorBox(Vector2 spawnPosition)
-    {
-        if (GameModeManager.Instance.CurrentGameMode == GameMode.Survival)
-        {
-            int survivorBoxChance = Mathf.RoundToInt(baseSurvivorBoxDropChance * survivorBoxDropChanceMultiplier);
-            bool shouldSpawnBox = Random.Range(0, 101) <= survivorBoxChance;
-
-            if (shouldSpawnBox)
-            {
-                SurvivorBox box = survivorBoxPool.Get();
-                box.transform.position = spawnPosition;
-                box.Activate();
-            }
-        }
-    }
+    private void BossDeathCallback(Vector2 _bossPosition) => DropChest(_bossPosition);
 
     private void TryDropChest(Vector2 _spawnPosition)
     {
@@ -206,9 +172,6 @@ public class ItemManager : MonoBehaviour
     private void ChestActionOnRelease(Chest _chest) => _chest.gameObject.SetActive(false);
     private void ChestActionOnDestroy(Chest _chest) => Destroy(_chest.gameObject);
 
-    private SurvivorBox SurvivorBoxCreateFunction() => Instantiate(survivorBoxPrefab, transform);
-    private void SurvivorBoxActionOnGet(SurvivorBox _box) => _box.gameObject.SetActive(true);
-    private void SurvivorBoxActionOnRelease(SurvivorBox _box) => _box.gameObject.SetActive(false);
-    private void SurvivorBoxActionOnDestroy(SurvivorBox _box) => Destroy(_box.gameObject);
     #endregion
+
 }

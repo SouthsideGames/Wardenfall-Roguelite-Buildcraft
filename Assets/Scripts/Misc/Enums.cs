@@ -6,11 +6,9 @@ public enum GameState
 {
     Menu,
     WeaponSelect,
-    GameModeSelect,
     Game,
     GameOver,
     StageCompleted,
-    SurvivalStageCompleted,
     WaveTransition,
     Shop
 }
@@ -57,13 +55,6 @@ public enum BossState
     Moving,
     Attacking,
     Transitioning
-}
-
-public enum GameMode
-{
-    WaveBased,
-    Survival,
-    BossRush
 }
 
 

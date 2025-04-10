@@ -8,8 +8,3 @@ public interface IGameStateListener
 
 }
 
-public interface IGameModeListener
-{
-    void GameModeChangedCallback(GameMode _gameMode);
-
-}

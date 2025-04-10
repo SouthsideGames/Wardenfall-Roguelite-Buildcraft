@@ -103,12 +103,6 @@ public class GravulonBoss : Boss
                     enemy.GetComponent<EnemyMovement>().DisableMovement(stunDuration);
                 }
             }
-            else if (hit.CompareTag("SurvivorBox"))
-            {
-                SurvivorBox box = hit.GetComponent<SurvivorBox>();
-                if (box != null)
-                    box.TakeDamage(slamDamage);
-            }
         }
     }
 

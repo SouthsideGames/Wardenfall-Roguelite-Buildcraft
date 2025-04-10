@@ -78,8 +78,7 @@ public class CharacterHealth : MonoBehaviour, IStats
 
     private void Die()
     {
-         var secondLifeCard = CharacterManager.Instance.deck.GetEquippedCards()
-        .Find(card => card.EffectType == CardEffectType.Support_SecondLife);
+        var secondLifeCard = CharacterManager.Instance.deck.GetEquippedCards().Find(card => card.EffectType == CardEffectType.Support_SecondLife);
 
         if (secondLifeCard != null && secondLifeCard.IsAutoActivated && !CardEffect.Instance.IsEffectActive(secondLifeCard.EffectType))
         {
@@ -89,14 +88,7 @@ public class CharacterHealth : MonoBehaviour, IStats
 
         OnCharacterDeath?.Invoke();
 
-        if (GameModeManager.Instance.CurrentGameMode == GameMode.Survival)
-        {
-            GameManager.Instance.SetGameState(GameState.SurvivalStageCompleted);
-        }
-        else
-        {
-            GameManager.Instance.SetGameState(GameState.GameOver);
-        }
+        GameManager.Instance.SetGameState(GameState.GameOver);
     }
 
     private void UpdateHealthUI()
@@ -146,14 +138,7 @@ public class CharacterHealth : MonoBehaviour, IStats
 
     }
 
-    public void OnCharacterDeathMission(GameMode _gameMode)
-    {
-        if ((MissionType)_gameMode == MissionType.waveBasedPlayed)
-            MissionManager.Increment(MissionType.waveBasedPlayed, 1);
-        else if ((MissionType)_gameMode == MissionType.survivalPlayed)
-            MissionManager.Increment(MissionType.survivalPlayed, 1);
-        else if ((MissionType)_gameMode == MissionType.bossRushPlayed)
-            MissionManager.Increment(MissionType.bossRushPlayed, 1);
-    }
+    public void OnCharacterDeathMission() => MissionManager.Increment(MissionType.waveBasedPlayed, 1);
+
 
 }

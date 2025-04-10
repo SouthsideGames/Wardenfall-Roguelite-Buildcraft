@@ -23,12 +23,6 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
     [SerializeField] private Button askButton;
     [SerializeField] private Button creditsButton;
 
-    [Header("DIFFICULTY SETTINGS:")]
-    [SerializeField] private Button difficultyButton;
-    [SerializeField] private TextMeshProUGUI difficultyText;
-    [SerializeField] private string[] difficultyLevels = { "Easy", "Normal", "Hard", "Expert" };
-    [SerializeField] private int initialDifficultyIndex = 1;
-
 
     [Header("SETTINGS:")]
     [SerializeField] private String privacyPolicyURL;
@@ -37,12 +31,10 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
     private bool sfxState;
     private bool musicState;
     private bool vibrateState;
-    [HideInInspector] public int currentDifficultyIndex;
 
     private const string sfxKey = "SFX";
     private const string musicKey = "Music";
     private const string vibrateKey = "Vibrate";
-    private const string difficultyKey = "Difficulty";
 
     private void Awake() 
     {
@@ -69,20 +61,15 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
         creditsButton.onClick.RemoveAllListeners();
         creditsButton.onClick.AddListener(CreditsButtonCallback);
 
-        difficultyButton.onClick.RemoveAllListeners();
-        difficultyButton.onClick.AddListener(DifficultyButtonCallback);
     }
 
     private void Start() 
     {
         HideCreditsPanel();
 
-        currentDifficultyIndex = initialDifficultyIndex;
-
         onSFXStateChanged?.Invoke(sfxState);
         onMusicStateChanged?.Invoke(musicState);    
         onVibrateStateChanged?.Invoke(vibrateState);
-        UpdateDifficultyVisuals();
     }
 
     private void AskButtonCallback()
@@ -102,7 +89,6 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
 
         Save();
 
-        //Trigger an action
         onSFXStateChanged?.Invoke(sfxState);
     }
 
@@ -115,7 +101,6 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
 
         Save();
 
-        //Trigger an action
         onMusicStateChanged?.Invoke(musicState);    
     }
 
@@ -127,7 +112,6 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
 
         Save();
 
-        //Trigger an action
         onVibrateStateChanged?.Invoke(vibrateState);
     }
 
@@ -174,23 +158,12 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
         }
     }
 
-    private void DifficultyButtonCallback()
-    {
-        currentDifficultyIndex = (currentDifficultyIndex + 1) % difficultyLevels.Length;
-
-        UpdateDifficultyVisuals();
-
-        Save();
-    }
-
-    
 
     private void CreditsButtonCallback() => creditsPanel.SetActive(true);
     public void HideCreditsPanel() => creditsPanel.SetActive(false);
     private string EscapeURL(string _s) => UnityWebRequest.EscapeURL(_s).Replace("+", "%20");
     private void PrivacyPolicyButtonCallback() => Application.OpenURL(privacyPolicyURL);
-    private void UpdateDifficultyVisuals() => difficultyText.text = difficultyLevels[currentDifficultyIndex];
-
+   
     public void Load()
     {
         sfxState = true;
@@ -206,14 +179,10 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
         if(SaveManager.TryLoad(this, vibrateKey, out object vibrateStateObject))
             vibrateState = (bool)vibrateStateObject;
 
-        if (SaveManager.TryLoad(this, difficultyKey, out object difficultyObject))
-            currentDifficultyIndex = (int)difficultyObject;
-
 
         UpdateMusicVisuals();
         UpdateSFXVisuals();
         UpdateVibrateVisuals();
-        UpdateDifficultyVisuals();
     }
 
     public void Save()
@@ -221,6 +190,5 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
         SaveManager.Save(this, sfxKey, sfxState);
         SaveManager.Save(this, musicKey, musicState);
         SaveManager.Save(this, vibrateKey, vibrateState);
-        SaveManager.Save(this, difficultyKey, currentDifficultyIndex);
     }
 }

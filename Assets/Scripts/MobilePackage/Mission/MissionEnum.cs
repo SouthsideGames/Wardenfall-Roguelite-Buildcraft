@@ -9,8 +9,6 @@ public enum MissionType
     premiumCurrencyCollected = 2,
     currencyCollected = 3,
     waveBasedPlayed = 4,
-    survivalPlayed = 5,
-    bossRushPlayed = 6,
     gemCollected = 7,
     weaponSpecialist = 8,
     fusionFanatic = 9,

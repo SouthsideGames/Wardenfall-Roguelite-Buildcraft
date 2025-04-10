@@ -58,12 +58,6 @@ public class EnemyBullet : MonoBehaviour
             col.enabled = false;
             ReleaseBullet(); // Use new method to check flag
         }
-        else if (collider.TryGetComponent(out SurvivorBox box))
-        {
-            box.TakeDamage(damage);
-            col.enabled = false;
-            ReleaseBullet(); // Use new method to check flag
-        }
     }
 
     // Reset bullet properties when reused
