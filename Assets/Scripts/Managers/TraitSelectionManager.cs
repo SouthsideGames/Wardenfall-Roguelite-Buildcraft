@@ -8,10 +8,11 @@ public class TraitSelectionManager : MonoBehaviour
 
     [Header("UI References")]
     [SerializeField] private GameObject panel;
-    [SerializeField] private TraitOptionUI[] traitOptions; // 3 buttons or cards
+    [SerializeField] private Transform traitCardContainer;
+    [SerializeField] private TraitOptionUI traitOptionPrefab;
 
     [Header("Trait Settings")]
-    [SerializeField] private List<EnemyTraitDataSO> allTraits; // ScriptableObject refs
+    [SerializeField] private List<EnemyTraitDataSO> allTraits;
     [SerializeField] private int optionsToShow = 3;
 
     private void Awake()
@@ -22,11 +23,13 @@ public class TraitSelectionManager : MonoBehaviour
 
     public void OpenTraitSelection()
     {
-       panel.SetActive(true);
+        panel.SetActive(true);
 
-        // Shuffle available traits to pick from
+        foreach (Transform child in traitCardContainer)
+            Destroy(child.gameObject);
+
         List<EnemyTraitDataSO> available = new List<EnemyTraitDataSO>(allTraits);
-        int displayCount = Mathf.Min(optionsToShow, traitOptions.Length, available.Count);
+        int displayCount = Mathf.Min(optionsToShow, available.Count);
 
         for (int i = 0; i < displayCount; i++)
         {
@@ -35,26 +38,18 @@ public class TraitSelectionManager : MonoBehaviour
             available.RemoveAt(index);
 
             int stacks = EnemyTraitManager.Instance.GetStackCount(selected.TraitID);
-            EnemyTraitTier tier = selected.GetTier(stacks + 1); // Preview next tier
+            EnemyTraitTier tier = selected.GetTier(stacks + 1);
 
-            traitOptions[i].gameObject.SetActive(true);
-            traitOptions[i].Configure(
-                selected.TraitID,
-                tier.TierName,
-                tier.Description,
-                () => OnTraitSelected(selected.TraitID)
-            );
+            TraitOptionUI card = Instantiate(traitOptionPrefab, traitCardContainer);
+            card.Configure(selected.TraitID, tier.TierName, tier.Description, () => OnTraitSelected(selected.TraitID));
         }
-
-        // Disable unused options if any
-        for (int i = displayCount; i < traitOptions.Length; i++)
-            traitOptions[i].gameObject.SetActive(false);
     }
-
+    
+    public void CloseTraitSelection() => panel.SetActive(false);
     private void OnTraitSelected(string traitID)
     {
         panel.SetActive(false);
         EnemyTraitManager.Instance.AddTrait(traitID);
-        GameManager.Instance.WaveCompletedCallback(); // Continue game
+        GameManager.Instance.WaveCompletedCallback(); 
     }
 }

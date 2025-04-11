@@ -6,6 +6,6 @@ public class EnemyTraitTier
     public string TierName;
     public string Description;
     public float SpeedModifier = 0f;
-    public float DefenseModifier = 0f;
+    public float InvincibilityDuration = 0f;
     public string SpecialEffectID; 
 }

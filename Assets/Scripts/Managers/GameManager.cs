@@ -59,7 +59,11 @@ public class GameManager : MonoBehaviour
         StatisticsManager.Instance.StopTimer();
         StatisticsManager.Instance.EndRun();
 
-        if(CharacterManager.Instance.HasLeveledUp() || WaveTransitionManager.Instance.HasCollectedChest())
+        bool hasLevelUp = CharacterManager.Instance.HasLeveledUp();
+        bool hasChest = WaveTransitionManager.Instance.HasCollectedChest();
+        bool isBossWave = WaveManager.Instance.IsCurrentWaveBoss();
+
+        if (hasLevelUp || hasChest || isBossWave)
         {
             SetGameState(GameState.WaveTransition);
         }
@@ -67,6 +71,7 @@ public class GameManager : MonoBehaviour
         {
             SetGameState(GameState.Shop);
         }
+
     }
 
     public void ManageGameOver() => SceneManager.LoadScene(0);

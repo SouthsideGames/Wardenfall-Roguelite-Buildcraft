@@ -51,6 +51,8 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
         }
     }
 
+    public void OpenTraitSelection() => TraitSelectionManager.Instance.OpenTraitSelection();
+
     private void TryOpenChest()
     {
         chestContainerParent.Clear();
@@ -119,9 +121,6 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
         }
 
         OnConfigured?.Invoke(upgradeContainers[0].gameObject);
-
-        if (WaveManager.Instance.IsCurrentWaveBoss()) 
-            StartCoroutine(WaitAndShowTraitSelection());
     }
 
     private IEnumerator WaitAndShowTraitSelection() 

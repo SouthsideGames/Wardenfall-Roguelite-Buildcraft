@@ -111,20 +111,14 @@ public abstract class Enemy : MonoBehaviour
                 isCriticalHit = true;
 
                 if (isCriticalHit)
-                {
                     character.TakeDamage(contactDamage * 2);
-                }
            
             }
             else
-            {
                 character.TakeDamage(contactDamage);
-            }
         }
         else
-        {
             character.TakeDamage(contactDamage);
-        }
     }
 
     public virtual void TakeDamage(int _damage, bool _isCriticalHit)
@@ -201,33 +195,16 @@ public abstract class Enemy : MonoBehaviour
             movement.StorePlayer(character);
 
         OnSpawnCompleted?.Invoke();
+
+        EnemyTraitApplier.ApplyTraitsTo(this);
     }
 
 
 #region STATUS EFFECT FUNCTIONS
-    public void ModifyAccuracy(float modifier)
-    {
-        accuracyModifier = modifier;
-        Debug.Log($"Enemy accuracy modified to {accuracyModifier * 100}%.");
-    }
-
-    public void ModifyDamage(float modifier)
-    {
-        damageModifier = modifier;
-        Debug.Log($"Enemy damage modified to {damageModifier * 100}%.");
-    }
-
-    public void DisableAttacks()
-    {
-        attacksEnabled = false;
-        Debug.Log("Enemy attacks disabled.");
-    }
-
-    public void EnableAttacks()
-    {
-        attacksEnabled = true;
-        Debug.Log("Enemy attacks enabled.");
-    }
+    public void ModifyAccuracy(float modifier) => accuracyModifier = modifier;
+    public void ModifyDamage(float modifier) => damageModifier = modifier;
+    public void DisableAttacks() => attacksEnabled = false;
+    public void EnableAttacks() => attacksEnabled = true;
 
     public void DisableAbilities()
     {
@@ -247,12 +224,11 @@ public abstract class Enemy : MonoBehaviour
 
         Enemy[] allEnemies = FindObjectsByType<Enemy>(FindObjectsSortMode.None);
         List<Enemy> validTargets = new List<Enemy>();
+
         foreach (var enemy in allEnemies)
         {
             if (enemy != this && enemy != null)
-            {
                 validTargets.Add(enemy);
-            }
         }
 
         if (validTargets.Count > 0)
@@ -260,12 +236,7 @@ public abstract class Enemy : MonoBehaviour
             int randomIndex = UnityEngine.Random.Range(0, validTargets.Count);
             Transform newTarget = validTargets[randomIndex].transform;
 
-            Debug.Log($"Enemy target set to: {newTarget.name}");
             movement?.SetTarget(newTarget);
-        }
-        else
-        {
-            Debug.Log("No other enemies available to target.");
         }
     }
 
@@ -275,11 +246,6 @@ public abstract class Enemy : MonoBehaviour
         {
             playerTransform = character.transform;
             movement?.SetTarget(playerTransform);
-            Debug.Log("Enemy target reset to the player.");
-        }
-        else
-        {
-            Debug.LogWarning("Player character not found; cannot reset target.");
         }
     }
 
