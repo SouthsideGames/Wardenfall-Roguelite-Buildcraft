@@ -9,6 +9,7 @@ using UnityEngine.Pool;
 [RequireComponent(typeof(WaveUI))]
 public class WaveManager : MonoBehaviour, IGameStateListener
 {
+    public static WaveManager Instance;
     public static Action OnWaveCompleted;
 
     [Header("ELEMENTS:")]
@@ -29,14 +30,17 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 
     private void Awake()
     {
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
+            
         ui = GetComponent<WaveUI>();
         CharacterHealth.OnCharacterDeath += CharacterDeathCallback;
     }
 
-    private void OnDestroy()
-    {
-        CharacterHealth.OnCharacterDeath -= CharacterDeathCallback;
-    }
+    private void OnDestroy() => CharacterHealth.OnCharacterDeath -= CharacterDeathCallback;
+    
 
     private void Update()
     {
@@ -118,6 +122,16 @@ public class WaveManager : MonoBehaviour, IGameStateListener
             EndWaveBasedStage();
         else
             GameManager.Instance.WaveCompletedCallback();
+    }
+
+    public bool IsCurrentWaveBoss() 
+    {
+        foreach (var segment in currentWave.segments) 
+        {
+            if (segment.spawnOnce)
+                return true;
+        }
+            return false;
     }
 
 

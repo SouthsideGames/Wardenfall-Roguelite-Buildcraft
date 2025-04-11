@@ -119,6 +119,15 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
         }
 
         OnConfigured?.Invoke(upgradeContainers[0].gameObject);
+
+        if (WaveManager.Instance.IsCurrentWaveBoss()) 
+            StartCoroutine(WaitAndShowTraitSelection());
+    }
+
+    private IEnumerator WaitAndShowTraitSelection() 
+    {
+        yield return new WaitForSeconds(0.5f); 
+        TraitSelectionManager.Instance.OpenTraitSelection(); 
     }
 
     private void BonusSelectedCallback() => GameManager.Instance.WaveCompletedCallback();
