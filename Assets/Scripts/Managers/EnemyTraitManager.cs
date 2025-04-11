@@ -6,13 +6,17 @@ public class EnemyTraitManager : MonoBehaviour
 {
     public static EnemyTraitManager Instance;
 
-    private Dictionary<string, int> traitStacks = new(); // TraitID => stack count
+    private Dictionary<string, int> traitStacks = new(); 
     public List<EnemyTraitDataSO> AllTraits;
 
-    private void Awake() {
-        if (Instance == null) Instance = this;
-        else Destroy(gameObject);
+    private void Awake()
+    {
+        if(Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
     }
+
 
     public void AddTrait(string traitID) {
         if (traitStacks.ContainsKey(traitID))

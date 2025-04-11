@@ -10,6 +10,18 @@ public static class TraitEffectUtils
             case "ArmoredShield":
                 CoroutineRunner.Instance.StartCoroutine(ApplyTimedInvincibility(enemy, tier.InvincibilityDuration));
                 break;
+            case "BerserkerT1":
+                enemy.maxHealth = Mathf.FloorToInt(enemy.maxHealth * 0.95f);
+                enemy.health = Mathf.Min(enemy.health, enemy.maxHealth);
+                break;
+            case "BerserkerT2":
+                enemy.maxHealth = Mathf.FloorToInt(enemy.maxHealth * 0.90f);
+                enemy.health = Mathf.Min(enemy.health, enemy.maxHealth);
+                break;
+            case "BerserkerT3":
+                enemy.maxHealth = Mathf.FloorToInt(enemy.maxHealth * 0.80f);
+                enemy.health = Mathf.Min(enemy.health, enemy.maxHealth);
+                break;
         }
     }
 

@@ -196,6 +196,12 @@ public abstract class Enemy : MonoBehaviour
 
         OnSpawnCompleted?.Invoke();
 
+        StartCoroutine(ApplyTraitsNextFrame());
+    }
+
+    private IEnumerator ApplyTraitsNextFrame()
+    {
+        yield return null; 
         EnemyTraitApplier.ApplyTraitsTo(this);
     }
 

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TraitSelectionManager : MonoBehaviour
+public class TraitSelectionManager : MonoBehaviour, IGameStateListener
 {
     public static TraitSelectionManager Instance;
 
@@ -17,9 +17,12 @@ public class TraitSelectionManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null) Instance = this;
-        else Destroy(gameObject);
+        if(Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
     }
+
 
     public void OpenTraitSelection()
     {
@@ -42,14 +45,23 @@ public class TraitSelectionManager : MonoBehaviour
 
             TraitOptionUI card = Instantiate(traitOptionPrefab, traitCardContainer);
             card.Configure(selected.TraitID, tier.TierName, tier.Description, () => OnTraitSelected(selected.TraitID));
+
         }
     }
     
     public void CloseTraitSelection() => panel.SetActive(false);
+
+    public void GameStateChangedCallback(GameState state)
+    {
+        if (state == GameState.TraitSelection)
+            OpenTraitSelection();
+        else
+            CloseTraitSelection();
+    }
+
     private void OnTraitSelected(string traitID)
     {
-        panel.SetActive(false);
         EnemyTraitManager.Instance.AddTrait(traitID);
-        GameManager.Instance.WaveCompletedCallback(); 
+        GameManager.Instance.StartShop(); // Proceed to shop
     }
 }

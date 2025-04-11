@@ -14,6 +14,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
     [SerializeField] private GameObject gameoverPanel;
     [SerializeField] private GameObject waveBasedCompletePanel;
     [SerializeField] private GameObject waveTransitionPanel;
+    [SerializeField] private GameObject traitSelectTransitionPanel;
     [SerializeField] private GameObject shopPanel;
     [SerializeField] private GameObject pausePanel;
     [SerializeField] private GameObject confirmationPanel;
@@ -44,6 +45,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
             gameoverPanel,
             waveBasedCompletePanel,
             waveTransitionPanel,
+            traitSelectTransitionPanel,
             shopPanel
 
         });
@@ -94,6 +96,9 @@ public class UIManager : MonoBehaviour, IGameStateListener
                 break;
             case GameState.WaveTransition:
                 ShowPanel(waveTransitionPanel);
+                break;
+            case GameState.TraitSelection:
+                ShowPanel(traitSelectTransitionPanel);
                 break;
             case GameState.Shop:
                 ShowPanel(shopPanel);

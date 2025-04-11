@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using System.Linq;
@@ -69,16 +67,12 @@ namespace SouthsideGames.SaveManager
 
             }
 
-            
             foreach (IWantToBeSaved saveable in FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None).OfType<IWantToBeSaved>())
                 saveable.Load();
             
         }
 
-        private static void Save()
-        {
-            instance.LocalSave();
-        }
+        private static void Save() => instance.LocalSave();
 
         public static void Save(object sender, string key, object data)
         {
@@ -91,13 +85,10 @@ namespace SouthsideGames.SaveManager
 
             FieldInfo myObjectField = serializableOjectType.GetField("myObject");
 
-            // Set the myList field of the serializableList
             myObjectField.SetValue(mySerializableObject, data);
 
-            // Finally Serialize it to JSon and save
             jsonData = JSON.Serialize(mySerializableObject).CreatePrettyString();
 
-            // Before saving, set the dataType to SerializeList<>
             dataType = serializableOjectType;
 
             GameData.Add(fullKey, dataType, jsonData);
@@ -107,7 +98,6 @@ namespace SouthsideGames.SaveManager
         public static bool TryLoad(object sender, string key, out object value)
         {
            string fullKey = GetFullKey(sender, key);
-            Debug.Log($"Attempting to load key: {fullKey}");
 
             if (GameData.TryGetValue(fullKey, out Type dataType, out string data))
             {
@@ -119,12 +109,10 @@ namespace SouthsideGames.SaveManager
                 FieldInfo myObject = value.GetType().GetField("myObject");
                 value = myObject.GetValue(value);
 
-                Debug.Log($"Successfully loaded key: {fullKey}, value: {value}");
                 return true;
             }
 
             value = null;
-            Debug.LogWarning($"Failed to load key: {fullKey}");
             return false;
         }
 
@@ -147,12 +135,11 @@ namespace SouthsideGames.SaveManager
         {
             if (File.Exists(instance.dataPath))
             {
-                File.Delete(instance.dataPath); // Delete the save file
-                Debug.Log("Save data cleared.");
+                File.Delete(instance.dataPath); 
             }
 
-            GameData = new GameData(); // Reset to a new empty GameData object
-            instance.LocalSave();      // Save the fresh GameData file
+            GameData = new GameData(); 
+            instance.LocalSave();      
         }
 
     }

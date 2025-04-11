@@ -51,8 +51,6 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
         }
     }
 
-    public void OpenTraitSelection() => TraitSelectionManager.Instance.OpenTraitSelection();
-
     private void TryOpenChest()
     {
         chestContainerParent.Clear();
