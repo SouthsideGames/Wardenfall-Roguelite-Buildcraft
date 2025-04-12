@@ -29,6 +29,7 @@ public class ItemManager : MonoBehaviour
     private float cashDropChanceMultiplier = 1f;
     private float chestDropChanceMultiplier = 1f;
     private float gemDropChanceMultiplier = 1f;
+    private float dropRateMultiplier = 1f;
 
     [Header("Pooling")]
     private ObjectPool<Meat> meatPool;
@@ -111,13 +112,13 @@ public class ItemManager : MonoBehaviour
         chestDropChanceMultiplier = 1f;
         gemDropChanceMultiplier = 1f;
 
-        Debug.Log("Item drop chances reset to default.");
     }
 
     private void EnemyDeathCallback(Vector2 _enemyPosition)
     {
-        int cashChance = Mathf.RoundToInt(baseCashDropChance * cashDropChanceMultiplier);
-        int gemChance = Mathf.RoundToInt(baseGemDropChance * gemDropChanceMultiplier);
+        int cashChance = Mathf.RoundToInt(baseCashDropChance * cashDropChanceMultiplier * dropRateMultiplier);
+        int gemChance = Mathf.RoundToInt(baseGemDropChance * gemDropChanceMultiplier * dropRateMultiplier);
+
 
         Item itemToDrop = Random.Range(0f, 100f) < cashChance ? cashPool.Get() :
                           Random.Range(0f, 100f) < gemChance ? gemPool.Get() : meatPool.Get();
@@ -134,7 +135,8 @@ public class ItemManager : MonoBehaviour
 
     private void TryDropChest(Vector2 _spawnPosition)
     {
-        int chestChance = Mathf.RoundToInt(baseChestDropChance * chestDropChanceMultiplier);
+        int chestChance = Mathf.RoundToInt(baseChestDropChance * chestDropChanceMultiplier * dropRateMultiplier);
+
         bool shouldSpawnChest = Random.Range(0, 101) <= chestChance;
 
         if (!shouldSpawnChest)
@@ -173,5 +175,10 @@ public class ItemManager : MonoBehaviour
     private void ChestActionOnDestroy(Chest _chest) => Destroy(_chest.gameObject);
 
     #endregion
+
+    public void ModifyDropRates(float multiplier)
+    {
+        dropRateMultiplier = multiplier;
+    }
 
 }

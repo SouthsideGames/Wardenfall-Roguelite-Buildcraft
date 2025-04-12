@@ -24,8 +24,8 @@ public abstract class Enemy : MonoBehaviour
     protected bool hasSpawned = false;
 
     [Header("ATTACK:")]
-    [SerializeField] protected int contactDamage;
-    [SerializeField] protected float playerDetectionRadius;
+    public int contactDamage;
+    public float playerDetectionRadius;
     protected float attackTimer;
     private bool isCriticalHit;
     private bool attacksEnabled = true;
@@ -44,6 +44,8 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] private bool canPerformCriticalHit;
     private float accuracyModifier = 1f;
     private float damageModifier = 1f;
+    private float critChanceModifier = 1f;
+    private float dropRateMultiplier = 1f;
 
     [Header("EFFECTS:")]
     [SerializeField] protected ParticleSystem deathParticles;
@@ -104,7 +106,7 @@ public abstract class Enemy : MonoBehaviour
 
         if(canPerformCriticalHit)
         {
-            float enemyCriticalHitPercent = UnityEngine.Random.Range(0, 5) / 100;
+            float enemyCriticalHitPercent = (UnityEngine.Random.Range(0, 5) / 100f) * critChanceModifier;
 
             if (enemyCriticalHitPercent >= CharacterStats.Instance.GetStatValue(Stat.CritResist))
             {
@@ -169,6 +171,8 @@ public abstract class Enemy : MonoBehaviour
         Destroy(gameObject);
     }
 
+    #region SPAWN FUNCTIONS
+
     private void Spawn()
     {
         SetRenderersVisibility(false);
@@ -199,16 +203,13 @@ public abstract class Enemy : MonoBehaviour
         StartCoroutine(ApplyTraitsNextFrame());
     }
 
-    private IEnumerator ApplyTraitsNextFrame()
-    {
-        yield return null; 
-        EnemyTraitApplier.ApplyTraitsTo(this);
-    }
+    #endregion
 
 
-#region STATUS EFFECT FUNCTIONS
+    #region MODIFICATION FUNCTIONS
     public void ModifyAccuracy(float modifier) => accuracyModifier = modifier;
     public void ModifyDamage(float modifier) => damageModifier = modifier;
+    public void ModifyCritChance(float modifier) => critChanceModifier = modifier;
     public void DisableAttacks() => attacksEnabled = false;
     public void EnableAttacks() => attacksEnabled = true;
 
@@ -255,7 +256,15 @@ public abstract class Enemy : MonoBehaviour
         }
     }
 
-#endregion
+    
+    private IEnumerator ApplyTraitsNextFrame()
+    {
+        yield return null; 
+        TraitApplier.ApplyTraitsTo(this);
+    }
+
+    #endregion
+
     private void OnDrawGizmos()
     {
         if (!showGizmos)

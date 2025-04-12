@@ -2,12 +2,12 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class EnemyTraitManager : MonoBehaviour
+public class TraitManager : MonoBehaviour
 {
-    public static EnemyTraitManager Instance;
+    public static TraitManager Instance;
 
     private Dictionary<string, int> traitStacks = new(); 
-    public List<EnemyTraitDataSO> AllTraits;
+    public List<TraitDataSO> AllTraits;
 
     private void Awake()
     {
@@ -25,13 +25,13 @@ public class EnemyTraitManager : MonoBehaviour
             traitStacks[traitID] = 1;
     }
 
-    public EnemyTraitTier GetActiveTier(string traitID) {
+    public TraitTier GetActiveTier(string traitID) {
         var trait = AllTraits.Find(t => t.TraitID == traitID);
         if (trait == null || !traitStacks.ContainsKey(traitID)) return null;
         return trait.GetTier(traitStacks[traitID]);
     }
 
-    public List<(EnemyTraitDataSO trait, int stack)> GetAllActiveTraits() {
+    public List<(TraitDataSO trait, int stack)> GetAllActiveTraits() {
         return traitStacks.Select(pair => (AllTraits.Find(t => t.TraitID == pair.Key), pair.Value)).ToList();
     }
 

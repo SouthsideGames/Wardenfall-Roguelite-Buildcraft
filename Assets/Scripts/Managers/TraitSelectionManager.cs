@@ -12,7 +12,7 @@ public class TraitSelectionManager : MonoBehaviour, IGameStateListener
     [SerializeField] private TraitOptionUI traitOptionPrefab;
 
     [Header("Trait Settings")]
-    [SerializeField] private List<EnemyTraitDataSO> allTraits;
+    [SerializeField] private List<TraitDataSO> allTraits;
     [SerializeField] private int optionsToShow = 3;
 
     private void Awake()
@@ -31,17 +31,17 @@ public class TraitSelectionManager : MonoBehaviour, IGameStateListener
         foreach (Transform child in traitCardContainer)
             Destroy(child.gameObject);
 
-        List<EnemyTraitDataSO> available = new List<EnemyTraitDataSO>(allTraits);
+        List<TraitDataSO> available = new List<TraitDataSO>(allTraits);
         int displayCount = Mathf.Min(optionsToShow, available.Count);
 
         for (int i = 0; i < displayCount; i++)
         {
             int index = Random.Range(0, available.Count);
-            EnemyTraitDataSO selected = available[index];
+            TraitDataSO selected = available[index];
             available.RemoveAt(index);
 
-            int stacks = EnemyTraitManager.Instance.GetStackCount(selected.TraitID);
-            EnemyTraitTier tier = selected.GetTier(stacks + 1);
+            int stacks = TraitManager.Instance.GetStackCount(selected.TraitID);
+            TraitTier tier = selected.GetTier(stacks + 1);
 
             TraitOptionUI card = Instantiate(traitOptionPrefab, traitCardContainer);
             card.Configure(selected.TraitID, tier.TierName, tier.Description, () => OnTraitSelected(selected.TraitID));
@@ -61,7 +61,7 @@ public class TraitSelectionManager : MonoBehaviour, IGameStateListener
 
     private void OnTraitSelected(string traitID)
     {
-        EnemyTraitManager.Instance.AddTrait(traitID);
+        TraitManager.Instance.AddTrait(traitID);
         GameManager.Instance.StartShop(); // Proceed to shop
     }
 }

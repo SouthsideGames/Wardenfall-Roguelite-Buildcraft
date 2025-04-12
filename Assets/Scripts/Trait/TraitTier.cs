@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [System.Serializable]
-public class EnemyTraitTier 
+public class TraitTier 
 {
     public string TierName;
     public string Description;
