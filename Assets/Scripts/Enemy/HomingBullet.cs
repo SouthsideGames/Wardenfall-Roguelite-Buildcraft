@@ -8,7 +8,6 @@ public class HomingBullet : EnemyBullet
 
     private Vector2 targetPosition;
     private bool isLockedOn = false;
-    private Rigidbody2D rb;
     private float currentPauseDuration;
 
     private void Awake()

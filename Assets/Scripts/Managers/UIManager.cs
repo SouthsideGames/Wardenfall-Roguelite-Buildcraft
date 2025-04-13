@@ -23,12 +23,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
     [SerializeField] private GameObject settingPanel;
     [SerializeField] private GameObject codexPanel;
     [SerializeField] private GameObject missionPanel;
-    [SerializeField] private GameObject loadoutPanel;
-    [SerializeField] private GameObject menuShopPanel;
 
-    [Header("REFERENCES")]
-    [SerializeField] private CardManager cardManager;
-    [SerializeField] private MainMenuShopUpdateUI mainMenuShopManagerUI;
 
     [Header("COUNTER TEXT:")]
     [SerializeField] private TextMeshProUGUI killCounterText;
@@ -63,8 +58,6 @@ public class UIManager : MonoBehaviour, IGameStateListener
         HideCharacterSelectPanel();
         HideSettingsPanel();
         HideMissionPanel();
-        HideDeckbuilderPanel();
-        HideMenuShopPanel();
     
     }
 
@@ -217,45 +210,6 @@ public class UIManager : MonoBehaviour, IGameStateListener
         missionPanel.SetActive(false);
         menuPanel.SetActive(true);
         TriggerPanelAction(menuPanel);
-    }
-
-    public void ShowDeckbuilderPanel()
-    {
-        loadoutPanel.SetActive(true);
-        TriggerPanelAction(loadoutPanel);
-        menuPanel.SetActive(false);
-    }
-    public void HideDeckbuilderPanel()
-    {
-        loadoutPanel.SetActive(false);
-        cardManager.SpawnInGameCards();
-        menuPanel.SetActive(true);
-        TriggerPanelAction(menuPanel);
-    }
-
-    public void ShowMenuShopPanel()
-    {
-        menuShopPanel.SetActive(true);
-        menuPanel.SetActive(false);
-        
-    }
-
-    public void HideMenuShopPanel()
-    {
-        menuShopPanel.SetActive(false);
-        menuPanel.SetActive(true);
-    }
-
-    public void GemMenuShopPanel()
-    {
-        menuShopPanel.SetActive(true);
-        mainMenuShopManagerUI.OpenGemContainer();
-    }
-
-    public void CashMenuShopPanel()
-    {
-        menuShopPanel.SetActive(true);
-        mainMenuShopManagerUI.OpenCashContainer();
     }
 
 

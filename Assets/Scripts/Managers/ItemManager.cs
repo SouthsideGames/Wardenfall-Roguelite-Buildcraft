@@ -16,26 +16,21 @@ public class ItemManager : MonoBehaviour
     [SerializeField] private Meat meatPrefab;
     [SerializeField] private Cash cashPrefab;
     [SerializeField] private Chest chestPrefab;
-    [SerializeField] private Gem gemPrefab;
 
     [Header("SETTINGS:")]
     [Range(0, 100)]
     [SerializeField] private int baseCashDropChance;
     [Range(0, 100)]
     [SerializeField] private int baseChestDropChance;
-    [Range(0, 100)]
-    [SerializeField] private int baseGemDropChance;
 
     private float cashDropChanceMultiplier = 1f;
     private float chestDropChanceMultiplier = 1f;
-    private float gemDropChanceMultiplier = 1f;
     private float dropRateMultiplier = 1f;
 
     [Header("Pooling")]
     private ObjectPool<Meat> meatPool;
     private ObjectPool<Cash> cashPool;
     private ObjectPool<Chest> chestPool;
-    private ObjectPool<Gem> gemPool;
 
     private void Awake()
     {
@@ -49,7 +44,6 @@ public class ItemManager : MonoBehaviour
         Meat.OnCollected += ReleaseMeat;
         Cash.OnCollected += ReleaseCash;
         Chest.OnCollected += ReleaseChest;
-        Gem.OnCollected += ReleaseGem;
     }
 
     private void Start()
@@ -64,7 +58,6 @@ public class ItemManager : MonoBehaviour
         Meat.OnCollected -= ReleaseMeat;
         Cash.OnCollected -= ReleaseCash;
         Chest.OnCollected -= ReleaseChest;
-        Gem.OnCollected -= ReleaseGem;
     }
 
     private void InitializePools()
@@ -86,42 +79,31 @@ public class ItemManager : MonoBehaviour
             ChestActionOnGet,
             ChestActionOnRelease,
             ChestActionOnDestroy);
-
-        gemPool = new ObjectPool<Gem>(
-            GemCreateFunction,
-            GemActionOnGet,
-            GemActionOnRelease,
-            GemActionOnDestroy);
     }
 
     public void ApplyItemBoost(float multiplier, float duration)
     {
         cashDropChanceMultiplier = multiplier;
         chestDropChanceMultiplier = multiplier;
-        gemDropChanceMultiplier = multiplier;
 
         CancelInvoke(nameof(ResetItemBoost));
         Invoke(nameof(ResetItemBoost), duration);
 
-        Debug.Log($"Item drop chances boosted by {multiplier * 100}% for {duration} seconds.");
     }
 
     private void ResetItemBoost()
     {
         cashDropChanceMultiplier = 1f;
         chestDropChanceMultiplier = 1f;
-        gemDropChanceMultiplier = 1f;
 
     }
 
     private void EnemyDeathCallback(Vector2 _enemyPosition)
     {
         int cashChance = Mathf.RoundToInt(baseCashDropChance * cashDropChanceMultiplier * dropRateMultiplier);
-        int gemChance = Mathf.RoundToInt(baseGemDropChance * gemDropChanceMultiplier * dropRateMultiplier);
-
 
         Item itemToDrop = Random.Range(0f, 100f) < cashChance ? cashPool.Get() :
-                          Random.Range(0f, 100f) < gemChance ? gemPool.Get() : meatPool.Get();
+                          meatPool.Get();
 
         if (itemToDrop != null)
         {
@@ -151,18 +133,12 @@ public class ItemManager : MonoBehaviour
     private void ReleaseMeat(Meat _meat) => meatPool.Release(_meat);
     private void ReleaseCash(Cash _cash) => cashPool.Release(_cash);
     private void ReleaseChest(Chest _chest) => chestPool.Release(_chest);
-    private void ReleaseGem(Gem _gem) => gemPool.Release(_gem);
 
     #region POOLING
     private Meat MeatCreateFunction() => Instantiate(meatPrefab, transform);
     private void MeatActionOnGet(Meat _meat) => _meat.gameObject.SetActive(true);
     private void MeatActionOnRelease(Meat _meat) => _meat.gameObject.SetActive(false);
     private void MeatActionOnDestroy(Meat _meat) => Destroy(_meat.gameObject);
-
-    private Gem GemCreateFunction() => Instantiate(gemPrefab, transform);
-    private void GemActionOnGet(Gem _gem) => _gem.gameObject.SetActive(true);
-    private void GemActionOnRelease(Gem _gem) => _gem.gameObject.SetActive(false);
-    private void GemActionOnDestroy(Gem _gem) => Destroy(_gem.gameObject);
 
     private Cash CashCreateFunction() => Instantiate(cashPrefab, transform);
     private void CashActionOnGet(Cash _cash) => _cash.gameObject.SetActive(true);

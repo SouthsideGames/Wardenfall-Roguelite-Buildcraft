@@ -45,8 +45,6 @@ public class CharacterStats : MonoBehaviour
     {
         if (addends.ContainsKey(_stat))
             addends[_stat] += _value;
-        else
-            Debug.LogError($"The key {_stat} has not been found");
 
         UpdateStats();
     }
@@ -103,10 +101,6 @@ public class CharacterStats : MonoBehaviour
             addends[_stat] += _value;
             UpdateStats();
         }
-        else
-        {
-            Debug.LogError($"Stat {_stat} not found for boosting.");
-        }
     }
 
     public void RevertBoost(Stat _stat)
@@ -116,10 +110,6 @@ public class CharacterStats : MonoBehaviour
             addends[_stat] = boostedStats[_stat];
             boostedStats[_stat] = 0; 
             UpdateStats();
-        }
-        else
-        {
-            Debug.LogError($"Stat {_stat} not found for reverting boost.");
         }
     }
 

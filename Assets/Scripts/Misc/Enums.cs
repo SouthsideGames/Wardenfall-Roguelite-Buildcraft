@@ -16,9 +16,7 @@ public enum GameState
 
 public enum ItemRewardType
 {
-    Cash,
-    Gem,
-    Card
+    Cash
 }
 
 
@@ -75,6 +73,23 @@ public enum CharacterCardRarityType
     Rare,
     Epic,
     Legendary
+}
+
+public enum CardRarity
+{
+    Common,
+    Rare,
+    Epic,
+    Legendary
+}
+
+public enum CardEffectType
+{
+    Fireball,
+    GuardianSpirit,
+    DeathRay,
+    ThunderStrike,
+    // Add more as needed
 }
 
 

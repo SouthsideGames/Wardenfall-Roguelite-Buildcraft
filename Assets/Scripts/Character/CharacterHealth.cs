@@ -78,13 +78,6 @@ public class CharacterHealth : MonoBehaviour, IStats
 
     private void Die()
     {
-        var secondLifeCard = CharacterManager.Instance.deck.GetEquippedCards().Find(card => card.EffectType == CardEffectType.Support_SecondLife);
-
-        if (secondLifeCard != null && secondLifeCard.IsAutoActivated && !CardEffect.Instance.IsEffectActive(secondLifeCard.EffectType))
-        {
-            CardEffect.Instance.ActivateEffect(secondLifeCard.EffectType, 0, secondLifeCard);
-            return; 
-        }
 
         OnCharacterDeath?.Invoke();
 

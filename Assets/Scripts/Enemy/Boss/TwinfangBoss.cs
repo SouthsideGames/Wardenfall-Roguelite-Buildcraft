@@ -7,8 +7,6 @@ public class TwinfangBoss : Boss
 {
     [Header("STAGE 1")]
     [SerializeField] private float attackRange = 3f;
-    [SerializeField] private float lungeSpeed = 8f;
-    [SerializeField] private float retreatSpeed = 6f;
 
     private EnemyMovement enemyMovement;
     private bool isAttacking;

@@ -7,7 +7,7 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterWeapon))]
 [RequireComponent(typeof(CharacterObjects))]
 [RequireComponent(typeof(CharacterStats))]
-[RequireComponent(typeof(CharacterDeck))]
+[RequireComponent(typeof(CharacterCards))]
 [RequireComponent(typeof(CharacterAnimator))]
 public class CharacterManager : MonoBehaviour
 {
@@ -18,9 +18,9 @@ public class CharacterManager : MonoBehaviour
     private CharacterAnimator anim;
     public CharacterWeapon weapon { get; private set; }
     public CharacterHealth health { get; private set; }
-    public CharacterDeck deck { get; private set; }
     public CharacterStats stats { get; private set; }
     public CharacterController controller { get; private set; }
+    public CharacterCards cards {get; private set; }
     [SerializeField] private CircleCollider2D _col;
     [SerializeField] private SpriteRenderer _sr;
     
@@ -34,11 +34,11 @@ public class CharacterManager : MonoBehaviour
 
         health = GetComponent<CharacterHealth>();  
         level = GetComponent<CharacterLevel>();
-        weapon = GetComponent<CharacterWeapon>();
-        deck = GetComponent<CharacterDeck>();   
+        weapon = GetComponent<CharacterWeapon>(); 
         anim = GetComponent<CharacterAnimator>();  
         stats = GetComponent<CharacterStats>();
-        controller = GetComponent<CharacterController>();   
+        controller = GetComponent<CharacterController>(); 
+        cards = GetComponent<CharacterCards>();
 
         CharacterSelectionManager.OnCharacterSelected += CharacterSelectionCallback;
     }

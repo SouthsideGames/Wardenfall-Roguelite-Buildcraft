@@ -45,7 +45,7 @@ public abstract class Enemy : MonoBehaviour
     private float accuracyModifier = 1f;
     private float damageModifier = 1f;
     private float critChanceModifier = 1f;
-    private float dropRateMultiplier = 1f;
+
 
     [Header("EFFECTS:")]
     [SerializeField] protected ParticleSystem deathParticles;
