@@ -4,7 +4,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Card Library Data", menuName = "Scriptable Objects/New Card Library Data", order = 8)]
 public class CardLibrary : ScriptableObject
 {
-    public List<CardSO> allCards;
+    public List<CardSO> allCards = new List<CardSO>();
 
     public List<CardSO> GetUnlockedCards()
     {

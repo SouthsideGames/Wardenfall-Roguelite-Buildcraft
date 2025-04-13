@@ -10,6 +10,7 @@ public enum GameState
     GameOver,
     StageCompleted,
     WaveTransition,
+    CardDraft,
     TraitSelection,
     Shop
 }

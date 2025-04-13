@@ -1,29 +1,48 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
-public class CardDraftManager : MonoBehaviour
+public class CardDraftManager : MonoBehaviour, IGameStateListener
 {
-    [SerializeField] private List<CardSO> allCards; // Assigned in inspector or loaded at runtime
-    private CharacterManager characterManager;
+     [SerializeField] private GameObject panel;
+    [SerializeField] private Transform cardContainer;
+    [SerializeField] private CardOptionUI cardOptionPrefab;
+    [SerializeField] private CardLibrary cardLibrary;
+    [SerializeField] private int optionsToShow = 3;
 
-    [Header("Draft Settings")]
-    [SerializeField] private int cardsPerDraft = 3;
-
-    void Start() => characterManager = FindAnyObjectByType<CharacterManager>();
-
-    public void TriggerCardDraft()
+    public void GameStateChangedCallback(GameState state)
     {
-        List<CardSO> unlockedCards = allCards
-            .Where(card => card.isUnlocked)
-            .OrderBy(x => Random.value)
-            .Take(cardsPerDraft)
-            .ToList();
-
-        CardDraftUI.Instance.ShowCardDraft(unlockedCards, OnCardSelected);
+        if (state == GameState.CardDraft)
+            OpenCardDraft();
+        else
+            CloseCardDraft();
     }
 
-    private void OnCardSelected(CardSO selectedCard) => characterManager.cards.AddCard(selectedCard);
+    private void OpenCardDraft()
+    {
+        panel.SetActive(true);
 
-    public void SetCardPool(List<CardSO> newPool) => allCards = newPool;
+        foreach (Transform child in cardContainer)
+            Destroy(child.gameObject);
+
+        List<CardSO> available = new List<CardSO>(cardLibrary.allCards);
+        int displayCount = Mathf.Min(optionsToShow, available.Count);
+
+        for (int i = 0; i < displayCount; i++)
+        {
+            int index = Random.Range(0, available.Count);
+            CardSO selected = available[index];
+            available.RemoveAt(index);
+
+            CardOptionUI card = Instantiate(cardOptionPrefab, cardContainer);
+            card.Configure(selected, () => OnCardSelected(selected));
+        }
+    }
+
+    private void CloseCardDraft() => panel.SetActive(false);
+
+    private void OnCardSelected(CardSO card)
+    {
+        CharacterManager.Instance.cards.AddCard(card);
+        GameManager.Instance.StartTraitSelection(); 
+    }
 }

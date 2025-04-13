@@ -38,6 +38,7 @@ public class GameManager : MonoBehaviour
     public void StartWeaponSelect() => SetGameState(GameState.WeaponSelect);
     public void StartShop() => SetGameState(GameState.Shop);    
     public void StartTraitSelection() => SetGameState(GameState.TraitSelection);
+    public void StartCardDraft() => SetGameState(GameState.CardDraft);
     public void StartGameOver() => SetGameState(GameState.GameOver);  
 
     public void SetGameState(GameState _gameState)

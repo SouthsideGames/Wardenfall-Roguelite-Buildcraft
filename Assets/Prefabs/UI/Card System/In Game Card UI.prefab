@@ -90,7 +90,6 @@ GameObject:
   - component: {fileID: 3607545183628587729}
   - component: {fileID: 3088764752590423028}
   - component: {fileID: 1187658502823762073}
-  - component: {fileID: 6033073926726264261}
   m_Layer: 0
   m_Name: In Game Card UI
   m_TagString: Untagged
@@ -201,7 +200,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6033073926726264261}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: InGameCardUI, Assembly-CSharp
         m_MethodName: OnCardButtonPressed
         m_Mode: 1
@@ -238,29 +237,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clipToPlay: {fileID: 0}
---- !u!114 &6033073926726264261
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4248547847268086644}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3fbbdc3bd403c9645ab2f7ca978bdf0f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  icon: {fileID: 6286884857458409511}
-  overlay: {fileID: 2870648342173832413}
-  timer: {fileID: 8835706122995314258}
-  background: {fileID: 264444903427268254}
-  commonBackgroundImage: {fileID: 21300000, guid: 8a52ccf8a9edf48c09826a43e605642e, type: 3}
-  uncommonBackgroundImage: {fileID: 21300000, guid: f74bbba66d0744084adb24b46b885722, type: 3}
-  rareBackgroundImage: {fileID: 21300000, guid: 00b246f18d3354d5baad68986295716b, type: 3}
-  epicBackgroundImage: {fileID: 21300000, guid: a150c7f6a7756463eb5c3ee08275dc9c, type: 3}
-  legendaryBackgroundImage: {fileID: 21300000, guid: 40d10cf134e7d4b469ffd4f52cdcf21a, type: 3}
-  mythicBackgroundImage: {fileID: 21300000, guid: d849eb66832ae43878a8bad5138b764c, type: 3}
-  exaltedBackgroundImage: {fileID: 21300000, guid: a08bb88dc6ecd4f3ca3aa827e959e54f, type: 3}
 --- !u!1 &4344625720583850109
 GameObject:
   m_ObjectHideFlags: 0
