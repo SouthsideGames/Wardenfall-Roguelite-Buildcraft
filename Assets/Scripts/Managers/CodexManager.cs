@@ -2,15 +2,16 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class CodexManager : MonoBehaviour
 {
-
-   
     [Header("ELEMENTS:")]
     [SerializeField] private TMP_Dropdown categoryDropdown;
     [SerializeField] private Transform detailParent;
     [SerializeField] private GameObject cardPrefab;
+    [SerializeField] private TextMeshProUGUI progressText;
+    [SerializeField] private CardLibrary cardLibrary;
 
     [Header("DETAIL VIEW:")]
     [SerializeField] private GameObject detailContainer;
@@ -32,8 +33,10 @@ public class CodexManager : MonoBehaviour
     [SerializeField] private Transform objectStatContainersParent;
 
     [SerializeField] private GameObject statPrefab;
+    [SerializeField] private Sprite lockedIcon;
 
-    private void Awake() => InitializeDropdown();   
+    private void Awake() => InitializeDropdown();
+
     private void Start()
     {
         CloseDetailView();
@@ -43,7 +46,7 @@ public class CodexManager : MonoBehaviour
     private void InitializeDropdown()
     {
         categoryDropdown.ClearOptions();
-        var categories = new System.Collections.Generic.List<string> { "Characters", "Weapons", "Objects", "Enemies" };
+        var categories = new List<string> { "Characters", "Weapons", "Objects", "Enemies", "Cards" };
         categoryDropdown.AddOptions(categories);
         categoryDropdown.onValueChanged.AddListener(OnDropdownSelectionChanged);
     }
@@ -64,11 +67,43 @@ public class CodexManager : MonoBehaviour
             case 3:
                 LoadAndDisplayEnemyCards();
                 break;
+            case 4:
+                LoadAndDisplayCardCodex();
+                break;
             default:
                 Debug.LogWarning("Invalid category selected.");
                 break;
         }
     }
+
+    #region Card Codex View
+
+    private void LoadAndDisplayCardCodex()
+    {
+        ClearCards();
+        var allCards = cardLibrary.allCards;
+
+        foreach (var card in allCards)
+        {
+            GameObject miniCard = Instantiate(cardPrefab, detailParent);
+            CodexCardUI cardUI = miniCard.GetComponent<CodexCardUI>();
+            cardUI.InitializeCardCodex(card, this);
+        }
+
+        int unlockedCount = allCards.FindAll(c => c.isUnlocked).Count;
+        int total = allCards.Count;
+        progressText.text = $"Unlocked: {unlockedCount} / {total} cards ({(int)((float)unlockedCount / total * 100)}%)";
+    }
+
+    public void OpenCardDetail(CardSO card)
+    {
+        detailIcon.sprite = card.isUnlocked ? card.icon : lockedIcon;
+        detailName.text = card.isUnlocked ? card.cardName : "???";
+        detailDescription.text = card.isUnlocked ? card.description : card.unlockHint;
+        detailContainer.SetActive(true);
+    }
+
+    #endregion
 
     #region Card Loading Methods
 
@@ -210,5 +245,4 @@ public class CodexManager : MonoBehaviour
     private void ClearCards() => detailParent.Clear();
 
     #endregion
-
 }

@@ -3,6 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Card Data", menuName = "Scriptable Objects/New Card Data", order = 6)]
 public class CardSO : ScriptableObject
 {
+    public string cardID;
     public string cardName;
     public string description;
     public Sprite icon;

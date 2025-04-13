@@ -1,6 +1,6 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 [RequireComponent(typeof(Button))]
 public class CodexCardUI : MonoBehaviour
@@ -9,13 +9,14 @@ public class CodexCardUI : MonoBehaviour
     [SerializeField] private Image icon;
     [SerializeField] private TextMeshProUGUI cardName;
     [SerializeField] private Button cardButton;
+    [SerializeField] private Sprite lockedIcon;
 
     private CharacterDataSO characterData;
     private WeaponDataSO weaponData;
     private ObjectDataSO objectData;
     private EnemyDataSO enemyData;
     private CodexManager codexManager;
-
+    private CardSO cardData;
 
     public void InitializeCharacterCard(Sprite _icon, string _name, CharacterDataSO _data, CodexManager _manager)
     {
@@ -45,13 +46,24 @@ public class CodexCardUI : MonoBehaviour
         cardButton.onClick.AddListener(() => codexManager.OpenEnemyDetailView(enemyData));
     }
 
+    public void InitializeCardCodex(CardSO card, CodexManager manager)
+    {
+        codexManager = manager;
+        cardData = card;
+
+        icon.sprite = card.isUnlocked ? card.icon : lockedIcon;
+        cardName.text = card.isUnlocked ? card.cardName : "???";
+
+        cardButton.onClick.RemoveAllListeners();
+        cardButton.onClick.AddListener(() => codexManager.OpenCardDetail(card));
+    }
+
     private void AssignData(Sprite _icon, string _name, CodexManager _manager)
     {
         icon.sprite = _icon;
         cardName.text = _name;
         codexManager = _manager;
 
-        cardButton.onClick.RemoveAllListeners(); 
+        cardButton.onClick.RemoveAllListeners();
     }
-
 }

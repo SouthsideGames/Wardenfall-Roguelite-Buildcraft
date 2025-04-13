@@ -5,10 +5,12 @@ using UnityEngine;
 public class CardDraftManager : MonoBehaviour
 {
     [SerializeField] private List<CardSO> allCards; // Assigned in inspector or loaded at runtime
-    [SerializeField] private CharacterManager characterManager;
+    private CharacterManager characterManager;
 
     [Header("Draft Settings")]
     [SerializeField] private int cardsPerDraft = 3;
+
+    void Start() => characterManager = FindAnyObjectByType<CharacterManager>();
 
     public void TriggerCardDraft()
     {
@@ -21,13 +23,7 @@ public class CardDraftManager : MonoBehaviour
         CardDraftUI.Instance.ShowCardDraft(unlockedCards, OnCardSelected);
     }
 
-    private void OnCardSelected(CardSO selectedCard)
-    {
-        characterManager.CharacterCards.AddCard(selectedCard);
-    }
+    private void OnCardSelected(CardSO selectedCard) => characterManager.cards.AddCard(selectedCard);
 
-    public void SetCardPool(List<CardSO> newPool)
-    {
-        allCards = newPool;
-    }
+    public void SetCardPool(List<CardSO> newPool) => allCards = newPool;
 }
