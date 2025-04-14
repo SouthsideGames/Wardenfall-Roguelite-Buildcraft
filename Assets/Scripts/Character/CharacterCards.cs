@@ -1,9 +1,12 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public class CharacterCards : MonoBehaviour
 {
+    public static event Action OnDeckChanged;
+
     private const int maxDeckCost = 10;
 
     private List<CardSO> currentDeck = new List<CardSO>();
@@ -17,6 +20,7 @@ public class CharacterCards : MonoBehaviour
         {
             currentDeck.Add(newCard);
             currentTotalCost += newCard.cost;
+            OnDeckChanged?.Invoke();
         }
         else
         {
@@ -29,17 +33,19 @@ public class CharacterCards : MonoBehaviour
         currentTotalCost -= currentDeck[index].cost;
         currentTotalCost += newCard.cost;
         currentDeck[index] = newCard;
+        OnDeckChanged?.Invoke();
     }
 
     public void SkipCard()
     {
-        // Close the replacement UI and proceed with no change
         CardDraftUI.Instance.HideReplaceCardPrompt();
+        OnDeckChanged?.Invoke();
     }
 
     public void ClearDeck()
     {
         currentDeck.Clear();
         currentTotalCost = 0;
+        OnDeckChanged?.Invoke();
     }
-}
+} 
