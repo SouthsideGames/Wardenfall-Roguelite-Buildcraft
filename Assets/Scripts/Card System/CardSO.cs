@@ -12,13 +12,14 @@ public class CardSO : ScriptableObject
     [Header("TYPE & EFFECT")]
     public CardEffectType effectType;
     public CardRarity rarity;
-    public float effectValue;
+    public int effectValue;
     public float activeTime;
     public int level;
 
     [Header("DECK & UI")]
     public int cost;
     public float cooldown;
+    public GameObject effectPrefab;
 
     [Header("UNLOCKING")]
     public bool isUnlocked;

@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Trait Data", menuName = "Scriptable Objects/New Trait Data", order = 7)]

@@ -12,16 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01c04db6dc61045148b0ba561a26b5b8, type: 3}
   m_Name: Fireball
   m_EditorClassIdentifier: 
-  cardID: 001
+  cardID: '"fireball"'
   cardName: Fireball
-  description: Shoot Fireball
+  description: Launch a fireball that deals damage to the first enemy it hits.
   icon: {fileID: 21300000, guid: 76199b45dab4b48e1ae362f84e1becbd, type: 3}
   effectType: 0
   rarity: 0
-  effectValue: 10
-  activeTime: 10
-  level: 0
-  cost: 1
-  cooldown: 30
-  isUnlocked: 0
-  unlockHint: 
+  effectValue: 15
+  activeTime: 100
+  level: 1
+  cost: 2
+  cooldown: 6
+  effectPrefab: {fileID: 3593128091077254015, guid: 092999e67b8d9fc49b4016803bce0062, type: 3}
+  isUnlocked: 1
+  unlockHint: Defeat a boss with only ranged weapons to unlock this card.

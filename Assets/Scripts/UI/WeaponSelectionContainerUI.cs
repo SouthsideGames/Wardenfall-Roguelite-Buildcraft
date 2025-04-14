@@ -50,6 +50,8 @@ public class WeaponSelectionContainerUI : MonoBehaviour
         LeanTween.cancel(gameObject);
 
         LeanTween.scale(gameObject, Vector3.one * scaleSize, animationSpeed).setEase(LeanTweenType.easeOutElastic);
+
+        GameManager.Instance.StartGame();
     }
 
     public void Deselect()

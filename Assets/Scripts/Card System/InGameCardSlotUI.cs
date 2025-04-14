@@ -8,6 +8,7 @@ public class InGameCardSlotUI : MonoBehaviour
     [SerializeField] private Image background;
     [SerializeField] private Image icon;
     [SerializeField] private TextMeshProUGUI cooldownText;
+    [SerializeField] private Button clickButton;
 
     [Header("RARITY BACKGROUNDS")]
     [SerializeField] private Sprite commonBackground;
@@ -21,12 +22,29 @@ public class InGameCardSlotUI : MonoBehaviour
     private float cooldownRemaining = 0f;
     private bool isCoolingDown = false;
 
+      private CardSO assignedCard;
+
     public void Setup(CardSO card)
     {
+        assignedCard = card;
         icon.sprite = card.icon;
         SetRarityBackground(card.rarity);
-        cooldownText.text = ""; // Hide initially
+        cooldownText.text = "";
+        clickButton.onClick.RemoveAllListeners();
+        clickButton.onClick.AddListener(OnCardClicked);
     }
+
+    private void OnCardClicked()
+    {
+        if (isCoolingDown) return;
+
+        Debug.Log($"Activating card: {assignedCard.cardName}");
+
+        CharacterManager.Instance
+            .GetComponent<CardEffectManager>()
+            .ActivateCard(assignedCard, this);
+    }
+
 
     private void Update()
     {
@@ -39,6 +57,7 @@ public class InGameCardSlotUI : MonoBehaviour
             {
                 cooldownText.text = "";
                 isCoolingDown = false;
+                cooldownRemaining = 0f; // Ensure fully reset
             }
         }
     }

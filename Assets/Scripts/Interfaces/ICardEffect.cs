@@ -2,6 +2,9 @@ using UnityEngine;
 
 public interface ICardEffect
 {
-    void Activate(float duration);
-    void Disable();
+    void Activate(CharacterManager target, CardSO card);
+
+    void Deactivate();
+
+    void Tick(float deltaTime);
 }

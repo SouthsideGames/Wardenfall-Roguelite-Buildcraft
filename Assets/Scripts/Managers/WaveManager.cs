@@ -155,7 +155,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         return (Vector2)character.transform.position + offset;
     }
 
-    private void UpdateUIForWaveStart() => ui.UpdateWaveText($"Wave {currentWaveIndex + 1} / {wave.Length}");
+    private void UpdateUIForWaveStart() => ui.UpdateWaveText($"Trial {currentWaveIndex + 1} / {wave.Length}");
     
 
     private void DefeatAllEnemies()
