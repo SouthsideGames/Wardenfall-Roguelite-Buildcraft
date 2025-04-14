@@ -90,6 +90,7 @@ GameObject:
   - component: {fileID: 50782426408318528}
   - component: {fileID: 2595553627343592278}
   - component: {fileID: 1337509185942649315}
+  - component: {fileID: 1783435649498749178}
   m_Layer: 0
   m_Name: CardFrame05_Legendary
   m_TagString: Untagged
@@ -121,7 +122,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 974.6878, y: -14.09668}
-  m_SizeDelta: {x: 320, y: 431}
+  m_SizeDelta: {x: 500, y: 700}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &926446706591559299
 MonoBehaviour:
@@ -224,6 +225,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clipToPlay: {fileID: 8300000, guid: 1f48773f9d0f44dcf9e4009b8cec61c5, type: 3}
+--- !u!114 &1783435649498749178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2005115638499469088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d366f872ae5f4406b01f60449236844, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  icon: {fileID: 4910437202349369371}
+  nameText: {fileID: 4791775942110910104}
+  descriptionText: {fileID: 2893405233173681819}
+  costText: {fileID: 8898325210699035067}
+  selectButton: {fileID: 926446706591559299}
 --- !u!1 &2266748440396176259
 GameObject:
   m_ObjectHideFlags: 0
@@ -620,7 +638,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -8, y: -7.955}
+  m_AnchoredPosition: {x: -8, y: -7.9549866}
   m_SizeDelta: {x: 58, y: 60}
   m_Pivot: {x: 1, y: 1}
 --- !u!222 &5474955226714167844

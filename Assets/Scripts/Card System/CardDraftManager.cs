@@ -67,6 +67,6 @@ public class CardDraftManager : MonoBehaviour, IGameStateListener
     private void OnCardSelected(CardSO card)
     {
         CharacterManager.Instance.cards.AddCard(card);
-        GameManager.Instance.StartTraitSelection();
+        GameManager.Instance.StartShop();
     }
 } 

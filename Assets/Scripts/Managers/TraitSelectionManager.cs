@@ -47,6 +47,8 @@ public class TraitSelectionManager : MonoBehaviour, IGameStateListener
             card.Configure(selected.TraitID, tier.TierName, tier.Description, () => OnTraitSelected(selected.TraitID));
 
         }
+
+        
     }
     
     public void CloseTraitSelection() => panel.SetActive(false);
@@ -62,6 +64,6 @@ public class TraitSelectionManager : MonoBehaviour, IGameStateListener
     private void OnTraitSelected(string traitID)
     {
         TraitManager.Instance.AddTrait(traitID);
-        GameManager.Instance.StartShop(); // Proceed to shop
+        GameManager.Instance.StartCardDraft();
     }
 }
