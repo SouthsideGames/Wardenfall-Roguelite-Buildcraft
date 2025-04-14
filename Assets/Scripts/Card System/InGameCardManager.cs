@@ -25,7 +25,7 @@ public class InGameCardUIManager : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        var deck = characterManager.CharacterCards.Deck;
+        var deck = characterManager.cards.Deck;
         foreach (var card in deck)
         {
             var slot = Instantiate(cardSlotPrefab, cardSlotContainer);

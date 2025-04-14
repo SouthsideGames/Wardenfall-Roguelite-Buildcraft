@@ -11,9 +11,12 @@ public class InGameCardSlotUI : MonoBehaviour
 
     [Header("RARITY BACKGROUNDS")]
     [SerializeField] private Sprite commonBackground;
+    [SerializeField] private Sprite uncommonBackground;
     [SerializeField] private Sprite rareBackground;
     [SerializeField] private Sprite epicBackground;
     [SerializeField] private Sprite legendaryBackground;
+    [SerializeField] private Sprite mythicBackground;
+    [SerializeField] private Sprite exaltedBackground;
 
     private float cooldownRemaining = 0f;
     private bool isCoolingDown = false;
@@ -54,6 +57,9 @@ public class InGameCardSlotUI : MonoBehaviour
             case CardRarity.Common:
                 background.sprite = commonBackground;
                 break;
+            case CardRarity.Uncommon:
+                background.sprite = uncommonBackground;
+                break;
             case CardRarity.Rare:
                 background.sprite = rareBackground;
                 break;
@@ -62,6 +68,12 @@ public class InGameCardSlotUI : MonoBehaviour
                 break;
             case CardRarity.Legendary:
                 background.sprite = legendaryBackground;
+                break;
+            case CardRarity.Mythic:
+                background.sprite = mythicBackground;
+                break;
+            case CardRarity.Exalted:
+                background.sprite = exaltedBackground;
                 break;
             default:
                 background.sprite = commonBackground;

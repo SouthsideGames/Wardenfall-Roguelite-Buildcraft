@@ -90,6 +90,7 @@ GameObject:
   - component: {fileID: 3607545183628587729}
   - component: {fileID: 3088764752590423028}
   - component: {fileID: 1187658502823762073}
+  - component: {fileID: -5635834530204014563}
   m_Layer: 0
   m_Name: In Game Card UI
   m_TagString: Untagged
@@ -237,6 +238,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clipToPlay: {fileID: 0}
+--- !u!114 &-5635834530204014563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4248547847268086644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a49ade651d9cb4ce7bb4be1f9ceb49fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  background: {fileID: 264444903427268254}
+  icon: {fileID: 6286884857458409511}
+  cooldownText: {fileID: 8835706122995314258}
+  commonBackground: {fileID: 21300000, guid: 8a52ccf8a9edf48c09826a43e605642e, type: 3}
+  uncommonBackground: {fileID: 21300000, guid: f74bbba66d0744084adb24b46b885722, type: 3}
+  rareBackground: {fileID: 21300000, guid: 00b246f18d3354d5baad68986295716b, type: 3}
+  epicBackground: {fileID: 21300000, guid: 17dd43c12b6cc4353bb763f34385c75a, type: 3}
+  legendaryBackground: {fileID: 21300000, guid: 40d10cf134e7d4b469ffd4f52cdcf21a, type: 3}
+  mythicBackground: {fileID: 21300000, guid: d849eb66832ae43878a8bad5138b764c, type: 3}
+  exaltedBackground: {fileID: 21300000, guid: a08bb88dc6ecd4f3ca3aa827e959e54f, type: 3}
 --- !u!1 &4344625720583850109
 GameObject:
   m_ObjectHideFlags: 0

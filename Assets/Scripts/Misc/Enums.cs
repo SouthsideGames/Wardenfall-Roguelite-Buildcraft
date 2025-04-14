@@ -79,9 +79,12 @@ public enum CharacterCardRarityType
 public enum CardRarity
 {
     Common,
+    Uncommon,
     Rare,
     Epic,
-    Legendary
+    Legendary,
+    Mythic,
+    Exalted
 }
 
 public enum CardEffectType
