@@ -91,7 +91,6 @@ public abstract class Enemy : MonoBehaviour
     {
         if (!attacksEnabled) return;
 
-        Debug.Log($"{gameObject.name} is attacking the player");
         attackTimer = 0;
         isCriticalHit = false;
 
