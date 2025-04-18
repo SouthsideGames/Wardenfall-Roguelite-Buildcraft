@@ -12,20 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09e7488b216125e4b932a11990bb6230, type: 3}
   m_Name: Berserker
   m_EditorClassIdentifier: 
-  TraitID: 002
+  TraitID: T-003
   Tiers:
-  - TierName: Berserker
+  - Icon: {fileID: 0}
+    TierName: Berserker
     Description: Moves 20% faster. -5% max HP.
     SpeedModifier: 0.2
     InvincibilityDuration: 0
-    SpecialEffectID: '"BerserkerT1"'
-  - TierName: Unchained
+    SpecialEffectID: BerserkerT1
+  - Icon: {fileID: 0}
+    TierName: Unchained
     Description: Moves 35% faster. -10% max HP.
     SpeedModifier: 0.35
     InvincibilityDuration: 0
-    SpecialEffectID: '"BerserkerT2"'
-  - TierName: Bloodlust
+    SpecialEffectID: BerserkerT2
+  - Icon: {fileID: 0}
+    TierName: Bloodlust
     Description: Moves 50% faster. -20% max HP.
     SpeedModifier: 0.5
     InvincibilityDuration: 0
-    SpecialEffectID: '"BerserkerT3"'
+    SpecialEffectID: BerserkerT3

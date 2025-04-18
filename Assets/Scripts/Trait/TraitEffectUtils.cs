@@ -38,15 +38,26 @@ public static class TraitEffectUtils
                 enemy.contactDamage = Mathf.FloorToInt(enemy.contactDamage * 0.75f);
                 ItemManager.Instance.ModifyDropRates(0.90f); // -10%
                 break;
-
             case "StingyT2":
                 enemy.contactDamage = Mathf.FloorToInt(enemy.contactDamage * 0.65f);
                 ItemManager.Instance.ModifyDropRates(0.80f); // -20%
                 break;
-
             case "StingyT3":
                 enemy.contactDamage = Mathf.FloorToInt(enemy.contactDamage * 0.50f);
                 ItemManager.Instance.ModifyDropRates(0.70f); // -30%
+                break;
+            case "BioChargedT1":
+                ApplyBioCharged(enemy, 0.90f, 0.05f);
+                break;
+            case "BioChargedT2":
+                ApplyBioCharged(enemy, 0.85f, 0.075f);
+                break;
+            case "BioChargedT3":
+                ApplyBioCharged(enemy, 0.75f, 0.10f);
+                break;
+            case "HauntingT1":
+            case "HauntingT2":
+            case "HauntingT3":
                 break;
             
         }
@@ -95,6 +106,29 @@ public static class TraitEffectUtils
     {
         enemy.playerDetectionRadius *= detectionMultiplier;
 
-        enemy.ModifyCritChance(critChanceMultiplier);
+        enemy.modifierHandler.ModifyCritChance(critChanceMultiplier);
+    }
+
+    private static void ApplyBioCharged(Enemy enemy, float healthPercent, float damageGainPerTick)
+    {
+        // Apply reduced health
+        enemy.maxHealth = Mathf.FloorToInt(enemy.maxHealth * healthPercent);
+        enemy.health = Mathf.Min(enemy.health, enemy.maxHealth);
+
+        // Start damage scaling
+        CoroutineRunner.Instance.StartCoroutine(BioChargeOverTime(enemy, damageGainPerTick));
+    }
+
+    private static IEnumerator BioChargeOverTime(Enemy enemy, float gainPerTick)
+    {
+        float interval = 5f;
+        EnemyModifierHandler handler = enemy.GetComponent<EnemyModifierHandler>();
+
+        while (enemy != null && handler != null)
+        {
+            yield return new WaitForSeconds(interval);
+            handler.ModifyDamage(gainPerTick);
+        }
     }
 }
+

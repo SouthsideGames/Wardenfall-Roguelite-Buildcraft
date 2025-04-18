@@ -33821,11 +33821,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1087360926}
-  - component: {fileID: 1087360927}
   - component: {fileID: 1087360928}
+  - component: {fileID: 1087360927}
   - component: {fileID: 1087360929}
   m_Layer: 0
-  m_Name: TraitSelectionManager
+  m_Name: TraitManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33861,12 +33861,6 @@ MonoBehaviour:
   panel: {fileID: 1516544246}
   traitCardContainer: {fileID: 1614594149}
   traitOptionPrefab: {fileID: 7070190295444853159, guid: 6cb2968b5a149f746888da8d1410ef41, type: 3}
-  allTraits:
-  - {fileID: 11400000, guid: 2fe51a821a7252348936761dc54b856f, type: 2}
-  - {fileID: 11400000, guid: 75c04da180f71ef42a658317b8a26aa2, type: 2}
-  - {fileID: 11400000, guid: f20c2fc3bb8968947ba98498d814ccaf, type: 2}
-  - {fileID: 11400000, guid: 1481a7b916b2dd44c8361f9f8b2e4b0a, type: 2}
-  - {fileID: 11400000, guid: 617130a93c17f9a478bf74ee9ef71c53, type: 2}
   optionsToShow: 3
 --- !u!114 &1087360928
 MonoBehaviour:
@@ -33880,12 +33874,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 207c9b42c84581240968e252ba85d1a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AllTraits:
-  - {fileID: 11400000, guid: 2fe51a821a7252348936761dc54b856f, type: 2}
-  - {fileID: 11400000, guid: 75c04da180f71ef42a658317b8a26aa2, type: 2}
+  allTraits:
   - {fileID: 11400000, guid: f20c2fc3bb8968947ba98498d814ccaf, type: 2}
-  - {fileID: 11400000, guid: 1481a7b916b2dd44c8361f9f8b2e4b0a, type: 2}
-  - {fileID: 11400000, guid: 617130a93c17f9a478bf74ee9ef71c53, type: 2}
+  - {fileID: 11400000, guid: f46f08f935a71f54b863dc28ed15179c, type: 2}
+  - {fileID: 11400000, guid: 89667e761d85aae46add4e47ef1fb60a, type: 2}
 --- !u!114 &1087360929
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -55812,7 +55804,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _col: {fileID: 2122840538}
-  _sr: {fileID: 1055831417}
 --- !u!114 &2122840540
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -56067,6 +56058,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3736a867984bce448e884e1cdd86735, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  characterManager: {fileID: 2122840539}
 --- !u!1 &2129969170
 GameObject:
   m_ObjectHideFlags: 0

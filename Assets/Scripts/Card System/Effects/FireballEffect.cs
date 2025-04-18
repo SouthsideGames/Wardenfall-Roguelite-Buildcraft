@@ -30,7 +30,7 @@ public class FireballEffect : MonoBehaviour, ICardEffect
         FireballProjectile projectile = fireball.GetComponent<FireballProjectile>();
         if (projectile != null)
         {
-            projectile.Initialize((int)card.effectValue, card.activeTime);
+            projectile.Initialize((int)card.effectValue);
         }
 
         // Auto-destroy effect wrapper

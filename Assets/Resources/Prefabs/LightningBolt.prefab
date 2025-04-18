@@ -9801,7 +9801,7 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 0.7311321, g: 0.9361015, b: 1, a: 1}
-  m_Intensity: 2.0694537
+  m_Intensity: 0
   m_Range: 8
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -9892,7 +9892,6 @@ GameObject:
   - component: {fileID: 6747932735989160330}
   - component: {fileID: 8808191261232143605}
   - component: {fileID: 4187557045878136375}
-  - component: {fileID: 3385122198220007964}
   m_Layer: 0
   m_Name: LightningBolt
   m_TagString: Untagged
@@ -15040,20 +15039,3 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
---- !u!114 &3385122198220007964
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9027514048236820045}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96769076fa112ef468b0f00e5df0b1d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxJumps: 5
-  jumpDelay: 0.1
-  enemyMask:
-    serializedVersion: 2
-    m_Bits: 64

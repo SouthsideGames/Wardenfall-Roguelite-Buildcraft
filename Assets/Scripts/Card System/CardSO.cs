@@ -20,6 +20,7 @@ public class CardSO : ScriptableObject
     public int cost;
     public float cooldown;
     public GameObject effectPrefab;
+    public bool cooldownStartsOnUse = false;
 
     [Header("UNLOCKING")]
     public bool isUnlocked;

@@ -12,20 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09e7488b216125e4b932a11990bb6230, type: 3}
   m_Name: Gigantism
   m_EditorClassIdentifier: 
-  TraitID: 003
+  TraitID: T-004
   Tiers:
-  - TierName: Juggernauts
+  - Icon: {fileID: 0}
+    TierName: Juggernauts
     Description: 25% chance enemies are larger. Slightly slower.
     SpeedModifier: -0.05
     InvincibilityDuration: 0
-    SpecialEffectID: '"Gigantism"'
-  - TierName: Mutated
+    SpecialEffectID: Gigantism
+  - Icon: {fileID: 0}
+    TierName: Mutated
     Description: 50% chance enemies are larger. Moves 10% slower.
     SpeedModifier: -0.1
     InvincibilityDuration: 0
-    SpecialEffectID: '"Gigantism"'
-  - TierName: Titans
+    SpecialEffectID: Gigantism
+  - Icon: {fileID: 0}
+    TierName: Titans
     Description: All enemies are larger. Moves 15% slower.
     SpeedModifier: -0.15
     InvincibilityDuration: 0
-    SpecialEffectID: '"Gigantism"'
+    SpecialEffectID: Gigantism

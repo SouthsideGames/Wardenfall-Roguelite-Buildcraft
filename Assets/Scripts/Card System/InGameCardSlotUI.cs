@@ -21,8 +21,7 @@ public class InGameCardSlotUI : MonoBehaviour
 
     private float cooldownRemaining = 0f;
     private bool isCoolingDown = false;
-
-      private CardSO assignedCard;
+    private CardSO assignedCard;
 
     public void Setup(CardSO card)
     {
@@ -30,6 +29,9 @@ public class InGameCardSlotUI : MonoBehaviour
         icon.sprite = card.icon;
         SetRarityBackground(card.rarity);
         cooldownText.text = "";
+        isCoolingDown = false;
+        clickButton.interactable = true;
+
         clickButton.onClick.RemoveAllListeners();
         clickButton.onClick.AddListener(OnCardClicked);
     }
@@ -45,19 +47,21 @@ public class InGameCardSlotUI : MonoBehaviour
             .ActivateCard(assignedCard, this);
     }
 
-
     private void Update()
     {
         if (isCoolingDown)
         {
             cooldownRemaining -= Time.deltaTime;
             if (cooldownRemaining > 0f)
+            {
                 cooldownText.text = Mathf.CeilToInt(cooldownRemaining).ToString();
+            }
             else
             {
                 cooldownText.text = "";
                 isCoolingDown = false;
-                cooldownRemaining = 0f; // Ensure fully reset
+                cooldownRemaining = 0f;
+                clickButton.interactable = true; // ✅ Re-enable button after cooldown
             }
         }
     }
@@ -66,6 +70,7 @@ public class InGameCardSlotUI : MonoBehaviour
     {
         cooldownRemaining = duration;
         isCoolingDown = true;
+        clickButton.interactable = false; // ✅ Disable button during cooldown
         cooldownText.text = Mathf.CeilToInt(duration).ToString();
     }
 

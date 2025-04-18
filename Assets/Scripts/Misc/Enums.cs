@@ -93,6 +93,9 @@ public enum CardEffectType
     GuardianSpirit,
     DeathRay,
     ThunderStrike,
+    PoisonCloud,
+    PhaseShift,
+    VoltageSpike
     // Add more as needed
 }
 
@@ -104,14 +107,12 @@ public enum StatusEffectType
     Stun,
     Freeze,
     Poison,
-    Blind,
     Weaken,
     Slow,
     Confuse,
     Paralyze,
     Fear,
     ArmorBreak,
-    Silence
 }
 
 public enum StackBehavior

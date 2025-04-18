@@ -53,11 +53,8 @@ public class EnemyStatus : MonoBehaviour
                 slowFactor = movement.moveSpeed * (1 - effect.Value);
                 movement.moveSpeed = slowFactor;
                 break;
-            case StatusEffectType.Blind:
-                enemy.ModifyAccuracy(-effect.Value);
-                break;
             case StatusEffectType.Weaken:
-                enemy.ModifyDamage(-effect.Value);
+                enemy.modifierHandler.ModifyDamage(-effect.Value);
                 break;
             case StatusEffectType.Confuse:
                 enemy.SetTargetToOtherEnemies();
@@ -68,9 +65,6 @@ public class EnemyStatus : MonoBehaviour
                 break;
             case StatusEffectType.Fear:
                 movement.SetRunAwayFromPlayer();
-                break;
-            case StatusEffectType.Silence:
-                enemy.DisableAbilities();
                 break;
         }
 
@@ -131,11 +125,8 @@ public class EnemyStatus : MonoBehaviour
             case StatusEffectType.Slow:
                 movement.moveSpeed = originalMoveSpeed;
                 break;
-            case StatusEffectType.Blind:
-                enemy.ModifyAccuracy(+active.Effect.Value);
-                break;
             case StatusEffectType.Weaken:
-                enemy.ModifyDamage(+active.Effect.Value);
+                enemy.modifierHandler?.ModifyDamage(+active.Effect.Value);
                 break;
             case StatusEffectType.Confuse:
                 enemy.ResetTarget();
@@ -146,9 +137,6 @@ public class EnemyStatus : MonoBehaviour
                 break;
             case StatusEffectType.Fear:
                 movement.ResetMovement();
-                break;
-            case StatusEffectType.Silence:
-                enemy.EnableAbilities();
                 break;
         }
 

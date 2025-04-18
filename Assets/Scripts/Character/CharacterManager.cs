@@ -22,7 +22,7 @@ public class CharacterManager : MonoBehaviour
     public CharacterController controller { get; private set; }
     public CharacterCards cards {get; private set; }
     [SerializeField] private CircleCollider2D _col;
-    [SerializeField] private SpriteRenderer _sr;
+    public SpriteRenderer _sr {get; private set; }
     
     
     private void Awake()
@@ -39,6 +39,7 @@ public class CharacterManager : MonoBehaviour
         stats = GetComponent<CharacterStats>();
         controller = GetComponent<CharacterController>(); 
         cards = GetComponent<CharacterCards>();
+        _sr = GetComponentInChildren<SpriteRenderer>();
 
         CharacterSelectionManager.OnCharacterSelected += CharacterSelectionCallback;
     }

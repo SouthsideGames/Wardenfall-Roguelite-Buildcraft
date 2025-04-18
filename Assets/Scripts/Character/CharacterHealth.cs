@@ -28,6 +28,7 @@ public class CharacterHealth : MonoBehaviour, IStats
     private float healthRecoveryTimer;
     private float healthRecoveryDuration;
     private int damageAbsorption = 0;
+    private bool isInvincible = false;
 
     private void Awake() => Enemy.OnDamageTaken += EnemyDamageCallback;
 
@@ -43,12 +44,12 @@ public class CharacterHealth : MonoBehaviour, IStats
     public void TakeDamage(int _damage)
     {
 
-        if(ShouldDodge())
-        {
-            OnDodge?.Invoke(transform.position);  
+        if (isInvincible)
             return;
-        }
-          
+
+        if (ShouldDodge())
+            return;
+
         float absorbedDamage = _damage * (damageAbsorption / 100f);
         float actualDamage = _damage - absorbedDamage;
 
@@ -56,7 +57,7 @@ public class CharacterHealth : MonoBehaviour, IStats
 
         UpdateHealthUI();
 
-        if(health <= 0 )
+        if (health <= 0 )
             Die();
        
 
@@ -132,6 +133,17 @@ public class CharacterHealth : MonoBehaviour, IStats
     }
 
     public void OnCharacterDeathMission() => MissionManager.Increment(MissionType.waveBasedPlayed, 1);
+
+    public void SetInvincible(bool state) 
+    {
+        isInvincible = state;
+
+        if (state)
+            CharacterManager.Instance._sr.color = new Color(1, 1, 1, .5f);
+        else
+            CharacterManager.Instance._sr.color = new Color(1, 1, 1, 1f);
+    }
+    
 
 
 }

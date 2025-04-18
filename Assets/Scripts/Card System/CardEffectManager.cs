@@ -4,18 +4,8 @@ using UnityEngine;
 
 public class CardEffectManager : MonoBehaviour
 {
-    private CharacterManager characterManager;
+    [SerializeField] private CharacterManager characterManager;
     private List<GameObject> activeEffects = new();
-
-    private void Awake()
-    {
-        characterManager = GetComponent<CharacterManager>();
-        if (characterManager == null)
-        {
-            Debug.LogError("CharacterManager component not found on this GameObject.");
-            enabled = false; // Disable this script if CharacterManager is not found
-        }
-    }
 
     public void ActivateCard(CardSO card, InGameCardSlotUI slotUI)
     {
@@ -36,14 +26,17 @@ public class CardEffectManager : MonoBehaviour
         }
 
         effect.Activate(characterManager, card);
+        activeEffects.Add(effectObj);
 
-        // Start cooldown after activeTime delay
-        StartCoroutine(DelayedCooldown(card, slotUI));
+        if (card.cooldownStartsOnUse)
+            slotUI.TriggerCooldown(card.cooldown);
+        else
+            StartCoroutine(DelayedCooldown(card, slotUI));
     }
 
     private IEnumerator DelayedCooldown(CardSO card, InGameCardSlotUI slotUI)
     {
-        yield return new WaitForSeconds(card.cooldown);
+        yield return new WaitForSeconds(card.activeTime);
         slotUI.TriggerCooldown(card.cooldown);
     }
 

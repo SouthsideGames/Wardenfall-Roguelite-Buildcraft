@@ -12,21 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09e7488b216125e4b932a11990bb6230, type: 3}
   m_Name: Weak But Stingy
   m_EditorClassIdentifier: 
-  TraitID: 005
+  TraitID: T-005
   Tiers:
-  - TierName: Feeble
+  - Icon: {fileID: 0}
+    TierName: Feeble
     Description: Enemies deal -25% contact damage. 10% less gem/cash/chest spawn
       rate.
     SpeedModifier: 0
     InvincibilityDuration: 0
-    SpecialEffectID: '"StingyT1"'
-  - TierName: Frail
+    SpecialEffectID: StingyT1
+  - Icon: {fileID: 0}
+    TierName: Frail
     Description: -35% contact damage. 20% less rewards
     SpeedModifier: 0
     InvincibilityDuration: 0
-    SpecialEffectID: '"StingyT2"'
-  - TierName: Hollow
+    SpecialEffectID: StingyT2
+  - Icon: {fileID: 0}
+    TierName: Hollow
     Description: -50% contact damage. 30% less rewards
     SpeedModifier: 0
     InvincibilityDuration: 0
-    SpecialEffectID: '"StingyT3"'
+    SpecialEffectID: StingyT3

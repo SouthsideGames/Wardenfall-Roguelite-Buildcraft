@@ -12,20 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09e7488b216125e4b932a11990bb6230, type: 3}
   m_Name: ArmoredTrait
   m_EditorClassIdentifier: 
-  TraitID: 001
+  TraitID: T-001
   Tiers:
-  - TierName: Armored
+  - Icon: {fileID: 0}
+    TierName: Armored
     Description: Becomes invincible for 1 second every 5 seconds. Moves 10% slower.
     SpeedModifier: -0.1
     InvincibilityDuration: 1
-    SpecialEffectID: '"ArmoredShield"'
-  - TierName: Fortified
+    SpecialEffectID: ArmoredShield
+  - Icon: {fileID: 0}
+    TierName: Fortified
     Description: Becomes invincible for 2 seconds every 5 seconds. Moves 15% slower.
     SpeedModifier: -0.15
     InvincibilityDuration: 2
-    SpecialEffectID: '"ArmoredShield"'
-  - TierName: Juggernaut
+    SpecialEffectID: ArmoredShield
+  - Icon: {fileID: 0}
+    TierName: Juggernaut
     Description: Becomes invincible for 3 seconds every 5 seconds. Moves 20% slower.
     SpeedModifier: -0.2
     InvincibilityDuration: 3
-    SpecialEffectID: '"ArmoredShield"'
+    SpecialEffectID: ArmoredShield

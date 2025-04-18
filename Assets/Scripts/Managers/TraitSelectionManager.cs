@@ -12,7 +12,6 @@ public class TraitSelectionManager : MonoBehaviour, IGameStateListener
     [SerializeField] private TraitOptionUI traitOptionPrefab;
 
     [Header("Trait Settings")]
-    [SerializeField] private List<TraitDataSO> allTraits;
     [SerializeField] private int optionsToShow = 3;
 
     private void Awake()
@@ -31,7 +30,7 @@ public class TraitSelectionManager : MonoBehaviour, IGameStateListener
         foreach (Transform child in traitCardContainer)
             Destroy(child.gameObject);
 
-        List<TraitDataSO> available = new List<TraitDataSO>(allTraits);
+        List<TraitDataSO> available = new List<TraitDataSO>(TraitManager.Instance.AllTraits);
         int displayCount = Mathf.Min(optionsToShow, available.Count);
 
         for (int i = 0; i < displayCount; i++)

@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 7857477284334723324}
   - component: {fileID: 7761849266780416455}
   - component: {fileID: 991266448857027025}
-  - component: {fileID: 4733321167558989331}
   m_Layer: 0
   m_Name: Energy Orb
   m_TagString: Untagged
@@ -98,25 +97,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &4733321167558989331
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2457369695736866841}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb3ca07a68364ea41966a2b594ccb075, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 5
-  damage: 50
-  explosionRadius: 2
-  explosionEffect: {fileID: 0}
-  enemyMask:
-    serializedVersion: 2
-    m_Bits: 64
 --- !u!1 &2903547423250991230
 GameObject:
   m_ObjectHideFlags: 0

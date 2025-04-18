@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09e7488b216125e4b932a11990bb6230, type: 3}
+  m_Name: Bio-Charged
+  m_EditorClassIdentifier: 
+  TraitID: T-006
+  Tiers:
+  - Icon: {fileID: 0}
+    TierName: Bio-Charged
+    Description: Enemies gain +5% damage every 5 seconds. Start with 10% less HP.
+    SpeedModifier: 0
+    InvincibilityDuration: 0
+    SpecialEffectID: BioChargedT1
+  - Icon: {fileID: 0}
+    TierName: Amplified
+    Description: Enemies gain +7.5% damage every 5 seconds. Start with 15% less HP.
+    SpeedModifier: 0
+    InvincibilityDuration: 0
+    SpecialEffectID: BioChargedT2
+  - Icon: {fileID: 0}
+    TierName: Surging
+    Description: Enemies gain +10% damage every 5 seconds. Start with 25% less HP.
+    SpeedModifier: 0
+    InvincibilityDuration: 0
+    SpecialEffectID: BioChargedT3

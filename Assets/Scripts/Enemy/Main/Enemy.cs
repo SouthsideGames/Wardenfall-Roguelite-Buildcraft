@@ -5,6 +5,7 @@ using SouthsideGames.DailyMissions;
 using UnityEngine;
 
 [RequireComponent(typeof(EnemyStatus))]
+[RequireComponent(typeof(EnemyModifierHandler))]
 public abstract class Enemy : MonoBehaviour
 {
     [Header("ACTIONS:")]
@@ -37,15 +38,8 @@ public abstract class Enemy : MonoBehaviour
 
     [Header("SPAWN VALUES:")]
     [SerializeField] private float spawnSize = 1.2f;
-    [SerializeField] private float spawnTime = .3f;
+    [SerializeField] private float spawnTime = 0.3f;
     [SerializeField] private int numberOfLoops = 4;
-
-    [Header("MODIFIER:")]
-    [SerializeField] private bool canPerformCriticalHit;
-    private float accuracyModifier = 1f;
-    private float damageModifier = 1f;
-    private float critChanceModifier = 1f;
-
 
     [Header("EFFECTS:")]
     [SerializeField] protected ParticleSystem deathParticles;
@@ -54,6 +48,7 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] private bool showGizmos;
 
     private EnemyStatus status;
+    public EnemyModifierHandler modifierHandler { get; private set; }   
     protected Transform playerTransform;
 
     protected virtual void Start()
@@ -63,6 +58,7 @@ public abstract class Enemy : MonoBehaviour
         movement = GetComponent<EnemyMovement>();
         character = FindFirstObjectByType<CharacterManager>();
         status = GetComponent<EnemyStatus>();
+        modifierHandler = GetComponent<EnemyModifierHandler>();
 
         if (character == null)
         {
@@ -70,28 +66,22 @@ public abstract class Enemy : MonoBehaviour
             Destroy(gameObject);
         }
         else
-            playerTransform = character.transform; 
+            playerTransform = character.transform;
 
         Spawn();
-
     }
 
     protected virtual void Update()
     {
         if (!attacksEnabled) return;
-
         ChangeDirections();
-
     }
 
     protected virtual void ChangeDirections()
     {
         if (playerTransform != null)
         {
-            if (playerTransform.position.x > transform.position.x)
-                _spriteRenderer.flipX = true;
-            else
-                _spriteRenderer.flipX = false;
+            _spriteRenderer.flipX = playerTransform.position.x > transform.position.x;
         }
     }
 
@@ -101,32 +91,29 @@ public abstract class Enemy : MonoBehaviour
     {
         if (!attacksEnabled) return;
 
-        isCriticalHit = false;
+        Debug.Log($"{gameObject.name} is attacking the player");
         attackTimer = 0;
+        isCriticalHit = false;
 
-        if(canPerformCriticalHit)
+        if (modifierHandler.CanCrit())
         {
-            float enemyCriticalHitPercent = (UnityEngine.Random.Range(0, 5) / 100f) * critChanceModifier;
-
-            if (enemyCriticalHitPercent >= CharacterStats.Instance.GetStatValue(Stat.CritResist))
+            float enemyCritChance = (UnityEngine.Random.Range(0, 5) / 100f) * modifierHandler.GetCritChanceModifier();
+            if (enemyCritChance >= CharacterStats.Instance.GetStatValue(Stat.CritResist))
             {
                 isCriticalHit = true;
-
-                if (isCriticalHit)
-                    character.TakeDamage(contactDamage * 2);
-           
+                int critDamage = Mathf.FloorToInt(contactDamage * 2 * modifierHandler.GetDamageMultiplier());
+                character.TakeDamage(critDamage);
+                return;
             }
-            else
-                character.TakeDamage(contactDamage);
         }
-        else
-            character.TakeDamage(contactDamage);
+
+        int scaledDamage = Mathf.FloorToInt(contactDamage * modifierHandler.GetDamageMultiplier());
+        character.TakeDamage(scaledDamage);
     }
 
     public virtual void TakeDamage(int _damage, bool _isCriticalHit)
     {
-        if (isInvincible || this == null || gameObject == null)
-            return;
+        if (isInvincible || this == null || gameObject == null) return;
 
         int realDamage = Mathf.Min(_damage, health);
         health -= realDamage;
@@ -139,17 +126,32 @@ public abstract class Enemy : MonoBehaviour
 
     public void ApplyLifeDrain(int damage, float duration, float interval)
     {
-        StatusEffect drainEffect = new StatusEffect(StatusEffectType.Drain, duration, damage, interval);
+        StatusEffect drainEffect = new(StatusEffectType.Drain, duration, damage, interval);
         status.ApplyEffect(drainEffect);
     }
 
     protected virtual void Die()
     {
-        if (this == null || gameObject == null)
-            return;
+        if (this == null || gameObject == null) return;
 
         OnDeath?.Invoke(transform.position);
         OnEnemyKilled?.Invoke();
+
+        if (TraitManager.Instance.HasTrait("T-007"))
+        {
+            GameObject ghostPrefab = Resources.Load<GameObject>("Prefabs/Enemy/Enemy Ghost");
+            if (ghostPrefab != null)
+            {
+                GameObject ghost = Instantiate(ghostPrefab, transform.position, Quaternion.identity);
+                GhostEnemy ghostComponent = ghost.GetComponent<GhostEnemy>();
+
+                int stacks = TraitManager.Instance.GetStackCount("T-007");
+
+                if (ghostComponent != null)
+                    ghostComponent.InitializeFrom(_spriteRenderer, stacks);
+            }
+        }
+
 
         MissionIncrement();
         DieAfterWave();
@@ -195,9 +197,7 @@ public abstract class Enemy : MonoBehaviour
         hasSpawned = true;
         _collider.enabled = true;
 
-        if(movement != null)
-            movement.StorePlayer(character);
-
+        movement?.StorePlayer(character);
         OnSpawnCompleted?.Invoke();
 
         StartCoroutine(ApplyTraitsNextFrame());
@@ -205,44 +205,29 @@ public abstract class Enemy : MonoBehaviour
 
     #endregion
 
+    #region TARGET & CONTROL
 
-    #region MODIFICATION FUNCTIONS
-    public void ModifyAccuracy(float modifier) => accuracyModifier = modifier;
-    public void ModifyDamage(float modifier) => damageModifier = modifier;
-    public void ModifyCritChance(float modifier) => critChanceModifier = modifier;
     public void DisableAttacks() => attacksEnabled = false;
     public void EnableAttacks() => attacksEnabled = true;
 
-    public void DisableAbilities()
-    {
-        // Logic to disable enemy-specific abilities
-        Debug.Log("Enemy abilities disabled.");
-    }
-
-    public void EnableAbilities()
-    {
-        // Logic to re-enable enemy-specific abilities
-        Debug.Log("Enemy abilities enabled.");
-    }
+    public void DisableAbilities() => Debug.Log("Enemy abilities disabled.");
+    public void EnableAbilities() => Debug.Log("Enemy abilities enabled.");
 
     public void SetTargetToOtherEnemies()
     {
-       playerTransform = null;
+        playerTransform = null;
 
         Enemy[] allEnemies = FindObjectsByType<Enemy>(FindObjectsSortMode.None);
-        List<Enemy> validTargets = new List<Enemy>();
+        List<Enemy> validTargets = new();
 
         foreach (var enemy in allEnemies)
-        {
             if (enemy != this && enemy != null)
                 validTargets.Add(enemy);
-        }
 
         if (validTargets.Count > 0)
         {
             int randomIndex = UnityEngine.Random.Range(0, validTargets.Count);
             Transform newTarget = validTargets[randomIndex].transform;
-
             movement?.SetTarget(newTarget);
         }
     }
@@ -256,23 +241,19 @@ public abstract class Enemy : MonoBehaviour
         }
     }
 
-    
+    #endregion
+
     private IEnumerator ApplyTraitsNextFrame()
     {
-        yield return null; 
-        TraitApplier.ApplyTraitsTo(this);
+        yield return null;
+        modifierHandler?.ApplyTraits();
     }
-
-    #endregion
 
     private void OnDrawGizmos()
     {
-        if (!showGizmos)
-            return;
-
+        if (!showGizmos) return;
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, playerDetectionRadius);
-        Gizmos.color = Color.yellow; 
     }
 
     public Vector2 GetCenter() => (Vector2)transform.position + _collider.offset;
