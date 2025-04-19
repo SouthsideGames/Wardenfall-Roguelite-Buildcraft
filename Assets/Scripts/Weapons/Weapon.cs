@@ -4,7 +4,7 @@ using SouthsideGames.DailyMissions;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public abstract class Weapon : MonoBehaviour, IStats
+public abstract class Weapon : MonoBehaviour, IStats, IWeaponSystem
 {
     [field: SerializeField] public WeaponDataSO WeaponData { get; private set; }
 
@@ -137,4 +137,19 @@ public abstract class Weapon : MonoBehaviour, IStats
     public int GetWeaponRecyclePrice() => WeaponStatCalculator.GetRecyclePrice(WeaponData, Level);
 
     public void Upgrade() => UpgradeWeaponTo(Level + 1);
+
+    public void Upgrade(float damageMultiplier)
+    {
+        damage = Mathf.RoundToInt(damage * damageMultiplier);
+        ConfigureWeaponStats();
+    }
+
+    public void SetWeapon(WeaponDataSO weaponData)
+    {
+        WeaponData = weaponData;
+        ConfigureWeaponStats();
+    }
+
+    public float GetDamage() => damage;
+    public float GetAttackSpeed() => 1f / attackDelay;
 }

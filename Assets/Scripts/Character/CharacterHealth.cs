@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using SouthsideGames.DailyMissions;
 
-public class CharacterHealth : MonoBehaviour, IStats
+public class CharacterHealth : MonoBehaviour, IStats, IDamageable
 {
     [Header("ACTIONS:")]
     public static Action<Vector2> OnDodge;
@@ -142,6 +142,16 @@ public class CharacterHealth : MonoBehaviour, IStats
             CharacterManager.Instance._sr.color = new Color(1, 1, 1, .5f);
         else
             CharacterManager.Instance._sr.color = new Color(1, 1, 1, 1f);
+    }
+
+    public bool IsAlive => health > 0;
+    public float CurrentHealth => health;
+    public float MaxHealth => maxHealth;
+
+    public void Die()
+    {
+        OnCharacterDeath?.Invoke();
+        GameManager.Instance.SetGameState(GameState.GameOver);
     }
     
 
