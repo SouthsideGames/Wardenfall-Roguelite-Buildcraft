@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using NaughtyAttributes;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class WeaponSelectionManager : MonoBehaviour, IGameStateListener
 {
@@ -16,10 +17,7 @@ public class WeaponSelectionManager : MonoBehaviour, IGameStateListener
     private WeaponDataSO selectedWeapon;
     private int initialWeaponLevel;
 
-    private void Start()
-    {
-        characterWeapon = CharacterManager.Instance.characterWeapon;
-    }
+    private void Start() => characterWeapon = CharacterManager.Instance.weapon;
 
     public void GameStateChangedCallback(GameState _gameState)
     {

@@ -1,37 +1,48 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using SouthsideGames.DailyMissions;
 using UnityEngine;
 
 public class MeleeWeapon : Weapon
 {
-  
     private MeleeWeaponState state;
 
     [Header("ELEMENTS:")]
-    [SerializeField] private Transform hitpoint;
-    [SerializeField] private BoxCollider2D hitCollider;
-    private List<Enemy> damagedEnemies = new List<Enemy>();
+    public Transform hitpoint;
+    public BoxCollider2D hitCollider;
+    public List<Enemy> damagedEnemies = new List<Enemy>();
 
-    // Start is called before the first frame update
     void Start()
     {
-         state = MeleeWeaponState.Idle;
+        state = MeleeWeaponState.Idle;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        switch(state)
-       {
-            case MeleeWeaponState.Idle:
-                AutoAim();
-                break;
-            case MeleeWeaponState.Attack:
-                AttackState();
-                break;
-            default:
-                break;
-       }
+        Attack();
+    }
+
+    protected override void Attack()
+    {
+        if (useAutoAim)
+        {
+            switch (state)
+            {
+                case MeleeWeaponState.Idle:
+                    AutoAimLogic();
+                    break;
+                case MeleeWeaponState.Attack:
+                    AttackState();
+                    break;
+            }
+        }
+        else
+        {
+            ManageFreeAttackTimer();
+        }
+            
+        
     }
 
     private void AttackState()
@@ -39,70 +50,88 @@ public class MeleeWeapon : Weapon
         AttackLogic();
     }
 
-    private void StartAttack()
+    protected virtual void StartAttack()
     {
         anim.Play("Attack");
-        state = MeleeWeaponState.Attack;   
+        state = MeleeWeaponState.Attack;
 
-        damagedEnemies.Clear(); 
+        damagedEnemies.Clear();
 
         anim.speed = 1f / attackDelay;
     }
 
-    private void EndAttack()
+    protected virtual void EndAttack()
     {
         state = MeleeWeaponState.Idle;
-        damagedEnemies.Clear(); 
+        damagedEnemies.Clear();
     }
 
     protected virtual void AttackLogic()
     {
         Collider2D[] enemies = Physics2D.OverlapBoxAll
         (
-            hitpoint.position, 
-            hitCollider.bounds.size, 
-            hitpoint.localEulerAngles.z, 
+            hitpoint.position,
+            hitCollider.bounds.size,
+            hitpoint.localEulerAngles.z,
             enemyMask
         );
 
-        for (int i = 0; i < enemies.Length; i++)
+        foreach (Collider2D collider in enemies)
         {
-            Enemy enemy = enemies[i].GetComponent<Enemy>();
-
-            if(!damagedEnemies.Contains(enemy))
+            Enemy enemy = collider.GetComponent<Enemy>();
+            if (!damagedEnemies.Contains(enemy))
             {
                 int damage = GetDamage(out bool isCriticalHit);
-
                 enemy.TakeDamage(damage, isCriticalHit);
                 damagedEnemies.Add(enemy);
+                MissionManager.Increment(MissionType.weaponSpecialist, damage);
             }
-           
         }
     }
 
-    protected override void AutoAim()
+    protected override void AutoAimLogic()
     {
-        base.AutoAim();
+        base.AutoAimLogic();
 
-        if(closestEnemy != null)
+        if (closestEnemy != null)
         {
             targetUpVector = (closestEnemy.transform.position - transform.position).normalized;
-            transform.up = targetUpVector;  
+            transform.up = targetUpVector;
+
+            if (targetUpVector.x < 0)
+                transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+            else
+                transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+
             ManageAttackTimer();
         }
 
         transform.up = Vector3.Lerp(transform.up, targetUpVector, Time.deltaTime * aimLerp);
 
         Wait();
-
     }
 
     private void ManageAttackTimer()
     {
-        if(attackTimer >= attackDelay)
+        if (attackTimer >= attackDelay)
         {
             attackTimer = 0;
             StartAttack();
+        }
+    }
+
+    private void ManageFreeAttackTimer()
+    {
+        AttackLogic();
+
+        if (attackTimer >= attackDelay)
+        {
+            attackTimer = 0;
+            StartAttack();
+        }
+        else
+        {
+            Wait();
         }
     }
 
@@ -113,11 +142,10 @@ public class MeleeWeapon : Weapon
         ConfigureWeaponStats();
 
         damage = Mathf.RoundToInt(damage * (1 + _statsManager.GetStatValue(Stat.Attack) / 100));
-        attackDelay  /= 1 + (_statsManager.GetStatValue(Stat.AttackSpeed) / 100); 
+        attackDelay /= 1 + (_statsManager.GetStatValue(Stat.AttackSpeed) / 100);
 
-        criticalHitChance = Mathf.RoundToInt(criticalHitChance * 91 + _statsManager.GetStatValue(Stat.CritChance) / 100); 
-        criticalHitDamageAmount += _statsManager.GetStatValue(Stat.CritDamage); //Deal times additional damage
+        criticalHitChance = Mathf.RoundToInt(criticalHitChance * 91 + _statsManager.GetStatValue(Stat.CritChance) / 100);
+        criticalHitDamageAmount += _statsManager.GetStatValue(Stat.CritDamage);
 
     }
-
 }

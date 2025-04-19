@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using System.Linq;
 using UnityEngine.SceneManagement;
@@ -11,8 +10,9 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     public static Action OnGamePaused;
     public static Action OnGameResumed; 
-    public static Action OnWaveCompleted; 
+    public static Action OnWaveCompleted;
 
+    public GameState gameState { get; private set; }
 
     private void Awake()
     {
@@ -22,24 +22,29 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
     }
 
-    // Start is called before the first frame update
+
     void Start()
     {
         Application.targetFrameRate = 60;
         SetGameState(GameState.Menu);
     }
 
-    public void StartGame() => SetGameState(GameState.Game); 
-    public void StartGameModeSelect() => SetGameState(GameState.GameModeSelect);   
+    public void StartGame()
+    {
+        SetGameState(GameState.Game); 
+    }
+
+    public void StartMainMenu() => SetGameState(GameState.Menu);
     public void StartWeaponSelect() => SetGameState(GameState.WeaponSelect);
     public void StartShop() => SetGameState(GameState.Shop);    
-    public void StartGameOver()
-    {
-        SetGameState(GameState.GameOver);  
-    }
+    public void StartTraitSelection() => SetGameState(GameState.TraitSelection);
+    public void StartCardDraft() => SetGameState(GameState.CardDraft);
+    public void StartGameOver() => SetGameState(GameState.GameOver);  
 
     public void SetGameState(GameState _gameState)
     {
+        gameState = _gameState;
+
         IEnumerable<IGameStateListener> gameStateListeners = 
             FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None)
             .OfType<IGameStateListener>();   
@@ -56,7 +61,16 @@ public class GameManager : MonoBehaviour
         StatisticsManager.Instance.StopTimer();
         StatisticsManager.Instance.EndRun();
 
-        if(CharacterManager.Instance.HasLeveledUp() || WaveTransitionManager.Instance.HasCollectedChest())
+        bool hasLevelUp = CharacterManager.Instance.HasLeveledUp();
+        bool hasChest = WaveTransitionManager.Instance.HasCollectedChest();
+        bool isBossWave = WaveManager.Instance.IsCurrentWaveBoss();
+
+        if (isBossWave)
+        {
+            // Post-boss flow: Trait → Card Draft → Shop
+            StartTraitSelection();
+        }
+        else if (hasLevelUp || hasChest)
         {
             SetGameState(GameState.WaveTransition);
         }
@@ -64,12 +78,10 @@ public class GameManager : MonoBehaviour
         {
             SetGameState(GameState.Shop);
         }
+
     }
 
-    public void ManageGameOver()
-    {
-        SceneManager.LoadScene(0);
-    }
+    public void ManageGameOver() => SceneManager.LoadScene(0);
 
     public void PauseButtonCallback()
     {
@@ -89,6 +101,7 @@ public class GameManager : MonoBehaviour
         ManageGameOver();
     }
 
+    public bool InGameState() => gameState == GameState.Game;
  
 }
 

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -16,4 +14,6 @@ public class WaveUI : MonoBehaviour
         UpdateWaveText("Stage Completed");
         UpdateTimerText("");
     }
+
+    public void HideWaveText() => waveText.gameObject.SetActive(false); 
 }

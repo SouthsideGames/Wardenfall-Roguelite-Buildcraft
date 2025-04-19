@@ -9,10 +9,14 @@ public class Chest : Item
     public static Action<Chest> OnCollected;
 
     [Header("SETTINGS:")]
-    [SerializeField] private Animator anim;
+    [SerializeField] private AudioClip collectSFX;
+    private Animator anim;
+
+    private void Awake() => anim = GetComponent<Animator>();    
 
     protected override void Collected()
     {
+        AudioManager.Instance.PlaySFX(collectSFX);
         OnCollected?.Invoke(this);  
         anim.SetTrigger("open");
     }   

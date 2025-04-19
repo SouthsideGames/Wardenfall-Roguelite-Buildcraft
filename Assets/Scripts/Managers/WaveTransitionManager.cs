@@ -11,6 +11,8 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
 {
     public static WaveTransitionManager Instance;
 
+    public static Action<GameObject> OnConfigured;
+
     [Header("CHARACTER INFO:")]
     [SerializeField] private CharacterStats characterStats;
     [SerializeField] private CharacterObjects characterObjects;
@@ -37,10 +39,7 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
     }
 
 
-    private void OnDestroy() 
-    {
-        Chest.OnCollected -= ChestCollectedCallback;
-    }
+    private void OnDestroy() => Chest.OnCollected -= ChestCollectedCallback;
 
     public void GameStateChangedCallback(GameState _gameState)
     {
@@ -118,12 +117,17 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
             upgradeContainers[i].Button.onClick.AddListener(() => buttonAction?.Invoke()); 
             upgradeContainers[i].Button.onClick.AddListener(() => BonusSelectedCallback());  
         }
+
+        OnConfigured?.Invoke(upgradeContainers[0].gameObject);
     }
 
-    private void BonusSelectedCallback()
+    private IEnumerator WaitAndShowTraitSelection() 
     {
-        GameManager.Instance.WaveCompletedCallback();
+        yield return new WaitForSeconds(0.5f); 
+        TraitSelectionManager.Instance.OpenTraitSelection(); 
     }
+
+    private void BonusSelectedCallback() => GameManager.Instance.WaveCompletedCallback();
 
     private Action GetActionToPeform(Stat _characterStat, out string _buttonString)    
     {
@@ -216,11 +220,7 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
         return () => CharacterStats.Instance.AddStat(_characterStat, value);    
     }
 
-    private void ChestCollectedCallback(Chest chest)
-    {
-        chestsCollected++;
-        Debug.Log("We now have " + chestsCollected + "chest");
-    }
+    private void ChestCollectedCallback(Chest chest) => chestsCollected++;
 
     public bool HasCollectedChest() => chestsCollected > 0;
 

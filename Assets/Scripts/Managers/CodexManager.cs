@@ -1,53 +1,248 @@
 using System;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class CodexManager : MonoBehaviour
 {
     [Header("ELEMENTS:")]
-    [SerializeField] private GameObject detailContainer;  
-    [SerializeField] private CodexDetailContainerUI detailScript; 
-    [SerializeField] private CodexBigCardDetailUI codexBigCardDetailUI;
+    [SerializeField] private TMP_Dropdown categoryDropdown;
+    [SerializeField] private Transform detailParent;
+    [SerializeField] private GameObject cardPrefab;
+    [SerializeField] private TextMeshProUGUI progressText;
+    [SerializeField] private CardLibrary cardLibrary;
 
-    private void Awake() 
+    [Header("DETAIL VIEW:")]
+    [SerializeField] private GameObject detailContainer;
+    [SerializeField] private Image detailIcon;
+    [SerializeField] private TextMeshProUGUI detailName;
+    [SerializeField] private TextMeshProUGUI detailDescription;
+    [SerializeField] private Transform statContainersParent;
+
+    [Header("ENEMY VIEW:")]
+    [SerializeField] private GameObject enemyDetailContainer;
+    [SerializeField] private Image enemyDetailIcon;
+    [SerializeField] private TextMeshProUGUI enemyDetailName;
+    [SerializeField] private TextMeshProUGUI enemyDetailDescription;
+
+    [Header("OBJECT VIEW:")]
+    [SerializeField] private GameObject objectDetailContainer;
+    [SerializeField] private Image objectDetailIcon;
+    [SerializeField] private TextMeshProUGUI objectDetailName;
+    [SerializeField] private Transform objectStatContainersParent;
+
+    [SerializeField] private GameObject statPrefab;
+    [SerializeField] private Sprite lockedIcon;
+
+    private void Awake() => InitializeDropdown();
+
+    private void Start()
     {
-        HideCodexDetailPanel();
-        HideBigCardPanel();
+        CloseDetailView();
+        LoadAndDisplayCharacterCards();
     }
 
-    private void ShowCharacterCodexCategory()
+    private void InitializeDropdown()
     {
+        categoryDropdown.ClearOptions();
+        var categories = new List<string> { "Characters", "Weapons", "Objects", "Enemies", "Cards" };
+        categoryDropdown.AddOptions(categories);
+        categoryDropdown.onValueChanged.AddListener(OnDropdownSelectionChanged);
+    }
+
+    private void OnDropdownSelectionChanged(int selectedIndex)
+    {
+        switch (selectedIndex)
+        {
+            case 0:
+                LoadAndDisplayCharacterCards();
+                break;
+            case 1:
+                LoadAndDisplayWeaponCards();
+                break;
+            case 2:
+                LoadAndDisplayObjectCards();
+                break;
+            case 3:
+                LoadAndDisplayEnemyCards();
+                break;
+            case 4:
+                LoadAndDisplayCardCodex();
+                break;
+            default:
+                Debug.LogWarning("Invalid category selected.");
+                break;
+        }
+    }
+
+    #region Card Codex View
+
+    private void LoadAndDisplayCardCodex()
+    {
+        ClearCards();
+        var allCards = cardLibrary.allCards;
+
+        foreach (var card in allCards)
+        {
+            GameObject miniCard = Instantiate(cardPrefab, detailParent);
+            CodexCardUI cardUI = miniCard.GetComponent<CodexCardUI>();
+            cardUI.InitializeCardCodex(card, this);
+        }
+
+        int unlockedCount = allCards.FindAll(c => c.isUnlocked).Count;
+        int total = allCards.Count;
+        progressText.text = $"Unlocked: {unlockedCount} / {total} cards ({(int)((float)unlockedCount / total * 100)}%)";
+    }
+
+    public void OpenCardDetail(CardSO card)
+    {
+        detailIcon.sprite = card.isUnlocked ? card.icon : lockedIcon;
+        detailName.text = card.isUnlocked ? card.cardName : "???";
+        detailDescription.text = card.isUnlocked ? card.description : card.unlockHint;
         detailContainer.SetActive(true);
-        detailScript.ShowCharacterDetails();
     }
 
-    private void ShowWeaponCodexCategory()
+    #endregion
+
+    #region Card Loading Methods
+
+    private void LoadAndDisplayCharacterCards()
     {
+        ClearCards();
+        var characterDataItems = Resources.LoadAll<CharacterDataSO>("Data/Characters");
+
+        foreach (var characterData in characterDataItems)
+        {
+            GameObject miniCard = Instantiate(cardPrefab, detailParent);
+            CodexCardUI cardUI = miniCard.GetComponent<CodexCardUI>();
+            cardUI.InitializeCharacterCard(characterData.Icon, characterData.Name, characterData, this);
+        }
+    }
+
+    private void LoadAndDisplayWeaponCards()
+    {
+        ClearCards();
+        var weaponItems = Resources.LoadAll<WeaponDataSO>("Data/Weapons");
+
+        foreach (var weaponData in weaponItems)
+        {
+            GameObject miniCard = Instantiate(cardPrefab, detailParent);
+            CodexCardUI cardUI = miniCard.GetComponent<CodexCardUI>();
+            cardUI.InitializeWeaponCard(weaponData.Icon, weaponData.Name, weaponData, this);
+        }
+    }
+
+    private void LoadAndDisplayObjectCards()
+    {
+        ClearCards();
+        var objectItems = Resources.LoadAll<ObjectDataSO>("Data/Objects");
+
+        foreach (var objectData in objectItems)
+        {
+            GameObject miniCard = Instantiate(cardPrefab, detailParent);
+            CodexCardUI cardUI = miniCard.GetComponent<CodexCardUI>();
+            cardUI.InitializeObjectCard(objectData.Icon, objectData.Name, objectData, this);
+        }
+    }
+
+    private void LoadAndDisplayEnemyCards()
+    {
+        ClearCards();
+        var enemyItems = Resources.LoadAll<EnemyDataSO>("Data/Enemies");
+
+        foreach (var enemyData in enemyItems)
+        {
+            GameObject miniCard = Instantiate(cardPrefab, detailParent);
+            CodexCardUI cardUI = miniCard.GetComponent<CodexCardUI>();
+            cardUI.InitializeEnemyCard(enemyData.Icon, enemyData.Name, enemyData, this);
+        }
+    }
+
+    #endregion
+
+    #region Detail View Methods
+
+    public void OpenDetailView(CharacterDataSO _characterData)
+    {
+        detailIcon.sprite = _characterData.Icon;
+        detailName.text = _characterData.Name;
+        detailDescription.text = _characterData.Description;
+        DisplayCharacterStats(_characterData);
         detailContainer.SetActive(true);
-        detailScript.ShowWeaponDetails();
     }
 
-    private void ShowObjectCodexCategory()
+    public void OpenWeaponDetailView(WeaponDataSO _weaponData)
     {
+        detailIcon.sprite = _weaponData.Icon;
+        detailName.text = _weaponData.Name;
+        detailDescription.text = _weaponData.Description;
+        statContainersParent.Clear();
+        DisplayWeaponStats(_weaponData);
         detailContainer.SetActive(true);
-        detailScript.ShowObjectDetails();
     }
 
-    private void ShowEnemyCodexCategory()
+    public void OpenObjectDetailView(ObjectDataSO _objectData)
     {
-        detailContainer.SetActive(true);
-        detailScript.ShowEnemyDetails();
+        objectDetailIcon.sprite = _objectData.Icon;
+        objectDetailName.text = _objectData.Name;
+        statContainersParent.Clear();
+        DisplayObjectStats(_objectData);
+        objectDetailContainer.SetActive(true);
     }
 
-    public void ShowDetail(Sprite icon, string name, string description)
+    public void OpenEnemyDetailView(EnemyDataSO _enemyData)
     {
-        codexBigCardDetailUI.gameObject.SetActive(true); 
-        codexBigCardDetailUI.Configure(icon, name, description); 
+        enemyDetailIcon.sprite = _enemyData.Icon;
+        enemyDetailName.text = _enemyData.Name;
+        enemyDetailDescription.text = _enemyData.Description;
+        enemyDetailContainer.SetActive(true);
     }
 
-    public void ShowCharacters() => ShowCharacterCodexCategory();
-    public void ShowWeapons() => ShowWeaponCodexCategory();
-    public void ShowObjects() => ShowObjectCodexCategory();
-    public void ShowEnemies() => ShowEnemyCodexCategory();
-    public void HideCodexDetailPanel() => detailContainer.SetActive(false); 
-    public void HideBigCardPanel() => codexBigCardDetailUI.gameObject.SetActive(false);
+    private void DisplayCharacterStats(CharacterDataSO characterData)
+    {
+        statContainersParent.Clear();
+
+        foreach (var stat in characterData.NonNeutralStats)
+        {
+            GameObject statEntry = Instantiate(statPrefab, statContainersParent);
+            StatContainerUI statContainerUI = statEntry.GetComponent<StatContainerUI>();
+            Sprite statIcon = ResourceManager.GetStatIcon(stat.Key);
+            statContainerUI.Configure(statIcon, Enums.FormatStatName(stat.Key), stat.Value, true);
+        }
+    }
+
+    private void DisplayWeaponStats(WeaponDataSO weaponData)
+    {
+        statContainersParent.Clear();
+
+        foreach (var stat in weaponData.BaseStats)
+        {
+            GameObject statEntry = Instantiate(statPrefab, statContainersParent);
+            StatContainerUI statContainerUI = statEntry.GetComponent<StatContainerUI>();
+            Sprite statIcon = ResourceManager.GetStatIcon(stat.Key);
+            statContainerUI.Configure(statIcon, Enums.FormatStatName(stat.Key), stat.Value, true);
+        }
+    }
+
+    private void DisplayObjectStats(ObjectDataSO _objectData)
+    {
+        objectStatContainersParent.Clear();
+
+        foreach (var stat in _objectData.BaseStats)
+        {
+            GameObject statEntry = Instantiate(statPrefab, objectStatContainersParent);
+            StatContainerUI statContainerUI = statEntry.GetComponent<StatContainerUI>();
+            Sprite statIcon = ResourceManager.GetStatIcon(stat.Key);
+            statContainerUI.Configure(statIcon, Enums.FormatStatName(stat.Key), stat.Value, true);
+        }
+    }
+
+    public void CloseDetailView() => detailContainer.SetActive(false);
+    public void CloseEnemyDetailView() => enemyDetailContainer.SetActive(false);
+    public void CloseObjectDetailView() => objectDetailContainer.SetActive(false);
+
+    private void ClearCards() => detailParent.Clear();
+
+    #endregion
 }

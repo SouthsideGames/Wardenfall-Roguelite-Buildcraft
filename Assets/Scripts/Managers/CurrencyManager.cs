@@ -2,10 +2,11 @@ using System;
 using NaughtyAttributes;
 using UnityEngine;
 using SouthsideGames.SaveManager;
+using UnityEngine.Purchasing;
 
 public class CurrencyManager : MonoBehaviour, IWantToBeSaved
 {
-    public static CurrencyManager Instance;
+   public static CurrencyManager Instance;
 
     [Header("ACTIONS:")]
     public static Action onCurrencyUpdate;
@@ -23,26 +24,27 @@ public class CurrencyManager : MonoBehaviour, IWantToBeSaved
         else
             Destroy(gameObject);
 
-        Candy.OnCollected += CandyCollectedCallback;
-        Cash.onCollected += CashCollectedCallback;  
+        Meat.OnCollected += MeatCollectedCallback;
+        Cash.OnCollected += CashCollectedCallback;  
 
     }
 
     private void OnDestroy() 
     {
-        Candy.OnCollected -= CandyCollectedCallback;
-        Cash.onCollected -= CashCollectedCallback;  
+        Meat.OnCollected -= MeatCollectedCallback;
+        Cash.OnCollected -= CashCollectedCallback;  
     }
 
-    private void Start()=> UpdateUI();
+    private void Start() => UpdateUI();
+
     [Button]
     private void Add500Currency() => AdjustCurrency(500);
     [Button]
     private void Add500PremiumCurrency() => AdjustPremiumCurrency(500);
-
+    
     public void AdjustCurrency(int _amount)
     {
-        Currency += _amount;
+        Currency +=  _amount;
         UpdateVisuals();
     }
 
@@ -52,21 +54,20 @@ public class CurrencyManager : MonoBehaviour, IWantToBeSaved
         UpdateVisuals();
     }  
 
+    public void BuyPremiumCurrency(Product _product) => AdjustPremiumCurrency((int)_product.definition.payout.quantity, true);
+
+
     private void UpdateUI()
     {
-
         CurrencyUI[] currencyUIs = FindObjectsByType<CurrencyUI>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-
         foreach (CurrencyUI currencyUI in currencyUIs)
             currencyUI.UpdateText(Currency.ToString());
 
         PremiumCurrencyUI[] premiumCurrencyUIs = FindObjectsByType<PremiumCurrencyUI>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-
         foreach (PremiumCurrencyUI premiumCurrencyUI in premiumCurrencyUIs)
             premiumCurrencyUI.UpdateText(PremiumCurrency.ToString());
-    }
 
-    
+    }
 
     private void UpdateVisuals()
     {
@@ -77,21 +78,21 @@ public class CurrencyManager : MonoBehaviour, IWantToBeSaved
 
     public void Load()
     {
-        if(SaveManager.TryLoad(this, premiumCurrencyKey, out object premiumCurrencyValue))
+        if (SaveManager.TryLoad(this, premiumCurrencyKey, out object premiumCurrencyValue))
             AdjustPremiumCurrency((int)premiumCurrencyValue, false);
         else
             AdjustPremiumCurrency(100, false);
     }
 
-    public void Save()
-    {
-        SaveManager.Save(this, premiumCurrencyKey, PremiumCurrency);
-    }
+    public void Save() => SaveManager.Save(this, premiumCurrencyKey, PremiumCurrency);
 
     public bool HasEnoughCurrency(int _amount) => Currency >= _amount;
     public void UseCurrency(int _amount) => AdjustCurrency(-_amount);
+
     public bool HasEnoughPremiumCurrency(int _amount) => PremiumCurrency >= _amount;
     public void UsePremiumCurrency(int _amount) => AdjustPremiumCurrency(-_amount);
-    private void CandyCollectedCallback(Candy _candy) => AdjustCurrency(1);
-    private void CashCollectedCallback(Cash _case) => AdjustPremiumCurrency(1);
+
+    private void MeatCollectedCallback(Meat _meat) => AdjustCurrency(1);
+    private void CashCollectedCallback(Cash _cash) => AdjustPremiumCurrency(1);
+    
 }

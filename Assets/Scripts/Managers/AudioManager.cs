@@ -13,7 +13,6 @@ public class AudioManager : MonoBehaviour, IGameStateListener
     [SerializeField] private AudioClip gameMusic;
     [SerializeField] private AudioClip stageCompleteMusic;
     [SerializeField] private AudioClip gameoverMusic;
-    [SerializeField] private AudioClip uIMusic;
 
     [Header("SETTINGS:")]
     [SerializeField] private AudioSource musicSource;
@@ -43,6 +42,7 @@ public class AudioManager : MonoBehaviour, IGameStateListener
   
 
     void Start() => PlayBackgroundMusic();
+
     private void Update() 
     {
        if(isMusicMuted)

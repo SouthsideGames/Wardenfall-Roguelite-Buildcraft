@@ -17,11 +17,9 @@ public class CharacterLevel : MonoBehaviour
     [Header("DEBUG:")]
     [SerializeField] private bool debug;
 
-    private void Awake() => Candy.OnCollected += CandyCollectedCallback;
-    private void OnDestroy() => Candy.OnCollected -= CandyCollectedCallback;
+    private void Awake() => Meat.OnCollected += MeatCollectedCallback;
+    private void OnDestroy() => Meat.OnCollected -= MeatCollectedCallback;
 
-
-    // Start is called before the first frame update
     void Start()
     {
         UpdateRequiredXP();
@@ -35,7 +33,7 @@ public class CharacterLevel : MonoBehaviour
     }
 
     private void UpdateRequiredXP() => requiredXp = level * 5;
-    private void CandyCollectedCallback(Candy _candy)
+    private void MeatCollectedCallback(Meat _meat)
     {
         currentXp++;
 

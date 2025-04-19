@@ -1,10 +1,17 @@
+using System;
 using System.Collections;
-using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ShopManagerUI : MonoBehaviour
 {
+    [Header("ACTIONS:")]
+    public static Action OnInventoryOpened;
+    public static Action OnInventoryClosed;
+    public static Action OnCharacterStatsOpened;
+    public static Action OnCharacterStatsClosed;
+    public static Action OnItemInfoClosed;
+
     [Header("CHARACTER STATS ELEMENTS:")]
     [SerializeField] private RectTransform characterStatsPanel;
     [SerializeField] private RectTransform characterStatsClosePanel;
@@ -21,6 +28,16 @@ public class ShopManagerUI : MonoBehaviour
     [SerializeField] private RectTransform itemInfoSlidePanel;
     private Vector2 itemInfoEndPos;
     private Vector2 itemInfoStartPos;
+
+    private void Awake()
+    {
+        InputManager.OnCancel += CancelCallback;
+        CoroutineRunner.Instance.RunPooled(Start());
+    }
+
+
+
+    private void OnDestroy() => InputManager.OnCancel -= CancelCallback;
 
     IEnumerator Start()
     {
@@ -57,6 +74,8 @@ public class ShopManagerUI : MonoBehaviour
 
         LeanTween.cancel(characterStatsClosePanel);
         LeanTween.alpha(characterStatsClosePanel, 0.8f, 0.5f).setRecursive(false);
+
+        OnCharacterStatsOpened?.Invoke();
     }
 
     public void HideCharacterStats()
@@ -72,6 +91,9 @@ public class ShopManagerUI : MonoBehaviour
         LeanTween.alpha(characterStatsClosePanel, 0, 0.5f)
             .setRecursive(false)
             .setOnComplete(() => characterStatsClosePanel.gameObject.SetActive(false));
+
+        if(characterStatsPanel.gameObject.activeInHierarchy)
+            OnCharacterStatsClosed?.Invoke();
     }
 
     private void ConfigureInventoryPanel()
@@ -99,6 +121,8 @@ public class ShopManagerUI : MonoBehaviour
 
         LeanTween.cancel(inventoryClosePanel);
         LeanTween.alpha(inventoryClosePanel, 0.8f, 0.5f).setRecursive(false);
+
+        OnInventoryOpened?.Invoke();
     }
 
     public void HideInventory(bool hideItemInfo = true)
@@ -117,6 +141,9 @@ public class ShopManagerUI : MonoBehaviour
 
         if(hideItemInfo)
            HideItemInfoPanel();
+
+        if(inventoryPanel.gameObject.activeInHierarchy)
+            OnInventoryClosed?.Invoke();
     }
 
     private void ConfigureItemInfoPanel()
@@ -149,5 +176,16 @@ public class ShopManagerUI : MonoBehaviour
         itemInfoSlidePanel.LeanMove((Vector3)itemInfoStartPos, .3f)
         .setEase(LeanTweenType.easeInCubic)
         .setOnComplete(() => itemInfoSlidePanel.gameObject.SetActive(false));
+
+        OnItemInfoClosed?.Invoke();
+    }
+
+    private void CancelCallback()
+    {
+        if(inventoryPanel.gameObject.activeSelf)
+           HideInventory();
+
+        if(characterStatsPanel.gameObject.activeSelf)
+           HideCharacterStats();
     }
 }

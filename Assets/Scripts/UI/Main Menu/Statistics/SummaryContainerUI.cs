@@ -40,10 +40,10 @@ public class SummaryContainerUI : MonoBehaviour
             timeSpan.Minutes,
             timeSpan.Seconds);
 
-        totalWavesCompleted.text = $"Total Waves Completed: {stats.TotalWavesCompletedInARun}";
+        totalWavesCompleted.text = $"Total Waves Completed: {stats.TotalWavesCompleted}";
         totalKillsText.text = $"Total Kills: {stats.TotalKills}";
         totalDeathsText.text = $"Total Deaths: {stats.TotalDeaths}";
-        totalCandyText.text = $"Total Candy Collected: {stats.TotalCandyCollected}";
+        totalCandyText.text = $"Total Candy Collected: {stats.TotalMeatCollected}";
         totalPlayTime.text = $"Total Play Time: {formattedTime}";
         totalChestText.text = $"Total Chest Collected: {stats.TotalChestCollected}";
 
@@ -51,7 +51,7 @@ public class SummaryContainerUI : MonoBehaviour
         mostKillsText.text = $"Most Kills in a Run: {stats.MostKillsInARun}";
         mostLevelUpsText.text = $"Most Level-Ups in a Run: {stats.MostLevelUpsInARun}";
         mostChestsText.text = $"Most Chests Collected in a Run: {stats.MostChestsCollectedInARun}";
-        mostCandyText.text = $"Most Candy Collected in a Run: {stats.MostCandyCollectedInARun}";
+        mostCandyText.text = $"Most Candy Collected in a Run: {stats.MostMeatCollectedInARun}";
 
     }
 }

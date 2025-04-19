@@ -1,17 +1,20 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using System;
 
 public class UIManager : MonoBehaviour, IGameStateListener
 {
+    public static Action<Panel> OnPanelShown;
+
     [Header("PANELS:")]
     [SerializeField] private GameObject menuPanel;
     [SerializeField] private GameObject weaponSelectPanel;
-    [SerializeField] private GameObject gameModeSelectPanel;
     [SerializeField] private GameObject gamePanel;
     [SerializeField] private GameObject gameoverPanel;
-    [SerializeField] private GameObject stageCompletePanel;
+    [SerializeField] private GameObject waveBasedCompletePanel;
     [SerializeField] private GameObject waveTransitionPanel;
+    [SerializeField] private GameObject traitSelectTransitionPanel;
     [SerializeField] private GameObject shopPanel;
     [SerializeField] private GameObject pausePanel;
     [SerializeField] private GameObject confirmationPanel;
@@ -19,10 +22,11 @@ public class UIManager : MonoBehaviour, IGameStateListener
     [SerializeField] private GameObject statisticsPanel;
     [SerializeField] private GameObject settingPanel;
     [SerializeField] private GameObject codexPanel;
+    [SerializeField] private GameObject missionPanel;
+
 
     [Header("COUNTER TEXT:")]
     [SerializeField] private TextMeshProUGUI killCounterText;
-    [SerializeField] private TextMeshProUGUI chestCounterText;
 
     private List<GameObject> panels = new List<GameObject>();
 
@@ -32,11 +36,11 @@ public class UIManager : MonoBehaviour, IGameStateListener
         {
             menuPanel,
             weaponSelectPanel,
-            gameModeSelectPanel,
             gamePanel,
             gameoverPanel,
-            stageCompletePanel,
+            waveBasedCompletePanel,
             waveTransitionPanel,
+            traitSelectTransitionPanel,
             shopPanel
 
         });
@@ -48,17 +52,16 @@ public class UIManager : MonoBehaviour, IGameStateListener
         statisticsPanel.SetActive(false);   
         codexPanel.SetActive(false);
 
+       
+
         HideConfirmationPanel();
         HideCharacterSelectPanel();
         HideSettingsPanel();
+        HideMissionPanel();
     
     }
 
-    private void Update() 
-    {
-        UpdateCounterText();
-    }
-
+    private void Update() => UpdateCounterText();
     private void OnDestroy() 
     {
         GameManager.OnGamePaused -= PauseGameCallback;
@@ -75,9 +78,6 @@ public class UIManager : MonoBehaviour, IGameStateListener
             case GameState.WeaponSelect:
                 ShowPanel(weaponSelectPanel);
                 break;
-            case GameState.GameModeSelect:
-                ShowPanel(gameModeSelectPanel);
-                break;
             case GameState.Game:
                 ShowPanel(gamePanel);
                 break;
@@ -85,10 +85,13 @@ public class UIManager : MonoBehaviour, IGameStateListener
                 ShowPanel(gameoverPanel);
                 break;
             case GameState.StageCompleted:
-                ShowPanel(stageCompletePanel);
+                ShowPanel(waveBasedCompletePanel);
                 break;
             case GameState.WaveTransition:
                 ShowPanel(waveTransitionPanel);
+                break;
+            case GameState.TraitSelection:
+                ShowPanel(traitSelectTransitionPanel);
                 break;
             case GameState.Shop:
                 ShowPanel(shopPanel);
@@ -99,46 +102,127 @@ public class UIManager : MonoBehaviour, IGameStateListener
 
     private void ShowPanel(GameObject panel, bool _hidePreviousPanels = true)
     {
+
         if(_hidePreviousPanels)
         {
             foreach (GameObject p in panels)
             {
                 p.SetActive(p == panel);
+
+                if (p == panel)
+                   TriggerPanelAction(panel);
             }
         }
         else
-        {
             panel.SetActive(true);
-        }
        
     }
 
-    private void UpdateCounterText()
-    {
-        killCounterText.text = StatisticsManager.Instance.CurrentRunKills.ToString();
-        chestCounterText.text = StatisticsManager.Instance.CurrentChestCollected.ToString();
-    }
-
+    private void UpdateCounterText() => killCounterText.text = StatisticsManager.Instance.CurrentRunKills.ToString();
     private void PauseGameCallback()
     {
         AudioManager.Instance.DecreaseMusicVolume();
         pausePanel.SetActive(true);
+
+        TriggerPanelAction(pausePanel);
     }
+
     private void ResumeGameCallback()
     {
         AudioManager.Instance.ResetMusicVolume();   
         pausePanel.SetActive(false);
     }
-    
-    public void ShowConfirmationPanel() =>   confirmationPanel.SetActive(true);
-    public void HideConfirmationPanel() => confirmationPanel.SetActive(false);
-    public void ShowCharacterSelectPanel() => characterSelectPanel.SetActive(true);
-    public void HideCharacterSelectPanel() => characterSelectPanel.SetActive(false);   
-    public void ShowStatisticsPanel() => statisticsPanel.SetActive(true);
-    public void HideStatisticsPanel() => statisticsPanel.SetActive(false);   
-    public void ShowSettingsPanel() => settingPanel.SetActive(true);
-    public void HideSettingsPanel() => settingPanel.SetActive(false);  
-    public void ShowCodexPanel() => codexPanel.SetActive(true);
-    public void HideCodexPanel() => codexPanel.SetActive(false);  
+
+    public void ShowConfirmationPanel()
+    {
+        confirmationPanel.SetActive(true);
+        TriggerPanelAction(confirmationPanel);
+        ShowPanelInteractability(pausePanel, false);
+    }
+
+    public void HideConfirmationPanel()
+    {
+        confirmationPanel.SetActive(false);
+        TriggerPanelAction(pausePanel);
+        ShowPanelInteractability(pausePanel, true);
+    }
+
+    public void ShowCharacterSelectPanel()
+    {
+        characterSelectPanel.SetActive(true);
+        TriggerPanelAction(characterSelectPanel);
+        menuPanel.SetActive(false);
+    }
+    public void HideCharacterSelectPanel()
+    {
+        characterSelectPanel.SetActive(false);
+        menuPanel.SetActive(true);
+        TriggerPanelAction(menuPanel);
+    }
+
+    public void ShowStatisticsPanel()
+    {
+        statisticsPanel.SetActive(true);
+        TriggerPanelAction(statisticsPanel);
+        menuPanel.SetActive(false);
+    }
+    public void HideStatisticsPanel()
+    {
+        statisticsPanel.SetActive(false);
+        menuPanel.SetActive(true);
+        TriggerPanelAction(menuPanel);
+    }
+
+    public void ShowSettingsPanel()
+    {
+        settingPanel.SetActive(true);
+        TriggerPanelAction(settingPanel);
+        menuPanel.SetActive(false);
+    }
+    public void HideSettingsPanel()
+    {
+        settingPanel.SetActive(false);
+        menuPanel.SetActive(true);
+        TriggerPanelAction(menuPanel);
+    }
+
+    public void ShowCodexPanel()
+    {
+        codexPanel.SetActive(true);
+        TriggerPanelAction(codexPanel);
+        menuPanel.SetActive(false);
+    }
+    public void HideCodexPanel()
+    {
+        codexPanel.SetActive(false);
+        menuPanel.SetActive(true);
+        TriggerPanelAction(menuPanel);
+    }
+
+    public void ShowMissionPanel()
+    {
+        missionPanel.SetActive(true);
+        TriggerPanelAction(missionPanel);
+        menuPanel.SetActive(false);
+    }
+    public void HideMissionPanel()
+    {
+        missionPanel.SetActive(false);
+        menuPanel.SetActive(true);
+        TriggerPanelAction(menuPanel);
+    }
+
+
+    private void TriggerPanelAction(GameObject _panelObject)
+    {
+        if (_panelObject.TryGetComponent(out Panel panelComponent))
+            OnPanelShown?.Invoke(panelComponent);
+    }
+
+    public static void ShowPanelInteractability(GameObject _gameObject, bool _interactable)
+    {
+        if (_gameObject.TryGetComponent(out CanvasGroup cg))
+            cg.interactable = _interactable;
+    }
 
 }

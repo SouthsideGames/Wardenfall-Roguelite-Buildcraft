@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using NaughtyAttributes;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class StatisticsManager : MonoBehaviour
 {
@@ -9,7 +11,7 @@ public class StatisticsManager : MonoBehaviour
     public GameStatistics currentStatistics = new GameStatistics();
     public int CurrentRunKills {get; private set;}
     public int CurrentWaveCompleted {get; private set;}
-    public int CurrentCandyCollected {get; private set;}
+    public int CurrentMeatCollected {get; private set;}
     public int CurrentChestCollected {get; private set;}
     public int CurrentLevelUp {get; private set;}
 
@@ -20,7 +22,8 @@ public class StatisticsManager : MonoBehaviour
     private Dictionary<string, UsageInfo> characterUsageDict = new Dictionary<string, UsageInfo>();
     private Dictionary<string, UsageInfo> weaponUsageDict = new Dictionary<string, UsageInfo>();
 
-
+    [Header("ELEMENTS:")]
+    [SerializeField] private Button recordButton;
     [SerializeField] private GameObject recordContainer;
     [SerializeField] private GameObject collectionContainer;
 
@@ -32,7 +35,7 @@ public class StatisticsManager : MonoBehaviour
             Destroy(gameObject);
 
 
-        Candy.OnCollected += TotalCandyCollectedHandler;
+        Meat.OnCollected += TotalMeatCollectedHandler;
         Chest.OnCollected += TotalChestCollectedHandler;
         GameManager.OnWaveCompleted += TotalWaveCompletedHandler;
         Enemy.OnEnemyKilled += TotalEnemyKillsHandler;
@@ -40,7 +43,6 @@ public class StatisticsManager : MonoBehaviour
         GameManager.OnGamePaused += OnGamePausedHandler;
         GameManager.OnGameResumed += OnGameResumedHandler;
         
-
         collectionContainer.SetActive(false);
         recordContainer.SetActive(true);    
 
@@ -49,7 +51,7 @@ public class StatisticsManager : MonoBehaviour
 
     private void OnDestroy() 
     {
-        Candy.OnCollected -= TotalCandyCollectedHandler;
+        Meat.OnCollected -= TotalMeatCollectedHandler;
         Chest.OnCollected -= TotalChestCollectedHandler;
         GameManager.OnWaveCompleted -= TotalWaveCompletedHandler;
         Enemy.OnEnemyKilled -= TotalEnemyKillsHandler;
@@ -64,17 +66,16 @@ public class StatisticsManager : MonoBehaviour
         LoadStats();
 
         lastPlayTimeCheck = Time.time;
+        EventSystem.current.SetSelectedGameObject(recordButton.gameObject);
     }
 
     private void Update()
     {
         if (isTrackingPlayTime)
         {
-            // Accumulate playtime by calculating the difference since the last check
             float deltaTime = Time.time - lastPlayTimeCheck;
-            currentStatistics.TotalPlayTime += deltaTime;  // Increment total playtime
+            currentStatistics.TotalPlayTime += deltaTime; 
 
-            // Update the last checked time to the current time
             lastPlayTimeCheck = Time.time;
         }
     }
@@ -102,18 +103,10 @@ public class StatisticsManager : MonoBehaviour
     [Button]
     public void ClearSaveFile()
     {
-        // Delete the save file if it exists
         if (System.IO.File.Exists(statsFilePath))
-        {
-            System.IO.File.Delete(statsFilePath);
-        }
 
-        // Reset the in-memory stats to default values
         currentStatistics = new GameStatistics();
 
-        Debug.Log("All saved data has been cleared!");
-
-        // Optionally, you could save the reset stats immediately to overwrite any existing data
         SaveStats();
     }
 
@@ -121,7 +114,7 @@ public class StatisticsManager : MonoBehaviour
     {
         CurrentRunKills = 0;
         CurrentLevelUp = 0;
-        CurrentCandyCollected = 0;
+        CurrentMeatCollected = 0;
         CurrentChestCollected = 0;
         CurrentWaveCompleted = 0;
     }
@@ -135,8 +128,8 @@ public class StatisticsManager : MonoBehaviour
         if (CurrentLevelUp > currentStatistics.MostLevelUpsInARun)
             currentStatistics.MostLevelUpsInARun = CurrentLevelUp; 
 
-        if (CurrentCandyCollected > currentStatistics.MostCandyCollectedInARun)
-            currentStatistics.MostCandyCollectedInARun = CurrentCandyCollected;
+        if (CurrentMeatCollected > currentStatistics.MostMeatCollectedInARun)
+            currentStatistics.MostMeatCollectedInARun = CurrentMeatCollected;
 
         if (CurrentChestCollected > currentStatistics.MostChestsCollectedInARun)
             currentStatistics.MostChestsCollectedInARun = CurrentChestCollected;
@@ -144,7 +137,6 @@ public class StatisticsManager : MonoBehaviour
         if (CurrentWaveCompleted > currentStatistics.MostWavesCompletedInARun)
             currentStatistics.MostWavesCompletedInARun  = CurrentChestCollected;
 
-        // Save the updated stats
         SaveStats();
     }
 
@@ -169,10 +161,10 @@ public class StatisticsManager : MonoBehaviour
 
     #region STATISTICS FUNCTIONS
 
-    private void TotalCandyCollectedHandler(Candy _candy)
+    private void TotalMeatCollectedHandler(Meat _meat)
     {
-        CurrentCandyCollected++;
-        currentStatistics.TotalCandyCollected++;
+        CurrentMeatCollected++;
+        currentStatistics.TotalMeatCollected++;
         SaveStats();
     }
 
@@ -186,7 +178,7 @@ public class StatisticsManager : MonoBehaviour
     private void TotalWaveCompletedHandler()
     {
         CurrentWaveCompleted++;
-        currentStatistics.TotalWavesCompletedInARun++;
+        currentStatistics.TotalWavesCompleted++;
         SaveStats();
     }
 
@@ -199,7 +191,6 @@ public class StatisticsManager : MonoBehaviour
 
     private void TotalCharacterDeathHandler()
     {
-        // Increment totalDeaths
         currentStatistics.TotalDeaths++;
         SaveStats(); 
     }
@@ -217,7 +208,6 @@ public class StatisticsManager : MonoBehaviour
     {
         if (isTrackingPlayTime)
         {
-            // Stop tracking and accumulate playtime
             isTrackingPlayTime = false;
 
             float deltaTime = Time.time - lastPlayTimeCheck;
@@ -239,7 +229,7 @@ public class StatisticsManager : MonoBehaviour
         characterUsageDict[characterID].UsageCount++;
         characterUsageDict[characterID].LastUsed = DateTime.Now;
 
-        ConvertDictionariesToLists();  // Convert back to lists before saving
+        ConvertDictionariesToLists(); 
         SaveStats();
     }
 
@@ -253,7 +243,7 @@ public class StatisticsManager : MonoBehaviour
         weaponUsageDict[weaponID].UsageCount++;
         weaponUsageDict[weaponID].LastUsed = DateTime.Now;
 
-        ConvertDictionariesToLists();  // Convert back to lists before saving
+        ConvertDictionariesToLists(); 
         SaveStats();
     }
 
@@ -284,13 +274,13 @@ public class GameStatistics
     public int MostKillsInARun;             // Most kills in a single run
     public int MostLevelUpsInARun;          // Most level-ups in a single run
     public int MostChestsCollectedInARun;   // Most chests collected in a single run
-    public int MostCandyCollectedInARun;    // Most candy collected in a single run
+    public int MostMeatCollectedInARun;    // Most candy collected in a single run
 
     // Cumulative stats across all runs
-    public int TotalWavesCompletedInARun;   // Total waves completed
+    public int TotalWavesCompleted;   // Total waves completed
     public int TotalKills;                  // Total kills across all runs
     public int TotalDeaths;                 // Total deaths across all runs
-    public int TotalCandyCollected;         // Total candy collected across all runs
+    public int TotalMeatCollected;         // Total candy collected across all runs
     public float TotalPlayTime;               // Total time played
     public int TotalChestCollected;          //Total chest collected across all runs
 

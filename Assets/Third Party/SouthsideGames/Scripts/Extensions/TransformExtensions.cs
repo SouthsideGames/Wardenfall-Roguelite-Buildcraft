@@ -14,7 +14,11 @@ public static class TransformExtensions
         {
             Transform child = transform.transform.GetChild(0);
             child.SetParent(null);
-            Object.Destroy(child.gameObject);
+
+            if (Application.isPlaying)
+                Object.Destroy(child.gameObject);
+            else
+                Object.DestroyImmediate(child.gameObject);
         }
     }
 }

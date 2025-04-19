@@ -9,46 +9,65 @@ public class RangedWeapon : Weapon
     public static Action OnBulletFired;
 
     [Header("ELEMENTS:")]
-    [SerializeField] private Transform firePoint;
-    [SerializeField] private Bullet bulletPrefab;
+    public Transform firePoint;
+    [SerializeField] private BulletBase bulletPrefab;
 
     [Header("POOL:")]
-    public ObjectPool<Bullet> bulletPool {get; private set;}
+    public ObjectPool<BulletBase> bulletPool { get; private set; }
 
-    // Start is called before the first frame update
-    void Start()
+    void Start() => bulletPool = new ObjectPool<BulletBase>(CreateFunction, ActionOnGet, ActionOnRelease, ActionOnDestroy);
+
+    void Update() => Attack();
+
+    protected override void Attack()
     {
-        bulletPool = new ObjectPool<Bullet>(CreateFunction, ActionOnGet, ActionOnRelease, ActionOnDestroy);
+        if (useAutoAim)
+            AutoAimLogic();
+        else
+            ManualAttackLogic();
     }
 
-    // Update is called once per frame
-    void Update()
+    protected override void AutoAimLogic()
     {
-        AutoAim();
-    }
+        base.AutoAimLogic();
 
-    protected override void AutoAim()
-    {
-        base.AutoAim();
-
-        if(closestEnemy != null)
+        if (closestEnemy != null)
         {
             targetUpVector = (closestEnemy.GetCenter() - (Vector2)transform.position).normalized;
-            transform.up = targetUpVector;  
-           
+            transform.up = targetUpVector;
+
+            if (targetUpVector.x < 0)
+            {
+                transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+            }
+            else
+            {
+                transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+            }
+
             ShootLogic();
             return;
         }
 
-         transform.up = Vector3.Lerp(transform.up, targetUpVector, Time.deltaTime * aimLerp);
-
+        transform.up = Vector3.Lerp(transform.up, targetUpVector, Time.deltaTime * aimLerp);
     }
 
-    private void ShootLogic()
+    protected override void ManualAttackLogic()
+    {
+        attackTimer += Time.deltaTime;
+        if (attackTimer >= attackDelay)
+        {
+            attackTimer = 0;
+            Shoot();
+        }
+    }
+
+    protected void ShootLogic()
     {
         attackTimer += Time.deltaTime;
 
-        if(attackTimer > attackDelay){
+        if (attackTimer > attackDelay)
+        {
             attackTimer = 0f;
             Shoot();
         }
@@ -57,34 +76,34 @@ public class RangedWeapon : Weapon
     protected virtual void Shoot()
     {
         OnBulletFired?.Invoke();
+        anim.Play("Attack");
 
         int damage = GetDamage(out bool isCriticalHit);
 
-        Bullet _bullet = bulletPool.Get();
-        _bullet.Shoot(damage, transform.up, isCriticalHit );
+        BulletBase _bullet = bulletPool.Get();
+        _bullet.Shoot(damage, transform.up, isCriticalHit);
 
         PlaySFX();
     }
 
     #region POOLING
-    private Bullet CreateFunction()
+    private BulletBase CreateFunction()
     {
-        Bullet bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
+        BulletBase bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
         bullet.Configure(this);
         return bullet;
     }
 
-    private void ActionOnGet(Bullet _bullet)
-    {   
+    private void ActionOnGet(BulletBase _bullet)
+    {
         _bullet.Reload();
         _bullet.transform.position = firePoint.position;
         _bullet.gameObject.SetActive(true);
     }
 
-    private void ActionOnRelease(Bullet _bullet) =>  _bullet.gameObject.SetActive(false);
-    private void ActionOnDestroy(Bullet _bullet) => Destroy(_bullet.gameObject);
-
-    public void ReleaseBullet(Bullet _bullet) => bulletPool.Release(_bullet);
+    private void ActionOnRelease(BulletBase _bullet) => _bullet.gameObject.SetActive(false);
+    private void ActionOnDestroy(BulletBase _bullet) => Destroy(_bullet.gameObject);
+    public void ReleaseBullet(BulletBase _bullet) => bulletPool.Release(_bullet);
 
     #endregion
 
@@ -93,13 +112,12 @@ public class RangedWeapon : Weapon
         ConfigureWeaponStats();
 
         damage = Mathf.RoundToInt(damage * (1 + _statsManager.GetStatValue(Stat.Attack) / 100));
-        attackDelay  /= 1 + (_statsManager.GetStatValue(Stat.AttackSpeed) / 100); 
+        attackDelay /= 1 + (_statsManager.GetStatValue(Stat.AttackSpeed) / 100);
 
-        criticalHitChance = Mathf.RoundToInt(criticalHitChance * 91 + _statsManager.GetStatValue(Stat.CritChance) / 100); 
-        criticalHitDamageAmount += _statsManager.GetStatValue(Stat.CritDamage); //Deal times additional damage
+        criticalHitChance = Mathf.RoundToInt(criticalHitChance * (1 + _statsManager.GetStatValue(Stat.CritChance) / 100));
+        criticalHitDamageAmount += _statsManager.GetStatValue(Stat.CritDamage);
 
         range += _statsManager.GetStatValue(Stat.Range) / 10;
-
     }
 
 }

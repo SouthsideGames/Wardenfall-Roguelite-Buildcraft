@@ -13,7 +13,6 @@ public class WeaponSelectionContainerUI : MonoBehaviour
 
     [Header("LEVEL COLORS:")]
     [SerializeField] private Image[] containerImages;
-    [SerializeField] private Outline outline;
 
     [Header("STATS:")]
     [SerializeField] private Transform statContainerParent;
@@ -31,8 +30,6 @@ public class WeaponSelectionContainerUI : MonoBehaviour
 
         Color imageColor = ColorHolder.GetColor(_level);
         weaponNameText.color = imageColor;  
-
-        outline.effectColor = ColorHolder.GetOutlineColor(_level);
 
         foreach(Image image in containerImages)
           image.color = imageColor;     
@@ -52,7 +49,9 @@ public class WeaponSelectionContainerUI : MonoBehaviour
     {
         LeanTween.cancel(gameObject);
 
-        LeanTween.scale(gameObject, Vector3.one * scaleSize, animationSpeed).setEase(LeanTweenType.easeInOutSine);
+        LeanTween.scale(gameObject, Vector3.one * scaleSize, animationSpeed).setEase(LeanTweenType.easeOutElastic);
+
+        GameManager.Instance.StartGame();
     }
 
     public void Deselect()

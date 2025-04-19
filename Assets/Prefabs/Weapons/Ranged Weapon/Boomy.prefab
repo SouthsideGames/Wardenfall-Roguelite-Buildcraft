@@ -57,7 +57,7 @@ Transform:
   m_GameObject: {fileID: 4642050493946752779}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.6, y: 0, z: 0}
+  m_LocalPosition: {x: 2.91, y: 0.29, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -73,7 +73,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4035153805788466543}
   - component: {fileID: 8537731421067500523}
-  - component: {fileID: -2401898596826695467}
+  - component: {fileID: 7665778563170338603}
   m_Layer: 0
   m_Name: Boomy
   m_TagString: Untagged
@@ -107,7 +107,7 @@ Animator:
   m_GameObject: {fileID: 8230195434855500512}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 975ea308f1a51664c9ea7bd689edcf38, type: 2}
+  m_Controller: {fileID: 22100000, guid: 01c737bb0a4f64f93a4fad8a9b18bfd7, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -119,7 +119,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &-2401898596826695467
+--- !u!114 &7665778563170338603
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -128,21 +128,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 8230195434855500512}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47492e3bf096ad94699b1cc54d371a8e, type: 3}
+  m_Script: {fileID: 11500000, guid: ffcf134cd3cc5224ba1752b4687b0fab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   <WeaponData>k__BackingField: {fileID: 11400000, guid: b42d6747635134a4fb9c64215329e32d, type: 2}
-  range: 0
   enemyMask:
     serializedVersion: 2
     m_Bits: 64
-  damage: 0
-  attackDelay: 0
-  anim: {fileID: 0}
-  aimLerp: 0
-  firePoint: {fileID: 0}
+  useAutoAim: 1
+  anim: {fileID: 8537731421067500523}
+  aimLerp: 0.01
+  firePoint: {fileID: 7993999580436098873}
   bulletPrefab: {fileID: 1454874200778115879, guid: e97a6b84786e8ec4188586e8aae2b9be, type: 3}
-  explosionRadius: 0
+  pelletCount: 5
+  spreadAngle: 30
 --- !u!1 &9147867877528162964
 GameObject:
   m_ObjectHideFlags: 0
@@ -170,7 +169,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 0.70710677, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0.5, z: 0}
-  m_LocalScale: {x: 0.6000001, y: 0.6000001, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7993999580436098873}
@@ -195,6 +194,7 @@ SpriteRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -219,7 +219,7 @@ SpriteRenderer:
   m_SortingLayerID: 883773661
   m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 84f07b27a38eda042b5858622cbeaf52, type: 3}
+  m_Sprite: {fileID: 7598950024199386518, guid: 30af1871d0b2a4340b1bfa70dcd0fff5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

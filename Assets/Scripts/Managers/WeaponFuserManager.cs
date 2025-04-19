@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using SouthsideGames.DailyMissions;
 
 public class WeaponFuserManager : MonoBehaviour
 {
@@ -33,19 +34,15 @@ public class WeaponFuserManager : MonoBehaviour
 
         foreach(Weapon characterWeapon in weapons)
         {
-            //Cant Fuse with a null weapon
             if(characterWeapon == null)
                continue;
-            
-            //Cant fuse a weapon to itself
+
             if(characterWeapon == _weapon)
                continue;
 
-            //Can not fuse the same weapons
             if(characterWeapon.WeaponData.Name != _weapon.WeaponData.Name)
                 continue;
 
-            //both weapons need to be the same level
             if(characterWeapon.Level != _weapon.Level)
                continue;
 
@@ -68,6 +65,8 @@ public class WeaponFuserManager : MonoBehaviour
 
         Weapon weapon = weaponsToFuse[0];
         weaponsToFuse.Clear();
+
+        MissionManager.Increment(MissionType.fusionFanatic, 1);
 
         onFuse?.Invoke(weapon);
     }

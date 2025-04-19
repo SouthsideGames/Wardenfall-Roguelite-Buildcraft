@@ -19,7 +19,6 @@ public class ShopItemContainerUI : MonoBehaviour
 
     [Header("LEVEL COLORS:")]
     [SerializeField] private Image[] containerImages;
-    [SerializeField] private Outline outline;
     private int weaponLevel;
 
     [Header("STATS:")]
@@ -56,8 +55,6 @@ public class ShopItemContainerUI : MonoBehaviour
         Color imageColor = ColorHolder.GetColor(_level);
         nameText.color = imageColor;  
 
-        outline.effectColor = ColorHolder.GetOutlineColor(_level);
-
         foreach(Image image in containerImages)
           image.color = imageColor;     
 
@@ -81,8 +78,6 @@ public class ShopItemContainerUI : MonoBehaviour
 
         Color imageColor = ColorHolder.GetColor(_objectData.Rarity);
         nameText.color = imageColor;  
-
-        outline.effectColor = ColorHolder.GetOutlineColor(_objectData.Rarity);
 
         foreach(Image image in containerImages)
           image.color = imageColor;     

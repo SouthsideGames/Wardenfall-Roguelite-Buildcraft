@@ -16,7 +16,7 @@ public class CharacterAnimator : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(rb.velocity.magnitude < 0.001)
+        if(rb.linearVelocity.magnitude < 0.001)
            anim.Play("Character_Idle");
         else
             anim.Play("Character_Move");

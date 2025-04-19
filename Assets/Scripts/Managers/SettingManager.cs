@@ -14,6 +14,8 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
     public static Action<bool> onVibrateStateChanged;
 
     [Header("ELEMENTS:")]
+    [SerializeField] private Sprite offImage;
+    [SerializeField] private Sprite onImage;
     [SerializeField] private Button sfxButton;
     [SerializeField] private Button musicButton;
     [SerializeField] private Button vibrateButton;
@@ -21,28 +23,18 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
     [SerializeField] private Button askButton;
     [SerializeField] private Button creditsButton;
 
-    [Header("DIFFICULTY SETTINGS:")]
-    [SerializeField] private Button difficultyButton;
-    [SerializeField] private TextMeshProUGUI difficultyText;
-    [SerializeField] private string[] difficultyLevels = { "Easy", "Normal", "Hard", "Expert" };
-    [SerializeField] private int initialDifficultyIndex = 1;
-
 
     [Header("SETTINGS:")]
-    [SerializeField] private Color onColor;
-    [SerializeField] private Color offColor;
     [SerializeField] private String privacyPolicyURL;
     [SerializeField] private GameObject creditsPanel;
 
     private bool sfxState;
     private bool musicState;
     private bool vibrateState;
-    [HideInInspector] public int currentDifficultyIndex;
 
     private const string sfxKey = "SFX";
     private const string musicKey = "Music";
     private const string vibrateKey = "Vibrate";
-    private const string difficultyKey = "Difficulty";
 
     private void Awake() 
     {
@@ -69,20 +61,15 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
         creditsButton.onClick.RemoveAllListeners();
         creditsButton.onClick.AddListener(CreditsButtonCallback);
 
-        difficultyButton.onClick.RemoveAllListeners();
-        difficultyButton.onClick.AddListener(DifficultyButtonCallback);
     }
 
     private void Start() 
     {
         HideCreditsPanel();
 
-        currentDifficultyIndex = initialDifficultyIndex;
-
         onSFXStateChanged?.Invoke(sfxState);
         onMusicStateChanged?.Invoke(musicState);    
         onVibrateStateChanged?.Invoke(vibrateState);
-        UpdateDifficultyVisuals();
     }
 
     private void AskButtonCallback()
@@ -102,7 +89,6 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
 
         Save();
 
-        //Trigger an action
         onSFXStateChanged?.Invoke(sfxState);
     }
 
@@ -115,7 +101,6 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
 
         Save();
 
-        //Trigger an action
         onMusicStateChanged?.Invoke(musicState);    
     }
 
@@ -127,7 +112,6 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
 
         Save();
 
-        //Trigger an action
         onVibrateStateChanged?.Invoke(vibrateState);
     }
 
@@ -136,12 +120,12 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
     {
         if(sfxState)
         {
-            sfxButton.image.color = onColor;
+            sfxButton.image.sprite = onImage;
             sfxButton.GetComponentInChildren<TextMeshProUGUI>().text = "ON";
         }
         else 
         {
-            sfxButton.image.color = offColor;
+            sfxButton.image.sprite = offImage;
             sfxButton.GetComponentInChildren<TextMeshProUGUI>().text = "OFF";
         }
     }
@@ -150,12 +134,12 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
     {
         if(musicState)
         {
-            musicButton.image.color = onColor;
+            musicButton.image.sprite = onImage;
             musicButton.GetComponentInChildren<TextMeshProUGUI>().text = "ON";
         }
         else 
         {
-            musicButton.image.color = offColor;
+            musicButton.image.sprite = offImage;
             musicButton.GetComponentInChildren<TextMeshProUGUI>().text = "OFF";
         }
     }
@@ -164,37 +148,27 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
     {
         if(vibrateState)
         {
-            vibrateButton.image.color = onColor;
+            vibrateButton.image.sprite = onImage;
             vibrateButton.GetComponentInChildren<TextMeshProUGUI>().text = "ON";
         }
         else 
         {
-            vibrateButton.image.color = offColor;
+            vibrateButton.image.sprite = offImage;
             vibrateButton.GetComponentInChildren<TextMeshProUGUI>().text = "OFF";
         }
     }
 
-    private void DifficultyButtonCallback()
-    {
-        currentDifficultyIndex = (currentDifficultyIndex + 1) % difficultyLevels.Length;
-
-        UpdateDifficultyVisuals();
-
-        Save();
-    }
-
-    
 
     private void CreditsButtonCallback() => creditsPanel.SetActive(true);
     public void HideCreditsPanel() => creditsPanel.SetActive(false);
     private string EscapeURL(string _s) => UnityWebRequest.EscapeURL(_s).Replace("+", "%20");
     private void PrivacyPolicyButtonCallback() => Application.OpenURL(privacyPolicyURL);
-    private void UpdateDifficultyVisuals() => difficultyText.text = difficultyLevels[currentDifficultyIndex];
-
+   
     public void Load()
     {
         sfxState = true;
         musicState = true;
+        vibrateState = true;
 
         if(SaveManager.TryLoad(this, sfxKey, out object sfxStateObject))
             sfxState = (bool)sfxStateObject;
@@ -205,14 +179,10 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
         if(SaveManager.TryLoad(this, vibrateKey, out object vibrateStateObject))
             vibrateState = (bool)vibrateStateObject;
 
-        if (SaveManager.TryLoad(this, difficultyKey, out object difficultyObject))
-            currentDifficultyIndex = (int)difficultyObject;
-
 
         UpdateMusicVisuals();
         UpdateSFXVisuals();
         UpdateVibrateVisuals();
-        UpdateDifficultyVisuals();
     }
 
     public void Save()
@@ -220,6 +190,5 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
         SaveManager.Save(this, sfxKey, sfxState);
         SaveManager.Save(this, musicKey, musicState);
         SaveManager.Save(this, vibrateKey, vibrateState);
-        SaveManager.Save(this, difficultyKey, currentDifficultyIndex);
     }
 }

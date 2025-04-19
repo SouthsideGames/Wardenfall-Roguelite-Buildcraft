@@ -7,7 +7,9 @@ using System;
 
 public class ChestObjectContainerUI : MonoBehaviour
 {
-   [Header("ELEMENTS:")]
+    public static Action<GameObject> OnSpawned;
+
+    [Header("ELEMENTS:")]
     [SerializeField] private Image icon;
     [SerializeField] private TextMeshProUGUI nameText;
 
@@ -17,10 +19,8 @@ public class ChestObjectContainerUI : MonoBehaviour
     [field: SerializeField] public Button CollectButton { get; private set; }    
     [field: SerializeField] public Button RecycleButton { get; private set; }    
     [SerializeField] public TextMeshProUGUI recyclePriceText;
+    
 
-    [Header("LEVEL COLORS:")]
-    [SerializeField] private Image[] containerImages;
-    [SerializeField] private Outline outline;
 
 
     public void Configure(ObjectDataSO _objectData)
@@ -32,14 +32,9 @@ public class ChestObjectContainerUI : MonoBehaviour
         Color imageColor = ColorHolder.GetColor(_objectData.Rarity);
         nameText.color = imageColor;  
 
-        outline.effectColor = ColorHolder.GetOutlineColor(_objectData.Rarity);
-
-        foreach(Image image in containerImages)
-          image.color = imageColor;     
-
         ConfigureStatContainers(_objectData.BaseStats);
         
-        
+        OnSpawned?.Invoke(CollectButton.gameObject);
 
     }
 

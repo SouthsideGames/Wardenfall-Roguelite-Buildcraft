@@ -1,0 +1,69 @@
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+
+[RequireComponent(typeof(Button))]
+public class CodexCardUI : MonoBehaviour
+{
+    [Header("ELEMENTS")]
+    [SerializeField] private Image icon;
+    [SerializeField] private TextMeshProUGUI cardName;
+    [SerializeField] private Button cardButton;
+    [SerializeField] private Sprite lockedIcon;
+
+    private CharacterDataSO characterData;
+    private WeaponDataSO weaponData;
+    private ObjectDataSO objectData;
+    private EnemyDataSO enemyData;
+    private CodexManager codexManager;
+    private CardSO cardData;
+
+    public void InitializeCharacterCard(Sprite _icon, string _name, CharacterDataSO _data, CodexManager _manager)
+    {
+        AssignData(_icon, _name, _manager);
+        characterData = _data;
+        cardButton.onClick.AddListener(() => codexManager.OpenDetailView(characterData));
+    }
+
+    public void InitializeWeaponCard(Sprite _icon, string _name, WeaponDataSO _data, CodexManager _manager)
+    {
+        AssignData(_icon, _name, _manager);
+        weaponData = _data;
+        cardButton.onClick.AddListener(() => codexManager.OpenWeaponDetailView(weaponData));
+    }
+
+    public void InitializeObjectCard(Sprite _icon, string _name, ObjectDataSO _data, CodexManager _manager)
+    {
+        AssignData(_icon, _name, _manager);
+        objectData = _data;
+        cardButton.onClick.AddListener(() => codexManager.OpenObjectDetailView(objectData));
+    }
+
+    public void InitializeEnemyCard(Sprite _icon, string _name, EnemyDataSO _data, CodexManager _manager)
+    {
+        AssignData(_icon, _name, _manager);
+        enemyData = _data;
+        cardButton.onClick.AddListener(() => codexManager.OpenEnemyDetailView(enemyData));
+    }
+
+    public void InitializeCardCodex(CardSO card, CodexManager manager)
+    {
+        codexManager = manager;
+        cardData = card;
+
+        icon.sprite = card.isUnlocked ? card.icon : lockedIcon;
+        cardName.text = card.isUnlocked ? card.cardName : "???";
+
+        cardButton.onClick.RemoveAllListeners();
+        cardButton.onClick.AddListener(() => codexManager.OpenCardDetail(card));
+    }
+
+    private void AssignData(Sprite _icon, string _name, CodexManager _manager)
+    {
+        icon.sprite = _icon;
+        cardName.text = _name;
+        codexManager = _manager;
+
+        cardButton.onClick.RemoveAllListeners();
+    }
+}

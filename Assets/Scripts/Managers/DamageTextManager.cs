@@ -23,13 +23,9 @@ public class DamageTextManager : MonoBehaviour
     }
    
         
-
     private void Start() => damageTextPool = new ObjectPool<DamageText>(CreateFunction, ActionOnGet, ActionOnRelease, ActionOnDestroy);
 
-    private DamageText CreateFunction()
-    {
-        return Instantiate(damageTextPrefab, transform);
-    }
+    private DamageText CreateFunction() => Instantiate(damageTextPrefab, transform);
 
     private void ActionOnGet(DamageText _damageText) =>  _damageText.gameObject.SetActive(true);
 

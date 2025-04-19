@@ -1,25 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
+using SouthsideGames.DailyMissions;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public abstract class Weapon : MonoBehaviour, IStats
 {
-    [field: SerializeField] public WeaponDataSO WeaponData {get; private set;}  
+    [field: SerializeField] public WeaponDataSO WeaponData { get; private set; }
 
     [Header("ELEMENTS:")]
-    [SerializeField] protected float range;
+    protected float range;
     [SerializeField] protected LayerMask enemyMask;
 
-
     [Header("SETTINGS:")]
-    [SerializeField] protected int damage;
-    [SerializeField] protected float attackDelay;
+    protected int damage;
+    protected float attackDelay;
     protected float attackTimer;
     protected int criticalHitChance;
     protected float criticalHitDamageAmount;
+    [SerializeField] protected bool useAutoAim = true;
 
-    
     [Header("ANIMATIONS:")]
     [SerializeField] protected Animator anim;
     [SerializeField] protected float aimLerp;
@@ -38,11 +38,11 @@ public abstract class Weapon : MonoBehaviour, IStats
         audioSource.clip = WeaponData.AttackSound;
     }
 
+
     protected void PlaySFX()
     {
         audioSource.pitch = Random.Range(0.95f, 1.05f);
         audioSource.Play();
-
     }
 
     protected Enemy GetClosestEnemy()
@@ -50,24 +50,23 @@ public abstract class Weapon : MonoBehaviour, IStats
         Enemy closestEnemy = null;
         Collider2D[] enemies = Physics2D.OverlapCircleAll(transform.position, range, enemyMask);
 
-        if(enemies.Length <= 0)
+        if (enemies.Length <= 0)
             return null;
 
         float minDistance = range;
 
         for (int i = 0; i < enemies.Length; i++)
         {
-            Enemy enemyChecked = enemies[i].GetComponent<Enemy>();    
+            Enemy enemyChecked = enemies[i].GetComponent<Enemy>();
 
-            float distanceToEnemy = Vector2.Distance(transform.position, enemyChecked.transform.position);  
+            float distanceToEnemy = Vector2.Distance(transform.position, enemyChecked.transform.position);
 
-            if(distanceToEnemy < minDistance)
+            if (distanceToEnemy < minDistance)
             {
                 closestEnemy = enemyChecked;
-                minDistance = distanceToEnemy;  
+                minDistance = distanceToEnemy;
             }
         }
-
 
         return closestEnemy;
     }
@@ -76,26 +75,40 @@ public abstract class Weapon : MonoBehaviour, IStats
     {
         isCriticalHit = false;
 
-        if(Random.Range(0, 101) <= criticalHitChance)
+        if (Random.Range(0, 101) <= criticalHitChance)
         {
             isCriticalHit = true;
+            MissionManager.Increment(MissionType.criticalHitMastery, 1);
             return Mathf.RoundToInt(damage * criticalHitDamageAmount);
         }
 
         return damage;
     }
 
-    protected virtual void AutoAim()
+    protected virtual void AutoAimLogic()
     {
+        if (!useAutoAim) return;
+
         closestEnemy = GetClosestEnemy();
-
         targetUpVector = Vector3.up;
-
     }
+
+    protected virtual void ManualAttackLogic()
+    {
+        attackTimer += Time.deltaTime;
+
+        if (attackTimer >= attackDelay)
+        {
+            attackTimer = 0;
+            Attack();
+        }
+    }
+    
+
+    protected abstract void Attack();
 
     private void OnDrawGizmos()
     {
-
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, range);
     }
@@ -111,6 +124,8 @@ public abstract class Weapon : MonoBehaviour, IStats
         criticalHitChance = Mathf.RoundToInt(calculatedStats[Stat.CritChance]);
         criticalHitDamageAmount = calculatedStats[Stat.CritDamage];
         range = calculatedStats[Stat.Range];
+
+        anim.speed = 1f / attackDelay;
     }
 
     public void UpgradeWeaponTo(int _targetLevel)
