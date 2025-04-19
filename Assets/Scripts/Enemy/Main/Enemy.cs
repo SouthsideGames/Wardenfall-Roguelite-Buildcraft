@@ -14,6 +14,8 @@ public abstract class Enemy : MonoBehaviour
     public static Action<Vector2> OnBossDeath;
     public static Action OnEnemyKilled;
     protected Action OnSpawnCompleted;
+    public Action<int> OnDealDamage;
+    public Action OnHealthChanged;
 
     [Header("ELEMENTS:")]
     protected CharacterManager character;
