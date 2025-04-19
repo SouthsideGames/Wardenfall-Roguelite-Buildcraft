@@ -6,7 +6,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(EnemyStatus))]
 [RequireComponent(typeof(EnemyModifierHandler))]
-public abstract class Enemy : MonoBehaviour
+public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
 {
     [Header("ACTIONS:")]
     public static Action<int, Vector2, bool> OnDamageTaken;
@@ -258,4 +258,28 @@ public abstract class Enemy : MonoBehaviour
     }
 
     public Vector2 GetCenter() => (Vector2)transform.position + _collider.offset;
+
+
+    // Implement IDamageable interface methods (example)
+    public void TakeDamage(int damage)
+    {
+        TakeDamage(damage, false); //Call existing method.  Could be improved.
+    }
+
+    public bool IsAlive()
+    {
+        return health > 0;
+    }
+
+    // Implement IEnemyBehavior interface methods (example)
+    public void MoveTo(Vector3 targetPosition)
+    {
+        movement?.SetTarget(targetPosition);
+    }
+
+    public void AttackTarget()
+    {
+        Attack();
+    }
+
 }
