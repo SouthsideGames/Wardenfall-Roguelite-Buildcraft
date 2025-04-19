@@ -14,6 +14,11 @@ public class EnemyStatus : MonoBehaviour
 
     private Dictionary<StatusEffectType, ActiveEffect> activeEffects = new();
     private StatusEffectUIManager statusUI;
+    
+    [SerializeField] private List<StatusEffectType> immunities = new List<StatusEffectType>();
+    [SerializeField] private float statusResistance = 0f;
+
+    public bool IsImmuneToEffect(StatusEffectType effectType) => immunities.Contains(effectType);
 
     private void Awake()
     {
@@ -29,6 +34,18 @@ public class EnemyStatus : MonoBehaviour
 
     public void ApplyEffect(StatusEffect effect)
     {
+        // Check immunity
+        if (IsImmuneToEffect(effect.EffectType))
+        {
+            // Spawn immunity indicator
+            if (statusUI != null)
+                statusUI.ShowImmunityIndicator();
+            return;
+        }
+
+        // Apply resistance
+        effect.ApplyStatModifiers(1.0f, statusResistance);
+
         if (activeEffects.TryGetValue(effect.EffectType, out var existing))
         {
             existing.Effect.ApplyStack();

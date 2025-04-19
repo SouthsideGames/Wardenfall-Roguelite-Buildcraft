@@ -36,10 +36,15 @@ public class StatusEffect
 
     public void ApplyStack()
     {
-        
-        if (StackCount >= MaxStacks) return;
+        if (StackCount >= MaxStacks)
+        {
+            ResetDuration();
+            return;
+        }
 
         StackCount++;
+        float previousValue = Value;
+        float previousDuration = Duration;
 
         switch (StackBehavior)
         {
@@ -47,12 +52,19 @@ public class StatusEffect
                 ResetDuration();
                 break;
             case StackBehavior.Extend:
-                Duration += Duration;
+                Duration += previousDuration;
                 break;
             case StackBehavior.AddValue:
-                Value += Value;
+                Value += previousValue;
+                Duration = Mathf.Max(Duration, previousDuration);
                 break;
         }
+    }
+
+    public void ResetDuration()
+    {
+        if (OnResetTimer != null)
+            OnResetTimer.Invoke();
     }
 
     /// <summary>

@@ -40,10 +40,53 @@ public class StatusEffectIcon : MonoBehaviour
         }
     }
 
+    private ParticleSystem effectParticles;
+    private Color effectColor;
+
+    private void Start()
+    {
+        effectParticles = GetComponentInChildren<ParticleSystem>();
+        UpdateEffectColor();
+    }
+
     public void PlayDispelAnimation()
     {
-        // Use LeanTween or scale punch for 3D pop
+        // Scale animation
         LeanTween.scale(gameObject, Vector3.one * 1.2f, 0.1f).setEasePunch();
+        
+        // Particle burst
+        if (effectParticles != null)
+        {
+            var main = effectParticles.main;
+            main.startColor = effectColor;
+            effectParticles.Play();
+        }
+    }
+
+    private void UpdateEffectColor()
+    {
+        switch (currentEffect.EffectType)
+        {
+            case StatusEffectType.Burn:
+                effectColor = new Color(1f, 0.5f, 0f, 1f);
+                break;
+            case StatusEffectType.Poison:
+                effectColor = new Color(0f, 1f, 0f, 1f);
+                break;
+            case StatusEffectType.Freeze:
+                effectColor = new Color(0f, 1f, 1f, 1f);
+                break;
+            default:
+                effectColor = Color.white;
+                break;
+        }
+    }
+
+    public void UpdateEffect(StatusEffect effect)
+    {
+        currentEffect = effect;
+        stackText.text = $"x{effect.StackCount}";
+        UpdateEffectColor();
     }
 
     private void UpdateIcon(StatusEffectType type)
