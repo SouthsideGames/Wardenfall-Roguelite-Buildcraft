@@ -31,11 +31,18 @@ public class EnemyMovement : MonoBehaviour
     private int currentPatrolIndex = 0;
     private float patrolTimer = 0f;
     [SerializeField] private float patrolWaitTime = 1f;
+    [SerializeField] private float patrolPointReachedDistance = 0.1f;
+    
     private Vector2 wanderPoint;
     [SerializeField] private float wanderRadius = 5f;
     private float wanderTimer = 0f;
     [SerializeField] private float minWanderWaitTime = 2f;
     [SerializeField] private float maxWanderWaitTime = 5f;
+    [SerializeField] private float wanderPointReachedDistance = 0.1f;
+    [SerializeField] private LayerMask obstacleLayer; // For checking valid wander points
+    
+    private Vector2 startPosition;
+    [SerializeField] private float maxDistanceFromStart = 10f;
 
     public void StorePlayer(CharacterManager _player) => currentTarget = _player.transform;
 
@@ -87,19 +94,49 @@ public class EnemyMovement : MonoBehaviour
     {
         wanderTimer -= Time.deltaTime;
 
-        if (wanderTimer <= 0)
+        if (wanderTimer <= 0 || Vector2.Distance(transform.position, wanderPoint) < wanderPointReachedDistance)
         {
-            float randomAngle = Random.Range(0f, 360f);
-            wanderPoint = (Vector2)transform.position + (Vector2)(Quaternion.Euler(0, 0, randomAngle) * Vector2.right * wanderRadius);
+            GenerateNewWanderPoint();
             wanderTimer = Random.Range(minWanderWaitTime, maxWanderWaitTime);
+        }
+
+        // Check if too far from start position
+        if (Vector2.Distance(transform.position, startPosition) > maxDistanceFromStart)
+        {
+            wanderPoint = startPosition;
         }
 
         Vector2 direction = (wanderPoint - (Vector2)transform.position).normalized;
         rb.velocity = direction * moveSpeed;
     }
 
+    private void GenerateNewWanderPoint()
+    {
+        for (int i = 0; i < 30; i++) // Try 30 times to find valid point
+        {
+            float randomAngle = Random.Range(0f, 360f);
+            Vector2 potentialPoint = (Vector2)transform.position + (Vector2)(Quaternion.Euler(0, 0, randomAngle) * Vector2.right * wanderRadius);
+            
+            // Check if point is valid (not inside obstacle)
+            if (!Physics2D.OverlapCircle(potentialPoint, 0.5f, obstacleLayer))
+            {
+                wanderPoint = potentialPoint;
+                return;
+            }
+        }
+        
+        // If no valid point found, move back toward start
+        wanderPoint = startPosition;
+    }
+
     private void HandlePatrol()
     {
+        if (patrolPoints == null || patrolPoints.Length == 0)
+        {
+            Debug.LogWarning("No patrol points assigned to enemy!");
+            return;
+        }
+
         if (patrolTimer > 0)
         {
             patrolTimer -= Time.deltaTime;
@@ -109,9 +146,18 @@ public class EnemyMovement : MonoBehaviour
 
         Vector2 targetPoint = patrolPoints[currentPatrolIndex];
         Vector2 direction = (targetPoint - (Vector2)transform.position).normalized;
+        
+        // Check for obstacles
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, 1f, obstacleLayer);
+        if (hit.collider != null)
+        {
+            // If obstacle found, try to find alternative path
+            direction = FindAlternativePath(targetPoint);
+        }
+        
         rb.velocity = direction * moveSpeed;
 
-        if (Vector2.Distance(transform.position, targetPoint) < 0.1f)
+        if (Vector2.Distance(transform.position, targetPoint) < patrolPointReachedDistance)
         {
             currentPatrolIndex = (currentPatrolIndex + 1) % patrolPoints.Length;
             patrolTimer = patrolWaitTime;
@@ -270,5 +316,6 @@ public class EnemyMovement : MonoBehaviour
 
     private void Start() {
         rb = GetComponent<Rigidbody2D>();
+        startPosition = transform.position;
     }
 }
