@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using NaughtyAttributes;
 using SouthsideGames.DailyMissions;
@@ -28,19 +30,23 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 
     private Wave currentWave;
 
+    [SerializeField] private float minDistanceBetweenSpawns = 2f;
+    [SerializeField] private int maxEnemiesOnScreen = 50;
+    private List<Vector2> recentSpawnPoints = new List<Vector2>();
+
     private void Awake()
     {
         if (Instance == null)
             Instance = this;
         else
             Destroy(gameObject);
-            
+
         ui = GetComponent<WaveUI>();
         CharacterHealth.OnCharacterDeath += CharacterDeathCallback;
     }
 
     private void OnDestroy() => CharacterHealth.OnCharacterDeath -= CharacterDeathCallback;
-    
+
 
     private void Update()
     {
@@ -65,6 +71,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     private void InitializeWave(int waveIndex)
     {
         localCounters.Clear();
+        recentSpawnPoints.Clear(); // Clear spawn points at the start of each wave
         currentWave = wave[waveIndex];
 
         for (int i = 0; i < currentWave.segments.Count; i++)
@@ -87,6 +94,9 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 
     private void SpawnWaveSegments()
     {
+        // Check if we've hit enemy limit
+        if (transform.childCount >= maxEnemiesOnScreen) return;
+
         foreach (var (segment, index) in currentWave.segments.WithIndex())
         {
             if (timer < segment.tStart || timer > segment.tEnd) continue;
@@ -96,10 +106,86 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 
             if (timeSinceStart / spawnInterval > localCounters[index])
             {
-                Instantiate(segment.prefab, GetSpawnPosition(), Quaternion.identity, transform);
+                Vector2 spawnPos = GetOptimizedSpawnPosition();
+
+                // Spawn with dynamic difficulty adjustment
+                GameObject enemy = Instantiate(segment.prefab, spawnPos, Quaternion.identity, transform);
+
+                // Adjust enemy stats based on wave progression
+                AdjustEnemyDifficulty(enemy.GetComponent<Enemy>());
+
                 localCounters[index]++;
 
-                if (segment.spawnOnce) localCounters[index] += Mathf.Infinity;
+                if (segment.spawnOnce) 
+                {
+                    localCounters[index] += Mathf.Infinity;
+                    // Special handling for boss segments
+                    PrepareArenaForBoss();
+                }
+
+                // Clean up old spawn points
+                CleanupSpawnHistory();
+            }
+        }
+    }
+
+    private Vector2 GetOptimizedSpawnPosition()
+    {
+        Vector2 spawnPos;
+        int attempts = 0;
+        const int maxAttempts = 10;
+
+        do
+        {
+            spawnPos = GetSpawnPosition();
+            attempts++;
+        } 
+        while (IsTooCloseToOtherSpawns(spawnPos) && attempts < maxAttempts);
+
+        recentSpawnPoints.Add(spawnPos);
+        return spawnPos;
+    }
+
+    private bool IsTooCloseToOtherSpawns(Vector2 position)
+    {
+        return recentSpawnPoints.Any(p => Vector2.Distance(p, position) < minDistanceBetweenSpawns);
+    }
+
+    private void CleanupSpawnHistory()
+    {
+        if (recentSpawnPoints.Count > 10)
+        {
+            recentSpawnPoints.RemoveAt(0);
+        }
+    }
+
+    private void AdjustEnemyDifficulty(Enemy enemy)
+    {
+        if (enemy == null) return;
+
+        float difficultyMultiplier = 1f + (currentWaveIndex * 0.1f);
+        enemy.maxHealth = Mathf.RoundToInt(enemy.maxHealth * difficultyMultiplier);
+        enemy.contactDamage = Mathf.RoundToInt(enemy.contactDamage * difficultyMultiplier);
+    }
+
+    private void PrepareArenaForBoss()
+    {
+        // Clear regular enemies when boss spawns
+        StartCoroutine(GradualEnemyClear());
+    }
+
+    private IEnumerator GradualEnemyClear()
+    {
+        var enemies = GetComponentsInChildren<Enemy>()
+            .Where(e => !(e is Boss))
+            .ToList();
+
+        foreach (var enemy in enemies)
+        {
+            if (enemy != null)
+            {
+                enemy.DieAfterWave();
+                yield return new WaitForSeconds(0.1f);
             }
         }
     }
@@ -156,7 +242,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     }
 
     private void UpdateUIForWaveStart() => ui.UpdateWaveText($"Trial {currentWaveIndex + 1} / {wave.Length}");
-    
+
 
     private void DefeatAllEnemies()
     {
