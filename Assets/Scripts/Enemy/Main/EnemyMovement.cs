@@ -21,27 +21,56 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] private float avoidanceRadius = 1f;
     private float pathUpdateTimer;
     private Vector2 currentDirection;
-    private Rigidbody2D rb; // Added Rigidbody2D component
+    private Rigidbody2D rb; 
 
+    [Header("Movement Patterns")]
+    public bool chasePlayer = true;
+    public bool wander = false;
+    public bool patrol = false;
+    [SerializeField] private Vector2[] patrolPoints;
+    private int currentPatrolIndex = 0;
+    private float patrolTimer = 0f;
+    [SerializeField] private float patrolWaitTime = 1f;
+    private Vector2 wanderPoint;
+    [SerializeField] private float wanderRadius = 5f;
+    private float wanderTimer = 0f;
+    [SerializeField] private float minWanderWaitTime = 2f;
+    [SerializeField] private float maxWanderWaitTime = 5f;
 
     public void StorePlayer(CharacterManager _player) => currentTarget = _player.transform;
 
     public void SetTarget(Transform newTarget)
     {
         currentTarget = newTarget;
-        isTargetPositionSet = false; // Disable target position when following a transform
+        isTargetPositionSet = false; 
     }
 
     public void SetTargetPosition(Vector2 newPosition)
     {
         targetPosition = newPosition;
-        isTargetPositionSet = true; // Enable movement toward a fixed position
+        isTargetPositionSet = true; 
     }
 
     public void FollowCurrentTarget()
     {
-        if (currentTarget == null || rb == null) return; // Check for Rigidbody2D
+        if (!canMove || rb == null) return;
 
+        if (chasePlayer && currentTarget != null)
+        {
+            ChaseTarget();
+        }
+        else if (wander)
+        {
+            HandleWandering();
+        }
+        else if (patrol && patrolPoints != null && patrolPoints.Length > 0)
+        {
+            HandlePatrol();
+        }
+    }
+
+    private void ChaseTarget()
+    {
         pathUpdateTimer += Time.deltaTime;
         if (pathUpdateTimer >= pathUpdateRate)
         {
@@ -49,25 +78,56 @@ public class EnemyMovement : MonoBehaviour
             pathUpdateTimer = 0;
         }
 
-        // Apply current movement with obstacle avoidance
         Vector2 avoidanceForce = CalculateAvoidanceForce();
         Vector2 finalDirection = (currentDirection + avoidanceForce).normalized;
         rb.velocity = finalDirection * moveSpeed;
+    }
+
+    private void HandleWandering()
+    {
+        wanderTimer -= Time.deltaTime;
+
+        if (wanderTimer <= 0)
+        {
+            float randomAngle = Random.Range(0f, 360f);
+            wanderPoint = (Vector2)transform.position + (Vector2)(Quaternion.Euler(0, 0, randomAngle) * Vector2.right * wanderRadius);
+            wanderTimer = Random.Range(minWanderWaitTime, maxWanderWaitTime);
+        }
+
+        Vector2 direction = (wanderPoint - (Vector2)transform.position).normalized;
+        rb.velocity = direction * moveSpeed;
+    }
+
+    private void HandlePatrol()
+    {
+        if (patrolTimer > 0)
+        {
+            patrolTimer -= Time.deltaTime;
+            rb.velocity = Vector2.zero;
+            return;
+        }
+
+        Vector2 targetPoint = patrolPoints[currentPatrolIndex];
+        Vector2 direction = (targetPoint - (Vector2)transform.position).normalized;
+        rb.velocity = direction * moveSpeed;
+
+        if (Vector2.Distance(transform.position, targetPoint) < 0.1f)
+        {
+            currentPatrolIndex = (currentPatrolIndex + 1) % patrolPoints.Length;
+            patrolTimer = patrolWaitTime;
+        }
     }
 
     private void UpdatePath()
     {
         if (currentTarget == null) return;
 
-        // Update direction with basic obstacle checking
         Vector2 targetPos = currentTarget.position;
         Vector2 directionToTarget = (targetPos - (Vector2)transform.position).normalized;
 
-        // Raycast to check for obstacles
         RaycastHit2D hit = Physics2D.Raycast(transform.position, directionToTarget, 5f);
         if (hit.collider != null && !hit.collider.CompareTag("Player"))
         {
-            // If obstacle found, try to find alternative path
             Vector2 alternativePath = FindAlternativePath(targetPos);
             currentDirection = alternativePath;
         }
@@ -80,9 +140,8 @@ public class EnemyMovement : MonoBehaviour
     private Vector2 CalculateAvoidanceForce()
     {
         Vector2 avoidanceForce = Vector2.zero;
-        List<Enemy> nearbyEnemies = new List<Enemy>(); //Initialized here
+        List<Enemy> nearbyEnemies = new List<Enemy>(); 
 
-        // Get nearby enemies
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, avoidanceRadius);
         foreach (var collider in colliders)
         {
@@ -92,7 +151,6 @@ public class EnemyMovement : MonoBehaviour
             }
         }
 
-        // Calculate avoidance
         foreach (var enemy in nearbyEnemies)
         {
             Vector2 awayFromEnemy = (Vector2)(transform.position - enemy.transform.position).normalized;
@@ -105,7 +163,6 @@ public class EnemyMovement : MonoBehaviour
 
     private Vector2 FindAlternativePath(Vector2 targetPos)
     {
-        // Try multiple angles to find clear path
         float[] testAngles = { 45f, -45f, 90f, -90f };
         Vector2 originalDirection = (targetPos - (Vector2)transform.position).normalized;
 
@@ -143,7 +200,7 @@ public class EnemyMovement : MonoBehaviour
 
         if (Vector2.Distance(transform.position, targetPosition) < 0.1f)
         {
-            isTargetPositionSet = false; // Reset to allow new movement
+            isTargetPositionSet = false; 
         }
     }
 
