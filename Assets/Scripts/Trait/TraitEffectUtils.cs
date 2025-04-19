@@ -55,6 +55,33 @@ public static class TraitEffectUtils
             case "BioChargedT3":
                 ApplyBioCharged(enemy, 0.75f, 0.10f);
                 break;
+            case "GlassCannonT1":
+                ApplyGlassCannon(enemy, 0.7f, 1.5f);
+                break;
+            case "GlassCannonT2":
+                ApplyGlassCannon(enemy, 0.6f, 1.75f);
+                break;
+            case "GlassCannonT3":
+                ApplyGlassCannon(enemy, 0.5f, 2f);
+                break;
+            case "TimeWarpT1":
+                ApplyTimeWarp(enemy, 0.3f, 5f);
+                break;
+            case "TimeWarpT2":
+                ApplyTimeWarp(enemy, 0.5f, 3f);
+                break;
+            case "TimeWarpT3":
+                ApplyTimeWarp(enemy, 0.7f, 2f);
+                break;
+            case "VampiricT1":
+                ApplyVampiric(enemy, 0.1f);
+                break;
+            case "VampiricT2":
+                ApplyVampiric(enemy, 0.2f, true);
+                break;
+            case "VampiricT3":
+                ApplyVampiric(enemy, 0.3f, true);
+                break;
             case "HauntingT1":
             case "HauntingT2":
             case "HauntingT3":
@@ -132,3 +159,54 @@ public static class TraitEffectUtils
     }
 }
 
+
+
+
+    private static void ApplyGlassCannon(Enemy enemy, float healthMult, float damageMult)
+    {
+        enemy.maxHealth = Mathf.FloorToInt(enemy.maxHealth * healthMult);
+        enemy.health = Mathf.Min(enemy.health, enemy.maxHealth);
+        enemy.modifierHandler.ModifyDamage(damageMult - 1f);
+    }
+
+    private static void ApplyTimeWarp(Enemy enemy, float speedModifier, float interval)
+    {
+        CoroutineRunner.Instance.StartCoroutine(TimeWarpRoutine(enemy, speedModifier, interval));
+    }
+
+    private static IEnumerator TimeWarpRoutine(Enemy enemy, float speedModifier, float interval)
+    {
+        EnemyMovement movement = enemy.GetComponent<EnemyMovement>();
+        bool fast = true;
+
+        while (enemy != null && movement != null)
+        {
+            if (fast)
+                movement.moveSpeed *= (1f + speedModifier);
+            else
+                movement.moveSpeed *= (1f - speedModifier);
+
+            fast = !fast;
+            yield return new WaitForSeconds(interval);
+        }
+    }
+
+    private static void ApplyVampiric(Enemy enemy, float lifestealPercent, bool speedupAtLowHealth = false)
+    {
+        enemy.OnDealDamage += (damage) => {
+            int healAmount = Mathf.FloorToInt(damage * lifestealPercent);
+            enemy.health = Mathf.Min(enemy.health + healAmount, enemy.maxHealth);
+        };
+
+        if (speedupAtLowHealth)
+        {
+            enemy.OnHealthChanged += () => {
+                if (enemy.health < enemy.maxHealth * 0.3f)
+                {
+                    EnemyMovement movement = enemy.GetComponent<EnemyMovement>();
+                    if (movement != null)
+                        movement.moveSpeed *= 1.5f;
+                }
+            };
+        }
+    }
