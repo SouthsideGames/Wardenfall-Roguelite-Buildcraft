@@ -36,6 +36,9 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
     private const string musicKey = "Music";
     private const string vibrateKey = "Vibrate";
 
+    private float lastButtonPressTime;
+    private const float buttonCooldown = 0.5f;
+
     private void Awake() 
     {
         if(Instance == null)
@@ -48,13 +51,13 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
 
         musicButton.onClick.RemoveAllListeners();
         musicButton.onClick.AddListener(MusicButtonCallback);    
-        
+
         vibrateButton.onClick.RemoveAllListeners();
         vibrateButton.onClick.AddListener(VibrateButtonCallback);    
 
         privacyPolicyButton.onClick.RemoveAllListeners();
         privacyPolicyButton.onClick.AddListener(PrivacyPolicyButtonCallback);
-        
+
         askButton.onClick.RemoveAllListeners();
         askButton.onClick.AddListener(AskButtonCallback);
 
@@ -83,6 +86,9 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
 
     private void SFXButtonCallback()
     {
+        if (Time.time - lastButtonPressTime < buttonCooldown) return;
+        lastButtonPressTime = Time.time;
+
         sfxState = !sfxState;
 
         UpdateSFXVisuals();
@@ -92,9 +98,12 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
         onSFXStateChanged?.Invoke(sfxState);
     }
 
-    
+
     private void MusicButtonCallback()
     {
+        if (Time.time - lastButtonPressTime < buttonCooldown) return;
+        lastButtonPressTime = Time.time;
+
         musicState = !musicState;
 
         UpdateMusicVisuals();
@@ -163,7 +172,7 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
     public void HideCreditsPanel() => creditsPanel.SetActive(false);
     private string EscapeURL(string _s) => UnityWebRequest.EscapeURL(_s).Replace("+", "%20");
     private void PrivacyPolicyButtonCallback() => Application.OpenURL(privacyPolicyURL);
-   
+
     public void Load()
     {
         sfxState = true;

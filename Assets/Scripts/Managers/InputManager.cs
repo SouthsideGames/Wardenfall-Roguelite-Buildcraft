@@ -32,12 +32,19 @@ public class InputManager : MonoBehaviour
         if (Instance == null)
             Instance = this;
         else
-            Destroy(gameObject);
-
-        if (SystemInfo.deviceType == DeviceType.Desktop && !forceHandheld)
         {
-            joystick.gameObject.SetActive(false);
-            pauseButton.gameObject.SetActive(false);
+            Destroy(gameObject);
+            return;
+        }
+
+        bool isMobile = SystemInfo.deviceType == DeviceType.Handheld || forceHandheld;
+        joystick.gameObject.SetActive(isMobile);
+        pauseButton.gameObject.SetActive(isMobile);
+
+        // Disable screen dimming on mobile
+        if (isMobile)
+        {
+            Screen.sleepTimeout = SleepTimeout.NeverSleep;
         }
             
 
