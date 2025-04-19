@@ -6,4 +6,12 @@ public interface IWeaponSystem
     void SetWeapon(WeaponDataSO weaponData);
     float GetDamage();
     float GetAttackSpeed();
+    bool CanAttack();
+    void OnWeaponEquipped();
+    void OnWeaponUnequipped();
+    bool IsWeaponActive();
+    void ResetWeaponStats();
+    float GetUpgradeCost();
+    string GetWeaponDescription();
+    WeaponDataSO GetWeaponData();
 }

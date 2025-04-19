@@ -152,4 +152,36 @@ public abstract class Weapon : MonoBehaviour, IStats, IWeaponSystem
 
     public float GetDamage() => damage;
     public float GetAttackSpeed() => 1f / attackDelay;
+    
+    public virtual bool CanAttack() => attackTimer >= attackDelay;
+    
+    public virtual void OnWeaponEquipped()
+    {
+        gameObject.SetActive(true);
+        ConfigureWeaponStats();
+    }
+
+    public virtual void OnWeaponUnequipped()
+    {
+        gameObject.SetActive(false);
+        ResetWeaponStats();
+    }
+
+    public bool IsWeaponActive() => gameObject.activeInHierarchy;
+
+    public void ResetWeaponStats()
+    {
+        attackTimer = 0;
+        damage = 0;
+        attackDelay = 0;
+        criticalHitChance = 0;
+        criticalHitDamageAmount = 0;
+        range = 0;
+    }
+
+    public float GetUpgradeCost() => WeaponStatCalculator.GetPurchasePrice(WeaponData, Level + 1);
+
+    public string GetWeaponDescription() => WeaponData.Description;
+    
+    public WeaponDataSO GetWeaponData() => WeaponData;
 }
