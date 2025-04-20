@@ -52,6 +52,9 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
     private EnemyStatus status;
     public EnemyModifierHandler modifierHandler { get; private set; }   
     protected Transform playerTransform;
+    public int CurrentHealth => health;
+    public int MaxHealth => maxHealth;
+    public bool IsAlive => health > 0;
 
     protected virtual void Start()
     {
@@ -131,7 +134,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
         status.ApplyEffect(drainEffect);
     }
 
-    protected virtual void Die()
+    public virtual void Die()
     {
         if (this == null || gameObject == null) return;
 
@@ -258,28 +261,43 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
     }
 
     public Vector2 GetCenter() => (Vector2)transform.position + _collider.offset;
+    public void TakeDamage(int damage) => TakeDamage(damage, false); 
+    public void MoveTo(Transform target) => movement?.SetTarget(target);
+    public void AttackTarget() => Attack();
 
-
-    // Implement IDamageable interface methods (example)
-    public void TakeDamage(int damage)
+    public virtual void ApplyEffect(StatusEffect effect)
     {
-        TakeDamage(damage, false); //Call existing method.  Could be improved.
+        if (status != null)
+            status.ApplyEffect(effect);
     }
 
-    public bool IsAlive()
+     public virtual void Initialize(EnemyDataSO data)
     {
-        return health > 0;
+        maxHealth = data.maxHealth;
+        health = maxHealth;
+        contactDamage = data.contactDamage;
+        playerDetectionRadius = data.detectionRadius;
     }
 
-    // Implement IEnemyBehavior interface methods (example)
-    public void MoveTo(Vector3 targetPosition)
+    public virtual void UpdateBehavior()
     {
-        movement?.SetTarget(targetPosition);
+        if (!hasSpawned || !attacksEnabled) return;
+        ChangeDirections();
     }
 
-    public void AttackTarget()
+    public void OnHit()
     {
-        Attack();
+        if (status != null)
+        {
+            isInvincible = true;
+            StartCoroutine(ResetInvincibility());
+        }
+    }
+
+    private IEnumerator ResetInvincibility()
+    {
+        yield return new WaitForSeconds(0.1f);
+        isInvincible = false;
     }
 
 }

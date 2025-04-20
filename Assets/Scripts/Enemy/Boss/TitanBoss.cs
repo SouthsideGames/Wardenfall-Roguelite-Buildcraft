@@ -79,7 +79,7 @@ public class TitanBoss : Boss
         for (int i = 0; i < 3; i++)
         {
             Vector2 randomOffset = Random.insideUnitCircle * 2f;
-            Vector2 spawnPos = playerTransform.position + randomOffset;
+            Vector2 spawnPos = (Vector2)playerTransform.position + randomOffset;
             Instantiate(lightningBoltPrefab, spawnPos, Quaternion.identity);
         }
     }

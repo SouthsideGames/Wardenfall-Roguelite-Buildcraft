@@ -67,13 +67,6 @@ public class StatusEffect
             OnResetTimer.Invoke();
     }
 
-    /// <summary>
-    /// Optionally used if you're tracking remaining duration elsewhere.
-    /// </summary>
-    private void ResetDuration()
-    {
-        OnResetTimer?.Invoke();
-    }
 
     public StatusEffect Clone()
     {

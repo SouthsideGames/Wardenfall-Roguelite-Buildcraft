@@ -12,7 +12,7 @@ public class SplitterEnemy : Enemy
     private int splitCount = 0; 
 
 
-    protected override void Die()
+    public override void Die()
     {
         if (splitCount < maxSplits)
             Split();

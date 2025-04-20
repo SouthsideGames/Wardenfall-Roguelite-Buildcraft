@@ -19,7 +19,7 @@ public class RangedWeapon : Weapon
 
     void Update() => Attack();
 
-    protected override void Attack()
+    public override void Attack()
     {
         if (useAutoAim)
             AutoAimLogic();

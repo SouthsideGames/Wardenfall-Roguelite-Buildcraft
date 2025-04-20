@@ -105,7 +105,7 @@ public abstract class Weapon : MonoBehaviour, IStats, IWeaponSystem
     }
     
 
-    protected abstract void Attack();
+    public abstract void Attack();
 
     private void OnDrawGizmos()
     {

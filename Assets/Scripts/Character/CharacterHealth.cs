@@ -29,6 +29,9 @@ public class CharacterHealth : MonoBehaviour, IStats, IDamageable
     private float healthRecoveryDuration;
     private int damageAbsorption = 0;
     private bool isInvincible = false;
+    public bool IsAlive => health > 0;
+    public int MaxHealth => Mathf.RoundToInt(maxHealth);
+    public int CurrentHealth => Mathf.RoundToInt(health);
 
     private void Awake() => Enemy.OnDamageTaken += EnemyDamageCallback;
 
@@ -41,7 +44,8 @@ public class CharacterHealth : MonoBehaviour, IStats, IDamageable
     }
 
     public void SetDamageAbsorption(int percentage) => damageAbsorption = Mathf.Clamp(percentage, 0, 100);
-    public void TakeDamage(int _damage)
+
+    public void TakeDamage(int _damage, bool isCritical = false)
     {
 
         if (isInvincible)
@@ -77,7 +81,7 @@ public class CharacterHealth : MonoBehaviour, IStats, IDamageable
         UpdateHealthUI();
     }
 
-    private void Die()
+    public void Die()
     {
 
         OnCharacterDeath?.Invoke();
@@ -142,16 +146,6 @@ public class CharacterHealth : MonoBehaviour, IStats, IDamageable
             CharacterManager.Instance._sr.color = new Color(1, 1, 1, .5f);
         else
             CharacterManager.Instance._sr.color = new Color(1, 1, 1, 1f);
-    }
-
-    public bool IsAlive => health > 0;
-    public float CurrentHealth => health;
-    public float MaxHealth => maxHealth;
-
-    public void Die()
-    {
-        OnCharacterDeath?.Invoke();
-        GameManager.Instance.SetGameState(GameState.GameOver);
     }
     
 

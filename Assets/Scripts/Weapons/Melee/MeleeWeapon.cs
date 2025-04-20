@@ -23,7 +23,7 @@ public class MeleeWeapon : Weapon
         Attack();
     }
 
-    protected override void Attack()
+    public override void Attack()
     {
         if (useAutoAim)
         {

@@ -36,12 +36,7 @@ public class EnemyStatus : MonoBehaviour
     {
         // Check immunity
         if (IsImmuneToEffect(effect.EffectType))
-        {
-            // Spawn immunity indicator
-            if (statusUI != null)
-                statusUI.ShowImmunityIndicator();
             return;
-        }
 
         // Apply resistance
         effect.ApplyStatModifiers(1.0f, statusResistance);

@@ -18,7 +18,7 @@ public class SpawnWeapon : MeleeWeapon
     private bool canFire = true; 
     private Vector2 cachedMoveDirection;
 
-   protected override void Attack()
+   public override void Attack()
     {
         Vector2 moveDirection = CharacterManager.Instance.controller.MoveDirection;
 

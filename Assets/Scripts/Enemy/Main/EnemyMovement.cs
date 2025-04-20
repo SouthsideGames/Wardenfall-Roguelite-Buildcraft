@@ -87,7 +87,7 @@ public class EnemyMovement : MonoBehaviour
 
         Vector2 avoidanceForce = CalculateAvoidanceForce();
         Vector2 finalDirection = (currentDirection + avoidanceForce).normalized;
-        rb.velocity = finalDirection * moveSpeed;
+        rb.linearVelocity = finalDirection * moveSpeed;
     }
 
     private void HandleWandering()
@@ -107,7 +107,7 @@ public class EnemyMovement : MonoBehaviour
         }
 
         Vector2 direction = (wanderPoint - (Vector2)transform.position).normalized;
-        rb.velocity = direction * moveSpeed;
+        rb.linearVelocity = direction * moveSpeed;
     }
 
     private void GenerateNewWanderPoint()
@@ -140,7 +140,7 @@ public class EnemyMovement : MonoBehaviour
         if (patrolTimer > 0)
         {
             patrolTimer -= Time.deltaTime;
-            rb.velocity = Vector2.zero;
+            rb.linearVelocity = Vector2.zero;
             return;
         }
 
@@ -155,7 +155,7 @@ public class EnemyMovement : MonoBehaviour
             direction = FindAlternativePath(targetPoint);
         }
         
-        rb.velocity = direction * moveSpeed;
+        rb.linearVelocity = direction * moveSpeed;
 
         if (Vector2.Distance(transform.position, targetPoint) < patrolPointReachedDistance)
         {

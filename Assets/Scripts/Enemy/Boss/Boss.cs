@@ -170,7 +170,7 @@ public class Boss : Enemy
         );
     }
 
-    protected override void Die()
+    public override void Die()
     {
         MissionManager.Increment(MissionType.bossHunter, 1);
         OnBossDeath?.Invoke(transform.position);

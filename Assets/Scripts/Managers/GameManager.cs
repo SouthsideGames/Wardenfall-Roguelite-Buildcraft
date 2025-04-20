@@ -32,7 +32,6 @@ public class GameManager : MonoBehaviour
     public void StartGame()
     {
         SetGameState(GameState.Game);
-        TutorialManager.Instance.StartTutorial();
     }
 
     public void StartMainMenu() => SetGameState(GameState.Menu);

@@ -25,12 +25,6 @@ public class StatusEffectIcon : MonoBehaviour
             durationBarTransform.localScale = initialBarScale;
     }
 
-    public void UpdateEffect(StatusEffect effect)
-    {
-        currentEffect = effect;
-        stackText.text = $"x{effect.StackCount}";
-    }
-
     private void Update()
     {
         if (currentEffect != null && currentEffect.Duration > 0f && durationBarTransform != null)

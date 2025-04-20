@@ -157,19 +157,15 @@ public static class TraitEffectUtils
             handler.ModifyDamage(gainPerTick);
         }
     }
-}
 
-
-
-
-    private static void ApplyGlassCannon(Enemy enemy, float healthMult, float damageMult)
+    public static void ApplyGlassCannon(Enemy enemy, float healthMult, float damageMult)
     {
         enemy.maxHealth = Mathf.FloorToInt(enemy.maxHealth * healthMult);
         enemy.health = Mathf.Min(enemy.health, enemy.maxHealth);
         enemy.modifierHandler.ModifyDamage(damageMult - 1f);
     }
 
-    private static void ApplyTimeWarp(Enemy enemy, float speedModifier, float interval)
+    public static void ApplyTimeWarp(Enemy enemy, float speedModifier, float interval)
     {
         CoroutineRunner.Instance.StartCoroutine(TimeWarpRoutine(enemy, speedModifier, interval));
     }
@@ -191,7 +187,7 @@ public static class TraitEffectUtils
         }
     }
 
-    private static void ApplyVampiric(Enemy enemy, float lifestealPercent, bool speedupAtLowHealth = false)
+    public static void ApplyVampiric(Enemy enemy, float lifestealPercent, bool speedupAtLowHealth = false)
     {
         enemy.OnDealDamage += (damage) => {
             int healAmount = Mathf.FloorToInt(damage * lifestealPercent);
@@ -210,3 +206,5 @@ public static class TraitEffectUtils
             };
         }
     }
+
+}
