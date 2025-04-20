@@ -5,24 +5,17 @@ using System.Collections.Generic;
 
 public class TutorialManager : MonoBehaviour, IGameStateListener
 {
-    public static TutorialManager Instance { get; private set; }
+     public static TutorialManager Instance { get; private set; }
 
-    [Header("UI References")]
     [SerializeField] private GameObject tutorialPrefab;
-    [SerializeField] private GameObject darkBackground;
-    [SerializeField] private TextMeshProUGUI tutorialText;
-
-    [Header("Tutorial Data")]
     [SerializeField] private TutorialDataSO[] tutorials;
-    
+
     private Dictionary<GameState, string> stateToTutorialMap;
     private Dictionary<string, bool> completedTutorials;
-    private GameObject currentTutorialInstance;
-    private int currentDialogueIndex;
 
     private void Awake()
     {
-        if (Instance == null) 
+        if (Instance == null)
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
@@ -45,7 +38,7 @@ public class TutorialManager : MonoBehaviour, IGameStateListener
             { GameState.TraitSelection, "tutorial_traits" },
             { GameState.Shop, "tutorial_shop" }
         };
-        
+
         completedTutorials = new Dictionary<string, bool>();
     }
 
@@ -83,58 +76,14 @@ public class TutorialManager : MonoBehaviour, IGameStateListener
 
     private void ShowTutorial(TutorialDataSO tutorial)
     {
-        if (currentTutorialInstance != null)
-            Destroy(currentTutorialInstance);
-
-        currentTutorialInstance = Instantiate(tutorialPrefab);
-        currentDialogueIndex = 0;
-        
-        UpdateTutorialText(tutorial);
-        darkBackground.SetActive(true);
+        GameObject tutorialInstance = Instantiate(tutorialPrefab);
+        tutorialInstance.GetComponent<TutorialPrefabUI>().Initialize(tutorial);
     }
 
-    private void UpdateTutorialText(TutorialDataSO tutorial)
+    public void CompleteTutorial(string panelId)
     {
-        if (currentDialogueIndex < tutorial.dialogueLines.Length)
-        {
-            tutorialText.text = tutorial.dialogueLines[currentDialogueIndex];
-        }
-    }
-
-    public void OnTutorialNext()
-    {
-        var currentTutorial = GetCurrentTutorial();
-        if (currentTutorial == null) return;
-
-        currentDialogueIndex++;
-        
-        if (currentDialogueIndex >= currentTutorial.dialogueLines.Length)
-        {
-            CompleteTutorial(currentTutorial);
-        }
-        else
-        {
-            UpdateTutorialText(currentTutorial);
-        }
-    }
-
-    private TutorialDataSO GetCurrentTutorial()
-    {
-        return tutorials.Length > 0 ? tutorials[0] : null;
-    }
-
-    private void CompleteTutorial(TutorialDataSO tutorial)
-    {
-        string key = $"Tutorial_{tutorial.panelId}";
+        string key = $"Tutorial_{panelId}";
         PlayerPrefs.SetInt(key, 1);
-        completedTutorials[tutorial.panelId] = true;
-        
-        if (currentTutorialInstance != null)
-        {
-            Destroy(currentTutorialInstance);
-            currentTutorialInstance = null;
-        }
-        
-        darkBackground.SetActive(false);
+        completedTutorials[panelId] = true;
     }
 }
