@@ -52,13 +52,13 @@ public class UIManager : MonoBehaviour, IGameStateListener
         statisticsPanel.SetActive(false);   
         codexPanel.SetActive(false);
 
-       
+
 
         HideConfirmationPanel();
         HideCharacterSelectPanel();
         HideSettingsPanel();
         HideMissionPanel();
-    
+
     }
 
     private void Update() => UpdateCounterText();
@@ -108,14 +108,26 @@ public class UIManager : MonoBehaviour, IGameStateListener
             foreach (GameObject p in panels)
             {
                 p.SetActive(p == panel);
-
                 if (p == panel)
-                   TriggerPanelAction(panel);
+                {
+                    TriggerPanelAction(panel);
+                    CheckPanelTutorial(panel);
+                }
             }
         }
         else
+        {
             panel.SetActive(true);
-       
+            CheckPanelTutorial(panel);
+        }
+    }
+
+    private void CheckPanelTutorial(GameObject panel)
+    {
+        if (panel.TryGetComponent<Panel>(out Panel panelComponent))
+        {
+            TutorialManager.Instance.CheckForTutorial(panelComponent.PanelId);
+        }
     }
 
     private void UpdateCounterText() => killCounterText.text = StatisticsManager.Instance.CurrentRunKills.ToString();
