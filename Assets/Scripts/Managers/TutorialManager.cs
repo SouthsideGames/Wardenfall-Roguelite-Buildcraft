@@ -2,103 +2,103 @@
 using UnityEngine;
 using TMPro;
 using DG.Tweening;
+using System.Collections.Generic;
 
 public class TutorialManager : MonoBehaviour
 {
     public static TutorialManager Instance { get; private set; }
 
     [Header("UI References")]
-    [SerializeField] private GameObject tutorialPanel;
+    [SerializeField] private GameObject tutorialPrefab;
     [SerializeField] private TextMeshProUGUI tutorialText;
-    [SerializeField] private GameObject highlightObject;
-    [SerializeField] private GameObject arrowIndicator;
+    [SerializeField] private GameObject darkBackground;
 
-    private int currentStep = 0;
-    private bool tutorialComplete = false;
+    [Header("Tutorial Data")]
+    [SerializeField] private TutorialDataSO[] tutorials;
+    
+    private HashSet<string> completedTutorials = new HashSet<string>();
+    private int currentDialogueIndex = 0;
+    private TutorialDataSO currentTutorial;
+    private GameObject currentTutorialInstance;
 
     private void Awake()
     {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
+
+        LoadCompletedTutorials();
     }
 
-    public void StartTutorial()
+    public void CheckForTutorial(string panelId)
     {
-        if (PlayerPrefs.GetInt("TutorialComplete", 0) == 1) return;
-        currentStep = 0;
-        ShowNextTutorialStep();
-    }
+        if (completedTutorials.Contains(panelId)) return;
 
-    private void ShowNextTutorialStep()
-    {
-        switch (currentStep)
+        foreach (var tutorial in tutorials)
         {
-            case 0: // Movement
-                ShowTutorial("Use WASD or joystick to move your character");
+            if (tutorial.panelId == panelId)
+            {
+                StartTutorial(tutorial);
                 break;
-
-            case 1: // Combat
-                ShowTutorial("Click or tap to attack enemies");
-                break;
-
-            case 2: // Items
-                ShowTutorial("Collect items by walking over them");
-                break;
-
-            case 3: // Cards
-                ShowTutorial("Cards provide powerful abilities. Select one when offered!");
-                break;
-
-            case 4: // Traits
-                ShowTutorial("Traits modify your character. Choose wisely!");
-                break;
-
-            case 5: // Weapons
-                ShowTutorial("Find and upgrade weapons to become stronger");
-                break;
-
-            case 6: // Wave System
-                ShowTutorial("Survive waves of enemies to progress");
-                break;
-
-            default:
-                CompleteTutorial();
-                break;
+            }
         }
     }
 
-    public void AdvanceTutorial()
+    private void StartTutorial(TutorialDataSO tutorial)
     {
-        currentStep++;
-        ShowNextTutorialStep();
+        currentTutorial = tutorial;
+        currentDialogueIndex = 0;
+        
+        if (currentTutorialInstance != null)
+            Destroy(currentTutorialInstance);
+            
+        currentTutorialInstance = Instantiate(tutorialPrefab);
+        tutorialText = currentTutorialInstance.GetComponentInChildren<TextMeshProUGUI>();
+        darkBackground = currentTutorialInstance.transform.Find("DarkBackground").gameObject;
+        
+        ShowCurrentDialogue();
     }
 
-    private void ShowTutorial(string message)
+    public void AdvanceDialogue()
     {
-        tutorialPanel.SetActive(true);
-        tutorialText.text = message;
+        currentDialogueIndex++;
         
-        // Animate the panel
-        tutorialPanel.transform.DOScale(1.1f, 0.3f).SetEase(Ease.OutBack);
+        if (currentDialogueIndex >= currentTutorial.dialogueLines.Length)
+        {
+            CompleteTutorial();
+            return;
+        }
+        
+        ShowCurrentDialogue();
+    }
+
+    private void ShowCurrentDialogue()
+    {
+        tutorialText.text = currentTutorial.dialogueLines[currentDialogueIndex];
+        tutorialText.transform.DOScale(1.1f, 0.3f).SetEase(Ease.OutBack);
     }
 
     private void CompleteTutorial()
     {
-        tutorialPanel.SetActive(false);
-        PlayerPrefs.SetInt("TutorialComplete", 1);
-        tutorialComplete = true;
+        completedTutorials.Add(currentTutorial.panelId);
+        SaveCompletedTutorials();
+        
+        if (currentTutorialInstance != null)
+            Destroy(currentTutorialInstance);
     }
 
-    public void ShowHighlight(Vector3 position)
+    private void SaveCompletedTutorials()
     {
-        highlightObject.transform.position = position;
-        highlightObject.SetActive(true);
+        string tutorialString = string.Join(",", completedTutorials);
+        PlayerPrefs.SetString("CompletedTutorials", tutorialString);
     }
 
-    public void HideHighlight()
+    private void LoadCompletedTutorials()
     {
-        highlightObject.SetActive(false);
+        string tutorialString = PlayerPrefs.GetString("CompletedTutorials", "");
+        if (!string.IsNullOrEmpty(tutorialString))
+        {
+            string[] tutorials = tutorialString.Split(',');
+            completedTutorials = new HashSet<string>(tutorials);
+        }
     }
-
-    public bool IsTutorialComplete() => tutorialComplete;
 }
