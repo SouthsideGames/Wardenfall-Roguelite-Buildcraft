@@ -5,6 +5,7 @@ using System;
 
 public class UIManager : MonoBehaviour, IGameStateListener
 {
+    public static UIManager Instance;
     public static Action<Panel> OnPanelShown;
 
     [Header("PANELS:")]
@@ -23,6 +24,10 @@ public class UIManager : MonoBehaviour, IGameStateListener
     [SerializeField] private GameObject settingPanel;
     [SerializeField] private GameObject codexPanel;
     [SerializeField] private GameObject missionPanel;
+    [SerializeField] private GameObject viewCardPanel;
+
+    [Header("ADD. OBJECTS:")]
+    [SerializeField] private List<GameObject> blockers = new();
 
 
     [Header("COUNTER TEXT:")]
@@ -32,6 +37,12 @@ public class UIManager : MonoBehaviour, IGameStateListener
 
     private void Awake()
     {
+
+        if(Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
+
         panels.AddRange(new GameObject[]
         {
             menuPanel,
@@ -58,6 +69,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
         HideCharacterSelectPanel();
         HideSettingsPanel();
         HideMissionPanel();
+        HideAllBlockers();
 
     }
 
@@ -159,6 +171,16 @@ public class UIManager : MonoBehaviour, IGameStateListener
         ShowPanelInteractability(pausePanel, true);
     }
 
+    public void ShowViewCardPanel()
+    {
+        viewCardPanel.SetActive(true);
+    }
+
+    public void HideViewCardPanel()
+    {
+        confirmationPanel.SetActive(false);
+    }
+
     public void ShowCharacterSelectPanel()
     {
         characterSelectPanel.SetActive(true);
@@ -236,5 +258,23 @@ public class UIManager : MonoBehaviour, IGameStateListener
         if (_gameObject.TryGetComponent(out CanvasGroup cg))
             cg.interactable = _interactable;
     }
+
+#region Traits
+
+    public void ShowBlockersUpTo(int blockerIndex)
+    {
+        for (int i = 0; i < blockers.Count; i++)
+        {
+            blockers[i].SetActive(i < blockerIndex);
+        }
+    }
+
+    public void HideAllBlockers()
+    {
+       foreach (var blocker in blockers)
+        blocker.SetActive(false);
+    }
+
+#endregion
 
 }

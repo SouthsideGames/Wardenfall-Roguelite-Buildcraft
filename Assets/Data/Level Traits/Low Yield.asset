@@ -10,22 +10,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 09e7488b216125e4b932a11990bb6230, type: 3}
-  m_Name: Aggressive
+  m_Name: Low Yield
   m_EditorClassIdentifier: 
-  TraitID: T-002
+  TraitID: T-008
   Tiers:
-  - TierName: Aggressive
-    Description: Increase the detection range by 50%
+  - Icon: {fileID: 0}
+    TierName: Low Yield
+    Description: Enemies have -10% HP. Card cap reduced by 1.
     SpeedModifier: 0
     InvincibilityDuration: 0
-    SpecialEffectID: AggressiveT1
-  - TierName: Intense
-    Description: Increase the detection range by 75%
+    SpecialEffectID: LowYieldT1
+  - Icon: {fileID: 0}
+    TierName: Lower Yield
+    Description: Enemies have -20% HP. Card cap reduced by 2.
     SpeedModifier: 0
     InvincibilityDuration: 0
-    SpecialEffectID: AggressiveT2
-  - TierName: Frenzied
-    Description: Increase the detection range by 100%
+    SpecialEffectID: LowYieldT2
+  - Icon: {fileID: 0}
+    TierName: Minimalist
+    Description: Enemies have -30% HP. Card cap reduced by 3.
     SpeedModifier: 0
     InvincibilityDuration: 0
-    SpecialEffectID: AggressiveT3
+    SpecialEffectID: LowYieldT3

@@ -29,6 +29,7 @@ public class CharacterHealth : MonoBehaviour, IStats, IDamageable
     private float healthRecoveryDuration;
     private int damageAbsorption = 0;
     private bool isInvincible = false;
+    private float damageTakenMultiplier = 1f;
     public bool IsAlive => health > 0;
     public int MaxHealth => Mathf.RoundToInt(maxHealth);
     public int CurrentHealth => Mathf.RoundToInt(health);
@@ -55,7 +56,9 @@ public class CharacterHealth : MonoBehaviour, IStats, IDamageable
             return;
 
         float absorbedDamage = _damage * (damageAbsorption / 100f);
-        float actualDamage = _damage - absorbedDamage;
+        float rawDamage = _damage - absorbedDamage;
+
+        float actualDamage = rawDamage * damageTakenMultiplier;
 
         health -= Mathf.Min(actualDamage, health);
 
@@ -147,6 +150,8 @@ public class CharacterHealth : MonoBehaviour, IStats, IDamageable
         else
             CharacterManager.Instance._sr.color = new Color(1, 1, 1, 1f);
     }
+
+    public void SetDamageTakenMultiplier(float multiplier) => damageTakenMultiplier = multiplier;
     
 
 

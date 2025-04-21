@@ -66,10 +66,7 @@ public class GameManager : MonoBehaviour
         bool isBossWave = WaveManager.Instance.IsCurrentWaveBoss();
 
         if (isBossWave)
-        {
-            // Post-boss flow: Trait → Card Draft → Shop
             StartTraitSelection();
-        }
         else if (hasLevelUp || hasChest)
         {
             SetGameState(GameState.WaveTransition);

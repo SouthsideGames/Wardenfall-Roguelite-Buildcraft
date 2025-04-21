@@ -7,16 +7,18 @@ public class CardDraftManager : MonoBehaviour, IGameStateListener
     [SerializeField] private Transform cardContainer;
     [SerializeField] private CardLibrary cardLibrary;
     [SerializeField] private int optionsToShow = 3;
+    
 
     [Header("RARITY PREFABS")]
     [SerializeField] private CardOptionUI commonOptionPrefab;
-    
     [SerializeField] private CardOptionUI uncommonOptionPrefab;
     [SerializeField] private CardOptionUI rareOptionPrefab;
     [SerializeField] private CardOptionUI epicOptionPrefab;
     [SerializeField] private CardOptionUI legendaryOptionPrefab;
     [SerializeField] private CardOptionUI mythicOptionPrefab;
     [SerializeField] private CardOptionUI exaltedOptionPrefab;
+
+
 
     public void GameStateChangedCallback(GameState state)
     {
@@ -69,4 +71,5 @@ public class CardDraftManager : MonoBehaviour, IGameStateListener
         CharacterManager.Instance.cards.AddCard(card);
         GameManager.Instance.StartShop();
     }
+
 } 

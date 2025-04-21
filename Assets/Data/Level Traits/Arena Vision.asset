@@ -10,22 +10,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 09e7488b216125e4b932a11990bb6230, type: 3}
-  m_Name: Aggressive
+  m_Name: Arena Vision
   m_EditorClassIdentifier: 
-  TraitID: T-002
+  TraitID: T-010
   Tiers:
-  - TierName: Aggressive
-    Description: Increase the detection range by 50%
+  - Icon: {fileID: 0}
+    TierName: Wide Lens
+    Description: Slightly zoomed out. The player can not see the wave timer.
     SpeedModifier: 0
     InvincibilityDuration: 0
-    SpecialEffectID: AggressiveT1
-  - TierName: Intense
-    Description: Increase the detection range by 75%
+    SpecialEffectID: ArenaVisionT1
+  - Icon: {fileID: 0}
+    TierName: Broad Scope
+    Description: Medium zoom. The player can not see wave count.
     SpeedModifier: 0
     InvincibilityDuration: 0
-    SpecialEffectID: AggressiveT2
-  - TierName: Frenzied
-    Description: Increase the detection range by 100%
+    SpecialEffectID: ArenaVisionT2
+  - Icon: {fileID: 0}
+    TierName: Full Awareness
+    Description: Max zoom. The player can not longer see health or level up bar.
     SpeedModifier: 0
     InvincibilityDuration: 0
-    SpecialEffectID: AggressiveT3
+    SpecialEffectID: ArenaVisionT3

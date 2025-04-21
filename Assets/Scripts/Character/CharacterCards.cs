@@ -7,16 +7,16 @@ public class CharacterCards : MonoBehaviour
 {
     public static event Action OnDeckChanged;
 
-    private const int maxDeckCost = 10;
-
+    private const int baseDeckCost = 10;
+    private int cardCapModifier = 0;
     private List<CardSO> currentDeck = new List<CardSO>();
-    private int currentTotalCost;
+    public int currentTotalCost;
 
     public IReadOnlyList<CardSO> Deck => currentDeck;
 
     public void AddCard(CardSO newCard)
     {
-        if (currentTotalCost + newCard.cost <= maxDeckCost)
+        if (currentTotalCost + newCard.cost <= GetEffectiveDeckCap())
         {
             currentDeck.Add(newCard);
             currentTotalCost += newCard.cost;
@@ -24,7 +24,7 @@ public class CharacterCards : MonoBehaviour
         }
         else
         {
-            CardDraftUI.Instance.ShowReplaceCardPrompt(newCard, currentDeck, currentTotalCost, maxDeckCost);
+            CardDraftUI.Instance.ShowReplaceCardPrompt(newCard, currentDeck, currentTotalCost, baseDeckCost);
         }
     }
 
@@ -48,4 +48,13 @@ public class CharacterCards : MonoBehaviour
         currentTotalCost = 0;
         OnDeckChanged?.Invoke();
     }
+
+
+#region For Traits
+
+    public void ModifyCardCap(int change) => cardCapModifier += change;
+    public int GetEffectiveDeckCap() => baseDeckCost + cardCapModifier;
+
+#endregion
+
 } 
