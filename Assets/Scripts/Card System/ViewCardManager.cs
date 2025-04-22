@@ -18,16 +18,13 @@ public class ViewCardManager : MonoBehaviour
 
     public void InitializeCards()
     {
-        // Update cost display
         currentCostText.text = $"{CharacterManager.Instance.cards.currentTotalCost} / {CharacterManager.Instance.cards.GetEffectiveDeckCap()}";
 
-        // Clear old cards
         foreach (Transform child in currentCardContainer)
         {
             Destroy(child.gameObject);
         }
 
-        // Create cards based on rarity
         foreach (CardSO card in CharacterManager.Instance.cards.Deck)
         {
             ViewCardOptionUI prefabToUse = GetPrefabByRarity(card.rarity);

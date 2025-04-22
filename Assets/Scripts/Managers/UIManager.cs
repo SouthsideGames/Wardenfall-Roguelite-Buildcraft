@@ -70,6 +70,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
         HideSettingsPanel();
         HideMissionPanel();
         HideAllBlockers();
+        HideViewCardPanel();
 
     }
 
@@ -178,7 +179,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
 
     public void HideViewCardPanel()
     {
-        confirmationPanel.SetActive(false);
+        viewCardPanel.SetActive(false);
     }
 
     public void ShowCharacterSelectPanel()
