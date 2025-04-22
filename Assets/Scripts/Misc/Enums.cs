@@ -95,7 +95,8 @@ public enum CardEffectType
     ThunderStrike,
     PoisonCloud,
     PhaseShift,
-    VoltageSpike
+    VoltageSpike, 
+    Void
     // Add more as needed
 }
 
