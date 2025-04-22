@@ -65,6 +65,8 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         hasWaveStarted = true;
         timer = 0;
 
+        FindAnyObjectByType<InGameCardUIManager>()?.ResetAllCooldowns();
+
         UpdateUIForWaveStart();
     }
 

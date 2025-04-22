@@ -70,7 +70,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 741431287300869009, guid: 142b394e21edf1c42947ec16dc7a523c, type: 3}
       propertyPath: m_Intensity
-      value: 3.5571735
+      value: 3.6631827
       objectReference: {fileID: 0}
     - target: {fileID: 1623380939302669161, guid: 142b394e21edf1c42947ec16dc7a523c, type: 3}
       propertyPath: m_Materials.Array.size
@@ -198,7 +198,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4903989986093316332, guid: 142b394e21edf1c42947ec16dc7a523c, type: 3}
       propertyPath: m_Name
-      value: CFXR Portal (Black)
+      value: Void Stalker_BlackHole
       objectReference: {fileID: 0}
     - target: {fileID: 5279143269928544598, guid: 142b394e21edf1c42947ec16dc7a523c, type: 3}
       propertyPath: m_Materials.Array.size
@@ -334,6 +334,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pullForce: 5
   duration: 5
+  radius: 5
+  enemyMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1 &4413618786330511237 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6635372933816507189, guid: 142b394e21edf1c42947ec16dc7a523c, type: 3}
@@ -353,3 +357,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pullForce: 5
   duration: 5
+  radius: 5
+  enemyMask:
+    serializedVersion: 2
+    m_Bits: 0

@@ -104,4 +104,13 @@ public class InGameCardSlotUI : MonoBehaviour
                 break;
         }
     }
+
+    public void ResetCooldown()
+    {
+        cooldownRemaining = 0f;
+        isCoolingDown = false;
+        cooldownText.text = "";
+        clickButton.interactable = true;
+    }
+
 } 

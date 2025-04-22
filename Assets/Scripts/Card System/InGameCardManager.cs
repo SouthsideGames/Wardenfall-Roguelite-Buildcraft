@@ -32,4 +32,15 @@ public class InGameCardUIManager : MonoBehaviour
             slot.Setup(card);
         }
     }
+
+     public void ResetAllCooldowns()
+    {
+        foreach (Transform child in cardSlotContainer)
+        {
+            if (child.TryGetComponent<InGameCardSlotUI>(out var cardSlot))
+            {
+                cardSlot.ResetCooldown();
+            }
+        }
+    }
 }
