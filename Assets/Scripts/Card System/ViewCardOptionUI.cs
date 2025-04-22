@@ -47,4 +47,12 @@ public class ViewCardOptionUI : MonoBehaviour
         isSelected = false;
         removeButton.gameObject.SetActive(false);
     }
+
+    public void RemoveCard()
+    {
+        if (card != null)
+        {
+            CharacterManager.Instance.cards.RemoveCard(card);
+        }
+    }
 }

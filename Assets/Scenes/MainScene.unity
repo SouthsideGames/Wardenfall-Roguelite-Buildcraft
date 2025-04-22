@@ -12859,6 +12859,7 @@ MonoBehaviour:
   legendaryOptionPrefab: {fileID: 1860035283506933447, guid: 84f41bdd898db49489bf789555f809ec, type: 3}
   mythicOptionPrefab: {fileID: 8804827562576892659, guid: 652f0b44240fa474ca372dd2f6f4961d, type: 3}
   exaltedOptionPrefab: {fileID: 2044773377876638357, guid: b8ec6312ec10ff7459def1b76c326cc4, type: 3}
+  viewCardPanel: {fileID: 610388320}
 --- !u!1 &477935911
 GameObject:
   m_ObjectHideFlags: 0
@@ -39401,7 +39402,6 @@ MonoBehaviour:
   settingPanel: {fileID: 8529626482654921252}
   codexPanel: {fileID: 452072047}
   missionPanel: {fileID: 4742827812784145216}
-  viewCardPanel: {fileID: 610388320}
   blockers:
   - {fileID: 1544047428}
   - {fileID: 1483286866}
@@ -58654,8 +58654,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1350216646}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+      - m_Target: {fileID: 476084271}
+        m_TargetAssemblyTypeName: ViewCardManager, Assembly-CSharp
         m_MethodName: HideViewCardPanel
         m_Mode: 1
         m_Arguments:
@@ -69200,21 +69200,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1350216646}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: ShowViewCardPanel
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 476084271}
         m_TargetAssemblyTypeName: ViewCardManager, Assembly-CSharp
-        m_MethodName: InitializeCards
+        m_MethodName: ShowViewCardPanel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

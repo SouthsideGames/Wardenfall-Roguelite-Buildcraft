@@ -15,6 +15,14 @@ public class ViewCardManager : MonoBehaviour
     [SerializeField] private ViewCardOptionUI mythicOptionPrefab;
     [SerializeField] private ViewCardOptionUI exaltedOptionPrefab;
 
+    [Header("VIEW CARD PANEL")]
+    [SerializeField] private GameObject viewCardPanel;
+
+    void Start()
+    {
+        HideViewCardPanel();
+    }
+
 
     public void InitializeCards()
     {
@@ -49,4 +57,17 @@ public class ViewCardManager : MonoBehaviour
             _ => null
         };
     }
+
+    public void ShowViewCardPanel()
+    {
+        viewCardPanel.SetActive(true);
+        InitializeCards();
+    }
+
+    public void HideViewCardPanel()
+    {
+        viewCardPanel.SetActive(false);
+        InitializeCards();
+    }
+
 }

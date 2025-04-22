@@ -49,6 +49,16 @@ public class CharacterCards : MonoBehaviour
         OnDeckChanged?.Invoke();
     }
 
+    public void RemoveCard(CardSO cardToRemove)
+    {
+        if (currentDeck.Contains(cardToRemove))
+        {
+            currentDeck.Remove(cardToRemove);
+            currentTotalCost -= cardToRemove.cost;
+            OnDeckChanged?.Invoke();
+        }
+    }
+
 
 #region For Traits
 

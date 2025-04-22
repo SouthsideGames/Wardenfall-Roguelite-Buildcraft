@@ -24,7 +24,6 @@ public class UIManager : MonoBehaviour, IGameStateListener
     [SerializeField] private GameObject settingPanel;
     [SerializeField] private GameObject codexPanel;
     [SerializeField] private GameObject missionPanel;
-    [SerializeField] private GameObject viewCardPanel;
 
     [Header("ADD. OBJECTS:")]
     [SerializeField] private List<GameObject> blockers = new();
@@ -70,7 +69,6 @@ public class UIManager : MonoBehaviour, IGameStateListener
         HideSettingsPanel();
         HideMissionPanel();
         HideAllBlockers();
-        HideViewCardPanel();
 
     }
 
@@ -170,16 +168,6 @@ public class UIManager : MonoBehaviour, IGameStateListener
         confirmationPanel.SetActive(false);
         TriggerPanelAction(pausePanel);
         ShowPanelInteractability(pausePanel, true);
-    }
-
-    public void ShowViewCardPanel()
-    {
-        viewCardPanel.SetActive(true);
-    }
-
-    public void HideViewCardPanel()
-    {
-        viewCardPanel.SetActive(false);
     }
 
     public void ShowCharacterSelectPanel()
