@@ -116,4 +116,9 @@ public class InGameCardSlotUI : MonoBehaviour
         clickButton.interactable = true;
     }
 
+    public bool IsCoolingDown()
+    {
+        return isCoolingDown;
+    }
+
 } 

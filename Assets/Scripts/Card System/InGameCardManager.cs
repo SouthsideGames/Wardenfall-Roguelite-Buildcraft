@@ -7,6 +7,11 @@ public class InGameCardUIManager : MonoBehaviour
     [SerializeField] private InGameCardSlotUI cardSlotPrefab;
     [SerializeField] private CharacterManager characterManager;
 
+    private bool enduranceBuffActive = false;
+
+    private const string EnduranceCardID = "endurance_core";
+    private const float EnduranceAbsorbPercent = .1f;
+
     private void OnEnable()
     {
         CharacterCards.OnDeckChanged += RefreshCardDisplay;
@@ -16,6 +21,46 @@ public class InGameCardUIManager : MonoBehaviour
     private void OnDisable()
     {
         CharacterCards.OnDeckChanged -= RefreshCardDisplay;
+    }
+
+    private void Update()
+    {
+        bool anyCooldowns = false;
+
+        foreach (Transform child in cardSlotContainer)
+        {
+            if (child.TryGetComponent<InGameCardSlotUI>(out var cardSlot))
+            {
+                if (cardSlot.IsCoolingDown())
+                {
+                    anyCooldowns = true;
+                }
+            }
+        }
+
+        EnduranceBuff(anyCooldowns);
+    }
+
+    private void EnduranceBuff(bool anyCooldowns)
+    {
+        if (characterManager.cards.HasCard(EnduranceCardID))
+        {
+            if (anyCooldowns && !enduranceBuffActive)
+            {
+                enduranceBuffActive = true;
+                characterManager.stats.BoostStat(Stat.CritChance, EnduranceAbsorbPercent);
+            }
+            else if (!anyCooldowns && enduranceBuffActive)
+            {
+                enduranceBuffActive = false;
+                characterManager.stats.RevertBoost(Stat.CritChance);
+            }
+        }
+        else if (enduranceBuffActive)
+        {
+            enduranceBuffActive = false;
+            characterManager.stats.RevertBoost(Stat.CritChance);
+        }
     }
 
     public void RefreshCardDisplay()

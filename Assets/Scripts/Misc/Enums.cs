@@ -100,7 +100,12 @@ public enum CardEffectType
     BladeStorm,
     TemporalReset,
     TimeShift,
-    CardCycle
+    CardCycle,
+    HealingSurge,
+    EnduranceCore,
+    Hyperstride,
+    QuantumPull,
+    VitalBloom
     // Add more as needed
 }
 

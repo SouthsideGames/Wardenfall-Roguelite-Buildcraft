@@ -18,13 +18,19 @@ public abstract class Item : MonoBehaviour, ICollectable
 
         collected = true;
 
+        if (_character.cards.HasCard("vital_bloom"))
+        {
+            float healAmount = _character.health.maxHealth * 0.03f;
+            _character.health.Heal((int)healAmount);
+        }
+
         StartCoroutine(MoveTowardsPlayer(_character));
     }
 
     IEnumerator MoveTowardsPlayer(CharacterManager _character)   
     {
         float timer = 0;
-        Vector2 initialPosition = transform.position; //candy position
+        Vector2 initialPosition = transform.position; 
 
         while(timer < 1)
         {
