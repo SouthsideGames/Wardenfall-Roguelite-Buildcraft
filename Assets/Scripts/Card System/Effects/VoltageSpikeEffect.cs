@@ -26,7 +26,7 @@ public class VoltageSpikeEffect : MonoBehaviour, ICardEffect
             Enemy enemy = hit.GetComponent<Enemy>();
             if (enemy != null)
             {
-                enemy.TakeDamage(card.effectValue, false);
+                enemy.TakeDamage((int)card.effectValue, false);
 
                 EnemyStatus status = enemy.GetComponent<EnemyStatus>();
                 if (status != null)

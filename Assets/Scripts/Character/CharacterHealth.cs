@@ -28,11 +28,11 @@ public class CharacterHealth : MonoBehaviour, IStats, IDamageable
     private float healthRecoveryTimer;
     private float healthRecoveryDuration;
     private int damageAbsorption = 0;
-    private bool isInvincible = false;
     private float damageTakenMultiplier = 1f;
     public bool IsAlive => health > 0;
     public int MaxHealth => Mathf.RoundToInt(maxHealth);
     public int CurrentHealth => Mathf.RoundToInt(health);
+    [HideInInspector] public bool isInvincible = false;
 
     private void Awake() => Enemy.OnDamageTaken += EnemyDamageCallback;
 
@@ -146,13 +146,18 @@ public class CharacterHealth : MonoBehaviour, IStats, IDamageable
         isInvincible = state;
 
         if (state)
+        {
             CharacterManager.Instance._sr.color = new Color(1, 1, 1, .5f);
+            isInvincible = true;
+        }
         else
+        {
             CharacterManager.Instance._sr.color = new Color(1, 1, 1, 1f);
+            isInvincible = false;
+        }
+            
     }
 
     public void SetDamageTakenMultiplier(float multiplier) => damageTakenMultiplier = multiplier;
-    
-
 
 }

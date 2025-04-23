@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4821930258780714043}
   - component: {fileID: 4984762908753706765}
   - component: {fileID: 4419764841312052443}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Enemy Ammo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -47,10 +47,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84d80461348b3c24e9354217c8d69095, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 8
   moveSpeed: 8
+  angularSpeed: 0
 --- !u!58 &4984762908753706765
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -89,7 +87,7 @@ CircleCollider2D:
   m_Radius: 0.1
 --- !u!50 &4419764841312052443
 Rigidbody2D:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -100,8 +98,8 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -165,6 +163,7 @@ SpriteRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -197,6 +196,6 @@ SpriteRenderer:
   m_Size: {x: 0.5019531, y: 0.5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0

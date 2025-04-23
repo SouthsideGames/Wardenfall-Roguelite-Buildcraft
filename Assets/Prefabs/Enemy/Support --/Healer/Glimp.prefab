@@ -5105,11 +5105,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6323866612611977464}
+  - component: {fileID: 3010102776688108655}
+  - component: {fileID: 507947032115667398}
+  - component: {fileID: 1315259623457384787}
   - component: {fileID: 8276737661640570850}
   - component: {fileID: 6716455708022135023}
   - component: {fileID: 8590368631950774282}
-  - component: {fileID: 507947032115667398}
   - component: {fileID: 6811301397035281725}
+  - component: {fileID: 6951891270485490257}
   m_Layer: 6
   m_Name: Glimp
   m_TagString: Enemy
@@ -5136,63 +5139,28 @@ Transform:
   - {fileID: 1241849735100310853}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8276737661640570850
-MonoBehaviour:
+--- !u!95 &3010102776688108655
+Animator:
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6610243285245234481}
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56b6a67e59eb44eb88bbe6033d04f677, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  anim: {fileID: 0}
-  _spriteRenderer: {fileID: 7470796458823418826}
-  spawnIndicator: {fileID: 1138471200418004597}
-  _collider: {fileID: 507947032115667398}
-  contactDamage: 0
-  playerDetectionRadius: 0
-  maxHealth: 120
-  health: 0
-  isInvincible: 0
-  spawnSize: 1.2
-  spawnTime: 1.2
-  numberOfLoops: 1
-  canPerformCriticalHit: 0
-  deathParticles: {fileID: 305940748695944711}
-  showGizmos: 0
-  tetherRadius: 5
-  maxTetheredEnemies: 4
-  enemyLayer:
-    serializedVersion: 2
-    m_Bits: 64
---- !u!114 &6716455708022135023
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6610243285245234481}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ddebe7d82fbdf44daf06654154cf032, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 0
---- !u!114 &8590368631950774282
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6610243285245234481}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bac90ab437da2d343a676dcf53fb750f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!58 &507947032115667398
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -5229,6 +5197,107 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: -0.03999999, y: 0.33399773}
   m_Radius: 0.45600224
+--- !u!50 &1315259623457384787
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6610243285245234481}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
+--- !u!114 &8276737661640570850
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6610243285245234481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56b6a67e59eb44eb88bbe6033d04f677, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  anim: {fileID: 0}
+  _spriteRenderer: {fileID: 7470796458823418826}
+  spawnIndicator: {fileID: 1138471200418004597}
+  _collider: {fileID: 507947032115667398}
+  contactDamage: 0
+  playerDetectionRadius: 0
+  maxHealth: 120
+  health: 0
+  isInvincible: 0
+  spawnSize: 1.2
+  spawnTime: 1.2
+  numberOfLoops: 1
+  deathParticles: {fileID: 305940748695944711}
+  showGizmos: 0
+  tetherRadius: 5
+  maxTetheredEnemies: 4
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 64
+--- !u!114 &6716455708022135023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6610243285245234481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ddebe7d82fbdf44daf06654154cf032, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 0
+  pathUpdateRate: 0.2
+  avoidanceRadius: 1
+  chasePlayer: 1
+  wander: 0
+  patrol: 0
+  patrolPoints: []
+  patrolWaitTime: 1
+  patrolPointReachedDistance: 0.1
+  wanderRadius: 5
+  minWanderWaitTime: 2
+  maxWanderWaitTime: 5
+  wanderPointReachedDistance: 0.1
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  maxDistanceFromStart: 10
+--- !u!114 &8590368631950774282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6610243285245234481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bac90ab437da2d343a676dcf53fb750f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  immunities: 
+  statusResistance: 0
 --- !u!114 &6811301397035281725
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5243,3 +5312,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   iconAnchor: {fileID: 985735489594452590}
   iconPrefab: {fileID: 1392284909096632975, guid: f467db2eb45e6534a851dea04057a0f5, type: 3}
+--- !u!114 &6951891270485490257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6610243285245234481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d3c57c0cf82a1642819f8f9d90d26cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canPerformCriticalHit: 0

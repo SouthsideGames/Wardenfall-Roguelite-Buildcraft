@@ -5514,6 +5514,8 @@ GameObject:
   - component: {fileID: 5555774871141990774}
   - component: {fileID: 2991572763711510330}
   - component: {fileID: 9059604833335127078}
+  - component: {fileID: 796357865922558699}
+  - component: {fileID: 5807218516330916691}
   m_Layer: 6
   m_Name: Bramblethorn
   m_TagString: Enemy
@@ -5612,6 +5614,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bac90ab437da2d343a676dcf53fb750f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  immunities: 
+  statusResistance: 0
 --- !u!114 &5555774871141990774
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5625,6 +5629,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
+  pathUpdateRate: 0.2
+  avoidanceRadius: 1
+  chasePlayer: 1
+  wander: 0
+  patrol: 0
+  patrolPoints: []
+  patrolWaitTime: 1
+  patrolPointReachedDistance: 0.1
+  wanderRadius: 5
+  minWanderWaitTime: 2
+  maxWanderWaitTime: 5
+  wanderPointReachedDistance: 0.1
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  maxDistanceFromStart: 10
 --- !u!114 &2991572763711510330
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5649,21 +5669,21 @@ MonoBehaviour:
   spawnSize: 1.2
   spawnTime: 0.3
   numberOfLoops: 4
-  canPerformCriticalHit: 0
   deathParticles: {fileID: 8577170979389446817}
   showGizmos: 1
   healthBar: {fileID: 6747968437771620526}
   healthText: {fileID: 2171386370760092137}
   maxIdleDuration: 1
   attackCooldown: 3
-  maxStages: 3
-  currentStage: 1
-  normalSpeed: 1.5
-  chargeSpeedMultiplier: 3
+  numberOfStages: 3
   spikePrefab: {fileID: 5579916199222765347, guid: cd5875aac4c19464e980be5f10aba71c, type: 3}
-  firePoint: {fileID: 4207549141387205654}
-  thornBarrageSpeed: 6
+  rootSlamRadius: 2.5
+  rootSlamDamage: 15
+  thornBarrageCount: 5
+  thornBarrageDelay: 0.2
   chargeDuration: 1.5
+  chargeSpeedMultiplier: 3
+  chargeDamage: 20
 --- !u!114 &9059604833335127078
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5682,6 +5702,46 @@ MonoBehaviour:
   fireRate: 0.2
   attackDelay: 0.5
   bulletSpeed: 10
+--- !u!114 &796357865922558699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5424207264188696762}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d3c57c0cf82a1642819f8f9d90d26cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canPerformCriticalHit: 0
+--- !u!50 &5807218516330916691
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5424207264188696762}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
 --- !u!1 &7138473124073922059
 GameObject:
   m_ObjectHideFlags: 0

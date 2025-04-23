@@ -26,5 +26,9 @@ public class DamageZone : MonoBehaviour
         {
             CharacterManager.Instance.health.TakeDamage(damageAmount);
         }
+        else if (other.CompareTag("Enemy"))
+        {
+            other.GetComponent<Enemy>().TakeDamage(damageAmount);
+        }
     }
 }

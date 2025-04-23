@@ -12,7 +12,7 @@ public class CardSO : ScriptableObject
     [Header("TYPE & EFFECT")]
     public CardEffectType effectType;
     public CardRarity rarity;
-    public int effectValue;
+    public float effectValue;
     public float activeTime;
     public int level;
 

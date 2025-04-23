@@ -18,7 +18,7 @@ public class PoisonCloudEffect : MonoBehaviour, ICardEffect
         PoisonCloudZone zone = cloud.GetComponent<PoisonCloudZone>();
         if (zone != null)
         {
-            zone.Initialize(card.effectValue, card.activeTime);
+            zone.Initialize((int)card.effectValue, card.activeTime);
         }
 
         Destroy(gameObject);

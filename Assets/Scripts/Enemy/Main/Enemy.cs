@@ -13,7 +13,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
     public static Action<Vector2> OnDeath;
     public static Action<Vector2> OnBossDeath;
     public static Action OnEnemyKilled;
-    protected Action OnSpawnCompleted;
+    public Action OnSpawnCompleted;
     public Action<int> OnDealDamage;
     public Action OnHealthChanged;
 

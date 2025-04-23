@@ -183,11 +183,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5165552451859010802}
+  - component: {fileID: 5383503628650417385}
   - component: {fileID: 3380606989215897294}
+  - component: {fileID: -7203759091654838126}
   - component: {fileID: 2632007060129678738}
   - component: {fileID: 1905146589038196524}
   - component: {fileID: 1122862972469765393}
   - component: {fileID: 8191167800269847758}
+  - component: {fileID: 5816814062341726467}
   m_Layer: 6
   m_Name: Gnash
   m_TagString: Enemy
@@ -215,6 +218,28 @@ Transform:
   - {fileID: 3105226701692929616}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &5383503628650417385
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2145636691612748121}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!58 &3380606989215897294
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -251,6 +276,33 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: -0.03999999, y: 0.33399773}
   m_Radius: 0.45600224
+--- !u!50 &-7203759091654838126
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2145636691612748121}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
 --- !u!114 &2632007060129678738
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -275,7 +327,6 @@ MonoBehaviour:
   spawnSize: 1.2
   spawnTime: 0.7
   numberOfLoops: 2
-  canPerformCriticalHit: 0
   deathParticles: {fileID: 4164785758290427616}
   showGizmos: 1
   attackRate: 1
@@ -294,6 +345,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 2.2
+  pathUpdateRate: 0.2
+  avoidanceRadius: 1
+  chasePlayer: 1
+  wander: 0
+  patrol: 0
+  patrolPoints: []
+  patrolWaitTime: 1
+  patrolPointReachedDistance: 0.1
+  wanderRadius: 5
+  minWanderWaitTime: 2
+  maxWanderWaitTime: 5
+  wanderPointReachedDistance: 0.1
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  maxDistanceFromStart: 10
 --- !u!114 &1122862972469765393
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -306,6 +373,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bac90ab437da2d343a676dcf53fb750f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  immunities: 
+  statusResistance: 0
 --- !u!114 &8191167800269847758
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -320,6 +389,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   iconAnchor: {fileID: 26691920275503504}
   iconPrefab: {fileID: 1392284909096632975, guid: f467db2eb45e6534a851dea04057a0f5, type: 3}
+--- !u!114 &5816814062341726467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2145636691612748121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d3c57c0cf82a1642819f8f9d90d26cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canPerformCriticalHit: 0
 --- !u!1 &2512326149274488663
 GameObject:
   m_ObjectHideFlags: 0

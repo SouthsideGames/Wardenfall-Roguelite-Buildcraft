@@ -9,12 +9,15 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 581801364084193765}
+  - component: {fileID: 7982582378356062334}
   - component: {fileID: 799529685274165997}
+  - component: {fileID: 7575556591974406491}
   - component: {fileID: 4467100555506982250}
   - component: {fileID: 4010048583620110479}
   - component: {fileID: 3104981424680506609}
   - component: {fileID: 6889160504432484258}
   - component: {fileID: 1265825451712338482}
+  - component: {fileID: 2422747950828109912}
   m_Layer: 6
   m_Name: Stinglet
   m_TagString: Enemy
@@ -42,6 +45,28 @@ Transform:
   - {fileID: 6730267595517030332}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &7982582378356062334
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 796357530644533229}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!58 &799529685274165997
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -78,6 +103,33 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: -0.03999999, y: 0.33399773}
   m_Radius: 0.45600224
+--- !u!50 &7575556591974406491
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 796357530644533229}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
 --- !u!114 &4467100555506982250
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -102,7 +154,6 @@ MonoBehaviour:
   spawnSize: 1
   spawnTime: 0.8
   numberOfLoops: 3
-  canPerformCriticalHit: 1
   deathParticles: {fileID: 3100473461851624964}
   showGizmos: 1
 --- !u!114 &4010048583620110479
@@ -136,6 +187,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 2.5
+  pathUpdateRate: 0.2
+  avoidanceRadius: 1
+  chasePlayer: 1
+  wander: 0
+  patrol: 0
+  patrolPoints: []
+  patrolWaitTime: 1
+  patrolPointReachedDistance: 0.1
+  wanderRadius: 5
+  minWanderWaitTime: 2
+  maxWanderWaitTime: 5
+  wanderPointReachedDistance: 0.1
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  maxDistanceFromStart: 10
 --- !u!114 &6889160504432484258
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -148,6 +215,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bac90ab437da2d343a676dcf53fb750f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  immunities: 
+  statusResistance: 0
 --- !u!114 &1265825451712338482
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,6 +231,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   iconAnchor: {fileID: 6123682034223511350}
   iconPrefab: {fileID: 1392284909096632975, guid: f467db2eb45e6534a851dea04057a0f5, type: 3}
+--- !u!114 &2422747950828109912
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 796357530644533229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d3c57c0cf82a1642819f8f9d90d26cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canPerformCriticalHit: 0
 --- !u!1 &3210812976549072079
 GameObject:
   m_ObjectHideFlags: 0

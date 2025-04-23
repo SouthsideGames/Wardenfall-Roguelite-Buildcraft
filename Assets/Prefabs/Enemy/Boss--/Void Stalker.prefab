@@ -5204,6 +5204,8 @@ GameObject:
   - component: {fileID: 583914184578449551}
   - component: {fileID: 7940873290070346341}
   - component: {fileID: 1625990491047038937}
+  - component: {fileID: 7417672578356571880}
+  - component: {fileID: -563815397965559146}
   m_Layer: 6
   m_Name: Void Stalker
   m_TagString: Enemy
@@ -5302,6 +5304,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bac90ab437da2d343a676dcf53fb750f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  immunities: 
+  statusResistance: 0
 --- !u!114 &583914184578449551
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5315,6 +5319,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
+  pathUpdateRate: 0.2
+  avoidanceRadius: 1
+  chasePlayer: 1
+  wander: 0
+  patrol: 0
+  patrolPoints: []
+  patrolWaitTime: 1
+  patrolPointReachedDistance: 0.1
+  wanderRadius: 5
+  minWanderWaitTime: 2
+  maxWanderWaitTime: 5
+  wanderPointReachedDistance: 0.1
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  maxDistanceFromStart: 10
 --- !u!114 &7940873290070346341
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5339,7 +5359,6 @@ MonoBehaviour:
   spawnSize: 1.2
   spawnTime: 0.3
   numberOfLoops: 4
-  canPerformCriticalHit: 0
   deathParticles: {fileID: 8537694581696638951}
   showGizmos: 0
   healthBar: {fileID: 21744446256276788}
@@ -5370,6 +5389,46 @@ MonoBehaviour:
   fireRate: 0
   attackDelay: 0
   bulletSpeed: 0
+--- !u!114 &7417672578356571880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1642122531957677840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d3c57c0cf82a1642819f8f9d90d26cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canPerformCriticalHit: 0
+--- !u!50 &-563815397965559146
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1642122531957677840}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
 --- !u!1 &2339487112804129158
 GameObject:
   m_ObjectHideFlags: 0

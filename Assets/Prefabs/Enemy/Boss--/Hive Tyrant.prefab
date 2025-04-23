@@ -792,6 +792,8 @@ GameObject:
   - component: {fileID: 6335280017664386322}
   - component: {fileID: 5458764462658241759}
   - component: {fileID: 7628623211209311480}
+  - component: {fileID: 4354718492248633}
+  - component: {fileID: 4764646792289538174}
   m_Layer: 6
   m_Name: Hive Tyrant
   m_TagString: Enemy
@@ -889,6 +891,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bac90ab437da2d343a676dcf53fb750f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  immunities: 
+  statusResistance: 0
 --- !u!114 &5458764462658241759
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -902,6 +906,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
+  pathUpdateRate: 0.2
+  avoidanceRadius: 1
+  chasePlayer: 1
+  wander: 0
+  patrol: 0
+  patrolPoints: []
+  patrolWaitTime: 1
+  patrolPointReachedDistance: 0.1
+  wanderRadius: 5
+  minWanderWaitTime: 2
+  maxWanderWaitTime: 5
+  wanderPointReachedDistance: 0.1
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  maxDistanceFromStart: 10
 --- !u!114 &7628623211209311480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -926,7 +946,6 @@ MonoBehaviour:
   spawnSize: 1.2
   spawnTime: 0.3
   numberOfLoops: 4
-  canPerformCriticalHit: 0
   deathParticles: {fileID: 8248587190768416357}
   showGizmos: 0
   healthBar: {fileID: 1834084654023645776}
@@ -939,6 +958,46 @@ MonoBehaviour:
   stingletPrefab: {fileID: 796357530644533229, guid: 0908c98750083364ea9748500e33ccf2, type: 3}
   maxMinions: 3
   spawnInterval: 5
+--- !u!114 &4354718492248633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608085058246943903}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d3c57c0cf82a1642819f8f9d90d26cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canPerformCriticalHit: 0
+--- !u!50 &4764646792289538174
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608085058246943903}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
 --- !u!1 &9080940405535971012
 GameObject:
   m_ObjectHideFlags: 0

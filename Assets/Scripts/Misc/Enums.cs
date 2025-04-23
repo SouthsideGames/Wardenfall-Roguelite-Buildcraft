@@ -96,7 +96,10 @@ public enum CardEffectType
     PoisonCloud,
     PhaseShift,
     VoltageSpike, 
-    Void
+    Void,
+    BladeStorm,
+    TemporalReset,
+    TimeShift
     // Add more as needed
 }
 

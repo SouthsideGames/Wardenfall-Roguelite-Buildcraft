@@ -33,7 +33,7 @@ public class InGameCardUIManager : MonoBehaviour
         }
     }
 
-     public void ResetAllCooldowns()
+    public void ResetAllCooldowns()
     {
         foreach (Transform child in cardSlotContainer)
         {

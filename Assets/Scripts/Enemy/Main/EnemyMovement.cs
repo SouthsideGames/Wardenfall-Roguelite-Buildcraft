@@ -44,6 +44,35 @@ public class EnemyMovement : MonoBehaviour
     private Vector2 startPosition;
     [SerializeField] private float maxDistanceFromStart = 10f;
 
+     private void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        currentTarget = GameObject.FindGameObjectWithTag("Player")?.transform;
+        if (currentTarget == null)
+        {
+            Debug.LogWarning("No player found for enemy to target");
+        }
+        startPosition = transform.position;
+
+        var enemy = GetComponent<Enemy>();
+        if (enemy != null)
+        {
+            canMove = false;
+            enemy.OnSpawnCompleted += () => canMove = true;
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (!canMove || isKnockedBack || currentTarget == null) return;
+
+        if (chasePlayer)
+        {
+            Vector2 direction = ((Vector2)currentTarget.position - (Vector2)transform.position).normalized;
+            rb.MovePosition((Vector2)transform.position + direction * moveSpeed * Time.fixedDeltaTime);
+        }
+    }
+
     public void StorePlayer(CharacterManager _player) => currentTarget = _player.transform;
 
     public void SetTarget(Transform newTarget)
@@ -314,8 +343,4 @@ public class EnemyMovement : MonoBehaviour
         isKnockedBack = false;
     }
 
-    private void Start() {
-        rb = GetComponent<Rigidbody2D>();
-        startPosition = transform.position;
-    }
 }
