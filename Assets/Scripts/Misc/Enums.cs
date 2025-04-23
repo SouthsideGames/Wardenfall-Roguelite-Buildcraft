@@ -99,7 +99,8 @@ public enum CardEffectType
     Void,
     BladeStorm,
     TemporalReset,
-    TimeShift
+    TimeShift,
+    CardCycle
     // Add more as needed
 }
 

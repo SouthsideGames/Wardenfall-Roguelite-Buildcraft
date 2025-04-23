@@ -53,21 +53,24 @@ public class InGameCardSlotUI : MonoBehaviour
         {
             cooldownRemaining -= Time.deltaTime;
             if (cooldownRemaining > 0f)
-            {
                 cooldownText.text = Mathf.CeilToInt(cooldownRemaining).ToString();
-            }
             else
             {
                 cooldownText.text = "";
                 isCoolingDown = false;
                 cooldownRemaining = 0f;
-                clickButton.interactable = true; // ✅ Re-enable button after cooldown
+                clickButton.interactable = true; 
             }
         }
     }
 
     public void TriggerCooldown(float duration)
     {
+        if (CharacterManager.Instance.cards.HasCard("card_cycle"))
+        {
+            duration *= 0.5f;
+        }
+
         cooldownRemaining = duration;
         isCoolingDown = true;
         clickButton.interactable = false; // ✅ Disable button during cooldown

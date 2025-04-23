@@ -65,6 +65,11 @@ public class CharacterCards : MonoBehaviour
     public void ModifyCardCap(int change) => cardCapModifier += change;
     public int GetEffectiveDeckCap() => baseDeckCost + cardCapModifier;
 
+    public bool HasCard(string cardID)
+    {
+        return currentDeck.Any(card => card.cardID == cardID);
+    }
+
 #endregion
 
 } 
