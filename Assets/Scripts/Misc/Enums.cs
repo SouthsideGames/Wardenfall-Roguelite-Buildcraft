@@ -105,7 +105,8 @@ public enum CardEffectType
     EnduranceCore,
     Hyperstride,
     QuantumPull,
-    VitalBloom
+    VitalBloom,
+    WildcardProtocol
     // Add more as needed
 }
 
