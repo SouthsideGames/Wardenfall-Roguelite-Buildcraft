@@ -10,6 +10,8 @@ public class TraitManager : MonoBehaviour
     [SerializeField] private List<TraitDataSO> allTraits;
     public List<TraitDataSO> AllTraits => allTraits;
 
+    private Dictionary<string, int> suppressedBackup = null;
+
     private void Awake()
     {
         if(Instance == null)
@@ -17,7 +19,6 @@ public class TraitManager : MonoBehaviour
         else
             Destroy(gameObject);
     }
-
 
     public void AddTrait(string traitID) 
     {
@@ -44,4 +45,24 @@ public class TraitManager : MonoBehaviour
             return traitStacks[traitID];
         return 0;
     }
-}
+
+    public void DisableAllTraitsTemporarily()
+    {
+        if (suppressedBackup == null)
+        {
+            suppressedBackup = new Dictionary<string, int>(traitStacks);
+            traitStacks.Clear();
+            Debug.Log("All traits temporarily disabled.");
+        }
+    }
+
+    public void RestoreAllSuppressedTraits()
+    {
+        if (suppressedBackup != null)
+        {
+            traitStacks = new Dictionary<string, int>(suppressedBackup);
+            suppressedBackup = null;
+            Debug.Log("All suppressed traits restored.");
+        }
+    }
+} 

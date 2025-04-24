@@ -108,7 +108,8 @@ public enum CardEffectType
     VitalBloom,
     WildcardProtocol,
     ChaosDrift,
-    ToxicPulse
+    ToxicPulse,
+    TraitSuppression
     // Add more as needed
 }
 
