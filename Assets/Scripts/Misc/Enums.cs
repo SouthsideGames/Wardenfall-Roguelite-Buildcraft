@@ -106,7 +106,9 @@ public enum CardEffectType
     Hyperstride,
     QuantumPull,
     VitalBloom,
-    WildcardProtocol
+    WildcardProtocol,
+    ChaosDrift,
+    ToxicPulse
     // Add more as needed
 }
 
