@@ -109,7 +109,8 @@ public enum CardEffectType
     WildcardProtocol,
     ChaosDrift,
     ToxicPulse,
-    TraitSuppression
+    TraitSuppression,
+    OblivionPulse,
     // Add more as needed
 }
 
