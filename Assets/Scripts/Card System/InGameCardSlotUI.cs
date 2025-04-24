@@ -71,6 +71,11 @@ public class InGameCardSlotUI : MonoBehaviour
             duration *= 0.5f;
         }
 
+        if (CharacterManager.Instance.cards.HasCard("paradox_core") && CharacterManager.Instance.health != null && CharacterManager.Instance.health.maxHealth == CharacterManager.Instance.health.CurrentHealth)
+        {
+            duration *= 0.75f;
+        }
+
         cooldownRemaining = duration;
         isCoolingDown = true;
         clickButton.interactable = false; // ✅ Disable button during cooldown
