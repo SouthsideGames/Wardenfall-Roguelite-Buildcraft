@@ -7,13 +7,10 @@ public class BladeStormEffect : MonoBehaviour, ICardEffect
     public void Activate(CharacterManager target, CardSO card)
     {
         if (bladePrefab == null || target == null)
-        {
-            Debug.LogWarning("BladeStormEffect missing prefab or target.");
             return;
-        }
 
         GameObject zone = Instantiate(bladePrefab, target.transform.position, Quaternion.identity);
-        zone.transform.SetParent(target.transform); // follow the player
+        zone.transform.SetParent(target.transform); 
 
         BladeZone zoneScript = zone.GetComponent<BladeZone>();
         if (zoneScript != null)

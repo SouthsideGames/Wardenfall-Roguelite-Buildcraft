@@ -9,7 +9,6 @@ public class OblivionPulseEffect : MonoBehaviour, ICardEffect
     {
         if (QTEManager.Instance == null)
         {
-            Debug.LogWarning("OblivionPulseEffect: QTEManager not found.");
             return;
         }
 
@@ -26,12 +25,10 @@ public class OblivionPulseEffect : MonoBehaviour, ICardEffect
     {
         foreach (Enemy enemy in FindObjectsByType<Enemy>(FindObjectsSortMode.None))
         {
-            if (enemy == null) continue; // Skip if enemy is destroyed
+            if (enemy == null) continue;
 
-            enemy.TakeDamage(int.MaxValue); // Instant kill
+            enemy.TakeDamage(int.MaxValue); 
         }
-
-        Debug.Log("Oblivion Pulse succeeded: All enemies eliminated.");
     }
 
     public void Deactivate() { }

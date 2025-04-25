@@ -6,7 +6,6 @@ public class HealingSurgeEffect : MonoBehaviour, ICardEffect
     {
         if (target == null || card == null)
         {
-            Debug.LogWarning("HealingSurgeEffect: Missing target or card.");
             return;
         }
 
@@ -15,7 +14,6 @@ public class HealingSurgeEffect : MonoBehaviour, ICardEffect
         {
             float healAmount = health.maxHealth * card.effectValue;
             health.Heal((int)healAmount);
-            Debug.Log($"Healing Surge restored {healAmount} HP.");
         }
 
         Destroy(gameObject);

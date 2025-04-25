@@ -18,7 +18,7 @@ public class ChaosDriftEffect : MonoBehaviour, ICardEffect
     {
         duration = card.activeTime;
 
-        foreach (Enemy enemy in FindObjectsOfType<Enemy>())
+        foreach (Enemy enemy in FindObjectsByType<Enemy>(FindObjectsSortMode.None))
         {
             ApplyWander(enemy);
         }

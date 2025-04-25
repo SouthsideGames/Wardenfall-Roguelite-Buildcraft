@@ -111,6 +111,10 @@ public enum CardEffectType
     ToxicPulse,
     TraitSuppression,
     OblivionPulse,
+    ParadoxCore,
+    PrecisionSurge,
+    InfernoHalo,
+    PhantomEcho,
     // Add more as needed
 }
 

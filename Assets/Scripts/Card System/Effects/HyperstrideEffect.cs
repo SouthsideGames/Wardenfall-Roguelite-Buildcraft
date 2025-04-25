@@ -9,7 +9,6 @@ public class HyperstrideEffect : MonoBehaviour, ICardEffect
     {
         if (target == null || card == null)
         {
-            Debug.LogWarning("HyperstrideEffect: Missing target or card.");
             return;
         }
 
@@ -17,7 +16,6 @@ public class HyperstrideEffect : MonoBehaviour, ICardEffect
         if (stats != null)
         {
             stats.BoostStat(targetStat, card.effectValue);
-            Debug.Log($"Hyperstride activated: +{card.effectValue} to {targetStat} for {card.activeTime} seconds.");
             StartCoroutine(RevertAfterDelay(stats, targetStat, card.activeTime));
         }
 
@@ -28,7 +26,6 @@ public class HyperstrideEffect : MonoBehaviour, ICardEffect
     {
         yield return new WaitForSeconds(delay);
         stats.RevertBoost(stat);
-        Debug.Log("Hyperstride ended: movement speed reverted.");
     }
 
     public void Deactivate() { }
