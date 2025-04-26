@@ -52,4 +52,20 @@ public class CharacterWeapon : MonoBehaviour
             return;
         }
     }
+
+    protected virtual void HitStop(bool isCritical = false)
+    {
+        float stopTime = isCritical ? 0.15f : 0.1f;
+        float timeScale = isCritical ? 0.05f : 0.1f;
+        Time.timeScale = timeScale;
+        StartCoroutine(HitStopCoroutine(stopTime));
+    }
+
+    private IEnumerator HitStopCoroutine(float duration)
+    {
+        yield return new WaitForSecondsRealtime(duration);
+        Time.timeScale = 1f;
+    }
+}
+
 }
