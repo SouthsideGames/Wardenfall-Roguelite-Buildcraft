@@ -19,7 +19,7 @@ public class ToxicPulseEffect : MonoBehaviour, ICardEffect
 
         StatusEffectType selectedType = effectPool[Random.Range(0, effectPool.Length)];
 
-        foreach (Enemy enemy in FindObjectsOfType<Enemy>())
+        foreach (Enemy enemy in FindObjectsByType<Enemy>(FindObjectsSortMode.None))
         {
             EnemyStatus status = enemy.GetComponent<EnemyStatus>();
             if (status != null)

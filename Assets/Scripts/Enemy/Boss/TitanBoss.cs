@@ -6,7 +6,7 @@ public class TitanBoss : Boss
     [Header("Stage 1")]
     [SerializeField] private GameObject lightningBoltPrefab;
     [SerializeField] private float detectionRadius = 3f;
-    [SerializeField] private float lightningDelay = 0.5f;
+    //[SerializeField] private float lightningDelay = 0.5f;
     [SerializeField] private float multiAttackDelay = 0.3f;
     [SerializeField] private int lightningBurstCount = 3;
     [SerializeField] private float stageOneRotateSpeed = 5f;

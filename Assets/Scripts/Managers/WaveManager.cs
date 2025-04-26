@@ -29,6 +29,9 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     private List<float> localCounters = new List<float>();
 
     private Wave currentWave;
+    private float playerPerformanceScore = 1f;
+    private int enemiesKilledThisWave = 0;
+    private float damageTakenThisWave = 0f;
 
     [SerializeField] private float minDistanceBetweenSpawns = 2f;
     [SerializeField] private int maxEnemiesOnScreen = 50;
@@ -73,7 +76,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     private void InitializeWave(int waveIndex)
     {
         localCounters.Clear();
-        recentSpawnPoints.Clear(); // Clear spawn points at the start of each wave
+        recentSpawnPoints.Clear(); 
         currentWave = wave[waveIndex];
 
         for (int i = 0; i < currentWave.segments.Count; i++)
@@ -99,6 +102,8 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         // Check if we've hit enemy limit
         if (transform.childCount >= maxEnemiesOnScreen) return;
 
+        UpdatePlayerPerformance();
+
         foreach (var (segment, index) in currentWave.segments.WithIndex())
         {
             if (timer < segment.tStart || timer > segment.tEnd) continue;
@@ -110,10 +115,8 @@ public class WaveManager : MonoBehaviour, IGameStateListener
             {
                 Vector2 spawnPos = GetOptimizedSpawnPosition();
 
-                // Spawn with dynamic difficulty adjustment
                 GameObject enemy = Instantiate(segment.prefab, spawnPos, Quaternion.identity, transform);
 
-                // Adjust enemy stats based on wave progression
                 AdjustEnemyDifficulty(enemy.GetComponent<Enemy>());
 
                 localCounters[index]++;
@@ -121,11 +124,9 @@ public class WaveManager : MonoBehaviour, IGameStateListener
                 if (segment.spawnOnce) 
                 {
                     localCounters[index] += Mathf.Infinity;
-                    // Special handling for boss segments
                     PrepareArenaForBoss();
                 }
 
-                // Clean up old spawn points
                 CleanupSpawnHistory();
             }
         }
@@ -148,33 +149,37 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         return spawnPos;
     }
 
-    private bool IsTooCloseToOtherSpawns(Vector2 position)
-    {
-        return recentSpawnPoints.Any(p => Vector2.Distance(p, position) < minDistanceBetweenSpawns);
-    }
+    private bool IsTooCloseToOtherSpawns(Vector2 position) => recentSpawnPoints.Any(p => Vector2.Distance(p, position) < minDistanceBetweenSpawns);
 
     private void CleanupSpawnHistory()
     {
         if (recentSpawnPoints.Count > 10)
-        {
             recentSpawnPoints.RemoveAt(0);
-        }
+    }
+
+    private void UpdatePlayerPerformance()
+    {
+        float killScore = enemiesKilledThisWave / (maxEnemiesOnScreen * 0.5f);
+        float damageScore = Mathf.Max(0.5f, 1f - (damageTakenThisWave / 100f));
+        playerPerformanceScore = (killScore + damageScore) / 2f;
+
+        enemiesKilledThisWave = 0;
+        damageTakenThisWave = 0f;
     }
 
     private void AdjustEnemyDifficulty(Enemy enemy)
     {
         if (enemy == null) return;
 
-        float difficultyMultiplier = 1f + (currentWaveIndex * 0.1f);
-        enemy.maxHealth = Mathf.RoundToInt(enemy.maxHealth * difficultyMultiplier);
-        enemy.contactDamage = Mathf.RoundToInt(enemy.contactDamage * difficultyMultiplier);
+        float baseMultiplier = 1f + (currentWaveIndex * 0.1f);
+        float performanceMultiplier = Mathf.Lerp(0.8f, 1.2f, playerPerformanceScore);
+        float finalMultiplier = baseMultiplier * performanceMultiplier;
+
+        enemy.maxHealth = Mathf.RoundToInt(enemy.maxHealth * finalMultiplier);
+        enemy.contactDamage = Mathf.RoundToInt(enemy.contactDamage * finalMultiplier);
     }
 
-    private void PrepareArenaForBoss()
-    {
-        // Clear regular enemies when boss spawns
-        StartCoroutine(GradualEnemyClear());
-    }
+    private void PrepareArenaForBoss() => StartCoroutine(GradualEnemyClear());
 
     private IEnumerator GradualEnemyClear()
     {
@@ -241,6 +246,65 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         Vector2 direction = UnityEngine.Random.insideUnitCircle.normalized;
         Vector2 offset = direction * UnityEngine.Random.Range(6, 10);
         return (Vector2)character.transform.position + offset;
+    }
+
+    private Vector2 GetFormationSpawnPosition(int enemyIndex)
+    {
+        Vector2 basePos = (Vector2)character.transform.position;
+        float radius = UnityEngine.Random.Range(6f, 10f);
+        float spacing = 1.5f;
+
+        switch(currentWave.segments.Count % 11)
+        {
+            case 0: //Circle Formation
+                float angle = (enemyIndex * 360f / maxEnemiesOnScreen) * Mathf.Deg2Rad;
+                return basePos + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * radius;
+            case 1: // V formation
+                float forwardOffset = enemyIndex * spacing;
+                float sideOffset = enemyIndex * spacing * 0.5f;
+                return basePos + new Vector2(sideOffset, forwardOffset);
+            case 2: // Square formation
+                int row = enemyIndex / 4;
+                int col = enemyIndex % 4;
+                return basePos + new Vector2((col - 1.5f) * spacing, (row - 1.5f) * spacing) * 2;
+            case 3: //X formation
+                float diagOffset = enemyIndex * spacing * 0.7f;
+                return basePos + (enemyIndex % 2 == 0 ? 
+                        new Vector2(diagOffset, diagOffset) : 
+                        new Vector2(diagOffset, - diagOffset));
+            case 4: //Double circle formation
+                float innerRadius = radius * 0.5f;
+                float angleDouble = (enemyIndex *360f / (maxEnemiesOnScreen / 2)) * Mathf.Deg2Rad;
+                return basePos + new Vector2(Mathf.Cos(angleDouble), Mathf.Sin(angleDouble)) * (enemyIndex % 2 == 0 ? radius : innerRadius);
+            case 5: //Diamond formation
+                int layer = Mathf.Min(enemyIndex / 4, 3);
+                float diamondAngle = ((enemyIndex % 4) * 90f) * Mathf.Deg2Rad;
+                float layerRadius = (layer + 1) * spacing;
+                return basePos + new Vector2(Mathf.Cos(diamondAngle), Mathf.Sin(diamondAngle)) * layerRadius;
+            case 6: // Pentagon formation
+                float pentagonAngle = (enemyIndex * 72f) * Mathf.Deg2Rad;
+                return basePos + new Vector2(Mathf.Cos(pentagonAngle), Mathf.Sin(pentagonAngle)) * radius;
+            case 7: //Hexagon Formation
+                float hexAngle = (enemyIndex * 60f) * Mathf.Deg2Rad;
+                return basePos + new Vector2(Mathf.Cos(hexAngle), Mathf.Sin(hexAngle)) * radius;
+            case 8: //Cross formation
+                int arm = enemyIndex % 4;
+                int dist = enemyIndex / 4;
+                Vector2 dir = arm switch {
+                    0 => Vector2.up,
+                    1 => Vector2.right,
+                    2 => Vector2.down,
+                    _ => Vector2.left
+                };
+                return basePos + dir * (dist + 1) * spacing;
+            case 9: // Sprial Formation
+                float spiralAngle = (enemyIndex * 30f) * Mathf.Deg2Rad;
+                float spiralRadius = (enemyIndex * 0.05f * spacing);
+                return basePos + new Vector2(Mathf.Cos(spiralAngle), Mathf.Sin(spiralAngle)) * spiralRadius;
+            
+            default: // Random formation with minimum spacing
+                return GetOptimizedSpawnPosition();
+        }
     }
 
     private void UpdateUIForWaveStart() => ui.UpdateWaveText($"Trial {currentWaveIndex + 1} / {wave.Length}");

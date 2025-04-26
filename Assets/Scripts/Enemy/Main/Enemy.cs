@@ -30,7 +30,6 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
     public int contactDamage;
     public float playerDetectionRadius;
     protected float attackTimer;
-    private bool isCriticalHit;
     private bool attacksEnabled = true;
 
     [Header("HEALTH:")]
@@ -97,14 +96,12 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
         if (!attacksEnabled) return;
 
         attackTimer = 0;
-        isCriticalHit = false;
 
         if (modifierHandler.CanCrit())
         {
             float enemyCritChance = (UnityEngine.Random.Range(0, 5) / 100f) * modifierHandler.GetCritChanceModifier();
             if (enemyCritChance >= CharacterStats.Instance.GetStatValue(Stat.CritResist))
             {
-                isCriticalHit = true;
                 int critDamage = Mathf.FloorToInt(contactDamage * 2 * modifierHandler.GetDamageMultiplier());
                 character.TakeDamage(critDamage);
                 return;
