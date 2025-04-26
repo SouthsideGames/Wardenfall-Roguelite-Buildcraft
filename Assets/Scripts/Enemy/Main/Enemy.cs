@@ -297,4 +297,5 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
         isInvincible = false;
     }
 
+
 }
