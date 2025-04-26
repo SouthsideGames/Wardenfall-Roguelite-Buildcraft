@@ -70,6 +70,8 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 
         FindAnyObjectByType<InGameCardUIManager>()?.ResetAllCooldowns();
 
+        HazardManager.Instance?.SpawnHazards(character.transform.position);
+
         UpdateUIForWaveStart();
     }
 
