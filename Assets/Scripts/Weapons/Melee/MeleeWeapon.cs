@@ -83,6 +83,10 @@ public class MeleeWeapon : Weapon
             {
                 int damage = GetDamage(out bool isCriticalHit);
                 enemy.TakeDamage(damage, isCriticalHit);
+                if (isCriticalHit)
+                {
+                    HitStop(true);
+                }
                 damagedEnemies.Add(enemy);
                 MissionManager.Increment(MissionType.weaponSpecialist, damage);
             }
@@ -148,4 +152,23 @@ public class MeleeWeapon : Weapon
         criticalHitDamageAmount += _statsManager.GetStatValue(Stat.CritDamage);
 
     }
+
+    // Added HitStop function -  needs implementation details based on your game's specifics.
+    private void HitStop(bool criticalHit)
+    {
+        // Implement hit stop logic here.  This might involve Time.timeScale manipulation,
+        // coroutines, or other techniques to temporarily slow or pause game time.
+        // Example (using Time.timeScale):
+        if (criticalHit)
+        {
+            Time.timeScale = 0.1f; // Slows down time
+            Invoke("ResumeTime", 0.2f); // Resumes after 0.2 seconds
+        }
+    }
+
+    private void ResumeTime()
+    {
+        Time.timeScale = 1f;
+    }
+
 }
