@@ -53,7 +53,15 @@ public class BulletBase : MonoBehaviour
         }
     }
 
-    protected virtual void ApplyDamage(Enemy enemy) => enemy.TakeDamage(damage, isCriticalHit);
+    protected virtual void ApplyDamage(Enemy enemy)
+    {
+        enemy.TakeDamage(damage, isCriticalHit);
+        if (isCriticalHit && rangedWeapon != null)
+        {
+            rangedWeapon.HitStop(true);
+        }
+    }
+
     protected virtual void DestroyBullet() => gameObject.SetActive(false);
     protected bool IsInLayerMask(int layer, LayerMask layerMask) => (layerMask.value & (1 << layer)) != 0;
 
