@@ -18,10 +18,7 @@ public class MeleeWeapon : Weapon
         state = MeleeWeaponState.Idle;
     }
 
-    void Update()
-    {
-        Attack();
-    }
+    void Update() => Attack();
 
     public override void Attack()
     {
@@ -45,10 +42,7 @@ public class MeleeWeapon : Weapon
         
     }
 
-    private void AttackState()
-    {
-        AttackLogic();
-    }
+    private void AttackState() => AttackLogic();
 
     protected virtual void StartAttack()
     {
@@ -153,16 +147,12 @@ public class MeleeWeapon : Weapon
 
     }
 
-    // Added HitStop function -  needs implementation details based on your game's specifics.
     private void HitStop(bool criticalHit)
     {
-        // Implement hit stop logic here.  This might involve Time.timeScale manipulation,
-        // coroutines, or other techniques to temporarily slow or pause game time.
-        // Example (using Time.timeScale):
         if (criticalHit)
         {
-            Time.timeScale = 0.1f; // Slows down time
-            Invoke("ResumeTime", 0.2f); // Resumes after 0.2 seconds
+            Time.timeScale = 0.1f;
+            Invoke("ResumeTime", 0.2f); 
         }
     }
 

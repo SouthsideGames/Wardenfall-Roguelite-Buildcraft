@@ -3,12 +3,14 @@ using UnityEngine;
 public class EnemyHazardAwareness : MonoBehaviour
 {
     private EnemyMovement movement;
+    private Enemy enemy;
     private float hazardCheckRadius = 3f;
     private float hazardAvoidanceForce = 5f;
 
     private void Start()
     {
         movement = GetComponent<EnemyMovement>();
+        enemy = GetComponent<Enemy>();
     }
 
     private void FixedUpdate()
@@ -27,7 +29,7 @@ public class EnemyHazardAwareness : MonoBehaviour
             if (hazardComponent != null)
             {
                 // Don't avoid healing zones
-                if (hazardComponent is HealZone && GetComponent<EnemyStatus>().CurrentHealth < GetComponent<EnemyStatus>().MaxHealth)
+                if (hazardComponent is HealZone && enemy.CurrentHealth < enemy.MaxHealth)
                 {
                     continue;
                 }

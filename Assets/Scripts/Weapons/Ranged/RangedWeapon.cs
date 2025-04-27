@@ -120,4 +120,18 @@ public class RangedWeapon : Weapon
         range += _statsManager.GetStatValue(Stat.Range) / 10;
     }
 
+    public void HitStop(bool criticalHit)
+    {
+        if (criticalHit)
+        {
+            Time.timeScale = 0.1f;
+            Invoke("ResumeTime", 0.2f); 
+        }
+    }
+
+    private void ResumeTime()
+    {
+        Time.timeScale = 1f;
+    }
+
 }

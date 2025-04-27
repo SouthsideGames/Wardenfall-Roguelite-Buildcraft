@@ -31,10 +31,10 @@ public class HealZone : EnvironmentalHazard
         }
         
         // For enemy healing
-        EnemyStatus enemyStatus = other.GetComponent<EnemyStatus>();
-        if (enemyStatus != null)
+        Enemy enemy = other.GetComponent<Enemy>();
+        if (enemy != null)
         {
-            enemyStatus.Heal(healAmount);
+            enemy.Heal(healAmount);
         }
     }
 }

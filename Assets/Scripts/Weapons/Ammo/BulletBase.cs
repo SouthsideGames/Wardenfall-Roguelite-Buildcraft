@@ -20,10 +20,7 @@ public class BulletBase : MonoBehaviour
         col = GetComponent<Collider2D>();
     }
 
-    public void Configure(RangedWeapon _rangedWeapon)
-    {
-        this.rangedWeapon = _rangedWeapon;
-    }
+    public void Configure(RangedWeapon _rangedWeapon) => this.rangedWeapon = _rangedWeapon;
 
 
     public virtual void Shoot(int _damage, Vector2 direction, bool _isCriticalHit)

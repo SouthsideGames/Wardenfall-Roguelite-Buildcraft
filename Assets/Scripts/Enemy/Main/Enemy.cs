@@ -298,5 +298,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
         isInvincible = false;
     }
 
+    public void Heal(int _damage) => health += _damage; 
+
 
 }

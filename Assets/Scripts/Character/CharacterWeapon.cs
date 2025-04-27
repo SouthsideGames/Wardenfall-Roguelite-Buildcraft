@@ -67,5 +67,3 @@ public class CharacterWeapon : MonoBehaviour
         Time.timeScale = 1f;
     }
 }
-
-}

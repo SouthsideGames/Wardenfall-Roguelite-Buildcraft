@@ -41,8 +41,7 @@ public class CharacterController : MonoBehaviour, IStats
         Invoke(nameof(EnableMovement), duration);
     }
 
-    public void EnableMovement()
-    {
-        isMovementDisabled = false;
-    }
+    public void EnableMovement() => isMovementDisabled = false;
+
+    public void SetMovementMultiplier(float multiplier) => moveSpeed = baseMoveSpeed * multiplier;
 }
