@@ -1,20 +1,21 @@
 using UnityEngine;
 
+[ExecuteAlways]
 public class ArenaGizmo : MonoBehaviour
 {
-    // Set Gizmo color
     public Color gizmoColor = Color.green;
 
     private void OnDrawGizmos()
     {
-        // Set Gizmo color
         Gizmos.color = gizmoColor;
+        
+        // Center of arena at (0,0)
+        Vector3 center = Vector3.zero;
+        
+        // Adjust the size: give Z at least a small value like 0.1f so it shows properly
+        Vector3 size = new Vector3(Constants.arenaSize.x, Constants.arenaSize.y, 0.1f);
 
-        // Calculate the center and size from Constants
-        Vector3 center = new Vector3(Constants.arenaSize.x / 2, Constants.arenaSize.y / 2, 0);
-        Vector3 size = new Vector3(Constants.arenaSize.x, Constants.arenaSize.y, 0);
-
-        // Draw the arena as a wireframe cube
+        // Draw the arena boundary
         Gizmos.DrawWireCube(center, size);
     }
 }

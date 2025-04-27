@@ -4,5 +4,5 @@ using UnityEngine;
 
 public static class Constants
 {
-    public static Vector2 arenaSize = new Vector2(55,35);
+    public static Vector2 arenaSize = new Vector2(35,15);
 }
