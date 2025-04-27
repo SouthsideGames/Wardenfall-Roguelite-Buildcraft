@@ -125,7 +125,7 @@ public class RangedWeapon : Weapon
         if (criticalHit)
         {
             Time.timeScale = 0.1f;
-            Invoke("ResumeTime", 0.2f); 
+            Invoke("ResumeTime", 0.1f); 
         }
     }
 

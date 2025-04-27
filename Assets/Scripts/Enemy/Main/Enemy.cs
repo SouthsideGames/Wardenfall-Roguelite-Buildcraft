@@ -180,6 +180,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
     private void Spawn()
     {
         SetRenderersVisibility(false);
+        movement.canMove = false;  
 
         Vector3 targetScale = spawnIndicator.transform.localScale * spawnSize;
         LeanTween.scale(spawnIndicator.gameObject, targetScale, spawnTime)
@@ -200,6 +201,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
         _collider.enabled = true;
 
         movement?.StorePlayer(character);
+        movement?.EnableMovement();
         OnSpawnCompleted?.Invoke();
 
         StartCoroutine(ApplyTraitsNextFrame());

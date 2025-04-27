@@ -11,7 +11,7 @@ public class EnemyMovement : MonoBehaviour
 
     [Header("SETTINGS:")]
     public float moveSpeed = 3f;
-    private bool canMove = true;
+    public bool canMove = true;
     private bool isKnockedBack = false;
 
     private Vector2 knockbackDirection;
@@ -48,11 +48,7 @@ public class EnemyMovement : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        currentTarget = GameObject.FindGameObjectWithTag("Player")?.transform;
-        if (currentTarget == null)
-        {
-            Debug.LogWarning("No player found for enemy to target");
-        }
+        currentTarget = CharacterManager.Instance.transform;
         startPosition = transform.position;
     }
 
@@ -275,15 +271,9 @@ public class EnemyMovement : MonoBehaviour
         }
     }
 
-    public void DisableMovement(float duration)
-    {
-        CoroutineRunner.Instance.RunPooled(DisableMovementTemporarily(duration));
-    }
+    public void DisableMovement(float duration) => CoroutineRunner.Instance.RunPooled(DisableMovementTemporarily(duration));
 
-    public void EnableMovement()
-    {
-        canMove = true;
-    }
+    public void EnableMovement() => canMove = true;
 
     private IEnumerator DisableMovementTemporarily(float duration)
     {

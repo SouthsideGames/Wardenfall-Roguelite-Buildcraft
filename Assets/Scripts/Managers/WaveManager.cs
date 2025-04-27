@@ -139,7 +139,6 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         Vector2 spawnPos;
         int attempts = 0;
         const int maxAttempts = 10;
-        float padding = 2f;
 
         bool useFormation = false;
         float formationThreshold = 0.8f;
@@ -156,8 +155,6 @@ public class WaveManager : MonoBehaviour, IGameStateListener
             else
                 spawnPos = GetSpawnPosition();
 
-            spawnPos.x = Mathf.Clamp(spawnPos.x, padding, Constants.arenaSize.x - padding);
-            spawnPos.y = Mathf.Clamp(spawnPos.y, padding, Constants.arenaSize.y - padding);
             attempts++;
         }
         while (IsTooCloseToOtherSpawns(spawnPos) && attempts < maxAttempts);
