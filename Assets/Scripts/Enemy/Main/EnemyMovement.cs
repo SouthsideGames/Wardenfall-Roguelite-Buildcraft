@@ -10,7 +10,7 @@ public class EnemyMovement : MonoBehaviour
     private bool isTargetPositionSet = false;
 
     [Header("SETTINGS:")]
-    public float moveSpeed;
+    public float moveSpeed = 3f;
     private bool canMove = true;
     private bool isKnockedBack = false;
 
@@ -32,46 +32,18 @@ public class EnemyMovement : MonoBehaviour
     private float patrolTimer = 0f;
     [SerializeField] private float patrolWaitTime = 1f;
     [SerializeField] private float patrolPointReachedDistance = 0.1f;
-    
+
     private Vector2 wanderPoint;
     [SerializeField] private float wanderRadius = 5f;
     private float wanderTimer = 0f;
     [SerializeField] private float minWanderWaitTime = 2f;
     [SerializeField] private float maxWanderWaitTime = 5f;
     [SerializeField] private float wanderPointReachedDistance = 0.1f;
-    [SerializeField] private LayerMask obstacleLayer; // For checking valid wander points
-    
-    private Vector2 startPosition;
+    [SerializeField] private LayerMask obstacleLayer; 
+    private Vector2 externalForce;
     [SerializeField] private float maxDistanceFromStart = 10f;
 
-     private void Start()
-    {
-        rb = GetComponent<Rigidbody2D>();
-        currentTarget = GameObject.FindGameObjectWithTag("Player")?.transform;
-        if (currentTarget == null)
-        {
-            Debug.LogWarning("No player found for enemy to target");
-        }
-        startPosition = transform.position;
-
-        var enemy = GetComponent<Enemy>();
-        if (enemy != null)
-        {
-            canMove = false;
-            enemy.OnSpawnCompleted += () => canMove = true;
-        }
-    }
-
-    private void FixedUpdate()
-    {
-        if (!canMove || isKnockedBack || currentTarget == null) return;
-
-        if (chasePlayer)
-        {
-            Vector2 direction = ((Vector2)currentTarget.position - (Vector2)transform.position).normalized;
-            rb.MovePosition((Vector2)transform.position + direction * moveSpeed * Time.fixedDeltaTime);
-        }
-    }
+    private Vector2 startPosition;
 
     public void StorePlayer(CharacterManager _player) => currentTarget = _player.transform;
 
@@ -115,8 +87,11 @@ public class EnemyMovement : MonoBehaviour
         }
 
         Vector2 avoidanceForce = CalculateAvoidanceForce();
-        Vector2 finalDirection = (currentDirection + avoidanceForce).normalized;
+        Vector2 finalDirection = (currentDirection + avoidanceForce + externalForce).normalized;
         rb.linearVelocity = finalDirection * moveSpeed;
+
+        //Decay external force
+        externalForce = Vector2.Lerp(externalForce, Vector2.zero, Time.deltaTime * 5f);
     }
 
     private void HandleWandering()
@@ -136,25 +111,24 @@ public class EnemyMovement : MonoBehaviour
         }
 
         Vector2 direction = (wanderPoint - (Vector2)transform.position).normalized;
-        rb.linearVelocity = direction * moveSpeed;
+        rb.linearVelocity = direction * moveSpeed + externalForce;
+        externalForce = Vector2.Lerp(externalForce, Vector2.zero, Time.deltaTime * 5f);
     }
 
     private void GenerateNewWanderPoint()
     {
-        for (int i = 0; i < 30; i++) // Try 30 times to find valid point
+        for (int i = 0; i < 30; i++) 
         {
             float randomAngle = Random.Range(0f, 360f);
             Vector2 potentialPoint = (Vector2)transform.position + (Vector2)(Quaternion.Euler(0, 0, randomAngle) * Vector2.right * wanderRadius);
-            
-            // Check if point is valid (not inside obstacle)
+
             if (!Physics2D.OverlapCircle(potentialPoint, 0.5f, obstacleLayer))
             {
                 wanderPoint = potentialPoint;
                 return;
             }
         }
-        
-        // If no valid point found, move back toward start
+
         wanderPoint = startPosition;
     }
 
@@ -175,16 +149,15 @@ public class EnemyMovement : MonoBehaviour
 
         Vector2 targetPoint = patrolPoints[currentPatrolIndex];
         Vector2 direction = (targetPoint - (Vector2)transform.position).normalized;
-        
-        // Check for obstacles
+
         RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, 1f, obstacleLayer);
         if (hit.collider != null)
         {
-            // If obstacle found, try to find alternative path
             direction = FindAlternativePath(targetPoint);
         }
-        
-        rb.linearVelocity = direction * moveSpeed;
+
+        rb.linearVelocity = direction * moveSpeed + externalForce;
+        externalForce = Vector2.Lerp(externalForce, Vector2.zero, Time.deltaTime * 5f);
 
         if (Vector2.Distance(transform.position, targetPoint) < patrolPointReachedDistance)
         {
@@ -343,4 +316,55 @@ public class EnemyMovement : MonoBehaviour
         isKnockedBack = false;
     }
 
+    public void AddForce(Vector2 force)
+    {
+        externalForce += force;
+    }
+
+    private void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        currentTarget = GameObject.FindGameObjectWithTag("Player")?.transform;
+        if (currentTarget == null)
+        {
+            Debug.LogWarning("No player found for enemy to target");
+        }
+        startPosition = transform.position;
+    }
+
+    private void FixedUpdate()
+    {
+        if (!canMove || isKnockedBack || currentTarget == null) return;
+
+        if (chasePlayer)
+        {
+            Vector2 direction = ((Vector2)currentTarget.position - (Vector2)transform.position).normalized;
+            rb.MovePosition((Vector2)transform.position + direction * moveSpeed * Time.fixedDeltaTime + externalForce * Time.fixedDeltaTime);
+            externalForce = Vector2.Lerp(externalForce, Vector2.zero, Time.deltaTime * 5f);
+        }
+    }
 }
+
+public class HazardAwareness : MonoBehaviour
+{
+    public float hazardAvoidanceForce = 10f;
+    public LayerMask hazardLayer;
+
+    private EnemyMovement enemyMovement;
+
+    void Start()
+    {
+        enemyMovement = GetComponent<EnemyMovement>();
+    }
+
+    void FixedUpdate()
+    {
+        Collider2D[] hazards = Physics2D.OverlapCircleAll(transform.position, 5f, hazardLayer);
+        foreach (Collider2D hazard in hazards)
+        {
+            Vector2 directionToHazard = (Vector2)(transform.position - hazard.transform.position).normalized;
+            enemyMovement.AddForce(directionToHazard * hazardAvoidanceForce);
+        }
+    }
+}
+
