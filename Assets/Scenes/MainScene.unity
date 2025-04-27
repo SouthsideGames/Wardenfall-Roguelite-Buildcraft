@@ -29422,7 +29422,6 @@ GameObject:
   - component: {fileID: 973259116}
   - component: {fileID: 973259117}
   - component: {fileID: 973259118}
-  - component: {fileID: 973259119}
   m_Layer: 0
   m_Name: WaveManager
   m_TagString: Untagged
@@ -29866,29 +29865,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   waveText: {fileID: 1687327927}
   timerText: {fileID: 345501527}
---- !u!114 &973259119
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 973259115}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d063ad41fae684934adc03633be29487, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hazardPrefabs:
-  - {fileID: 676588269566505196, guid: 525bc5ad1e930914b8bfe09e11a0ddd1, type: 3}
-  - {fileID: 5317525687466305706, guid: 4e926884baf250e46954ee3b7a8773c5, type: 3}
-  - {fileID: 6033559084745458531, guid: 459d0903e8710334f9de61ff6d724312, type: 3}
-  - {fileID: 615279536833083556, guid: eed126513a002c04a9b23ac1dd6ac3f7, type: 3}
-  - {fileID: 1159484541469036123, guid: c2791869448215842b658f68706af154, type: 3}
-  - {fileID: 406787001051425476, guid: 0c7f0cdb2c58f1548b326174e50bf2f2, type: 3}
-  minHazardsPerWave: 2
-  maxHazardsPerWave: 5
-  minSpawnDistance: 3
-  maxSpawnDistance: 8
 --- !u!1 &979701055
 GameObject:
   m_ObjectHideFlags: 0
@@ -33689,6 +33665,60 @@ RectTransform:
   m_AnchoredPosition: {x: 265.1001, y: 0}
   m_SizeDelta: {x: 254.33, y: 81}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1061494247
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1061494248}
+  - component: {fileID: 1061494249}
+  m_Layer: 0
+  m_Name: HazardManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1061494248
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1061494247}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1557437623}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1061494249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1061494247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d063ad41fae684934adc03633be29487, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hazardPrefabs:
+  - {fileID: 676588269566505196, guid: 525bc5ad1e930914b8bfe09e11a0ddd1, type: 3}
+  - {fileID: 5317525687466305706, guid: 4e926884baf250e46954ee3b7a8773c5, type: 3}
+  - {fileID: 6033559084745458531, guid: 459d0903e8710334f9de61ff6d724312, type: 3}
+  - {fileID: 615279536833083556, guid: eed126513a002c04a9b23ac1dd6ac3f7, type: 3}
+  - {fileID: 1159484541469036123, guid: c2791869448215842b658f68706af154, type: 3}
+  - {fileID: 406787001051425476, guid: 0c7f0cdb2c58f1548b326174e50bf2f2, type: 3}
+  minHazardsPerWave: 2
+  maxHazardsPerWave: 5
+  poolSizePerHazardType: 3
 --- !u!1 &1066912204
 GameObject:
   m_ObjectHideFlags: 0
@@ -44340,6 +44370,7 @@ Transform:
   - {fileID: 1861620765}
   - {fileID: 1931256328}
   - {fileID: 1584583780}
+  - {fileID: 1061494248}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1559063621
@@ -52048,6 +52079,7 @@ Transform:
   m_Children:
   - {fileID: 717850832}
   - {fileID: 2092228926}
+  - {fileID: 2077647454}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1917882979
@@ -55501,6 +55533,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dcbf606f5d60d64abb0b3b5fdfe8f4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &2077647453
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2077647454}
+  m_Layer: 0
+  m_Name: AmmoHolder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2077647454
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2077647453}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1917116788}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2086380879
 GameObject:
   m_ObjectHideFlags: 0

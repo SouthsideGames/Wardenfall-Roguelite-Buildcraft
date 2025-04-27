@@ -13,13 +13,13 @@ public abstract class EnvironmentalHazard : MonoBehaviour
 
     protected virtual void Start()
     {
-        if (lifetime > 0)
-            Destroy(gameObject, lifetime);
+        
     }
 
-    protected virtual void OnTriggerStay2D(Collider2D other)
+    protected virtual void OnTriggerStay2D(Collider2D other) => FindTarget(other);
+
+    private void FindTarget(Collider2D other)
     {
-        
         if (other.CompareTag("Player") && Time.time >= nextDamageTime)
         {
             ApplyHazardEffect(other);
@@ -31,17 +31,18 @@ public abstract class EnvironmentalHazard : MonoBehaviour
             nextDamageTime = Time.time + damageInterval;
         }
     }
-    protected virtual void ApplyHazardEffect(Collider2D other)
+
+    protected virtual void ApplyHazardEffect(Collider2D other) => DamageTarget(other);
+    private void DamageTarget(Collider2D other)
     {
-        if(other.CompareTag("Player"))
+        if (other.CompareTag("Player"))
         {
             CharacterManager.Instance.health.TakeDamage(damageAmount);
         }
         else if (other.CompareTag("Enemy"))
         {
             Enemy enemy = other.GetComponent<Enemy>();
-            enemy?.TakeDamage(damageAmount);    
+            enemy?.TakeDamage(damageAmount);
         }
-        
     }
 }

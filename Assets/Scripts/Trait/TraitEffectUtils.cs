@@ -165,10 +165,15 @@ public static class TraitEffectUtils
     {
         float interval = 5f;
         EnemyModifierHandler handler = enemy.GetComponent<EnemyModifierHandler>();
+        GameObject handlerGO = handler != null ? handler.gameObject : null;
 
-        while (enemy != null && handler != null)
+        while (handler != null && handlerGO != null)
         {
             yield return new WaitForSeconds(interval);
+
+            if (handler == null || handlerGO == null)
+                yield break;
+
             handler.ModifyDamage(gainPerTick);
         }
     }

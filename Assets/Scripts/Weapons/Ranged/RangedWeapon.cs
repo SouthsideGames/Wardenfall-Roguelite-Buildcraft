@@ -14,8 +14,13 @@ public class RangedWeapon : Weapon
 
     [Header("POOL:")]
     public ObjectPool<BulletBase> bulletPool { get; private set; }
+    [SerializeField] private Transform ammoHolder;
 
-    void Start() => bulletPool = new ObjectPool<BulletBase>(CreateFunction, ActionOnGet, ActionOnRelease, ActionOnDestroy);
+    void Start()
+    {
+        ammoHolder = GameObject.Find("AmmoHolder").transform;
+        bulletPool = new ObjectPool<BulletBase>(CreateFunction, ActionOnGet, ActionOnRelease, ActionOnDestroy);
+    }
 
     void Update() => Attack();
 
@@ -89,7 +94,7 @@ public class RangedWeapon : Weapon
     #region POOLING
     private BulletBase CreateFunction()
     {
-        BulletBase bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
+        BulletBase bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity, ammoHolder);
         bullet.Configure(this);
         return bullet;
     }
