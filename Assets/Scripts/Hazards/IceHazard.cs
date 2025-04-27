@@ -1,8 +1,5 @@
 using UnityEngine;
 
-/// <summary>
-/// Creates a slippery ice zone that reduces entity movement control
-/// </summary>
 public class IceHazard : EnvironmentalHazard
 {
     [SerializeField] private float slowdownFactor = 0.5f;

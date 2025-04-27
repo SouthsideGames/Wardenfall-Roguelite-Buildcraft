@@ -139,12 +139,27 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         Vector2 spawnPos;
         int attempts = 0;
         const int maxAttempts = 10;
+        float padding = 2f;
+
+        bool useFormation = false;
+        float formationThreshold = 0.8f;
+        float formationChance = (playerPerformanceScore - formationThreshold) / (1f - formationThreshold);
+
+        if (playerPerformanceScore > formationThreshold)
+            useFormation = UnityEngine.Random.value < formationChance;
 
         do
         {
-            spawnPos = GetSpawnPosition();
+            
+            if (useFormation)
+                spawnPos = GetFormationSpawnPosition(transform.childCount);
+            else
+                spawnPos = GetSpawnPosition();
+
+            spawnPos.x = Mathf.Clamp(spawnPos.x, padding, Constants.arenaSize.x - padding);
+            spawnPos.y = Mathf.Clamp(spawnPos.y, padding, Constants.arenaSize.y - padding);
             attempts++;
-        } 
+        }
         while (IsTooCloseToOtherSpawns(spawnPos) && attempts < maxAttempts);
 
         recentSpawnPoints.Add(spawnPos);
@@ -276,7 +291,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
                         new Vector2(diagOffset, - diagOffset));
             case 4: //Double circle formation
                 float innerRadius = radius * 0.5f;
-                float angleDouble = (enemyIndex *360f / (maxEnemiesOnScreen / 2)) * Mathf.Deg2Rad;
+                float angleDouble = (enemyIndex * 360f / (maxEnemiesOnScreen / 2)) * Mathf.Deg2Rad;
                 return basePos + new Vector2(Mathf.Cos(angleDouble), Mathf.Sin(angleDouble)) * (enemyIndex % 2 == 0 ? radius : innerRadius);
             case 5: //Diamond formation
                 int layer = Mathf.Min(enemyIndex / 4, 3);

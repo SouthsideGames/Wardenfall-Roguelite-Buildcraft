@@ -4907,6 +4907,7 @@ GameObject:
   - component: {fileID: 6370497721652400066}
   - component: {fileID: 2644160340167578655}
   - component: {fileID: -4273912142258813166}
+  - component: {fileID: 5370997145211450652}
   m_Layer: 6
   m_Name: Titan
   m_TagString: Enemy
@@ -5069,7 +5070,6 @@ MonoBehaviour:
   numberOfStages: 2
   lightningBoltPrefab: {fileID: 13301048646092075, guid: 334ccdade87a4194b9f1855c484967dc, type: 3}
   detectionRadius: 3
-  lightningDelay: 0.5
   multiAttackDelay: 0.3
   lightningBurstCount: 3
   stageOneRotateSpeed: 5
@@ -5115,6 +5115,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &5370997145211450652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1211638819433932631}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cd5307a4a0c1485d8ac2c9862b3585c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1548364326615199814
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,12 +1,9 @@
 using UnityEngine;
 
-/// <summary>
-/// Represents a healing zone that restores health to entities within it
-/// </summary>
 public class HealZone : EnvironmentalHazard
 {
-    [SerializeField] private int healAmount = 5;    // Amount of health restored
-    [SerializeField] private Color healColor = Color.green;  // Visual color for the zone
+    [SerializeField] private int healAmount = 5;
+    [SerializeField] private Color healColor = Color.green; 
     
     private SpriteRenderer spriteRenderer;
 
@@ -17,7 +14,7 @@ public class HealZone : EnvironmentalHazard
         if (spriteRenderer != null)
         {
             Color color = healColor;
-            color.a = 0.3f; // Make it semi-transparent
+            color.a = 0.3f; 
             spriteRenderer.color = color;
         }
     }
@@ -26,11 +23,8 @@ public class HealZone : EnvironmentalHazard
     {
         // For player healing
         if (other.CompareTag("Player"))
-        {
             CharacterManager.Instance.health.Heal(healAmount);
-        }
-        
-        // For enemy healing
+
         Enemy enemy = other.GetComponent<Enemy>();
         if (enemy != null)
         {

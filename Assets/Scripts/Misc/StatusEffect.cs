@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class StatusEffect
 {
-
     public StatusEffectType EffectType;
     public float Duration;
     public float Value;

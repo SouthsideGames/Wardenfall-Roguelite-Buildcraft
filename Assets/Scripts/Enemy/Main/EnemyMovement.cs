@@ -45,6 +45,29 @@ public class EnemyMovement : MonoBehaviour
 
     private Vector2 startPosition;
 
+    private void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        currentTarget = GameObject.FindGameObjectWithTag("Player")?.transform;
+        if (currentTarget == null)
+        {
+            Debug.LogWarning("No player found for enemy to target");
+        }
+        startPosition = transform.position;
+    }
+
+    private void FixedUpdate()
+    {
+        if (!canMove || isKnockedBack || currentTarget == null) return;
+
+        if (chasePlayer)
+        {
+            Vector2 direction = ((Vector2)currentTarget.position - (Vector2)transform.position).normalized;
+            rb.MovePosition((Vector2)transform.position + direction * moveSpeed * Time.fixedDeltaTime + externalForce * Time.fixedDeltaTime);
+            externalForce = Vector2.Lerp(externalForce, Vector2.zero, Time.deltaTime * 5f);
+        }
+    }
+
     public void StorePlayer(CharacterManager _player) => currentTarget = _player.transform;
 
     public void SetTarget(Transform newTarget)
@@ -321,28 +344,6 @@ public class EnemyMovement : MonoBehaviour
         externalForce += force;
     }
 
-    private void Start()
-    {
-        rb = GetComponent<Rigidbody2D>();
-        currentTarget = GameObject.FindGameObjectWithTag("Player")?.transform;
-        if (currentTarget == null)
-        {
-            Debug.LogWarning("No player found for enemy to target");
-        }
-        startPosition = transform.position;
-    }
-
-    private void FixedUpdate()
-    {
-        if (!canMove || isKnockedBack || currentTarget == null) return;
-
-        if (chasePlayer)
-        {
-            Vector2 direction = ((Vector2)currentTarget.position - (Vector2)transform.position).normalized;
-            rb.MovePosition((Vector2)transform.position + direction * moveSpeed * Time.fixedDeltaTime + externalForce * Time.fixedDeltaTime);
-            externalForce = Vector2.Lerp(externalForce, Vector2.zero, Time.deltaTime * 5f);
-        }
-    }
 }
 
 public class HazardAwareness : MonoBehaviour
