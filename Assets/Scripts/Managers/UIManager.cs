@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using System;
+using SouthsideGames.SaveManager; // ✅ Needed for SaveManager!
 
 public class UIManager : MonoBehaviour, IGameStateListener
 {
@@ -9,6 +10,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
     public static Action<Panel> OnPanelShown;
 
     [Header("PANELS:")]
+    [SerializeField] private GameObject introPanel;
     [SerializeField] private GameObject menuPanel;
     [SerializeField] private GameObject weaponSelectPanel;
     [SerializeField] private GameObject gamePanel;
@@ -28,7 +30,6 @@ public class UIManager : MonoBehaviour, IGameStateListener
     [Header("ADD. OBJECTS:")]
     [SerializeField] private List<GameObject> blockers = new();
 
-
     [Header("COUNTER TEXT:")]
     [SerializeField] private TextMeshProUGUI killCounterText;
 
@@ -36,8 +37,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
 
     private void Awake()
     {
-
-        if(Instance == null)
+        if (Instance == null)
             Instance = this;
         else
             Destroy(gameObject);
@@ -52,7 +52,6 @@ public class UIManager : MonoBehaviour, IGameStateListener
             waveTransitionPanel,
             traitSelectTransitionPanel,
             shopPanel
-
         });
 
         GameManager.OnGamePaused += PauseGameCallback;
@@ -62,17 +61,17 @@ public class UIManager : MonoBehaviour, IGameStateListener
         statisticsPanel.SetActive(false);   
         codexPanel.SetActive(false);
 
-
-
         HideConfirmationPanel();
         HideCharacterSelectPanel();
         HideSettingsPanel();
         HideMissionPanel();
         HideAllBlockers();
 
+        CheckFirstTimeLoad(); // ✅ Added first-time intro check!
     }
 
     private void Update() => UpdateCounterText();
+
     private void OnDestroy() 
     {
         GameManager.OnGamePaused -= PauseGameCallback;
@@ -107,14 +106,12 @@ public class UIManager : MonoBehaviour, IGameStateListener
             case GameState.Shop:
                 ShowPanel(shopPanel);
                 break;
-
         }
     }
 
     private void ShowPanel(GameObject panel, bool _hidePreviousPanels = true)
     {
-
-        if(_hidePreviousPanels)
+        if (_hidePreviousPanels)
         {
             foreach (GameObject p in panels)
             {
@@ -142,11 +139,11 @@ public class UIManager : MonoBehaviour, IGameStateListener
     }
 
     private void UpdateCounterText() => killCounterText.text = StatisticsManager.Instance.CurrentRunKills.ToString();
+
     private void PauseGameCallback()
     {
         AudioManager.Instance.DecreaseMusicVolume();
         pausePanel.SetActive(true);
-
         TriggerPanelAction(pausePanel);
     }
 
@@ -176,6 +173,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
         TriggerPanelAction(characterSelectPanel);
         menuPanel.SetActive(false);
     }
+
     public void HideCharacterSelectPanel()
     {
         characterSelectPanel.SetActive(false);
@@ -189,6 +187,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
         TriggerPanelAction(statisticsPanel);
         menuPanel.SetActive(false);
     }
+
     public void HideStatisticsPanel()
     {
         statisticsPanel.SetActive(false);
@@ -202,6 +201,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
         TriggerPanelAction(settingPanel);
         menuPanel.SetActive(false);
     }
+
     public void HideSettingsPanel()
     {
         settingPanel.SetActive(false);
@@ -215,6 +215,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
         TriggerPanelAction(codexPanel);
         menuPanel.SetActive(false);
     }
+
     public void HideCodexPanel()
     {
         codexPanel.SetActive(false);
@@ -228,13 +229,13 @@ public class UIManager : MonoBehaviour, IGameStateListener
         TriggerPanelAction(missionPanel);
         menuPanel.SetActive(false);
     }
+
     public void HideMissionPanel()
     {
         missionPanel.SetActive(false);
         menuPanel.SetActive(true);
         TriggerPanelAction(menuPanel);
     }
-
 
     private void TriggerPanelAction(GameObject _panelObject)
     {
@@ -248,7 +249,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
             cg.interactable = _interactable;
     }
 
-#region Traits
+    #region Traits
 
     public void ShowBlockersUpTo(int blockerIndex)
     {
@@ -260,10 +261,36 @@ public class UIManager : MonoBehaviour, IGameStateListener
 
     public void HideAllBlockers()
     {
-       foreach (var blocker in blockers)
-        blocker.SetActive(false);
+        foreach (var blocker in blockers)
+            blocker.SetActive(false);
     }
 
-#endregion
+    #endregion
 
+    #region Intro Handling
+
+    private void CheckFirstTimeLoad()
+    {
+        if (SaveManager.TryLoad(this, "IntroPlayed", out object introPlayedObj) && introPlayedObj is bool introPlayed && introPlayed)
+        {
+            // Intro already played, skip to menu
+            introPanel.SetActive(false);
+            menuPanel.SetActive(true);
+        }
+        else
+        {
+            // First time playing
+            introPanel.SetActive(true);
+            menuPanel.SetActive(false);
+        }
+    }
+
+    public void CompleteIntro()
+    {
+        SaveManager.Save(this, "IntroPlayed", true);
+        introPanel.SetActive(false);
+        menuPanel.SetActive(true);
+    }
+
+    #endregion
 }

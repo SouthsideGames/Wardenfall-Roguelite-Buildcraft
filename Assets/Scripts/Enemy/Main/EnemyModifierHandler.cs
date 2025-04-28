@@ -42,8 +42,10 @@ public class EnemyModifierHandler : MonoBehaviour
 
     public void ModifyDamage(float modifier)
     {
+        if (this == null || gameObject == null)
+            return;
+
         damageMultiplier += modifier;
-        Debug.Log($"{gameObject.name} damage multiplier updated to {damageMultiplier:F2}");
     }
 
     public void ModifyCritChance(float multiplier)

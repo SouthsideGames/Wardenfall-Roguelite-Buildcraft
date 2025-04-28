@@ -22,7 +22,6 @@ public class BulletBase : MonoBehaviour
 
     public void Configure(RangedWeapon _rangedWeapon) => this.rangedWeapon = _rangedWeapon;
 
-
     public virtual void Shoot(int _damage, Vector2 direction, bool _isCriticalHit)
     {
         damage = _damage;
