@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using System;
-using SouthsideGames.SaveManager; // ✅ Needed for SaveManager!
+using SouthsideGames.SaveManager;
 
 public class UIManager : MonoBehaviour, IGameStateListener
 {
@@ -32,6 +32,11 @@ public class UIManager : MonoBehaviour, IGameStateListener
 
     [Header("COUNTER TEXT:")]
     [SerializeField] private TextMeshProUGUI killCounterText;
+    [SerializeField] private TextMeshProUGUI gameoverKillCounterText;
+    [SerializeField] private TextMeshProUGUI levelUpText;
+    [SerializeField] private TextMeshProUGUI wavesCompletedUpText;
+    [SerializeField] private TextMeshProUGUI meatCollectedText;
+    
 
     private List<GameObject> panels = new List<GameObject>();
 
@@ -67,7 +72,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
         HideMissionPanel();
         HideAllBlockers();
 
-        CheckFirstTimeLoad(); // ✅ Added first-time intro check!
+        CheckFirstTimeLoad();
     }
 
     private void Update() => UpdateCounterText();
@@ -273,13 +278,11 @@ public class UIManager : MonoBehaviour, IGameStateListener
     {
         if (SaveManager.TryLoad(this, "IntroPlayed", out object introPlayedObj) && introPlayedObj is bool introPlayed && introPlayed)
         {
-            // Intro already played, skip to menu
             introPanel.SetActive(false);
             menuPanel.SetActive(true);
         }
         else
         {
-            // First time playing
             introPanel.SetActive(true);
             menuPanel.SetActive(false);
         }
@@ -290,6 +293,14 @@ public class UIManager : MonoBehaviour, IGameStateListener
         SaveManager.Save(this, "IntroPlayed", true);
         introPanel.SetActive(false);
         menuPanel.SetActive(true);
+    }
+
+    public void UpdateGameoverPanel()
+    {
+        gameoverKillCounterText.text = StatisticsManager.Instance.CurrentRunKills.ToString();
+        levelUpText.text = StatisticsManager.Instance.CurrentLevelUp.ToString();
+        wavesCompletedUpText.text = StatisticsManager.Instance.CurrentWaveCompleted.ToString();
+        meatCollectedText.text = StatisticsManager.Instance.CurrentMeatCollected.ToString();    
     }
 
     #endregion

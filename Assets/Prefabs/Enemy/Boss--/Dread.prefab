@@ -429,11 +429,11 @@ GameObject:
   - component: {fileID: 5134509663597090109}
   - component: {fileID: 470801163181222061}
   - component: {fileID: 1677275618575709345}
+  - component: {fileID: -7540322185766105021}
   - component: {fileID: 1842897122853379636}
   - component: {fileID: 7867562585182619268}
   - component: {fileID: 3616139266159985039}
   - component: {fileID: 1416763051918941319}
-  - component: {fileID: -7540322185766105021}
   - component: {fileID: -727273340568403459}
   m_Layer: 6
   m_Name: Dread
@@ -520,6 +520,33 @@ CapsuleCollider2D:
   m_Offset: {x: 0.06725089, y: 0.0025711856}
   m_Size: {x: 1.1352623, y: 1.7177844}
   m_Direction: 0
+--- !u!50 &-7540322185766105021
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6512723806045197110}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
 --- !u!114 &1842897122853379636
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -547,6 +574,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
+  canMove: 1
   pathUpdateRate: 0.2
   avoidanceRadius: 1
   chasePlayer: 1
@@ -613,33 +641,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canPerformCriticalHit: 0
---- !u!50 &-7540322185766105021
-Rigidbody2D:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6512723806045197110}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 4
 --- !u!114 &-727273340568403459
 MonoBehaviour:
   m_ObjectHideFlags: 0
