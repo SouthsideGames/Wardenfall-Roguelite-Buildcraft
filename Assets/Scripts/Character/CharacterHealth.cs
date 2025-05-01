@@ -33,7 +33,12 @@ public class CharacterHealth : MonoBehaviour, IStats, IDamageable
     public int MaxHealth => Mathf.RoundToInt(maxHealth);
     public int CurrentHealth => Mathf.RoundToInt(health);
     [HideInInspector] public bool isInvincible = false;
+
+    #region CARDS
+    private bool hasRebornTriggered = false;
     private PulseWardTracker pulseWardTracker;
+
+    #endregion
 
     private void Awake()
     {
@@ -94,8 +99,15 @@ public class CharacterHealth : MonoBehaviour, IStats, IDamageable
     public void Die()
     {
 
-        OnCharacterDeath?.Invoke();
+        if (!hasRebornTriggered && CharacterManager.Instance.cards.HasCard("reborn"))
+        {
+            hasRebornTriggered = true;
+            health = maxHealth;
+            UpdateHealthUI();
+            return;
+        }
 
+        OnCharacterDeath?.Invoke();
         GameManager.Instance.SetGameState(GameState.GameOver);
     }
 

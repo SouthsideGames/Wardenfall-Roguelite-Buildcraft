@@ -88,4 +88,27 @@ public class InGameCardUIManager : MonoBehaviour
             }
         }
     }
+
+      public void ReduceRandomCooldown(string excludeCardID)
+    {
+        List<InGameCardSlotUI> validSlots = new List<InGameCardSlotUI>();
+
+        foreach (Transform child in cardSlotContainer)
+        {
+            if (child.TryGetComponent<InGameCardSlotUI>(out var cardSlot))
+            {
+                if (cardSlot.IsCoolingDown() && cardSlot.AssignedCard.cardID != excludeCardID)
+                {
+                    validSlots.Add(cardSlot);
+                }
+            }
+        }
+
+        if (validSlots.Count > 0)
+        {
+            var selected = validSlots[Random.Range(0, validSlots.Count)];
+            selected.ReduceCooldownBy(2f);
+            Debug.Log("Arcane Coolant triggered: Cooldown reduced for a random card.");
+        }
+    }
 }

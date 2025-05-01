@@ -120,6 +120,8 @@ public enum CardEffectType
     RadiantCore,
     ToxicSpray,
     Fearmonger,
+    Reborn,
+    ArcaneCoolant
     // Add more as needed
 }
 

@@ -22,6 +22,7 @@ public class InGameCardSlotUI : MonoBehaviour
     private float cooldownRemaining = 0f;
     private bool isCoolingDown = false;
     private CardSO assignedCard;
+    public CardSO AssignedCard => assignedCard;
 
     public void Setup(CardSO card)
     {
@@ -125,5 +126,21 @@ public class InGameCardSlotUI : MonoBehaviour
     {
         return isCoolingDown;
     }
+
+    public void ReduceCooldownBy(float amount)
+    {
+        if (!isCoolingDown) return;
+
+        cooldownRemaining -= amount;
+        if (cooldownRemaining <= 0f)
+        {
+            cooldownRemaining = 0f;
+            isCoolingDown = false;
+            clickButton.interactable = true;
+            cooldownText.text = "";
+        }
+    }
+
+    
 
 } 
