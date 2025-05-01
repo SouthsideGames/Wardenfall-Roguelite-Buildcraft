@@ -66,4 +66,6 @@ public class CodexCardUI : MonoBehaviour
 
         cardButton.onClick.RemoveAllListeners();
     }
+
+    
 }

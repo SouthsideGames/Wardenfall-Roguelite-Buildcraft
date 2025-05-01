@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 8660906609115574866}
   - component: {fileID: 5905362504976203785}
   - component: {fileID: 9116883361921841341}
-  - component: {fileID: 3999192979852240637}
   - component: {fileID: 5470358075095749823}
   m_Layer: 0
   m_Name: Ice Hazard
@@ -4906,22 +4905,6 @@ MonoBehaviour:
     shakesDelay: 0
   animatedLights: []
   fadeOutReference: {fileID: 8660906609115574866}
---- !u!114 &3999192979852240637
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6033559084745458531}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c2aaf1bb1d41411aa410d91e3c56918, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damageAmount: 10
-  damageInterval: 1
-  lifetime: 10
-  slowdownFactor: 0.5
 --- !u!58 &5470358075095749823
 CircleCollider2D:
   m_ObjectHideFlags: 0

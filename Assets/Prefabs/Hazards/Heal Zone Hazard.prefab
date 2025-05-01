@@ -42,8 +42,8 @@ Light:
   m_Enabled: 1
   serializedVersion: 11
   m_Type: 2
-  m_Color: {r: 1, g: 0.87720263, b: 0.62254554, a: 1}
-  m_Intensity: 2.7110684
+  m_Color: {r: 1, g: 0.8014201, b: 0.427451, a: 1}
+  m_Intensity: 0
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -110,7 +110,6 @@ GameObject:
   - component: {fileID: 7309613058946038009}
   - component: {fileID: 6309003514068511457}
   - component: {fileID: 2026137497757984027}
-  - component: {fileID: 2086753311185697737}
   m_Layer: 0
   m_Name: Heal Zone Hazard
   m_TagString: Untagged
@@ -5021,23 +5020,6 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0.0150107145, y: 0.019882798}
   m_Radius: 1.33
---- !u!114 &2086753311185697737
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5317525687466305706}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8611cd12bdfc14022a844f4275cbdb61, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damageAmount: 10
-  damageInterval: 1
-  lifetime: 10
-  healAmount: 5
-  healColor: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &7746836859390548384
 GameObject:
   m_ObjectHideFlags: 0

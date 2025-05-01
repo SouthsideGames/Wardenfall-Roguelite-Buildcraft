@@ -12,9 +12,9 @@ public class CodexManager : MonoBehaviour
     [SerializeField] private GameObject cardPrefab;
     [SerializeField] private TextMeshProUGUI progressText;
     [SerializeField] private CardLibrary cardLibrary;
+    [SerializeField] private GameObject detailContainer;
 
     [Header("DETAIL VIEW:")]
-    [SerializeField] private GameObject detailContainer;
     [SerializeField] private Image detailIcon;
     [SerializeField] private TextMeshProUGUI detailName;
     [SerializeField] private TextMeshProUGUI detailDescription;
@@ -31,6 +31,14 @@ public class CodexManager : MonoBehaviour
     [SerializeField] private Image objectDetailIcon;
     [SerializeField] private TextMeshProUGUI objectDetailName;
     [SerializeField] private Transform objectStatContainersParent;
+
+    [Header("CARD VIEW:")]
+    [SerializeField] private GameObject cardDetailContainer;
+    [SerializeField] private TextMeshProUGUI detailCost;
+    [SerializeField] private TextMeshProUGUI detailType;
+    [SerializeField] private TextMeshProUGUI detailRarity;
+    [SerializeField] private TextMeshProUGUI detailCooldown; // optional
+    [SerializeField] private TextMeshProUGUI detailDuration; // optional
 
     [SerializeField] private GameObject statPrefab;
     [SerializeField] private Sprite lockedIcon;
@@ -81,6 +89,7 @@ public class CodexManager : MonoBehaviour
     private void LoadAndDisplayCardCodex()
     {
         ClearCards();
+        progressText.gameObject.SetActive(true);
         var allCards = cardLibrary.allCards;
 
         foreach (var card in allCards)
@@ -95,14 +104,6 @@ public class CodexManager : MonoBehaviour
         progressText.text = $"Unlocked: {unlockedCount} / {total} cards ({(int)((float)unlockedCount / total * 100)}%)";
     }
 
-    public void OpenCardDetail(CardSO card)
-    {
-        detailIcon.sprite = card.isUnlocked ? card.icon : lockedIcon;
-        detailName.text = card.isUnlocked ? card.cardName : "???";
-        detailDescription.text = card.isUnlocked ? card.description : card.unlockHint;
-        detailContainer.SetActive(true);
-    }
-
     #endregion
 
     #region Card Loading Methods
@@ -110,6 +111,7 @@ public class CodexManager : MonoBehaviour
     private void LoadAndDisplayCharacterCards()
     {
         ClearCards();
+        progressText.gameObject.SetActive(false);
         var characterDataItems = Resources.LoadAll<CharacterDataSO>("Data/Characters");
 
         foreach (var characterData in characterDataItems)
@@ -123,6 +125,7 @@ public class CodexManager : MonoBehaviour
     private void LoadAndDisplayWeaponCards()
     {
         ClearCards();
+        progressText.gameObject.SetActive(false);
         var weaponItems = Resources.LoadAll<WeaponDataSO>("Data/Weapons");
 
         foreach (var weaponData in weaponItems)
@@ -136,6 +139,7 @@ public class CodexManager : MonoBehaviour
     private void LoadAndDisplayObjectCards()
     {
         ClearCards();
+        progressText.gameObject.SetActive(false);
         var objectItems = Resources.LoadAll<ObjectDataSO>("Data/Objects");
 
         foreach (var objectData in objectItems)
@@ -149,6 +153,7 @@ public class CodexManager : MonoBehaviour
     private void LoadAndDisplayEnemyCards()
     {
         ClearCards();
+        progressText.gameObject.SetActive(false);
         var enemyItems = Resources.LoadAll<EnemyDataSO>("Data/Enemies");
 
         foreach (var enemyData in enemyItems)
@@ -199,6 +204,37 @@ public class CodexManager : MonoBehaviour
         enemyDetailContainer.SetActive(true);
     }
 
+    public void OpenCardDetail(CardSO card)
+    {
+        detailIcon.sprite = card.isUnlocked ? card.icon : lockedIcon;
+        detailName.text = card.isUnlocked ? card.cardName : "???";
+        detailDescription.text = card.isUnlocked ? card.description : card.unlockHint;
+
+        if (card.isUnlocked)
+        {
+            detailCost.text = $"Cost: {card.cost}";
+            detailType.text = $"Type: {card.effectType}";
+            detailRarity.text = $"Rarity: {card.rarity}";
+
+            if (detailCooldown != null)
+                detailCooldown.text = card.cooldown > 0 ? $"Cooldown: {card.cooldown}s" : "";
+
+            if (detailDuration != null)
+                detailDuration.text = card.activeTime > 0 ? $"Duration: {card.activeTime}s" : "";
+        }
+        else
+        {
+            detailCost.text = "";
+            detailType.text = "";
+            detailRarity.text = "";
+            if (detailCooldown != null) detailCooldown.text = "";
+            if (detailDuration != null) detailDuration.text = "";
+        }
+
+        cardDetailContainer.SetActive(true);
+    }
+
+
     private void DisplayCharacterStats(CharacterDataSO characterData)
     {
         statContainersParent.Clear();
@@ -241,6 +277,7 @@ public class CodexManager : MonoBehaviour
     public void CloseDetailView() => detailContainer.SetActive(false);
     public void CloseEnemyDetailView() => enemyDetailContainer.SetActive(false);
     public void CloseObjectDetailView() => objectDetailContainer.SetActive(false);
+    public void CloseCardDetailView() => cardDetailContainer.SetActive(false);
 
     private void ClearCards() => detailParent.Clear();
 

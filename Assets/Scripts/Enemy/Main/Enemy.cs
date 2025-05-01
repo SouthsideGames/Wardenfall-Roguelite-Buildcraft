@@ -63,7 +63,6 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
         character = FindFirstObjectByType<CharacterManager>();
         status = GetComponent<EnemyStatus>();
         modifierHandler = GetComponent<EnemyModifierHandler>();
-        gameObject.AddComponent<EnemyHazardAwareness>();
 
         if (character == null)
         {

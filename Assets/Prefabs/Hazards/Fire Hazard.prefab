@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 9040117567153839377}
   - component: {fileID: 1000231430255705658}
   - component: {fileID: 8901805287913833051}
-  - component: {fileID: 8044641989924275764}
   m_Layer: 0
   m_Name: Fire Hazard
   m_TagString: Untagged
@@ -5014,22 +5013,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 2.908347, y: 1.3761497}
   m_EdgeRadius: 0
---- !u!114 &8044641989924275764
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 676588269566505196}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96a2c07be7f2c4653921857e3c0d578a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damageAmount: 10
-  damageInterval: 1
-  lifetime: 10
-  burnDuration: 2
 --- !u!1 &1179917581351521680
 GameObject:
   m_ObjectHideFlags: 0
@@ -9918,8 +9901,8 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 1, g: 0.6268286, b: 0.2028302, a: 1}
-  m_Intensity: 3.3155367
-  m_Range: 8.60418
+  m_Intensity: 0
+  m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
