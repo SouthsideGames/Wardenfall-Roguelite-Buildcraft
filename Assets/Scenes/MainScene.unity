@@ -30600,7 +30600,7 @@ MonoBehaviour:
     - spawnPercentage: {x: 0, y: 100}
       spawnFrequency: 0.5
       prefab: {fileID: 5829535922412643463, guid: 52d8d00f7e20f0546bbdd77942577be7, type: 3}
-      spawnOnce: 1
+      spawnOnce: 0
       tStart: 0
       tEnd: 0
   - name: Wave 01
@@ -58532,6 +58532,7 @@ GameObject:
   - component: {fileID: 2122840535}
   - component: {fileID: 2122840538}
   - component: {fileID: 2122840546}
+  - component: {fileID: 2122840549}
   - component: {fileID: 2122840539}
   - component: {fileID: 2122840534}
   - component: {fileID: 2122840540}
@@ -58543,7 +58544,7 @@ GameObject:
   - component: {fileID: 2122840547}
   - component: {fileID: 2122840550}
   - component: {fileID: 2122840551}
-  - component: {fileID: 2122840549}
+  - component: {fileID: 2122840552}
   m_Layer: 7
   m_Name: Character
   m_TagString: Player
@@ -58915,6 +58916,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterManager: {fileID: 2122840539}
+--- !u!114 &2122840552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2122840533}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f26078045dd030846b13642cbf0c28d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  burstEffectPrefab: {fileID: 0}
+  damage: 20
+  cooldown: 8
+  burstRadius: 3
+  enemyMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1 &2129969170
 GameObject:
   m_ObjectHideFlags: 0

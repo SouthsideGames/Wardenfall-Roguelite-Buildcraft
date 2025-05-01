@@ -115,6 +115,9 @@ public enum CardEffectType
     PrecisionSurge,
     InfernoHalo,
     PhantomEcho,
+    PulseWard,
+    Burnwake,
+    RadiantCore
     // Add more as needed
 }
 

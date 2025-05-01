@@ -41,8 +41,11 @@ public abstract class Weapon : MonoBehaviour, IStats, IWeaponSystem
 
     protected void PlaySFX()
     {
-        audioSource.pitch = Random.Range(0.95f, 1.05f);
-        audioSource.Play();
+        if (audioSource != null && WeaponData.AttackSound != null)
+        {
+            audioSource.pitch = Random.Range(0.95f, 1.05f);
+            audioSource.Play();
+        }
     }
 
     protected Enemy GetClosestEnemy()

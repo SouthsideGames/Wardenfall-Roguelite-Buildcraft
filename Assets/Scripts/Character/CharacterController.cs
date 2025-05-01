@@ -44,4 +44,7 @@ public class CharacterController : MonoBehaviour, IStats
     public void EnableMovement() => isMovementDisabled = false;
 
     public void SetMovementMultiplier(float multiplier) => moveSpeed = baseMoveSpeed * multiplier;
+
+    private void OnDisable() => CancelInvoke(nameof(EnableMovement));
+
 }

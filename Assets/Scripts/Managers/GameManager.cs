@@ -103,6 +103,14 @@ public class GameManager : MonoBehaviour
         ManageGameOver();
     }
 
+    private void OnDestroy()
+    {
+        OnGamePaused = null;
+        OnGameResumed = null;
+        OnWaveCompleted = null;
+    }
+
+
     public bool InGameState() => gameState == GameState.Game;
  
 }

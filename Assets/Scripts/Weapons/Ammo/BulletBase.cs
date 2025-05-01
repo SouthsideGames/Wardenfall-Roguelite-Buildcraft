@@ -44,6 +44,7 @@ public class BulletBase : MonoBehaviour
             {
                 CancelInvoke();
                 ApplyDamage(target);
+                ApplyOnHitEffects(target);
                 Release();
             }
         }
@@ -51,10 +52,38 @@ public class BulletBase : MonoBehaviour
 
     protected virtual void ApplyDamage(Enemy enemy)
     {
-        enemy.TakeDamage(damage, isCriticalHit);
-        if (isCriticalHit && rangedWeapon != null)
+        int finalDamage = damage;
+        
+        var cm = CharacterManager.Instance;
+        if (cm.cards.HasCard("radiant_core"))
         {
-            rangedWeapon.HitStop(true);
+            EnemyStatus status = enemy.GetComponent<EnemyStatus>();
+            if (status != null && status.HasAnyEffect())
+            {
+                finalDamage = Mathf.RoundToInt(damage * 1.1f);
+                Debug.Log("Radiant Core triggered: bonus damage applied.");
+            }
+        }
+
+        enemy.TakeDamage(finalDamage, isCriticalHit);
+    }
+
+    protected virtual void ApplyOnHitEffects(Enemy enemy)
+    {
+        var cm = CharacterManager.Instance;
+
+        if (cm.cards.HasCard("burnwake"))
+        {
+            float chance = 0.15f;
+            if (Random.value < chance)
+            {
+                var status = enemy.GetComponent<EnemyStatus>();
+                if (status != null)
+                {
+                    StatusEffect burn = new StatusEffect(StatusEffectType.Burn, 3f, 5f, 1f);
+                    status.ApplyEffect(burn);
+                }
+            }
         }
     }
 

@@ -33,8 +33,13 @@ public class CharacterHealth : MonoBehaviour, IStats, IDamageable
     public int MaxHealth => Mathf.RoundToInt(maxHealth);
     public int CurrentHealth => Mathf.RoundToInt(health);
     [HideInInspector] public bool isInvincible = false;
+    private PulseWardTracker pulseWardTracker;
 
-    private void Awake() => Enemy.OnDamageTaken += EnemyDamageCallback;
+    private void Awake()
+    {
+        pulseWardTracker = GetComponent<PulseWardTracker>();
+        Enemy.OnDamageTaken += EnemyDamageCallback;
+    }
 
     private void OnDestroy() => Enemy.OnDamageTaken -= EnemyDamageCallback;
 
@@ -54,6 +59,8 @@ public class CharacterHealth : MonoBehaviour, IStats, IDamageable
 
         if (ShouldDodge())
             return;
+
+        pulseWardTracker.OnDamageTaken();
 
         float absorbedDamage = _damage * (damageAbsorption / 100f);
         float rawDamage = _damage - absorbedDamage;

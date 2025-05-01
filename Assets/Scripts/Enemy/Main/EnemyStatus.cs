@@ -38,7 +38,6 @@ public class EnemyStatus : MonoBehaviour
         if (IsImmuneToEffect(effect.EffectType))
             return;
 
-        // Apply resistance
         effect.ApplyStatModifiers(1.0f, statusResistance);
 
         if (activeEffects.TryGetValue(effect.EffectType, out var existing))
@@ -52,7 +51,6 @@ public class EnemyStatus : MonoBehaviour
         newEffect.Coroutine = coroutine;
         activeEffects[effect.EffectType] = newEffect;
 
-        // Specific logic on effect type
         switch (effect.EffectType)
         {
             case StatusEffectType.Stun:
@@ -87,7 +85,6 @@ public class EnemyStatus : MonoBehaviour
     {
         var effect = activeEffect.Effect;
 
-        // Link timer reset
         effect.OnResetTimer = () => activeEffect.RemainingDuration = effect.Duration;
 
         float intervalTimer = 0f;
@@ -186,4 +183,5 @@ public class EnemyStatus : MonoBehaviour
     public bool IsStunned => activeEffects.ContainsKey(StatusEffectType.Stun);
     public bool IsSlowed => activeEffects.ContainsKey(StatusEffectType.Slow);
     public bool IsBurned => activeEffects.ContainsKey(StatusEffectType.Burn);
+    public bool HasAnyEffect() => activeEffects.Count > 0;
 }
