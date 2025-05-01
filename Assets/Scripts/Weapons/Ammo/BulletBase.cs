@@ -70,19 +70,34 @@ public class BulletBase : MonoBehaviour
 
     protected virtual void ApplyOnHitEffects(Enemy enemy)
     {
-        var cm = CharacterManager.Instance;
+        CharacterManager cm = CharacterManager.Instance;
+        EnemyStatus status = enemy.GetComponent<EnemyStatus>();
+
+        if (status == null) return;
 
         if (cm.cards.HasCard("burnwake"))
         {
             float chance = 0.15f;
             if (Random.value < chance)
             {
-                var status = enemy.GetComponent<EnemyStatus>();
-                if (status != null)
-                {
-                    StatusEffect burn = new StatusEffect(StatusEffectType.Burn, 3f, 5f, 1f);
-                    status.ApplyEffect(burn);
-                }
+                StatusEffect burn = new StatusEffect(StatusEffectType.Burn, 3f, 5f, 1f);
+                status.ApplyEffect(burn);
+            }
+        }
+
+        if (cm.cards.HasCard("toxic_spray"))
+        {
+            StatusEffect poison = new StatusEffect(StatusEffectType.Poison, 2f, 5f, 1f, 3);
+            status.ApplyEffect(poison);
+        }
+
+        if (cm.cards.HasCard("fearmonger"))
+        {
+            float chance = 0.35f;
+            if (Random.value < chance)
+            {
+                StatusEffect fear = new StatusEffect(StatusEffectType.Fear, 4f, 0f, 1f);
+                status.ApplyEffect(fear);
             }
         }
     }

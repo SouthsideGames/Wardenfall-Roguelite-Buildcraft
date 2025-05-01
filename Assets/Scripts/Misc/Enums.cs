@@ -117,7 +117,9 @@ public enum CardEffectType
     PhantomEcho,
     PulseWard,
     Burnwake,
-    RadiantCore
+    RadiantCore,
+    ToxicSpray,
+    Fearmonger,
     // Add more as needed
 }
 
