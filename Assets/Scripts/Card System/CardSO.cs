@@ -8,6 +8,7 @@ public class CardSO : ScriptableObject
     public string cardName;
     [TextArea] public string description;
     public Sprite icon;
+    public string[] synergyWith;
 
     [Header("TYPE & EFFECT")]
     public CardEffectType effectType;
