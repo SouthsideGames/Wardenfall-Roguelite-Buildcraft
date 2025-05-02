@@ -121,7 +121,9 @@ public enum CardEffectType
     ToxicSpray,
     Fearmonger,
     Reborn,
-    ArcaneCoolant
+    ArcaneCoolant,
+    ChaosStorm,
+    QuantumBarrage
     // Add more as needed
 }
 
