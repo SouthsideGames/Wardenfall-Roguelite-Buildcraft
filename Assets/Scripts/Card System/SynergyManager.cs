@@ -1,24 +1,44 @@
-
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SynergyManager : MonoBehaviour
+public class SynergyManager : MonoBehaviour 
 {
-  public List<Synergy> synergies = new List<Synergy>();
-
-    public void CheckAndApplySynergies(CharacterCards deck)
+    [SerializeField] private List<CardSynergy> availableSynergies = new();
+    public event System.Action<string> OnSynergyActivated;
+    
+    public void CheckAndApplySynergies(CharacterCards characterCards)
     {
-        foreach (var synergy in synergies)
+        var deck = characterCards.Deck;
+        
+        foreach (var synergy in availableSynergies)
         {
-            bool hasAllCards = synergy.requiredCards.All(cardID => deck.HasCard(cardID));
-            if (hasAllCards)
+            CardSO cardA = null;
+            CardSO cardB = null;
+            
+            // Find matching cards in deck
+            foreach (var card in deck)
             {
-                foreach (var requiredCard in synergy.requiredCards)
-                {
-                    deck.RemoveCard(deck.Deck.First(x=>x.cardID == requiredCard));
-                }
-                deck.AddCard(synergy.resultingCard);
-                break; // Apply only the first matching synergy
+                if (card.effectType == synergy.cardTypeA && cardA == null)
+                    cardA = card;
+                else if (card.effectType == synergy.cardTypeB && cardB == null)
+                    cardB = card;
+                
+                if (cardA != null && cardB != null)
+                    break;
+            }
+            
+            // If we found both cards, apply synergy
+            if (cardA != null && cardB != null)
+            {
+                int indexA = deck.IndexOf(cardA);
+                int indexB = deck.IndexOf(cardB);
+                
+                // Remove both cards and add synergy card
+                characterCards.RemoveCard(indexA);
+                characterCards.RemoveCard(indexB > indexA ? indexB - 1 : indexB);
+                characterCards.AddCard(synergy.resultCard);
+                
+                OnSynergyActivated?.Invoke($"{cardA.cardName} + {cardB.cardName} = {synergy.resultCard.cardName}");
             }
         }
     }
