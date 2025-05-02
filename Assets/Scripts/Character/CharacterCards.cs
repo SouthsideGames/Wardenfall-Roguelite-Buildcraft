@@ -16,17 +16,19 @@ public class CharacterCards : MonoBehaviour
 
     public void AddCard(CardSO newCard)
     {
-        if (currentTotalCost + newCard.cost <= GetEffectiveDeckCap())
+        if (newCard == null) return;
+        currentDeck.Add(newCard);
+        currentTotalCost += newCard.cost;
+        OnDeckChanged?.Invoke();
+
+        // Check for synergies after adding a card
+        var synergyManager = GetComponent<SynergyManager>();
+        if (synergyManager != null)
         {
-            currentDeck.Add(newCard);
-            currentTotalCost += newCard.cost;
-            OnDeckChanged?.Invoke();
-        }
-        else
-        {
-            CardDraftUI.Instance.ShowReplaceCardPrompt(newCard, currentDeck, currentTotalCost, baseDeckCost);
+            synergyManager.CheckAndApplySynergies(this);
         }
     }
+
 
     public void ReplaceCard(int index, CardSO newCard)
     {
