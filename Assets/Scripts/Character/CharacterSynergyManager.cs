@@ -1,10 +1,24 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public class SynergyManager : MonoBehaviour 
+public class CharacterSynergyManager : MonoBehaviour 
 {
     [SerializeField] private List<CardSynergy> availableSynergies = new();
     public event System.Action<string> OnSynergyActivated;
+
+    public List<(CardEffectType, CardSO)> GetSynergiesForCard(CardEffectType cardType)
+    {
+        List<(CardEffectType, CardSO)> synergies = new();
+        foreach (var synergy in availableSynergies)
+        {
+            if (synergy.cardTypeA == cardType)
+                synergies.Add((synergy.cardTypeB, synergy.resultCard));
+            else if (synergy.cardTypeB == cardType)
+                synergies.Add((synergy.cardTypeA, synergy.resultCard));
+        }
+        return synergies;
+    }
     
     public void CheckAndApplySynergies(CharacterCards characterCards)
     {
@@ -30,12 +44,9 @@ public class SynergyManager : MonoBehaviour
             // If we found both cards, apply synergy
             if (cardA != null && cardB != null)
             {
-                int indexA = deck.IndexOf(cardA);
-                int indexB = deck.IndexOf(cardB);
-                
                 // Remove both cards and add synergy card
-                characterCards.RemoveCard(indexA);
-                characterCards.RemoveCard(indexB > indexA ? indexB - 1 : indexB);
+                characterCards.RemoveCard(cardA);
+                characterCards.RemoveCard(cardB);
                 characterCards.AddCard(synergy.resultCard);
                 
                 OnSynergyActivated?.Invoke($"{cardA.cardName} + {cardB.cardName} = {synergy.resultCard.cardName}");

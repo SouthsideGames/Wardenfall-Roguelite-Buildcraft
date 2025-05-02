@@ -31,18 +31,14 @@ public class PulseWardTracker : MonoBehaviour
     private void TriggerPulse()
     {
         if (burstEffectPrefab != null)
-        {
             Instantiate(burstEffectPrefab, character.transform.position, Quaternion.identity);
-        }
 
         Collider2D[] hits = Physics2D.OverlapCircleAll(character.transform.position, burstRadius, enemyMask);
         foreach (var hit in hits)
         {
             Enemy enemy = hit.GetComponent<Enemy>();
             if (enemy != null)
-            {
                 enemy.TakeDamage((int)damage);
-            }
         }
 
         Debug.Log("Pulse Ward triggered: AoE burst applied.");

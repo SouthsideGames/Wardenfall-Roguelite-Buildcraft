@@ -12,9 +12,9 @@ public class CodexManager : MonoBehaviour
     [SerializeField] private GameObject cardPrefab;
     [SerializeField] private TextMeshProUGUI progressText;
     [SerializeField] private CardLibrary cardLibrary;
-    [SerializeField] private GameObject detailContainer;
 
     [Header("DETAIL VIEW:")]
+    [SerializeField] private GameObject detailContainer;
     [SerializeField] private Image detailIcon;
     [SerializeField] private TextMeshProUGUI detailName;
     [SerializeField] private TextMeshProUGUI detailDescription;
@@ -33,12 +33,18 @@ public class CodexManager : MonoBehaviour
     [SerializeField] private Transform objectStatContainersParent;
 
     [Header("CARD VIEW:")]
+    [SerializeField] private Image cardDetailIcon;
+    [SerializeField] private TextMeshProUGUI cardDetailName;
     [SerializeField] private GameObject cardDetailContainer;
-    [SerializeField] private TextMeshProUGUI detailCost;
-    [SerializeField] private TextMeshProUGUI detailType;
-    [SerializeField] private TextMeshProUGUI detailRarity;
-    [SerializeField] private TextMeshProUGUI detailCooldown; // optional
-    [SerializeField] private TextMeshProUGUI detailDuration; // optional
+    [SerializeField] private TextMeshProUGUI cardDetailCost;
+    [SerializeField] private TextMeshProUGUI cardId;
+    [SerializeField] private TextMeshProUGUI cardDetailDescription;
+    [SerializeField] private TextMeshProUGUI cardDetailRarity;
+    [SerializeField] private TextMeshProUGUI cardDetailCooldown;
+    [SerializeField] private TextMeshProUGUI cardDetailDuration;
+    [SerializeField] private TextMeshProUGUI cardDetailSynergies;
+    [SerializeField] private CharacterSynergyManager synergyManager;
+
 
     [SerializeField] private GameObject statPrefab;
     [SerializeField] private Sprite lockedIcon;
@@ -89,7 +95,6 @@ public class CodexManager : MonoBehaviour
     private void LoadAndDisplayCardCodex()
     {
         ClearCards();
-        progressText.gameObject.SetActive(true);
         var allCards = cardLibrary.allCards;
 
         foreach (var card in allCards)
@@ -104,6 +109,52 @@ public class CodexManager : MonoBehaviour
         progressText.text = $"Unlocked: {unlockedCount} / {total} cards ({(int)((float)unlockedCount / total * 100)}%)";
     }
 
+    public void OpenCardDetail(CardSO card)
+    {
+        if (card == null) return;
+
+        if (cardDetailIcon != null) cardDetailIcon.sprite = card.isUnlocked ? card.icon : lockedIcon;
+        if (cardDetailName != null) cardDetailName.text = card.isUnlocked ? card.cardName : "???";
+        if (cardDetailDescription != null) cardDetailDescription.text = card.isUnlocked ? card.description : card.unlockHint;
+
+        if (card.isUnlocked)
+        {
+            if (cardDetailCost != null) cardDetailCost.text = $"Cost: {card.cost}";
+            if (cardDetailRarity != null) cardDetailRarity.text = $"Rarity: {card.rarity}";
+            if (cardDetailCooldown != null) cardDetailCooldown.text = card.cooldown > 0 ? $"Cooldown: {card.cooldown}s" : "";
+            if (cardDetailDuration != null) cardDetailDuration.text = card.activeTime > 0 ? $"Duration: {card.activeTime}s" : "";
+
+            // Display synergies
+            if (cardDetailSynergies != null && synergyManager != null)
+            {
+                var cardSynergies = synergyManager.GetSynergiesForCard(card.effectType);
+                if (cardSynergies.Count > 0)
+                {
+                    System.Text.StringBuilder sb = new System.Text.StringBuilder("Synergies:\n");
+                    foreach (var (partnerType, resultCard) in cardSynergies)
+                    {
+                        sb.AppendLine($"+ {partnerType} → {resultCard.cardName}");
+                    }
+                    cardDetailSynergies.text = sb.ToString();
+                }
+                else
+                {
+                    cardDetailSynergies.text = "";
+                }
+            }
+        }
+        else
+        {
+            if (cardDetailCost != null) cardDetailCost.text = "";
+            if (cardDetailRarity != null) cardDetailRarity.text = "";
+            if (cardDetailCooldown != null) cardDetailCooldown.text = "";
+            if (cardDetailDuration != null) cardDetailDuration.text = "";
+            if (cardDetailSynergies != null) cardDetailSynergies.text = "";
+        }
+
+        if (cardDetailContainer != null) cardDetailContainer.SetActive(true);
+    }
+
     #endregion
 
     #region Card Loading Methods
@@ -111,7 +162,6 @@ public class CodexManager : MonoBehaviour
     private void LoadAndDisplayCharacterCards()
     {
         ClearCards();
-        progressText.gameObject.SetActive(false);
         var characterDataItems = Resources.LoadAll<CharacterDataSO>("Data/Characters");
 
         foreach (var characterData in characterDataItems)
@@ -125,7 +175,6 @@ public class CodexManager : MonoBehaviour
     private void LoadAndDisplayWeaponCards()
     {
         ClearCards();
-        progressText.gameObject.SetActive(false);
         var weaponItems = Resources.LoadAll<WeaponDataSO>("Data/Weapons");
 
         foreach (var weaponData in weaponItems)
@@ -139,7 +188,6 @@ public class CodexManager : MonoBehaviour
     private void LoadAndDisplayObjectCards()
     {
         ClearCards();
-        progressText.gameObject.SetActive(false);
         var objectItems = Resources.LoadAll<ObjectDataSO>("Data/Objects");
 
         foreach (var objectData in objectItems)
@@ -153,7 +201,6 @@ public class CodexManager : MonoBehaviour
     private void LoadAndDisplayEnemyCards()
     {
         ClearCards();
-        progressText.gameObject.SetActive(false);
         var enemyItems = Resources.LoadAll<EnemyDataSO>("Data/Enemies");
 
         foreach (var enemyData in enemyItems)
@@ -204,37 +251,6 @@ public class CodexManager : MonoBehaviour
         enemyDetailContainer.SetActive(true);
     }
 
-    public void OpenCardDetail(CardSO card)
-    {
-        detailIcon.sprite = card.isUnlocked ? card.icon : lockedIcon;
-        detailName.text = card.isUnlocked ? card.cardName : "???";
-        detailDescription.text = card.isUnlocked ? card.description : card.unlockHint;
-
-        if (card.isUnlocked)
-        {
-            detailCost.text = $"Cost: {card.cost}";
-            detailType.text = $"Type: {card.effectType}";
-            detailRarity.text = $"Rarity: {card.rarity}";
-
-            if (detailCooldown != null)
-                detailCooldown.text = card.cooldown > 0 ? $"Cooldown: {card.cooldown}s" : "";
-
-            if (detailDuration != null)
-                detailDuration.text = card.activeTime > 0 ? $"Duration: {card.activeTime}s" : "";
-        }
-        else
-        {
-            detailCost.text = "";
-            detailType.text = "";
-            detailRarity.text = "";
-            if (detailCooldown != null) detailCooldown.text = "";
-            if (detailDuration != null) detailDuration.text = "";
-        }
-
-        cardDetailContainer.SetActive(true);
-    }
-
-
     private void DisplayCharacterStats(CharacterDataSO characterData)
     {
         statContainersParent.Clear();
@@ -278,7 +294,6 @@ public class CodexManager : MonoBehaviour
     public void CloseEnemyDetailView() => enemyDetailContainer.SetActive(false);
     public void CloseObjectDetailView() => objectDetailContainer.SetActive(false);
     public void CloseCardDetailView() => cardDetailContainer.SetActive(false);
-
     private void ClearCards() => detailParent.Clear();
 
     #endregion

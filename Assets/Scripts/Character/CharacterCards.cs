@@ -22,7 +22,7 @@ public class CharacterCards : MonoBehaviour
         OnDeckChanged?.Invoke();
 
         // Check for synergies after adding a card
-        var synergyManager = GetComponent<SynergyManager>();
+        var synergyManager = GetComponent<CharacterSynergyManager>();
         if (synergyManager != null)
         {
             synergyManager.CheckAndApplySynergies(this);
