@@ -3,11 +3,11 @@ using UnityEngine;
 
 public class CardDraftManager : MonoBehaviour, IGameStateListener
 {
+    public static CardDraftManager Instance;
+
     [SerializeField] private GameObject panel;
     [SerializeField] private Transform cardContainer;
     [SerializeField] private CardLibrary cardLibrary;
-    [SerializeField] private int optionsToShow = 3;
-    
 
     [Header("RARITY PREFABS")]
     [SerializeField] private CardOptionUI commonOptionPrefab;
@@ -18,7 +18,13 @@ public class CardDraftManager : MonoBehaviour, IGameStateListener
     [SerializeField] private CardOptionUI mythicOptionPrefab;
     [SerializeField] private CardOptionUI exaltedOptionPrefab;
 
-
+    private void Awake()
+    {
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
+    }
 
     public void GameStateChangedCallback(GameState state)
     {
@@ -30,26 +36,38 @@ public class CardDraftManager : MonoBehaviour, IGameStateListener
 
     private void OpenCardDraft()
     {
+        ShowDraft(DraftType.Major);
+    }
+
+    public void ShowMajorDraft()
+    {
+        ShowDraft(DraftType.Major);
+    }
+
+    public void ShowMiniDraft()
+    {
+        if (Random.Range(0, 100) >= 30) return;
+        ShowDraft(DraftType.Mini);
+    }
+
+    private void ShowDraft(DraftType type)
+    {
         panel.SetActive(true);
 
         foreach (Transform child in cardContainer)
             Destroy(child.gameObject);
 
-        List<CardSO> available = new List<CardSO>(cardLibrary.allCards);
-        int displayCount = Mathf.Min(optionsToShow, available.Count);
+        var pool = cardLibrary.GetCardsByRarity(CardDraftRarityConfig.Pools[type]);
+        var cardsToShow = cardLibrary.PickRandomCards(pool, type == DraftType.Major ? 3 : 2);
 
-        for (int i = 0; i < displayCount; i++)
+        foreach (CardSO cardSO in cardsToShow)
         {
-            int index = Random.Range(0, available.Count);
-            CardSO selected = available[index];
-            available.RemoveAt(index);
-
-            CardOptionUI card = Instantiate(GetOptionPrefab(selected.rarity), cardContainer);
-            card.Configure(selected, () => OnCardSelected(selected));
+            CardOptionUI cardUI = Instantiate(GetOptionPrefab(cardSO.rarity), cardContainer);
+            cardUI.SetCard(cardSO, () => OnCardSelected(cardSO));
         }
     }
 
-    private CardOptionUI GetOptionPrefab(CardRarity rarity)
+    public CardOptionUI GetOptionPrefab(CardRarity rarity)
     {
         return rarity switch
         {
@@ -64,12 +82,15 @@ public class CardDraftManager : MonoBehaviour, IGameStateListener
         };
     }
 
-    private void CloseCardDraft() => panel.SetActive(false);
+    private void CloseCardDraft()
+    {
+        panel.SetActive(false);
+    }
 
     private void OnCardSelected(CardSO card)
     {
-        CharacterManager.Instance.cards.AddCard(card);
-        GameManager.Instance.StartShop();
+        CharacterManager.Instance.cards.AddCard(card); 
+        CloseCardDraft();
     }
 
 } 

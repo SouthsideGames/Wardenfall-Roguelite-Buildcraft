@@ -5,21 +5,21 @@ using UnityEngine.UI;
 public class CardOptionUI : MonoBehaviour
 {
     [Header("UI Elements")]
-    [SerializeField] private Image icon;
+    [SerializeField] private Image iconImage;
     [SerializeField] private TextMeshProUGUI nameText;
-    [SerializeField] private TextMeshProUGUI descriptionText;
     [SerializeField] private TextMeshProUGUI costText;
+    [SerializeField] private TextMeshProUGUI descriptionText;
     [SerializeField] private Button selectButton;
 
     private CardSO card;
     private System.Action onSelected;
 
-    public void Configure(CardSO cardData, System.Action selectCallback)
+    public void SetCard(CardSO cardData, System.Action onClick)
     {
         card = cardData;
-        onSelected = selectCallback;
+        onSelected = onClick;
 
-        icon.sprite = card.icon;
+        iconImage.sprite = card.icon;
         nameText.text = card.cardName;
         descriptionText.text = card.description;
         costText.text = $"Cost: {card.cost}";

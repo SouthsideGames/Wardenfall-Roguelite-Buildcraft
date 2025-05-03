@@ -224,9 +224,18 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     private void HandleWaveBasedTransition()
     {
         if (currentWaveIndex >= wave.Length)
+        {
             EndWaveBasedStage();
+        }
         else
+        {
+            if (IsCurrentWaveBoss())
+            {
+                FindAnyObjectByType<CardDraftManager>()?.ShowMajorDraft();
+            }
+
             GameManager.Instance.WaveCompletedCallback();
+        }
     }
 
     public bool IsCurrentWaveBoss() 

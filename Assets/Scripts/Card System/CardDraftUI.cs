@@ -29,7 +29,7 @@ public class CardDraftUI : MonoBehaviour
     public void OnCardSelected(CardSO selectedCard)
     {
         onCardChosen?.Invoke(selectedCard);
-        Debug.Log("[DraftUI] Card selected: \" + selectedCard.cardName");
+        Debug.Log("[DraftUI] Card selected: " + selectedCard.cardName);
     }
 
     public void ShowReplaceCardPrompt(CardSO newCard, List<CardSO> deck, int currentCost, int maxCost)
@@ -37,7 +37,7 @@ public class CardDraftUI : MonoBehaviour
         pendingReplacementCard = newCard;
         currentDeck = deck;
         currentDeckCost = currentCost;
-        maxDeckCost = maxCost;
+        this.maxDeckCost = maxCost;
 
         // TODO: Spawn replacement UI showing deck cards with Replace or Skip option
     }

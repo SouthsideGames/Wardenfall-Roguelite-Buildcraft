@@ -150,6 +150,12 @@ public enum StackBehavior
     AddValue
 }
 
+public enum DraftType 
+{ 
+    Major, 
+    Mini 
+}
+
 
 public static class Enums
 {

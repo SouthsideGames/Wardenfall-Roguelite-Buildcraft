@@ -50,6 +50,8 @@ public class CharacterLevel : MonoBehaviour
         currentXp = 0;
         levelsEarned++;
         UpdateRequiredXP();
+
+        FindAnyObjectByType<CardDraftManager>()?.ShowMiniDraft();
     }
 
     public bool HasLeveledUp()
