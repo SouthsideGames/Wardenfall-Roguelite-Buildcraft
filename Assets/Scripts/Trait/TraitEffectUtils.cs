@@ -87,16 +87,23 @@ public static class TraitEffectUtils
                 CameraManager.Instance.SetCameraZoom(9);
                 UIManager.Instance.ShowBlockersUpTo(1);
                 break;
-
             case "ArenaVisionT2":
                 CameraManager.Instance.SetCameraZoom(10);
                 UIManager.Instance.ShowBlockersUpTo(2);
                 break;
-
             case "ArenaVisionT3":
                 CameraManager.Instance.SetCameraZoom(11);
                 UIManager.Instance.ShowBlockersUpTo(3);
                 break;
+            case "TacticalOverflowT1":
+                CardDraftManager.Instance.ModifyTacticalOverflow(+1, 1);
+                break;
+            case "TacticalOverflowT2":
+                CardDraftManager.Instance.ModifyTacticalOverflow(+2, 2);
+                break;
+            case "TacticalOverflowT3":
+                CardDraftManager.Instance.ModifyTacticalOverflow(+3, 99); // disables reroll
+    break;
 
             default:
                 Debug.LogWarning($"Unknown special effect ID: {tier.SpecialEffectID}");

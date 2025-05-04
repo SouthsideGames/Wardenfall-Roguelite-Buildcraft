@@ -10,17 +10,13 @@ public class CardEffectManager : MonoBehaviour
     public void ActivateCard(CardSO card, InGameCardSlotUI slotUI)
     {
         if (card.effectPrefab == null)
-        {
-            Debug.LogWarning($"No effectPrefab assigned for card: {card.cardName}");
             return;
-        }
 
         GameObject effectObj = Instantiate(card.effectPrefab);
         ICardEffect effect = effectObj.GetComponent<ICardEffect>();
 
         if (effect == null)
         {
-            Debug.LogError($"Effect prefab for card {card.cardName} does not implement ICardEffect.");
             Destroy(effectObj);
             return;
         }

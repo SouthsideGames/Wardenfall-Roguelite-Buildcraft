@@ -1,12 +1,17 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CardDraftManager : MonoBehaviour, IGameStateListener
 {
     public static CardDraftManager Instance;
 
+    [Header("UI References")]
     [SerializeField] private GameObject panel;
     [SerializeField] private Transform cardContainer;
+    [SerializeField] private Button rerollButton;
+
+    [Header("Card Sources")]
     [SerializeField] private CardLibrary cardLibrary;
 
     [Header("RARITY PREFABS")]
@@ -18,6 +23,13 @@ public class CardDraftManager : MonoBehaviour, IGameStateListener
     [SerializeField] private CardOptionUI mythicOptionPrefab;
     [SerializeField] private CardOptionUI exaltedOptionPrefab;
 
+    private DraftType currentDraftType;
+    private int rerollCount = 0;
+    private int maxRerolls = 1;
+    private int cardsNeeded;
+    private int bonusDraftOptions = 0;
+    private int rerollSuppression = 0;
+
     private void Awake()
     {
         if (Instance == null)
@@ -26,17 +38,34 @@ public class CardDraftManager : MonoBehaviour, IGameStateListener
             Destroy(gameObject);
     }
 
+    private void Update()
+    {
+    #if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            ShowMajorDraft();
+        }
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            ShowMiniDraft();
+        }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            rerollCount = 0;
+        }
+    #endif
+    }
+
     public void GameStateChangedCallback(GameState state)
     {
         if (state == GameState.CardDraft)
-            OpenCardDraft();
+        {
+            ShowDraft(DraftType.Major);
+        }
         else
-            CloseCardDraft();
-    }
-
-    private void OpenCardDraft()
-    {
-        ShowDraft(DraftType.Major);
+        {
+            panel.SetActive(false);
+        }
     }
 
     public void ShowMajorDraft()
@@ -46,51 +75,115 @@ public class CardDraftManager : MonoBehaviour, IGameStateListener
 
     public void ShowMiniDraft()
     {
-        if (Random.Range(0, 100) >= 30) return;
+        int chance = GetMiniDraftChance();
+        int roll = Random.Range(0, 100);
+        if (roll >= chance) return;
+
         ShowDraft(DraftType.Mini);
+    }
+
+    private int GetMiniDraftChance()
+    {
+        int baseChance = 30;
+        return baseChance; // future modifiers can be added here
     }
 
     private void ShowDraft(DraftType type)
     {
+        currentDraftType = type;
+        rerollCount = 0;
+
         panel.SetActive(true);
+        RenderDraft();
+    }
 
-        foreach (Transform child in cardContainer)
-            Destroy(child.gameObject);
+    private void RenderDraft()
+    {
+        List<CardSO> lockedCards = new List<CardSO>();
 
-        var pool = cardLibrary.GetCardsByRarity(CardDraftRarityConfig.Pools[type]);
-        var cardsToShow = cardLibrary.PickRandomCards(pool, type == DraftType.Major ? 3 : 2);
-
-        foreach (CardSO cardSO in cardsToShow)
+        for (int i = cardContainer.childCount - 1; i >= 0; i--)
         {
-            CardOptionUI cardUI = Instantiate(GetOptionPrefab(cardSO.rarity), cardContainer);
-            cardUI.SetCard(cardSO, () => OnCardSelected(cardSO));
+            Transform child = cardContainer.GetChild(i);
+            CardOptionUI slot = child.GetComponent<CardOptionUI>();
+
+            if (slot != null && slot.IsLocked)
+            {
+                lockedCards.Add(slot.card);
+            }
+            else
+            {
+                Destroy(child.gameObject);
+            }
+        }
+
+        List<CardSO> pool = cardLibrary.GetCardsByRarity(CardDraftRarityConfig.Pools[currentDraftType]);
+        cardsNeeded = (currentDraftType == DraftType.Major ? 3 : 2) + bonusDraftOptions - lockedCards.Count;
+        List<CardSO> randomCards = cardLibrary.PickRandomCards(pool, cardsNeeded);
+
+        foreach (CardSO card in lockedCards)
+        {
+            CardOptionUI slot = Instantiate(GetOptionPrefab(card.rarity), cardContainer);
+            slot.SetCard(card, () => OnCardSelected(card));
+        }
+
+        foreach (CardSO card in randomCards)
+        {
+            CardOptionUI slot = Instantiate(GetOptionPrefab(card.rarity), cardContainer);
+            slot.SetCard(card, () => OnCardSelected(card));
+        }
+
+        if (currentDraftType == DraftType.Major && rerollButton != null)
+        {
+            int effectiveRerollLimit = maxRerolls - rerollSuppression;
+            rerollButton.gameObject.SetActive(rerollCount < effectiveRerollLimit);
+            rerollButton.onClick.RemoveAllListeners();
+            rerollButton.onClick.AddListener(RerollDraft);
         }
     }
 
-    public CardOptionUI GetOptionPrefab(CardRarity rarity)
+    private void RerollDraft()
     {
-        return rarity switch
-        {
-            CardRarity.Common => commonOptionPrefab,
-            CardRarity.Uncommon => uncommonOptionPrefab,
-            CardRarity.Rare => rareOptionPrefab,
-            CardRarity.Epic => epicOptionPrefab,
-            CardRarity.Legendary => legendaryOptionPrefab,
-            CardRarity.Mythic => mythicOptionPrefab,
-            CardRarity.Exalted => exaltedOptionPrefab,
-            _ => commonOptionPrefab
-        };
+        if (rerollCount >= maxRerolls) return;
+        rerollCount++;
+        RenderDraft();
     }
 
-    private void CloseCardDraft()
+    public void ModifyTacticalOverflow(int extraCards, int suppressRerolls)
     {
-        panel.SetActive(false);
+        bonusDraftOptions = extraCards;
+        rerollSuppression = suppressRerolls;
     }
 
     private void OnCardSelected(CardSO card)
     {
-        CharacterManager.Instance.cards.AddCard(card); 
-        CloseCardDraft();
+        CharacterCards cardSystem = CharacterManager.Instance.cards;
+
+        if (cardSystem.currentTotalCost + card.cost <= cardSystem.GetEffectiveDeckCap())
+        {
+            cardSystem.AddCard(card);
+            Debug.Log("Card selected: " + card.cardName);
+        }
+        else
+        {
+            Debug.Log("Card not added: deck cost would exceed limit.");
+        }
+
+        panel.SetActive(false);
+    }
+
+    public CardOptionUI GetOptionPrefab(CardRarity rarity)
+    {
+        switch (rarity)
+        {
+            case CardRarity.Common: return commonOptionPrefab;
+            case CardRarity.Uncommon: return uncommonOptionPrefab;
+            case CardRarity.Rare: return rareOptionPrefab;
+            case CardRarity.Epic: return epicOptionPrefab;
+            case CardRarity.Legendary: return legendaryOptionPrefab;
+            case CardRarity.Mythic: return mythicOptionPrefab;
+            case CardRarity.Exalted: return exaltedOptionPrefab;
+            default: return commonOptionPrefab;
+        }
     }
 
 } 
