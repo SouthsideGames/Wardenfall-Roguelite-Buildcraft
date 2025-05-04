@@ -110,9 +110,6 @@ public class UIManager : MonoBehaviour, IGameStateListener
             case GameState.TraitSelection:
                 ShowPanel(traitSelectTransitionPanel);
                 break;
-            case GameState.CharacterProgression:
-                ShowPanel(progressionPanel);
-                break;
             case GameState.Shop:
                 ShowPanel(shopPanel);
                 break;
@@ -245,6 +242,18 @@ public class UIManager : MonoBehaviour, IGameStateListener
         missionPanel.SetActive(false);
         menuPanel.SetActive(true);
         TriggerPanelAction(menuPanel);
+    }
+
+    public void ShowCharacterProgressionPanel()
+    {
+        TriggerPanelAction(progressionPanel);
+        progressionPanel.SetActive(true);
+    }
+
+    public void HideCharacterProgressionPanel()
+    {
+        TriggerPanelAction(progressionPanel);
+        progressionPanel.SetActive(false);
     }
 
     private void TriggerPanelAction(GameObject _panelObject)

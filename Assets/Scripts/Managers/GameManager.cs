@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     public static Action OnGamePaused;
     public static Action OnGameResumed; 
     public static Action OnWaveCompleted;
+    private Action _postProgressionCallback;
 
     public GameState gameState { get; private set; }
 
@@ -67,24 +68,38 @@ public class GameManager : MonoBehaviour
         StatisticsManager.Instance.StopTimer();
         StatisticsManager.Instance.EndRun();
 
+        // Always award XP
+        int difficultyMultiplier = 1;
+        int traitCount = TraitManager.Instance.GetActiveTraitCount();
+        int waveNumber = WaveManager.Instance.currentWaveIndex;
+        int metaXP = MetaXPGranter.CalculateMetaXP(waveNumber, difficultyMultiplier, traitCount);
+        MetaProgressionManager.Instance.AddMetaXP(metaXP);
+
+        // Determine what to do after progression screen
         bool hasLevelUp = CharacterManager.Instance.HasLeveledUp();
         bool hasChest = WaveTransitionManager.Instance.HasCollectedChest();
         bool isBossWave = WaveManager.Instance.IsCurrentWaveBoss();
 
-        if (isBossWave)
-            StartTraitSelection();
-        else if (hasLevelUp || hasChest)
+        _postProgressionCallback = () =>
         {
-            SetGameState(GameState.WaveTransition);
-        }
-        else
-        {
-            SetGameState(GameState.Shop);
-        }
+            if (isBossWave)
+                StartTraitSelection();
+            else if (hasLevelUp || hasChest)
+                SetGameState(GameState.WaveTransition);
+            else
+                SetGameState(GameState.Shop);
+        };
+
+        // Just open the progression screen (UI overlay, not GameState)
+        UIManager.Instance.ShowCharacterProgressionPanel();
 
     }
 
-    
+    public void RunPostProgressionCallback()
+    {
+        _postProgressionCallback?.Invoke();
+        _postProgressionCallback = null;
+    }
 
     public void ManageGameOver() => SceneManager.LoadScene(0);
 

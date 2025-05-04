@@ -22,7 +22,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     [SerializeField] private float waveDuration;
     private float timer;
     private bool hasWaveStarted;
-    private int currentWaveIndex;
+    public int currentWaveIndex;
 
     [Header("WAVES BASED SETTINGS:")]
     [SerializeField] private Wave[] wave;

@@ -65,4 +65,9 @@ public class TraitManager : MonoBehaviour
             Debug.Log("All suppressed traits restored.");
         }
     }
+
+    public int GetActiveTraitCount()
+    {
+        return traitStacks.Count;
+    }
 } 

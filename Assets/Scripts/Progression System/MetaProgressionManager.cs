@@ -3,7 +3,7 @@ using SouthsideGames.SaveManager;
 using System;
 using System.Collections.Generic;
 
-public class MetaProgressionManager : MonoBehaviour, IGameStateListener
+public class MetaProgressionManager : MonoBehaviour
 {
     public static MetaProgressionManager Instance;
 
@@ -64,18 +64,8 @@ public class MetaProgressionManager : MonoBehaviour, IGameStateListener
             PlayerLevel = int.Parse(levelStr);
     }
 
-    // Optional: Reset LastGainedXP when you no longer want to display it
     public void ClearLastGainedXP()
     {
         LastGainedXP = 0;
-    }
-
-    // Listen for GameState changes (optional behavior if needed here)
-    public void GameStateChangedCallback(GameState newState)
-    {
-        // Optional: You can react to specific states here
-        // Example: Reset XP display when state changes away
-        if (newState != GameState.CharacterProgression)
-            ClearLastGainedXP();
     }
 }
