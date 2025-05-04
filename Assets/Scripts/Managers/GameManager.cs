@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour
     public void StartShop() => SetGameState(GameState.Shop);    
     public void StartTraitSelection() => SetGameState(GameState.TraitSelection);
     public void StartCardDraft() => SetGameState(GameState.CardDraft);
+    
     public void StartGameOver()
     {
         UIManager.Instance.UpdateGameoverPanel();
@@ -82,6 +83,8 @@ public class GameManager : MonoBehaviour
         }
 
     }
+
+    
 
     public void ManageGameOver() => SceneManager.LoadScene(0);
 

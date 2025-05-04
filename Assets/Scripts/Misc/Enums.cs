@@ -12,6 +12,7 @@ public enum GameState
     WaveTransition,
     CardDraft,
     TraitSelection,
+    CharacterProgression,
     Shop
 }
 
