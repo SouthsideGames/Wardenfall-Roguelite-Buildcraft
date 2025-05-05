@@ -5113,7 +5113,6 @@ GameObject:
   - component: {fileID: 8590368631950774282}
   - component: {fileID: 6811301397035281725}
   - component: {fileID: 6951891270485490257}
-  - component: {fileID: -701948105826455934}
   m_Layer: 6
   m_Name: Glimp
   m_TagString: Enemy
@@ -5269,6 +5268,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 0
+  canMove: 1
   pathUpdateRate: 0.2
   avoidanceRadius: 1
   chasePlayer: 1
@@ -5326,15 +5326,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canPerformCriticalHit: 0
---- !u!114 &-701948105826455934
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6610243285245234481}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3cd5307a4a0c1485d8ac2c9862b3585c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

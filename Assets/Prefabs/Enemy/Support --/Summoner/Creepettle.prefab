@@ -10014,7 +10014,6 @@ GameObject:
   - component: {fileID: 9095016630418557242}
   - component: {fileID: 2094317789511500324}
   - component: {fileID: 5686946949003568304}
-  - component: {fileID: -4953936402656743232}
   m_Layer: 6
   m_Name: Creepettle
   m_TagString: Enemy
@@ -10197,6 +10196,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
+  canMove: 1
   pathUpdateRate: 0.2
   avoidanceRadius: 1
   chasePlayer: 1
@@ -10254,18 +10254,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canPerformCriticalHit: 0
---- !u!114 &-4953936402656743232
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5703549388772972490}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3cd5307a4a0c1485d8ac2c9862b3585c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &7125406304466509617
 GameObject:
   m_ObjectHideFlags: 0

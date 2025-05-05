@@ -73,7 +73,7 @@ public class GameManager : MonoBehaviour
         int traitCount = TraitManager.Instance.GetActiveTraitCount();
         int waveNumber = WaveManager.Instance.currentWaveIndex;
         int metaXP = MetaXPGranter.CalculateMetaXP(waveNumber, difficultyMultiplier, traitCount);
-        MetaProgressionManager.Instance.AddMetaXP(metaXP);
+        ProgressionManager.Instance.AddMetaXP(metaXP);
 
         // Determine what to do after progression screen
         bool hasLevelUp = CharacterManager.Instance.HasLeveledUp();
@@ -90,7 +90,6 @@ public class GameManager : MonoBehaviour
                 SetGameState(GameState.Shop);
         };
 
-        // Just open the progression screen (UI overlay, not GameState)
         UIManager.Instance.ShowCharacterProgressionPanel();
 
     }

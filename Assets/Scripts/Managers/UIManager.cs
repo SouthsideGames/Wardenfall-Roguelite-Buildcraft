@@ -248,6 +248,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
     {
         TriggerPanelAction(progressionPanel);
         progressionPanel.SetActive(true);
+        ProgressionManager.Instance.ProgressionUI.Refresh();
     }
 
     public void HideCharacterProgressionPanel()

@@ -3,9 +3,10 @@ using SouthsideGames.SaveManager;
 using System;
 using System.Collections.Generic;
 
-public class MetaProgressionManager : MonoBehaviour
+public class ProgressionManager : MonoBehaviour
 {
-    public static MetaProgressionManager Instance;
+    public static ProgressionManager Instance;
+    public ProgressionUI ProgressionUI;
 
     public int MetaXP { get; private set; }
     public int UnlockPoints { get; private set; }
@@ -25,9 +26,7 @@ public class MetaProgressionManager : MonoBehaviour
             Load();
         }
         else
-        {
             Destroy(gameObject);
-        }
     }
 
     public void AddMetaXP(int amount)
@@ -64,8 +63,5 @@ public class MetaProgressionManager : MonoBehaviour
             PlayerLevel = int.Parse(levelStr);
     }
 
-    public void ClearLastGainedXP()
-    {
-        LastGainedXP = 0;
-    }
+    public void ClearLastGainedXP() => LastGainedXP = 0;
 }

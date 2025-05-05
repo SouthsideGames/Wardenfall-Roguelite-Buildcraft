@@ -4908,7 +4908,6 @@ GameObject:
   - component: {fileID: 1297417035062969690}
   - component: {fileID: 4585913866139146627}
   - component: {fileID: 2022606246078107915}
-  - component: {fileID: -6042827552001034372}
   m_Layer: 6
   m_Name: Spike
   m_TagString: Enemy
@@ -5063,6 +5062,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 3
+  canMove: 1
   pathUpdateRate: 0.2
   avoidanceRadius: 1
   chasePlayer: 1
@@ -5120,18 +5120,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canPerformCriticalHit: 0
---- !u!114 &-6042827552001034372
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 831428353397795802}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3cd5307a4a0c1485d8ac2c9862b3585c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &3144578653033657039
 GameObject:
   m_ObjectHideFlags: 0

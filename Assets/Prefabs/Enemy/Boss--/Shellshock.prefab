@@ -5100,7 +5100,6 @@ GameObject:
   - component: {fileID: 6054851436047455091}
   - component: {fileID: 6762480714370216367}
   - component: {fileID: -6785672672013279812}
-  - component: {fileID: 2415555040641494511}
   m_Layer: 6
   m_Name: Shellshock
   m_TagString: Enemy
@@ -5214,6 +5213,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
+  canMove: 1
   pathUpdateRate: 0.2
   avoidanceRadius: 1
   chasePlayer: 1
@@ -5321,18 +5321,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &2415555040641494511
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2340492655594630733}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3cd5307a4a0c1485d8ac2c9862b3585c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2381212996664272875
 GameObject:
   m_ObjectHideFlags: 0

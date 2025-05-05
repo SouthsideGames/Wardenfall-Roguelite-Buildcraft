@@ -23,6 +23,8 @@ public class CharacterManager : MonoBehaviour
     public CharacterCards cards {get; private set; }
     [SerializeField] private CircleCollider2D _col;
     public SpriteRenderer _sr {get; private set; }
+    private CharacterDataSO characterData;
+    public CharacterDataSO CurrentCharacter => characterData;
     
     
     private void Awake()
@@ -45,15 +47,13 @@ public class CharacterManager : MonoBehaviour
     }
 
     private void OnDestroy() =>  CharacterSelectionManager.OnCharacterSelected -= CharacterSelectionCallback;
-
     public void TakeDamage(int _damage) => health.TakeDamage(_damage);
-
     public Vector2 GetColliderCenter() => (Vector2)transform.position + _col.offset;
-
     public bool HasLeveledUp() => level.HasLeveledUp();
 
     private void CharacterSelectionCallback(CharacterDataSO _characterData)
     {
+        characterData = _characterData;
         StatisticsManager.Instance.RecordCharacterUsage(_characterData.ID);
         _sr.sprite = _characterData.Icon;
     } 
@@ -63,10 +63,7 @@ public class CharacterManager : MonoBehaviour
         Vector2 aimDirection = controller.MoveDirection;
 
         if (aimDirection == Vector2.zero)
-        {
-            Debug.LogWarning("Character is not moving. Defaulting aim direction to Vector2.right.");
-            aimDirection = Vector2.right; // Default to right if stationary
-        }
+            aimDirection = Vector2.right; 
 
         return aimDirection.normalized;
     }
