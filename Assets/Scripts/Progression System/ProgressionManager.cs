@@ -1,12 +1,11 @@
 using UnityEngine;
 using SouthsideGames.SaveManager;
-using System;
-using System.Collections.Generic;
+
 
 public class ProgressionManager : MonoBehaviour
 {
     public static ProgressionManager Instance;
-    public ProgressionUI ProgressionUI;
+    public InGameProgressionUI ProgressionUI;
 
     public int MetaXP { get; private set; }
     public int UnlockPoints { get; private set; }
@@ -31,15 +30,16 @@ public class ProgressionManager : MonoBehaviour
 
     public void AddMetaXP(int amount)
     {
-        MetaXP += amount;
+          MetaXP += amount;
         LastGainedXP = amount;
 
-        int newPoints = Mathf.FloorToInt(amount / 100f);
-        UnlockPoints += newPoints;
+        UnlockPoints += Mathf.FloorToInt(amount / 100f);
 
-        int xpForLevel = 1000;
-        if (MetaXP >= (PlayerLevel + 1) * xpForLevel)
+        while (MetaXP >= GetXPForNextLevel())
+        {
+            MetaXP -= GetXPForNextLevel();
             PlayerLevel++;
+        }
 
         Save();
     }
@@ -64,4 +64,9 @@ public class ProgressionManager : MonoBehaviour
     }
 
     public void ClearLastGainedXP() => LastGainedXP = 0;
+
+    public int GetXPForNextLevel()
+    {
+        return Mathf.FloorToInt(1000 * Mathf.Pow(1.15f, PlayerLevel));
+    }
 }
