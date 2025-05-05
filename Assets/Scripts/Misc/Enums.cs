@@ -4,6 +4,7 @@ using UnityEngine;
 
 public enum GameState
 {
+    Username,
     Menu,
     WeaponSelect,
     Game,

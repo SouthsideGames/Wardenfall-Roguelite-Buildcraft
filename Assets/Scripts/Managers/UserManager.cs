@@ -1,0 +1,62 @@
+using UnityEngine;
+using SouthsideGames.SaveManager;
+
+public class UserManager : MonoBehaviour, IWantToBeSaved
+{
+    public static UserManager Instance { get; private set; }
+
+    private const string USERNAME_KEY = "username";
+    private string username;
+    public string Username => username;
+
+    private void Awake()
+    {
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
+
+        Load();
+    }
+
+    public bool IsFirstTimePlayer()
+    {
+        return string.IsNullOrEmpty(username);
+    }
+
+    public void SetUsername(string newUsername)
+    {
+        username = newUsername;
+        Save();
+    }
+
+    public void ClearAllData()
+    {
+        // Clear all game data
+        SaveManager.ClearData();
+
+        // Reset username
+        username = "";
+        Save();
+
+        // Restart game
+        GameManager.Instance.Restart();
+    }
+
+    public void Save()
+    {
+        SaveManager.Save(this, USERNAME_KEY, username);
+    }
+
+    public void Load()
+    {
+        if (SaveManager.TryLoad(this, USERNAME_KEY, out object usernameObj))
+        {
+            username = (string)usernameObj;
+        }
+        else
+        {
+            username = "";
+        }
+    }
+}

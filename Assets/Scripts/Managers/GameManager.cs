@@ -27,6 +27,13 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         Application.targetFrameRate = 60;
+        
+        if (UserManager.Instance.IsFirstTimePlayer())
+        {
+            SetGameState(GameState.Username);
+            return;
+        }
+        
         SetGameState(GameState.Menu);
     }
 
@@ -129,6 +136,8 @@ public class GameManager : MonoBehaviour
 
 
     public bool InGameState() => gameState == GameState.Game;
+
+    
  
 }
 

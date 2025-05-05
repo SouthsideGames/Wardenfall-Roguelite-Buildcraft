@@ -97,7 +97,13 @@ namespace SouthsideGames.SaveManager
 
         public static bool TryLoad(object sender, string key, out object value)
         {
-           string fullKey = GetFullKey(sender, key);
+            if (GameData == null)
+            {
+                value = null;
+                return false;
+            }
+
+            string fullKey = GetFullKey(sender, key);
 
             if (GameData.TryGetValue(fullKey, out Type dataType, out string data))
             {

@@ -1,8 +1,16 @@
 using UnityEngine;
+using TMPro;
+using UnityEngine.UI;
 
 public class ProgressionUI : MonoBehaviour
 {
     [SerializeField] private GameObject unlockTreePanel;
+    [SerializeField] private TextMeshProUGUI usernameText;
+    [SerializeField] private TextMeshProUGUI levelText;
+    [SerializeField] private Slider xpSlider;
+
+    void Awake() => UpdateInfo();
+
 
     public void OnOpenUnlockTree()
     {
@@ -10,8 +18,17 @@ public class ProgressionUI : MonoBehaviour
         unlockTreePanel.GetComponent<UnlockTreeUI>()?.Refresh();
     }
 
-    public void OnCloseUnlockTree()
+    public void OnCloseUnlockTree() => unlockTreePanel.SetActive(false);
+
+    private void UpdateInfo()
     {
-        unlockTreePanel.SetActive(false);
+        var progression = ProgressionManager.Instance;
+
+        usernameText.text = UserManager.Instance.Username;  
+        levelText.text = progression.PlayerLevel.ToString();
+
+        float currentXP = progression.MetaXP;
+        float requiredXP = progression.GetXPForNextLevel();
+        xpSlider.value = currentXP / requiredXP;
     }
 }

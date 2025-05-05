@@ -10,7 +10,7 @@ public class ProgressionManager : MonoBehaviour
     public int MetaXP { get; private set; }
     public int UnlockPoints { get; private set; }
     public int LastGainedXP { get; private set; }
-    public int PlayerLevel { get; private set; }
+    public int PlayerLevel { get; private set; } = 1;
 
     private const string XP_KEY = "meta_xp";
     private const string POINTS_KEY = "unlock_points";
@@ -60,7 +60,7 @@ public class ProgressionManager : MonoBehaviour
             UnlockPoints = int.Parse(pointsStr);
 
         if (SaveManager.GameData.TryGetValue(LEVEL_KEY, out var _, out var levelStr))
-            PlayerLevel = int.Parse(levelStr);
+            PlayerLevel = Mathf.Max(1, int.Parse(levelStr));
     }
 
     public void ClearLastGainedXP() => LastGainedXP = 0;
