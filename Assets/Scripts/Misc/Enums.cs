@@ -29,6 +29,15 @@ public enum MeleeWeaponState
     Attack
 }
 
+public enum UnlockCategory
+{
+    StatBooster,
+    ShopEconomy,
+    Card,
+    Perk,
+    Special
+}
+
 public enum Stat
 {
     Attack,

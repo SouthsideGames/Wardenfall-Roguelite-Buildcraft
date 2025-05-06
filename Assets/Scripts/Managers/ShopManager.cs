@@ -11,7 +11,7 @@ public class ShopManager : MonoBehaviour, IGameStateListener
 {
     public static Action OnItemPurchased;
     public static Action OnRerollDisabled;
-    
+
     [Header("ELEMENTS:")]
     [SerializeField] private Transform containersParent;
     [SerializeField] private ShopItemContainerUI shopItemButton;
@@ -26,27 +26,23 @@ public class ShopManager : MonoBehaviour, IGameStateListener
     [SerializeField] private CharacterWeapon characterWeapon;
     [SerializeField] private CharacterObjects characterObject;
 
-    private void Awake() 
+    private void Awake()
     {
-        ShopItemContainerUI.onPurchased     += ItemPurchasedCallback;
-
-        CurrencyManager.onCurrencyUpdate    += CurrencyUpdatedCallback;
-
-        InputManager.OnScroll               += ScrollCallback;
+        ShopItemContainerUI.onPurchased += ItemPurchasedCallback;
+        CurrencyManager.onCurrencyUpdate += CurrencyUpdatedCallback;
+        InputManager.OnScroll += ScrollCallback;
     }
 
-    private void OnDestroy() 
+    private void OnDestroy()
     {
-        ShopItemContainerUI.onPurchased     -= ItemPurchasedCallback;
-
-        CurrencyManager.onCurrencyUpdate    -= CurrencyUpdatedCallback;
-
-        InputManager.OnScroll               -= ScrollCallback;
+        ShopItemContainerUI.onPurchased -= ItemPurchasedCallback;
+        CurrencyManager.onCurrencyUpdate -= CurrencyUpdatedCallback;
+        InputManager.OnScroll -= ScrollCallback;
     }
 
     public void GameStateChangedCallback(GameState _gameState)
     {
-        if(_gameState == GameState.Shop)
+        if (_gameState == GameState.Shop)
         {
             ConfigureShop();
             UpdateRerollVisuals();
@@ -57,78 +53,76 @@ public class ShopManager : MonoBehaviour, IGameStateListener
     {
         List<GameObject> toDestroy = new List<GameObject>();
 
-        for(int i = 0; i < containersParent.childCount; i++)
+        for (int i = 0; i < containersParent.childCount; i++)
         {
             ShopItemContainerUI container = containersParent.GetChild(i).GetComponent<ShopItemContainerUI>();
-
-            if(!container.isLocked)
-               toDestroy.Add(container.gameObject);
+            if (!container.isLocked)
+                toDestroy.Add(container.gameObject);
         }
 
-        while(toDestroy.Count > 0)
+        while (toDestroy.Count > 0)
         {
             Transform t = toDestroy[0].transform;
             t.SetParent(null);
             Destroy(t.gameObject);
-            toDestroy.RemoveAt(0);  
+            toDestroy.RemoveAt(0);
         }
 
-
-        int containersToAdd = 6 - containersParent.childCount;
+        int containersToAdd = (ProgressionEffectManager.Instance.HasExtraShelf ? 7 : 6) - containersParent.childCount;
         int weaponContainerCount = Random.Range(Mathf.Min(2, containersToAdd), containersToAdd);
         int objectContainerCount = containersToAdd - weaponContainerCount;
 
-        for(int i = 0; i < weaponContainerCount; i++)
+        for (int i = 0; i < weaponContainerCount; i++)
         {
             ShopItemContainerUI weaponContainerInstance = Instantiate(shopItemButton, containersParent);
             WeaponDataSO randomWeapon = ResourceManager.GetRandomWeapon();
-
-            weaponContainerInstance.Configure(randomWeapon, Random.Range(0,2));
+            weaponContainerInstance.Configure(randomWeapon, Random.Range(0, 2));
         }
 
-        for(int i = 0; i < objectContainerCount; i++)
+        for (int i = 0; i < objectContainerCount; i++)
         {
             ShopItemContainerUI objectContainerInstance = Instantiate(shopItemButton, containersParent);
             ObjectDataSO randomObject = ResourceManager.GetRandomObject();
-
             objectContainerInstance.Configure(randomObject);
         }
     }
 
     public void Reroll()
     {
+        int effectiveRerollCost = ProgressionEffectManager.Instance.HasFreeOrDiscountReroll ? Mathf.Max(0, rerollPrice - 1) : rerollPrice;
+        CurrencyManager.Instance.UseCurrency(effectiveRerollCost);
         ConfigureShop();
-        CurrencyManager.Instance.UseCurrency(rerollPrice);
     }
 
-    private void UpdateRerollVisuals() 
+    private void UpdateRerollVisuals()
     {
-        rerollPriceText.text = rerollPrice.ToString();
-        rerollButton.interactable = CurrencyManager.Instance.HasEnoughCurrency(rerollPrice);
+        int effectiveRerollCost = ProgressionEffectManager.Instance.HasFreeOrDiscountReroll ? Mathf.Max(0, rerollPrice - 1) : rerollPrice;
+        rerollPriceText.text = effectiveRerollCost.ToString();
+        rerollButton.interactable = CurrencyManager.Instance.HasEnoughCurrency(effectiveRerollCost);
 
-        if(!rerollButton.interactable)
+        if (!rerollButton.interactable)
             OnRerollDisabled?.Invoke();
     }
 
-    
     private void CurrencyUpdatedCallback() => UpdateRerollVisuals();
 
     private void ItemPurchasedCallback(ShopItemContainerUI _shopItemContainerUI, int _weaponLevel)
     {
-        if(_shopItemContainerUI.WeaponData != null)
+        if (_shopItemContainerUI.WeaponData != null)
             TryPurchaseWeapon(_shopItemContainerUI, _weaponLevel);
-        else 
+        else
             PurchaseObject(_shopItemContainerUI);
     }
 
     private void TryPurchaseWeapon(ShopItemContainerUI _shopItemContainerUI, int _weaponLevel)
     {
-        if(characterWeapon.AddWeapon(_shopItemContainerUI.WeaponData, _weaponLevel))
+        if (characterWeapon.AddWeapon(_shopItemContainerUI.WeaponData, _weaponLevel))
         {
-           int price = WeaponStatCalculator.GetPurchasePrice(_shopItemContainerUI.WeaponData, _weaponLevel);
-           CurrencyManager.Instance.UseCurrency(price);
+            int basePrice = WeaponStatCalculator.GetPurchasePrice(_shopItemContainerUI.WeaponData, _weaponLevel);
+            int finalPrice = Mathf.FloorToInt(basePrice * ProgressionEffectManager.Instance.ShopDiscount);
+            CurrencyManager.Instance.UseCurrency(finalPrice);
 
-           Destroy(_shopItemContainerUI.gameObject);
+            Destroy(_shopItemContainerUI.gameObject);
         }
 
         OnItemPurchased?.Invoke();
@@ -138,13 +132,18 @@ public class ShopManager : MonoBehaviour, IGameStateListener
     {
         characterObject.AddObject(_shopItemContainerUI.ObjectData);
 
-        CurrencyManager.Instance.UseCurrency(_shopItemContainerUI.ObjectData.Price);
+        int basePrice = _shopItemContainerUI.ObjectData.Price;
+        int finalPrice = Mathf.FloorToInt(basePrice * ProgressionEffectManager.Instance.ShopDiscount);
+        CurrencyManager.Instance.UseCurrency(finalPrice);
 
         Destroy(_shopItemContainerUI.gameObject);
 
         OnItemPurchased?.Invoke();
     }
 
-    private void ScrollCallback(float _xValue) => containersParent.GetComponent<RectTransform>().anchoredPosition -= _xValue * scrollSpeed * Time.deltaTime * Vector2.right;
+    private void ScrollCallback(float _xValue)
+    {
+        containersParent.GetComponent<RectTransform>().anchoredPosition -= _xValue * scrollSpeed * Time.deltaTime * Vector2.right;
+    }
 }
  

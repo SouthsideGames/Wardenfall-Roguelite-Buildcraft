@@ -88,6 +88,10 @@ public class CharacterStats : MonoBehaviour
         characterData = _characterData;
         stats = characterData.BaseStats;
 
+        CharacterEquipment equipment = GetComponent<CharacterEquipment>();
+        if (equipment != null)
+        ApplyMetaBoosters(equipment.equippedBoosters);
+
         UpdateStats();
     }
 
@@ -110,6 +114,14 @@ public class CharacterStats : MonoBehaviour
             addends[_stat] = boostedStats[_stat];
             boostedStats[_stat] = 0; 
             UpdateStats();
+        }
+    }
+
+    public void ApplyMetaBoosters(List<StatBoosterSO> boosters)
+    {
+        foreach (var booster in boosters)
+        {
+            BoostStat(booster.targetStat, booster.bonusValue);
         }
     }
 

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public static class MetaXPGranter
+public static class ProgressionXPGranter
 {
     public static int CalculateMetaXP(int waveNumber, int difficultyMultiplier, int traitCount)
     {

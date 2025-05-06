@@ -66,9 +66,20 @@ public class WeaponFuserManager : MonoBehaviour
         Weapon weapon = weaponsToFuse[0];
         weaponsToFuse.Clear();
 
+        FusionDividendAction();
+
         MissionManager.Increment(MissionType.fusionFanatic, 1);
 
         onFuse?.Invoke(weapon);
+    }
+
+    private void FusionDividendAction()
+    {
+        int fusionCash = ProgressionEffectManager.Instance.FusionCashReward;
+        if (fusionCash > 0)
+        {
+            CurrencyManager.Instance.AdjustPremiumCurrency(fusionCash);
+        }
     }
 
 }

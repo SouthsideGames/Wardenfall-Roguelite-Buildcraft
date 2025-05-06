@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
+        CurrencyManager.Instance.EarlyInvestorSkillAction();
         SetGameState(GameState.Game);
     }
 
@@ -79,7 +80,7 @@ public class GameManager : MonoBehaviour
         int difficultyMultiplier = 1;
         int traitCount = TraitManager.Instance.GetActiveTraitCount();
         int waveNumber = WaveManager.Instance.currentWaveIndex;
-        int metaXP = MetaXPGranter.CalculateMetaXP(waveNumber, difficultyMultiplier, traitCount);
+        int metaXP = ProgressionXPGranter.CalculateMetaXP(waveNumber, difficultyMultiplier, traitCount);
         ProgressionManager.Instance.AddMetaXP(metaXP);
 
         // Determine what to do after progression screen

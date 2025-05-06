@@ -84,6 +84,13 @@ public class CurrencyManager : MonoBehaviour, IWantToBeSaved
             AdjustPremiumCurrency(100, false);
     }
 
+    public void EarlyInvestorSkillAction()
+    {
+        int startingMeat = ProgressionEffectManager.Instance.StartingMeat;
+        if (startingMeat > 0)
+            AdjustCurrency(startingMeat);
+    }
+
     public void Save() => SaveManager.Save(this, premiumCurrencyKey, PremiumCurrency);
 
     public bool HasEnoughCurrency(int _amount) => Currency >= _amount;
