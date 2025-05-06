@@ -99,7 +99,13 @@ public class CurrencyManager : MonoBehaviour, IWantToBeSaved
     public bool HasEnoughPremiumCurrency(int _amount) => PremiumCurrency >= _amount;
     public void UsePremiumCurrency(int _amount) => AdjustPremiumCurrency(-_amount);
 
-    private void MeatCollectedCallback(Meat _meat) => AdjustCurrency(1);
+    private void MeatCollectedCallback(Meat _meat)
+   {
+       float multiplier = MetaEffectManager.Instance != null ? MetaEffectManager.Instance.MeatMultiplier : 1f;
+       int reward = Mathf.RoundToInt(1 * multiplier);
+       AdjustCurrency(reward);
+   }
+   
     private void CashCollectedCallback(Cash _cash) => AdjustPremiumCurrency(1);
     
 }
