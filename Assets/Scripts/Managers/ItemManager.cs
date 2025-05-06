@@ -117,15 +117,17 @@ public class ItemManager : MonoBehaviour
 
     private void TryDropChest(Vector2 _spawnPosition)
     {
-        int chestChance = Mathf.RoundToInt(baseChestDropChance * chestDropChanceMultiplier * dropRateMultiplier);
-
-        bool shouldSpawnChest = Random.Range(0, 101) <= chestChance;
-
+        float baseChance = baseChestDropChance * chestDropChanceMultiplier * dropRateMultiplier;
+        float finalChance = baseChance + (MetaEffectManager.Instance != null ? MetaEffectManager.Instance.ChestDropBonus * 100f : 0f);
+    
+        bool shouldSpawnChest = Random.Range(0f, 100f) <= finalChance;
+    
         if (!shouldSpawnChest)
             return;
-
+    
         DropChest(_spawnPosition);
     }
+
 
     private void DropChest(Vector2 _spawnPosition) =>
         Instantiate(chestPrefab, _spawnPosition, Quaternion.identity, transform);
