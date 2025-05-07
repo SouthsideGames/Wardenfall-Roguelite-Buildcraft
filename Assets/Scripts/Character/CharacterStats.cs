@@ -90,7 +90,7 @@ public class CharacterStats : MonoBehaviour
 
         CharacterEquipment equipment = GetComponent<CharacterEquipment>();
         if (equipment != null)
-        ApplyMetaBoosters(equipment.equippedBoosters);
+            ApplyProgressionBoosters(equipment.equippedBoosters);
 
         UpdateStats();
     }
@@ -117,11 +117,12 @@ public class CharacterStats : MonoBehaviour
         }
     }
 
-    public void ApplyMetaBoosters(List<StatBoosterSO> boosters)
+    public void ApplyProgressionBoosters(List<EquippedBooster> boosters)
     {
-        foreach (var booster in boosters)
+        foreach (var equipped in boosters)
         {
-            BoostStat(booster.targetStat, booster.bonusValue);
+            if (equipped.booster != null)
+                BoostStat(equipped.chosenStat, equipped.booster.bonusValue);
         }
     }
 

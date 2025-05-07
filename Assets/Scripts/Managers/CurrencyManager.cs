@@ -101,7 +101,7 @@ public class CurrencyManager : MonoBehaviour, IWantToBeSaved
 
     private void MeatCollectedCallback(Meat _meat)
    {
-       float multiplier = MetaEffectManager.Instance != null ? MetaEffectManager.Instance.MeatMultiplier : 1f;
+       float multiplier = ProgressionEffectManager.Instance != null ? ProgressionEffectManager.Instance.MeatMultiplier : 1f;
        int reward = Mathf.RoundToInt(1 * multiplier);
        AdjustCurrency(reward);
    }

@@ -7,7 +7,7 @@ public class ProgressionManager : MonoBehaviour
     public static ProgressionManager Instance;
     public InGameProgressionUI ProgressionUI;
 
-    public int MetaXP { get; private set; }
+    public int ProgressionXP { get; private set; }
     public int UnlockPoints { get; private set; }
     public int LastGainedXP { get; private set; }
     public int PlayerLevel { get; private set; } = 1;
@@ -33,14 +33,14 @@ public class ProgressionManager : MonoBehaviour
 
     public void AddMetaXP(int amount)
     {
-        MetaXP += amount;
+        ProgressionXP += amount;
         LastGainedXP = amount;
 
         UnlockPoints += Mathf.FloorToInt(amount / 100f);
 
-        while (MetaXP >= GetXPForNextLevel())
+        while (ProgressionXP >= GetXPForNextLevel())
         {
-            MetaXP -= GetXPForNextLevel();
+            ProgressionXP -= GetXPForNextLevel();
             PlayerLevel++;
         }
 
@@ -60,15 +60,15 @@ public class ProgressionManager : MonoBehaviour
         UnlockPoints -= data.cost;
     
         // Apply unlock effects
-        switch (data.type)
+        switch (data.category)
         {
-            case UnlockType.Card:
+            case UnlockCategory.Card:
                 UnlockCard(unlockID);
                 break;
-            case UnlockType.BoosterSlot:
+            case UnlockCategory.StatBooster:
                 // Booster slots are checked dynamically by ID
                 break;
-            case UnlockType.ShopEffect:
+            case UnlockCategory.ShopEconomy:
                 // Shop effects are handled by MetaEffectManager
                 break;
         }
@@ -91,7 +91,7 @@ public class ProgressionManager : MonoBehaviour
 
     private void UnlockCard(string unlockID)
     {
-        var card = CardLibrary.Instance.allCards.Find(c => c.unlockID == unlockID);
+        CardSO card = CardLibrary.Instance.allCards.Find(c => c.cardID == unlockID);
         if (card != null)
             card.isUnlocked = true;
     }
@@ -105,7 +105,7 @@ public class ProgressionManager : MonoBehaviour
 
     private void Save()
     {
-        SaveManager.GameData.Add(XP_KEY, typeof(int), MetaXP.ToString());
+        SaveManager.GameData.Add(XP_KEY, typeof(int), ProgressionXP.ToString());
         SaveManager.GameData.Add(POINTS_KEY, typeof(int), UnlockPoints.ToString());
         SaveManager.GameData.Add(LEVEL_KEY, typeof(int), PlayerLevel.ToString());
         SaveManager.GameData.Add(UNLOCKED_KEY, typeof(string), string.Join(",", unlockedIDs));
@@ -114,7 +114,7 @@ public class ProgressionManager : MonoBehaviour
     private void Load()
     {
         if (SaveManager.GameData.TryGetValue(XP_KEY, out var _, out var xpStr))
-            MetaXP = int.Parse(xpStr);
+            ProgressionXP = int.Parse(xpStr);
 
         if (SaveManager.GameData.TryGetValue(POINTS_KEY, out var _, out var pointsStr))
             UnlockPoints = int.Parse(pointsStr);

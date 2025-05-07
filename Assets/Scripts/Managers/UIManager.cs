@@ -28,6 +28,8 @@ public class UIManager : MonoBehaviour, IGameStateListener
     [SerializeField] private GameObject settingPanel;
     [SerializeField] private GameObject codexPanel;
     [SerializeField] private GameObject missionPanel;
+    [SerializeField] private GameObject equipmentPanel;
+    [SerializeField] private GameObject progressionTreePanel;
 
     [Header("ADD. OBJECTS:")]
     [SerializeField] private List<GameObject> blockers = new();
@@ -248,6 +250,35 @@ public class UIManager : MonoBehaviour, IGameStateListener
         menuPanel.SetActive(true);
         TriggerPanelAction(menuPanel);
     }
+
+    public void ShowEquipmentSelectPanel()
+    {
+        equipmentPanel.SetActive(true);
+        TriggerPanelAction(equipmentPanel);
+        menuPanel.SetActive(false);
+    }
+
+    public void HideEquipmentSelectPanel()
+    {
+        equipmentPanel.SetActive(false);
+        menuPanel.SetActive(true);
+        TriggerPanelAction(equipmentPanel);
+    }
+
+    public void ShowProgressionTreeSelectPanel()
+    {
+        progressionTreePanel.SetActive(true);
+        TriggerPanelAction(progressionTreePanel);
+        menuPanel.SetActive(false);
+    }
+
+    public void HideProgressionTreeSelectPanel()
+    {
+        progressionTreePanel.SetActive(false);
+        menuPanel.SetActive(true);
+        TriggerPanelAction(progressionTreePanel);
+    }
+
 
     public void ShowCharacterProgressionPanel()
     {

@@ -166,7 +166,6 @@ public enum DraftType
     Mini 
 }
 
-
 public static class Enums
 {
     public static string FormatStatName(Stat _stat)

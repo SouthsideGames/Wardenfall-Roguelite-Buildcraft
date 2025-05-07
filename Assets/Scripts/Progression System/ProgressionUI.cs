@@ -27,7 +27,7 @@ public class ProgressionUI : MonoBehaviour
         usernameText.text = UserManager.Instance.Username;  
         levelText.text = progression.PlayerLevel.ToString();
 
-        float currentXP = progression.MetaXP;
+        float currentXP = progression.ProgressionXP;
         float requiredXP = progression.GetXPForNextLevel();
         xpSlider.value = currentXP / requiredXP;
     }

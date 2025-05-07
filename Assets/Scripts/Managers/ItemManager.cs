@@ -118,7 +118,7 @@ public class ItemManager : MonoBehaviour
     private void TryDropChest(Vector2 _spawnPosition)
     {
         float baseChance = baseChestDropChance * chestDropChanceMultiplier * dropRateMultiplier;
-        float finalChance = baseChance + (MetaEffectManager.Instance != null ? MetaEffectManager.Instance.ChestDropBonus * 100f : 0f);
+        float finalChance = baseChance + (ProgressionEffectManager.Instance != null ? ProgressionEffectManager.Instance.ChestDropBonus * 100f : 0f);
     
         bool shouldSpawnChest = Random.Range(0f, 100f) <= finalChance;
     

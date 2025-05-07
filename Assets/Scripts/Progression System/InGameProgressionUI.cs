@@ -17,7 +17,7 @@ public class InGameProgressionUI : MonoBehaviour
 
         characterPortrait.sprite = CharacterManager.Instance.CurrentCharacter.Icon;
 
-        float xpThisLevel = mp.MetaXP;
+        float xpThisLevel = mp.ProgressionXP;
         float xpNeeded = mp.GetXPForNextLevel();
         float percent = xpThisLevel / xpNeeded;
         xpSlider.value = 0f;
