@@ -51,13 +51,28 @@ public class ProgressionManager : MonoBehaviour
     {
         if (UnlockPoints <= 0 || unlockedIDs.Contains(unlockID))
             return false;
-
+    
         var data = UnlockDatabase.Instance.GetUnlockByID(unlockID);
         if (data == null || data.cost > UnlockPoints)
             return false;
-
+    
         unlockedIDs.Add(unlockID);
         UnlockPoints -= data.cost;
+    
+        // Apply unlock effects
+        switch (data.type)
+        {
+            case UnlockType.Card:
+                UnlockCard(unlockID);
+                break;
+            case UnlockType.BoosterSlot:
+                // Booster slots are checked dynamically by ID
+                break;
+            case UnlockType.ShopEffect:
+                // Shop effects are handled by MetaEffectManager
+                break;
+        }
+    
         Save();
         return true;
     }
