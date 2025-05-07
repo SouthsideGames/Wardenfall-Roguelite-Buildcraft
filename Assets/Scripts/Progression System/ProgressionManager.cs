@@ -89,6 +89,13 @@ public class ProgressionManager : MonoBehaviour
         }
     }
 
+    private void UnlockCard(string unlockID)
+    {
+        var card = CardLibrary.Instance.allCards.Find(c => c.unlockID == unlockID);
+        if (card != null)
+            card.isUnlocked = true;
+    }
+
     public int GetXPForNextLevel()
     {
         return Mathf.FloorToInt(1000 * Mathf.Pow(1.15f, PlayerLevel));
