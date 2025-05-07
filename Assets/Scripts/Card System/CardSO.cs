@@ -3,7 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Card Data", menuName = "Scriptable Objects/New Card Data", order = 6)]
 public class CardSO : ScriptableObject
 {
-    [Header("IDENTITY")]
+   [Header("IDENTITY")]
     public string cardID;
     public string cardName;
     [TextArea] public string description;
@@ -24,6 +24,7 @@ public class CardSO : ScriptableObject
     public bool cooldownStartsOnUse = false;
 
     [Header("UNLOCKING")]
-    public bool isUnlocked;
-    public string unlockHint;
+    public bool requiresUnlock = false;
+    public string unlockID;                       
+    [TextArea] public string unlockHint;
 }
