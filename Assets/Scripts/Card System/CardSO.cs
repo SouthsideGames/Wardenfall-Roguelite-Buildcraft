@@ -24,7 +24,6 @@ public class CardSO : ScriptableObject
     public bool cooldownStartsOnUse = false;
 
     [Header("UNLOCKING")]
-    public bool requiresUnlock = false;
-    public string unlockID;                       
-    [TextArea] public string unlockHint;
+    public bool isUnlocked;
+    public string unlockHint;
 }
