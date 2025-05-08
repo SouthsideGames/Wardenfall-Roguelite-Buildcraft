@@ -5,8 +5,8 @@ using System.Collections.Generic;
 public class ProgressionManager : MonoBehaviour
 {
     public static ProgressionManager Instance;
-    public InGameProgressionUI ProgressionUI;
-
+    public InGameProgressionUI inGameProgressionUI { get; private set; }
+    public ProgressionUI progressionUI { get; private set; }
     public int ProgressionXP { get; private set; }
     public int UnlockPoints { get; private set; }
     public int LastGainedXP { get; private set; }
@@ -29,6 +29,9 @@ public class ProgressionManager : MonoBehaviour
         }
         else
             Destroy(gameObject);
+
+        inGameProgressionUI = GetComponent<InGameProgressionUI>();
+        progressionUI = GetComponent<ProgressionUI>();
     }
 
     public void AddMetaXP(int amount)

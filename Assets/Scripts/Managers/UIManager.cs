@@ -77,6 +77,8 @@ public class UIManager : MonoBehaviour, IGameStateListener
         HideSettingsPanel();
         HideMissionPanel();
         HideAllBlockers();
+        HideEquipmentSelectPanel();
+        HideProgressionTreeSelectPanel();
 
         CheckFirstTimeLoad();
     }
@@ -284,7 +286,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
     {
         TriggerPanelAction(progressionPanel);
         progressionPanel.SetActive(true);
-        ProgressionManager.Instance.ProgressionUI.Refresh();
+        ProgressionManager.Instance.inGameProgressionUI.Refresh();
     }
 
     public void HideCharacterProgressionPanel()

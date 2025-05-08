@@ -45,6 +45,7 @@ public class UsernamePopupUI : MonoBehaviour
             return;
 
         UserManager.Instance.SetUsername(usernameInput.text);
+        ProgressionManager.Instance.progressionUI.UpdateInfo();
         GameManager.Instance.StartMainMenu();
     }
 }

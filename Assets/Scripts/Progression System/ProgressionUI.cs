@@ -9,7 +9,7 @@ public class ProgressionUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI levelText;
     [SerializeField] private Slider xpSlider;
 
-    void Awake() => UpdateInfo();
+    void Start() => UpdateInfo();
 
 
     public void OnOpenUnlockTree()
@@ -20,7 +20,7 @@ public class ProgressionUI : MonoBehaviour
 
     public void OnCloseUnlockTree() => unlockTreePanel.SetActive(false);
 
-    private void UpdateInfo()
+    public void UpdateInfo()
     {
         var progression = ProgressionManager.Instance;
 
