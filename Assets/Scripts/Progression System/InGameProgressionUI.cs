@@ -31,7 +31,7 @@ public class InGameProgressionUI : MonoBehaviour
         levelText.text = $"Level {mp.PlayerLevel}";
         LeanTween.scale(levelText.gameObject, Vector3.one * 1.1f, 0.3f).setEasePunch();
 
-        pointsText.text = $"Unlock Points: {mp.UnlockPoints}";
+        pointsText.text = $"SIGILS: {mp.UnlockPoints}";
         LeanTween.scale(pointsText.gameObject, Vector3.one * 1.1f, 0.3f).setEasePunch();
     }
 

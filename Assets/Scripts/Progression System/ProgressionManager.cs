@@ -1,9 +1,13 @@
 using UnityEngine;
 using SouthsideGames.SaveManager;
 using System.Collections.Generic;
+using NaughtyAttributes;
+using System;
 
 public class ProgressionManager : MonoBehaviour
 {
+    
+    public static Action OnUnlockPointsChanged;
     public static ProgressionManager Instance;
     public InGameProgressionUI inGameProgressionUI { get; private set; }
     public ProgressionUI progressionUI { get; private set; }
@@ -34,12 +38,28 @@ public class ProgressionManager : MonoBehaviour
         progressionUI = GetComponent<ProgressionUI>();
     }
 
+    void Start()
+    {
+        UpdateUI();
+    }
+
+    
+    [Button]
+    private void AddSigils()
+    {
+        UnlockPoints += 1;
+        OnUnlockPointsChanged?.Invoke();
+        UpdateUI();
+        Save();
+    } 
+
     public void AddMetaXP(int amount)
     {
         ProgressionXP += amount;
         LastGainedXP = amount;
 
         UnlockPoints += Mathf.FloorToInt(amount / 100f);
+        OnUnlockPointsChanged?.Invoke();
 
         while (ProgressionXP >= GetXPForNextLevel())
         {
@@ -61,6 +81,7 @@ public class ProgressionManager : MonoBehaviour
     
         unlockedIDs.Add(unlockID);
         UnlockPoints -= data.cost;
+        OnUnlockPointsChanged?.Invoke();
     
         // Apply unlock effects
         switch (data.category)
@@ -75,6 +96,8 @@ public class ProgressionManager : MonoBehaviour
                 // Shop effects are handled by MetaEffectManager
                 break;
         }
+
+        UpdateUI();
     
         Save();
         return true;
@@ -105,6 +128,13 @@ public class ProgressionManager : MonoBehaviour
     }
 
     public void ClearLastGainedXP() => LastGainedXP = 0;
+
+    private void UpdateUI()
+    {
+        SigilsUI[] sigilsUIs = FindObjectsByType<SigilsUI>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        foreach (SigilsUI sigilsUI in sigilsUIs)
+            sigilsUI.UpdateText(UnlockPoints.ToString());
+    }
 
     private void Save()
     {

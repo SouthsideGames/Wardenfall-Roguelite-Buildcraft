@@ -6,13 +6,13 @@ using TMPro;
 public class ProgressionTreeUI : MonoBehaviour
 {
     [Header("UI References")]
-    public Transform buttonParent;
-    public GameObject unlockButtonPrefab;
-    public GameObject detailPanel;
-    public TextMeshProUGUI detailName;
-    public TextMeshProUGUI detailDescription;
-    public TextMeshProUGUI detailCost;
-    public Button unlockButton;
+    [SerializeField] private Transform buttonParent;
+    [SerializeField] private GameObject unlockButtonPrefab;
+    [SerializeField] private GameObject detailPanel;
+    [SerializeField] private TextMeshProUGUI detailName;
+    [SerializeField] private TextMeshProUGUI detailDescription;
+    [SerializeField] private TextMeshProUGUI detailCost;
+    [SerializeField] private Button unlockButton;
 
     private UnlockDataSO currentSelection;
 
@@ -32,6 +32,7 @@ public class ProgressionTreeUI : MonoBehaviour
             GameObject go = Instantiate(unlockButtonPrefab, buttonParent);
             UnlockButtonUI buttonUI = go.GetComponent<UnlockButtonUI>();
             buttonUI.Configure(unlock, this);
+            
         }
     }
 
@@ -43,7 +44,9 @@ public class ProgressionTreeUI : MonoBehaviour
         detailDescription.text = unlock.description;
         detailCost.text = $"Cost: {unlock.cost}";
 
-        unlockButton.interactable = !ProgressionManager.Instance.IsUnlockActive(unlock.unlockID);
+        bool isUnlocked = ProgressionManager.Instance.IsUnlockActive(unlock.unlockID);
+        unlockButton.gameObject.SetActive(!isUnlocked);
+
         unlockButton.onClick.RemoveAllListeners();
         unlockButton.onClick.AddListener(() => TryUnlockCurrent());
     }
