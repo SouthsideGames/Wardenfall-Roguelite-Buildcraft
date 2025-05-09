@@ -8,6 +8,10 @@ public class ProgressionManager : MonoBehaviour
 {
     
     public static Action OnUnlockPointsChanged;
+    
+    public event Action<int> OnXPGained;
+    public event Action<int> OnLevelUp;
+    
     public static ProgressionManager Instance;
     public InGameProgressionUI inGameProgressionUI { get; private set; }
     public ProgressionUI progressionUI { get; private set; }
@@ -55,18 +59,27 @@ public class ProgressionManager : MonoBehaviour
 
     public void AddMetaXP(int amount)
     {
+        if (amount < 0) return;
+        
         ProgressionXP += amount;
         LastGainedXP = amount;
 
         UnlockPoints += Mathf.FloorToInt(amount / 100f);
         OnUnlockPointsChanged?.Invoke();
 
+        int startLevel = PlayerLevel;
         while (ProgressionXP >= GetXPForNextLevel())
         {
             ProgressionXP -= GetXPForNextLevel();
-            PlayerLevel++;
+            PlayerLevel = Mathf.Min(PlayerLevel + 1, 99);
+        }
+        
+        if (PlayerLevel != startLevel)
+        {
+            OnLevelUp?.Invoke(PlayerLevel);
         }
 
+        OnXPGained?.Invoke(amount);
         Save();
     }
 

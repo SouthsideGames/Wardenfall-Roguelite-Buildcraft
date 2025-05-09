@@ -9,4 +9,6 @@ public class UnlockDataSO : ScriptableObject
     public int cost;
     public Sprite icon;
     public UnlockCategory category;
+    public string[] requiredUnlocks;
+    public int requiredLevel;
 }

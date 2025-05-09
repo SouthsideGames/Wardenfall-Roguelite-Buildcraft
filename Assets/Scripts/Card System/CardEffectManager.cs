@@ -1,4 +1,3 @@
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +6,24 @@ public class CardEffectManager : MonoBehaviour
 {
     [SerializeField] private CharacterManager characterManager;
     private List<GameObject> activeEffects = new();
+    private Dictionary<string, int> cardUsageCounts = new Dictionary<string, int>();
+
+    public string GetMostUsedCard()
+    {
+        string mostUsedCardId = "";
+        int maxUsage = 0;
+
+        foreach (var kvp in cardUsageCounts)
+        {
+            if (kvp.Value > maxUsage)
+            {
+                maxUsage = kvp.Value;
+                mostUsedCardId = kvp.Key;
+            }
+        }
+
+        return mostUsedCardId;
+    }
 
     private void Awake()
     {
@@ -23,6 +40,11 @@ public class CardEffectManager : MonoBehaviour
             Debug.LogWarning("Attempted to activate null card");
             return;
         }
+
+        // Track card usage
+        if (!cardUsageCounts.ContainsKey(card.cardID))
+            cardUsageCounts[card.cardID] = 0;
+        cardUsageCounts[card.cardID]++;
 
         if (card.effectPrefab == null)
         {

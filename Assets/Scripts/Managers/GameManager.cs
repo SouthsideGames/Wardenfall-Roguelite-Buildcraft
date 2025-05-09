@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
     public static Action OnWaveCompleted;
     private Action _postProgressionCallback;
 
+    [HideInInspector] public float runStartTime;
+
     public GameState gameState { get; private set; }
 
     private void Awake()
@@ -37,8 +39,6 @@ public class GameManager : MonoBehaviour
         SetGameState(GameState.Menu);
     }
 
-    private float runStartTime;
-
     public void StartGame()
     {
         runStartTime = Time.time;
@@ -57,7 +57,7 @@ public class GameManager : MonoBehaviour
         // Update final statistics
         var stats = StatisticsManager.Instance.currentStatistics;
         stats.CurrentRunDuration = Time.time - runStartTime;
-        stats.MostUsedCardInRun = CardEffectManager.Instance.GetMostUsedCard();
+        stats.MostUsedCardInRun = CardDraftManager.Instance.cardEffectManager.GetMostUsedCard();
         stats.MostEffectiveWeaponInRun = CharacterWeapon.Instance.GetMostEffectiveWeapon();
 
         UIManager.Instance.UpdateGameoverPanel();

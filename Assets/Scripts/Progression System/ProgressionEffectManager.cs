@@ -1,8 +1,10 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ProgressionEffectManager : MonoBehaviour
 {
     public static ProgressionEffectManager Instance;
+    private Dictionary<string, bool> _unlockCache = new Dictionary<string, bool>();
 
     private void Awake()
     {
@@ -29,11 +31,36 @@ public class ProgressionEffectManager : MonoBehaviour
 
     // ===== LOOT EFFECTS =====
     public float ChestDropBonus => HasUnlock("ChestMagnet") ? 0.05f : 0f;
-
-    // ===== Centralized Unlock Check =====
+    
+    public void ClearCache() => _unlockCache.Clear();
+    
     public bool HasUnlock(string unlockID)
     {
-        return ProgressionManager.Instance != null &&
-               ProgressionManager.Instance.IsUnlockActive(unlockID);
+        if (string.IsNullOrEmpty(unlockID)) return false;
+        
+        if (_unlockCache.TryGetValue(unlockID, out bool cached))
+            return cached;
+            
+        bool hasUnlock = ProgressionManager.Instance != null && 
+                        ProgressionManager.Instance.IsUnlockActive(unlockID);
+                        
+        _unlockCache[unlockID] = hasUnlock;
+        return hasUnlock;
+    }
+
+    private void OnEnable()
+    {
+        if (ProgressionManager.Instance != null)
+        {
+            ProgressionManager.OnUnlockPointsChanged += ClearCache;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (ProgressionManager.Instance != null)
+        {
+            ProgressionManager.OnUnlockPointsChanged -= ClearCache;
+        }
     }
 }

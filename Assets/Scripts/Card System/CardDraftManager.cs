@@ -10,6 +10,7 @@ public class CardDraftManager : MonoBehaviour, IGameStateListener
     [SerializeField] private GameObject panel;
     [SerializeField] private Transform cardContainer;
     [SerializeField] private Button rerollButton;
+    public CardEffectManager cardEffectManager { get; private set; }
 
     [Header("Card Sources")]
     [SerializeField] private CardLibrary cardLibrary;
@@ -36,6 +37,8 @@ public class CardDraftManager : MonoBehaviour, IGameStateListener
             Instance = this;
         else
             Destroy(gameObject);
+
+        cardEffectManager = GetComponent<CardEffectManager>();
     }
 
     private void Update()
