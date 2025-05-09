@@ -350,10 +350,17 @@ public class UIManager : MonoBehaviour, IGameStateListener
 
     public void UpdateGameoverPanel()
     {
+        // Update existing stats
         gameoverKillCounterText.text = StatisticsManager.Instance.CurrentRunKills.ToString();
         levelUpText.text = StatisticsManager.Instance.CurrentLevelUp.ToString();
         wavesCompletedUpText.text = StatisticsManager.Instance.CurrentWaveCompleted.ToString();
         meatCollectedText.text = StatisticsManager.Instance.CurrentMeatCollected.ToString();    
+
+        // Update detailed stats if component exists
+        if (gameoverPanel.TryGetComponent<GameOverStatsUI>(out var statsUI))
+        {
+            statsUI.UpdateStats();
+        }
     }
 
     #endregion
