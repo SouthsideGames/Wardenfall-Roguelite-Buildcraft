@@ -269,7 +269,15 @@ public class StatisticsManager : MonoBehaviour
 [Serializable]
 public class GameStatistics
 {
-     // Highest values recorded in a single run
+    // Current run statistics
+    public float CurrentRunDuration;
+    public string MostUsedCardInRun;
+    public int HighestComboInRun;
+    public float PeakDamageInRun;
+    public int TotalXPInRun;
+    public string MostEffectiveWeaponInRun;
+
+    // Highest values recorded in a single run
     public int MostWavesCompletedInARun;    // Most waves completed in one run
     public int MostKillsInARun;             // Most kills in a single run
     public int MostLevelUpsInARun;          // Most level-ups in a single run
