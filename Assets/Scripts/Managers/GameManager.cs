@@ -27,18 +27,21 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         Application.targetFrameRate = 60;
-        
+
         if (UserManager.Instance.IsFirstTimePlayer())
         {
             SetGameState(GameState.Username);
             return;
         }
-        
+
         SetGameState(GameState.Menu);
     }
 
+    private float runStartTime;
+
     public void StartGame()
     {
+        runStartTime = Time.time;
         CurrencyManager.Instance.EarlyInvestorSkillAction();
         SetGameState(GameState.Game);
     }
@@ -48,13 +51,19 @@ public class GameManager : MonoBehaviour
     public void StartShop() => SetGameState(GameState.Shop);    
     public void StartTraitSelection() => SetGameState(GameState.TraitSelection);
     public void StartCardDraft() => SetGameState(GameState.CardDraft);
-    
+
     public void StartGameOver()
     {
+        // Update final statistics
+        var stats = StatisticsManager.Instance.currentStatistics;
+        stats.CurrentRunDuration = Time.time - runStartTime;
+        stats.MostUsedCardInRun = CardEffectManager.Instance.GetMostUsedCard();
+        stats.MostEffectiveWeaponInRun = CharacterWeapon.Instance.GetMostEffectiveWeapon();
+
         UIManager.Instance.UpdateGameoverPanel();
         SetGameState(GameState.GameOver); 
     }  
-        
+
 
     public void SetGameState(GameState _gameState)
     {
@@ -138,8 +147,6 @@ public class GameManager : MonoBehaviour
 
     public bool InGameState() => gameState == GameState.Game;
 
-    
- 
+
+
 }
-
-
