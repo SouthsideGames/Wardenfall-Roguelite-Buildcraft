@@ -257,7 +257,13 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 
     private void EndWaveBasedStage()
     {
+        // Update final stage statistics
+        var stats = StatisticsManager.Instance.currentStatistics;
+        stats.CurrentRunDuration = Time.time - GameManager.Instance.runStartTime;
+        stats.MostEffectiveWeaponInRun = CharacterWeapon.Instance.GetMostEffectiveWeapon();
+        
         ui.StageCompleted();
+        UIManager.Instance.UpdateStageCompletionPanel();
         GameManager.Instance.SetGameState(GameState.StageCompleted);
     }
 
