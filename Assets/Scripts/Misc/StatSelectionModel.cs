@@ -20,10 +20,15 @@ public class StatSelectionModal : MonoBehaviour
         statDropdown.value = 0;
     }
 
-    public void ConfirmStatSelection()
+   public void ConfirmStatSelection()
     {
         Stat chosenStat = (Stat)statDropdown.value;
-        CharacterManager.Instance.equipment.AssignBoosterToSlot(slotIndex, booster, chosenStat);
+
+        FindFirstObjectByType<EquipmentUI>()
+            .FinalizeBoosterAssignment(slotIndex, booster, chosenStat);
+
         gameObject.SetActive(false);
     }
+
+    
 }

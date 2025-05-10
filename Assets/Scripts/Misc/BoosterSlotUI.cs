@@ -9,9 +9,9 @@ public class BoosterSlotUI : MonoBehaviour
     [SerializeField] private Sprite defaultIcon;
 
     private int slotIndex;
-    private CharacterEquipmentUI equipmentUI;
+    private EquipmentUI equipmentUI;
 
-    public void Initialize(int index, CharacterEquipmentUI ui)
+    public void Initialize(int index, EquipmentUI ui)
     {
         slotIndex = index;
         equipmentUI = ui;

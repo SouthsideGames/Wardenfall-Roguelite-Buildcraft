@@ -6,7 +6,7 @@ public class BoosterSelectionUI : MonoBehaviour
     [SerializeField] private Transform contentParent;
     [SerializeField] private GameObject boosterCardPrefab;
 
-    public void ShowAvailableBoosters(CharacterEquipmentUI equipmentUI)
+    public void ShowAvailableBoosters(EquipmentUI equipmentUI)
     {
         foreach (Transform child in contentParent)
             Destroy(child.gameObject);

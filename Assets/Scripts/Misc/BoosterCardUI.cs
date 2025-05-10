@@ -10,9 +10,9 @@ public class BoosterCardUI : MonoBehaviour
     [SerializeField] private Button selectButton;
 
     private StatBoosterSO boosterData;
-    private CharacterEquipmentUI equipmentUI;
+    private EquipmentUI equipmentUI;
 
-    public void Configure(StatBoosterSO booster, CharacterEquipmentUI ui)
+    public void Configure(StatBoosterSO booster, EquipmentUI ui)
     {
         boosterData = booster;
         equipmentUI = ui;

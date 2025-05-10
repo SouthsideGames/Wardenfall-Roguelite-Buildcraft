@@ -50,14 +50,18 @@ public class CharacterEquipment : MonoBehaviour, IWantToBeSaved
         SaveManager.GameData.Add(BOOSTER_SAVE_KEY, typeof(string), result);
     }
 
-    public void LoadEquippedBoosters()
+   public void LoadEquippedBoosters()
     {
         equippedBoosters.Clear();
 
         if (!SaveManager.GameData.TryGetValue(BOOSTER_SAVE_KEY, out var _, out var raw))
             return;
 
-        if (string.IsNullOrEmpty(raw)) return;
+        if (string.IsNullOrEmpty(raw) || BoosterRegistry.Instance == null)
+        {
+            Debug.LogWarning("BoosterRegistry not initialized yet — delaying booster load.");
+            return;
+        }
 
         string[] entries = raw.Split(',');
         foreach (var entry in entries)
@@ -79,6 +83,7 @@ public class CharacterEquipment : MonoBehaviour, IWantToBeSaved
             }
         }
     }
+
 
     public void Save() => SaveEquippedBoosters();
     public void Load() => LoadEquippedBoosters();
