@@ -16,7 +16,10 @@ public class EquipmentUI : MonoBehaviour
             int index = i;
             boosterSlots[i].Initialize(index, this);
         }
+
+        RefreshEquippedBoostersUI();
     }
+
 
     public void OpenBoosterSelection(int slotIndex)
     {
@@ -39,6 +42,33 @@ public class EquipmentUI : MonoBehaviour
         CharacterManager.Instance.equipment.AssignBoosterToSlot(slotIndex, booster, chosenStat);
         boosterSlots[slotIndex].UpdateDisplay(booster);
     }
+
+    private void RefreshEquippedBoostersUI()
+    {
+        var equipment = CharacterManager.Instance.equipment;
+
+        for (int i = 0; i < boosterSlots.Count; i++)
+        {
+            if (i < equipment.equippedBoosters.Count && equipment.equippedBoosters[i].booster != null)
+            {
+                boosterSlots[i].UpdateDisplay(equipment.equippedBoosters[i].booster);
+            }
+            else
+            {
+                boosterSlots[i].UpdateDisplay(null); // Clear if no booster
+            }
+        }
+    }
+
+    public void ClearAllBoosters()
+    {
+        var equipment = CharacterManager.Instance.equipment;
+        equipment.equippedBoosters.Clear();
+        equipment.SaveEquippedBoosters();
+
+        RefreshEquippedBoostersUI();
+    }
+
 
     
 }
