@@ -6,7 +6,7 @@ public class BoosterSlotUI : MonoBehaviour
 {
     [SerializeField] private Button slotButton;
     [SerializeField] private Image icon;
-    [SerializeField] private TextMeshProUGUI label;
+    [SerializeField] private Sprite defaultIcon;
 
     private int slotIndex;
     private CharacterEquipmentUI equipmentUI;
@@ -28,12 +28,10 @@ public class BoosterSlotUI : MonoBehaviour
         if (booster != null)
         {
             icon.sprite = booster.icon;
-            label.text = booster.name;
         }
         else
         {
-            icon.sprite = null;
-            label.text = "Empty";
+            icon.sprite = defaultIcon;
         }
     }
 }
