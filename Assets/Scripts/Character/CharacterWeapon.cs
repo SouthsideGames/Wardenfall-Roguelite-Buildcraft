@@ -102,13 +102,4 @@ public class CharacterWeapon : MonoBehaviour
         yield return new WaitForSecondsRealtime(duration);
         Time.timeScale = 1f;
     }
-
-    private Enemy GetClosestEnemy()
-    {
-        Enemy[] enemies = FindObjectsByType<Enemy>(FindObjectsSortMode.None);
-
-        Enemy closestEnemy = null;
-        float minDistance = SystemInfo.deviceType == DeviceType.Handheld ? range * 1.2f : range; // Increased range for mobile
-        float targetingAssistAngle = SystemInfo.deviceType == DeviceType.Handheld ? 35f : 15f; // Wider angle for mobile
-    }
 }

@@ -28,6 +28,9 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
     [SerializeField] private String privacyPolicyURL;
     [SerializeField] private GameObject creditsPanel;
 
+    [Header("Reset")]
+    [SerializeField] private GameObject resetConfirmationPanel;
+
     private bool sfxState;
     private bool musicState;
     private bool vibrateState;
@@ -165,6 +168,21 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
             vibrateButton.image.sprite = offImage;
             vibrateButton.GetComponentInChildren<TextMeshProUGUI>().text = "OFF";
         }
+    }
+
+    public void OpenResetConfirmation()
+    {
+        resetConfirmationPanel.SetActive(true);
+    }
+
+    public void ConfirmResetButtonCallback()
+    {
+        UserManager.Instance.ClearAllData();
+    }
+
+    public void CancelResetButtonCallback()
+    {
+        resetConfirmationPanel.SetActive(false);
     }
 
 

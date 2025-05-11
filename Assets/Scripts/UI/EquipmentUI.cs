@@ -28,6 +28,12 @@ public class EquipmentUI : MonoBehaviour
         boosterSelectionUI.ShowAvailableBoosters(this);
     }
 
+    public void CloseBoosterSelection()
+    {
+
+        boosterSelectionUI.gameObject.SetActive(false);
+    }
+
     public void EquipBooster(StatBoosterSO booster)
     {
         if (selectedSlotIndex < 0 || selectedSlotIndex >= boosterSlots.Count) return;
@@ -35,13 +41,16 @@ public class EquipmentUI : MonoBehaviour
         boosterSelectionUI.gameObject.SetActive(false);
 
         statSelectionModal.Show(selectedSlotIndex, booster);
+        
     }
 
     public void FinalizeBoosterAssignment(int slotIndex, StatBoosterSO booster, Stat chosenStat)
     {
         CharacterManager.Instance.equipment.AssignBoosterToSlot(slotIndex, booster, chosenStat);
         boosterSlots[slotIndex].UpdateDisplay(booster);
+        CharacterManager.Instance.stats.ApplyProgressionBoosters(CharacterManager.Instance.equipment.equippedBoosters);
     }
+
 
     private void RefreshEquippedBoostersUI()
     {

@@ -5,9 +5,13 @@ using UnityEngine;
 
 public class DamageText : MonoBehaviour
 {
+    [Header("Elements")]
+    [SerializeField] private Animator anim;
+    [SerializeField] private TextMeshPro damageText; 
+
     private static readonly Queue<DamageText> Pool = new Queue<DamageText>();
-    private static readonly int MaxPoolSize = SystemInfo.deviceType == DeviceType.Handheld ? 10 : 20;
-    private static readonly bool useLowQualityParticles = SystemInfo.deviceType == DeviceType.Handheld;
+    private static readonly int MaxPoolSize = 20;
+
 
     public static DamageText Get()
     {
@@ -31,24 +35,14 @@ public class DamageText : MonoBehaviour
 
     private void Start()
     {
-    [Header("Elements")]
-    [SerializeField] private Animator anim;
-    [SerializeField] private TextMeshPro damageText; 
+    }
 
     public void PlayAnimation(string _damage, bool _isCriticalHit)
     {
         damageText.text = _damage.ToString();   
         anim.Play("Animate");
         damageText.color = _isCriticalHit ? Color.yellow : Color.white;
-        
-        // Add haptic feedback
-        if (_isCriticalHit)
-            HapticFeedbackUI.TriggerMedium();
-        else
-            HapticFeedbackUI.Trigger();
-            
-        // Spawn hit effect particle
-        EffectManager.Instance.SpawnHitEffect(transform.position);
+
     }
 
 }
