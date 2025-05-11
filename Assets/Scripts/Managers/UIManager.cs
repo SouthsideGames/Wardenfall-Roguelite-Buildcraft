@@ -360,9 +360,9 @@ public class UIManager : MonoBehaviour, IGameStateListener
     {
         SaveManager.Save(this, "IntroPlayed", true);
         introPanel.SetActive(false);
-        menuPanel.SetActive(true);
+        usernamePanel.SetActive(true); // instead of menu
     }
-
+    
     public void UpdateGameoverPanel()
     {
         gameoverKillCounterText.text = StatisticsManager.Instance.CurrentRunKills.ToString();
