@@ -329,15 +329,30 @@ public class UIManager : MonoBehaviour, IGameStateListener
 
     private void CheckFirstTimeLoad()
     {
-        if (SaveManager.TryLoad(this, "IntroPlayed", out object introPlayedObj) && introPlayedObj is bool introPlayed && introPlayed)
-        {
-            introPanel.SetActive(false);
-            menuPanel.SetActive(true);
-        }
-        else
+        bool introPlayed = false;
+        SaveManager.TryLoad(this, "IntroPlayed", out object introPlayedObj);
+        if (introPlayedObj is bool b && b)
+            introPlayed = true;
+    
+        bool hasUsername = !UserManager.Instance.IsFirstTimePlayer();
+    
+        if (!introPlayed)
         {
             introPanel.SetActive(true);
             menuPanel.SetActive(false);
+            usernamePanel.SetActive(false);
+        }
+        else if (!hasUsername)
+        {
+            introPanel.SetActive(false);
+            usernamePanel.SetActive(true);
+            menuPanel.SetActive(false);
+        }
+        else
+        {
+            introPanel.SetActive(false);
+            usernamePanel.SetActive(false);
+            menuPanel.SetActive(true);
         }
     }
 
