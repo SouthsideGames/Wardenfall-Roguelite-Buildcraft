@@ -9,7 +9,9 @@ public class MobileJoystick : MonoBehaviour
     [SerializeField] private RectTransform joystickKnob;
 
     [Header("SETTINGS:")]
-    [SerializeField] private float moveFactor;
+    [SerializeField] private float moveFactor = 1f;
+    [SerializeField] private float deadZone = 0.1f;
+    [SerializeField] private bool useHaptics = true;
     private Vector3 clickedPosition;
     private Vector3 move;
     private bool canControl;
@@ -60,8 +62,17 @@ public class MobileJoystick : MonoBehaviour
         Vector3 direction = currentPosition - clickedPosition;
 
         float canvasScale = GetComponentInParent<Canvas>().GetComponent<RectTransform>().localScale.x;
+        
+        // Apply deadzone
+        float rawMagnitude = direction.magnitude;
+        float normalizedMagnitude = Mathf.Max(0, rawMagnitude - (deadZone * canvasScale)) / (1 - deadZone);
+        
+        float moveMagnitude = normalizedMagnitude * moveFactor * canvasScale;
 
-        float moveMagnitude = direction.magnitude * moveFactor * canvasScale;
+        if (useHaptics && rawMagnitude > deadZone * canvasScale)
+        {
+            HapticFeedbackUI.Trigger();
+        }
 
         float absoluteWidth = joystickOutline.rect.width / 2;
         float realWidth = absoluteWidth * canvasScale;
