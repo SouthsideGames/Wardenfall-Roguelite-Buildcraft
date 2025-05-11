@@ -6,7 +6,8 @@ using UnityEngine;
 public class DamageText : MonoBehaviour
 {
     private static readonly Queue<DamageText> Pool = new Queue<DamageText>();
-    private static readonly int MaxPoolSize = 20;
+    private static readonly int MaxPoolSize = SystemInfo.deviceType == DeviceType.Handheld ? 10 : 20;
+    private static readonly bool useLowQualityParticles = SystemInfo.deviceType == DeviceType.Handheld;
 
     public static DamageText Get()
     {
@@ -39,6 +40,15 @@ public class DamageText : MonoBehaviour
         damageText.text = _damage.ToString();   
         anim.Play("Animate");
         damageText.color = _isCriticalHit ? Color.yellow : Color.white;
+        
+        // Add haptic feedback
+        if (_isCriticalHit)
+            HapticFeedbackUI.TriggerMedium();
+        else
+            HapticFeedbackUI.Trigger();
+            
+        // Spawn hit effect particle
+        EffectManager.Instance.SpawnHitEffect(transform.position);
     }
 
 }
