@@ -5,6 +5,31 @@ using UnityEngine;
 
 public class DamageText : MonoBehaviour
 {
+    private static readonly Queue<DamageText> Pool = new Queue<DamageText>();
+    private static readonly int MaxPoolSize = 20;
+
+    public static DamageText Get()
+    {
+        if (Pool.Count > 0)
+            return Pool.Dequeue();
+        return null;
+    }
+
+    public void ReturnToPool()
+    {
+        if (Pool.Count < MaxPoolSize)
+        {
+            Pool.Enqueue(this);
+            gameObject.SetActive(false);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    private void Start()
+    {
     [Header("Elements")]
     [SerializeField] private Animator anim;
     [SerializeField] private TextMeshPro damageText; 
@@ -17,4 +42,3 @@ public class DamageText : MonoBehaviour
     }
 
 }
- 
