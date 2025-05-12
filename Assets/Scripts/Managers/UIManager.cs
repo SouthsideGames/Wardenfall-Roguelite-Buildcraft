@@ -80,6 +80,10 @@ public class UIManager : MonoBehaviour, IGameStateListener
         HideEquipmentSelectPanel();
         HideProgressionTreeSelectPanel();
 
+    }
+
+    private void Start()
+    {
         CheckFirstTimeLoad();
     }
 
@@ -329,12 +333,21 @@ public class UIManager : MonoBehaviour, IGameStateListener
 
     private void CheckFirstTimeLoad()
     {
+        introPanel.SetActive(false);
+        usernamePanel.SetActive(false);
+        menuPanel.SetActive(false);
+
+        Debug.Log("✅ CheckFirstTimeLoad() called.");
+
         bool introPlayed = false;
         SaveManager.TryLoad(this, "IntroPlayed", out object introPlayedObj);
         if (introPlayedObj is bool b && b)
             introPlayed = true;
     
         bool hasUsername = !UserManager.Instance.IsFirstTimePlayer();
+
+            // 🔍 Add this debug line right here
+        Debug.Log($"IntroPlayed = {introPlayed}, HasUsername = {hasUsername}");
     
         if (!introPlayed)
         {
@@ -354,6 +367,8 @@ public class UIManager : MonoBehaviour, IGameStateListener
             usernamePanel.SetActive(false);
             menuPanel.SetActive(true);
         }
+
+        Debug.Log($"IntroPanel active: {introPanel.activeSelf}, UsernamePanel active: {usernamePanel.activeSelf}, MenuPanel active: {menuPanel.activeSelf}");
     }
 
     public void CompleteIntro()
