@@ -311,6 +311,20 @@ public class UIManager : MonoBehaviour, IGameStateListener
             cg.interactable = _interactable;
     }
 
+    public void TransitionPanel(GameObject fromPanel, GameObject toPanel)
+    {
+        if (fromPanel != null) fromPanel.SetActive(false);
+        if (toPanel != null) toPanel.SetActive(true);
+
+        TriggerPanelAction(toPanel);
+    }
+
+    public void SkipIntroAndGoTo(GameObject targetPanel)
+    {
+        SaveManager.Save(this, "IntroPlayed", true);
+        TransitionPanel(introPanel, targetPanel);
+    }
+
     #region Traits
 
     public void ShowBlockersUpTo(int blockerIndex)
