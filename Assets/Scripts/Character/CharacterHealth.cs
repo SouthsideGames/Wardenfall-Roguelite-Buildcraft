@@ -76,9 +76,10 @@ public class CharacterHealth : MonoBehaviour, IStats, IDamageable
 
         UpdateHealthUI();
 
-        if (health <= 0 )
+        if (health <= 0)
             Die();
-       
+
+        MissionTotalDamageReceived(_damage);
 
     }
 
@@ -158,8 +159,6 @@ public class CharacterHealth : MonoBehaviour, IStats, IDamageable
 
     }
 
-    public void OnCharacterDeathMission() => MissionManager.Increment(MissionType.waveBasedPlayed, 1);
-
     public void SetInvincible(bool state) 
     {
         isInvincible = state;
@@ -178,5 +177,12 @@ public class CharacterHealth : MonoBehaviour, IStats, IDamageable
     }
 
     public void SetDamageTakenMultiplier(float multiplier) => damageTakenMultiplier = multiplier;
+
+    private static void MissionTotalDamageReceived(int _damage)
+    {
+        MissionManager.Increment(MissionType.totalDamageReceived, _damage);
+        MissionManager.Increment(MissionType.totalDamageReceived1, _damage);
+        MissionManager.Increment(MissionType.totalDamageReceived2, _damage);
+    }
 
 }

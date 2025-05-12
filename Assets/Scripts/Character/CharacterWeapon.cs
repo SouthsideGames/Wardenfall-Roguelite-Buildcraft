@@ -88,6 +88,7 @@ public class CharacterWeapon : MonoBehaviour
             return;
         }
     }
+    
 
     protected virtual void HitStop(bool isCritical = false)
     {

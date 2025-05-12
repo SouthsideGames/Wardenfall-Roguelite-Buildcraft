@@ -19,7 +19,7 @@ public class UnlockButtonUI : MonoBehaviour
         treeUI = manager;
 
         label.text = data.displayName;
-        cost.text = $"Cost: {data.cost}";
+        cost.text = data.cost.ToString();
         icon.sprite = data.icon;
 
         ProgressionManager.OnUnlockPointsChanged += UpdateVisualState;

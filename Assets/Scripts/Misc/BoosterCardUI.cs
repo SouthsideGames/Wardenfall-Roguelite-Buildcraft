@@ -17,7 +17,7 @@ public class BoosterCardUI : MonoBehaviour
         boosterData = booster;
         equipmentUI = ui;
 
-        label.text = booster.name;
+        label.text = $"{booster.bonusValue}%";
         icon.sprite = booster.icon;
 
         selectButton.onClick.RemoveAllListeners();

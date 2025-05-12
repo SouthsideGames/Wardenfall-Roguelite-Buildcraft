@@ -85,6 +85,12 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 
             segment.tStart = segment.spawnPercentage.x / 100 * waveDuration;
             segment.tEnd = segment.spawnPercentage.y / 100 * waveDuration;
+            
+            // Randomly select a prefab from the possible options
+            if (segment.enemiesToSpawn != null && segment.enemiesToSpawn.Length > 0)
+            {
+                segment.selectedPrefab = segment.enemiesToSpawn[UnityEngine.Random.Range(0, segment.enemiesToSpawn.Length)];
+            }
 
             currentWave.segments[i] = segment;
             localCounters.Add(0);
@@ -115,7 +121,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
             {
                 Vector2 spawnPos = GetOptimizedSpawnPosition();
 
-                GameObject enemy = Instantiate(segment.prefab, spawnPos, Quaternion.identity, transform);
+                GameObject enemy = Instantiate(segment.selectedPrefab, spawnPos, Quaternion.identity, transform);
 
                 AdjustEnemyDifficulty(enemy.GetComponent<Enemy>());
 
@@ -360,7 +366,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 
     private void CharacterDeathCallback()
     {
-        character.health.OnCharacterDeathMission();
+        
         GameManager.Instance.SetGameState(GameState.GameOver);
     }
 
@@ -398,11 +404,12 @@ public struct WaveSegment
     [MinMaxSlider(0, 100)] public Vector2 spawnPercentage;
     [Tooltip("How many to spawn per second?")]
     public float spawnFrequency;
-    [Tooltip("What will be spawned in this wave?")]
-    public GameObject prefab;
+    [Tooltip("Possible enemies that can be spawned in this wave")]
+    public GameObject[] enemiesToSpawn;
     [Tooltip("Spawn this prefab once?")]
     public bool spawnOnce;
 
     [HideInInspector] public float tStart;
     [HideInInspector] public float tEnd;
+    [HideInInspector] public GameObject selectedPrefab;
 }

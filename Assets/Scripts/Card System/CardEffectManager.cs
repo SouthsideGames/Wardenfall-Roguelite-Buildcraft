@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using SouthsideGames.DailyMissions;
 using UnityEngine;
 
 public class CardEffectManager : MonoBehaviour
@@ -40,6 +41,8 @@ public class CardEffectManager : MonoBehaviour
             Debug.LogWarning("Attempted to activate null card");
             return;
         }
+
+        MissionManager.Increment(MissionType.cardsUsed, 1);
 
         // Track card usage
         if (!cardUsageCounts.ContainsKey(card.cardID))

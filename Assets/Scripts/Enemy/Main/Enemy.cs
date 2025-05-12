@@ -54,6 +54,9 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
     public int CurrentHealth => health;
     public int MaxHealth => maxHealth;
     public bool IsAlive => health > 0;
+    private static float multiKillTimeWindow = 0.5f;
+    private static float lastKillTime;
+    private static int simultaneousKills;
 
     protected virtual void Start()
     {
@@ -153,11 +156,26 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
             }
         }
 
+        float timeSinceLastKill = Time.time - lastKillTime;
+        if (timeSinceLastKill <= multiKillTimeWindow)
+        {
+            simultaneousKills++;
+            if (simultaneousKills >= 3)
+            {
+                MissionManager.Increment(MissionType.multiKills, 1);
+                simultaneousKills = 0;
+            }
+        }
+        else
+        {
+            simultaneousKills = 1;
+        }
+        lastKillTime = Time.time;
 
         MissionIncrement();
         DieAfterWave();
     }
-
+    
     private void MissionIncrement()
     {
         MissionManager.Increment(MissionType.eliminate100Enemies, 1);

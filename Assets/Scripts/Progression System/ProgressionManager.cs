@@ -2,6 +2,7 @@ using UnityEngine;
 using SouthsideGames.SaveManager;
 using System.Collections.Generic;
 using NaughtyAttributes;
+using SouthsideGames.DailyMissions;
 using System;
 
 public class ProgressionManager : MonoBehaviour
@@ -95,8 +96,10 @@ public class ProgressionManager : MonoBehaviour
         unlockedIDs.Add(unlockID);
         UnlockPoints -= data.cost;
         OnUnlockPointsChanged?.Invoke();
-    
-        // Apply unlock effects
+        MissionManager.Increment(MissionType.upgradesPurchased, 1);
+        MissionManager.Increment(MissionType.upgradesPurchased2, 1);
+        MissionManager.Increment(MissionType.upgradesPurchased3, 1);
+        
         switch (data.category)
         {
             case UnlockCategory.Card:
