@@ -42,7 +42,7 @@ public class StatisticsManager : MonoBehaviour
         CharacterHealth.OnCharacterDeath += TotalCharacterDeathHandler;
         GameManager.OnGamePaused += OnGamePausedHandler;
         GameManager.OnGameResumed += OnGameResumedHandler;
-        
+
         collectionContainer.SetActive(false);
         recordContainer.SetActive(true);    
 
@@ -100,16 +100,6 @@ public class StatisticsManager : MonoBehaviour
         }
     }
 
-    [Button]
-    public void ClearSaveFile()
-    {
-        if (System.IO.File.Exists(statsFilePath))
-
-        currentStatistics = new GameStatistics();
-
-        SaveStats();
-    }
-
     public void StartNewRun()
     {
         CurrentRunKills = 0;
@@ -121,7 +111,7 @@ public class StatisticsManager : MonoBehaviour
 
     public void EndRun()
     {
-        
+
         if (CurrentRunKills > currentStatistics.MostKillsInARun)
             currentStatistics.MostKillsInARun = CurrentRunKills;
 
@@ -247,18 +237,85 @@ public class StatisticsManager : MonoBehaviour
         SaveStats();
     }
 
+    public void RecordCharacterWavesCompleted(string characterID)
+    {
+        if (!characterUsageDict.ContainsKey(characterID))
+        {
+            characterUsageDict[characterID] = new UsageInfo { UsageCount = 0, LastUsed = DateTime.Now };
+        }
+
+        if (characterUsageDict.TryGetValue(characterID, out UsageInfo usageInfo))
+        {
+              CharacterUsageEntry characterEntry = currentStatistics.CharacterUsageList.Find(entry => entry.CharacterID == characterID);
+
+            if(characterEntry != null)
+                characterEntry.WavesCompleted++;
+        }
+          
+          ConvertDictionariesToLists();
+          SaveStats();
+    }
+
+    public void RecordWeaponWavesCompleted(string weaponID)
+    {
+          if (!weaponUsageDict.ContainsKey(weaponID))
+        {
+            weaponUsageDict[weaponID] = new UsageInfo { UsageCount = 0, LastUsed = DateTime.Now };
+        }
+
+          if (weaponUsageDict.TryGetValue(weaponID, out UsageInfo usageInfo))
+        {
+            WeaponUsageEntry weaponEntry = currentStatistics.WeaponUsageList.Find(entry => entry.WeaponID == weaponID);
+
+            if(weaponEntry != null)
+                 weaponEntry.WavesCompleted++;
+        }
+        ConvertDictionariesToLists();
+        SaveStats();
+    }
+
     private void ConvertDictionariesToLists()
     {
         currentStatistics.CharacterUsageList.Clear();
         foreach (var entry in characterUsageDict)
         {
-            currentStatistics.CharacterUsageList.Add(new CharacterUsageEntry { CharacterID = entry.Key, UsageInfo = entry.Value });
+            CharacterUsageEntry characterEntry = new CharacterUsageEntry { CharacterID = entry.Key, UsageInfo = entry.Value };
+            if(characterUsageDict.TryGetValue(entry.Key, out UsageInfo usageInfo))
+            {
+                if(currentStatistics.CharacterUsageList.Find(e => e.CharacterID == entry.Key) != null)
+                {
+                int index = currentStatistics.CharacterUsageList.FindIndex(e => e.CharacterID == entry.Key);
+                    characterEntry.WavesCompleted = currentStatistics.CharacterUsageList[index].WavesCompleted;
+                }
+                else
+                {
+                   characterEntry.WavesCompleted = 0;
+                }
+               
+            }
+             currentStatistics.CharacterUsageList.Add(characterEntry);
         }
 
         currentStatistics.WeaponUsageList.Clear();
         foreach (var entry in weaponUsageDict)
         {
-            currentStatistics.WeaponUsageList.Add(new WeaponUsageEntry { WeaponID = entry.Key, UsageInfo = entry.Value });
+           WeaponUsageEntry weaponEntry =  new WeaponUsageEntry { WeaponID = entry.Key, UsageInfo = entry.Value };
+
+            if(weaponUsageDict.TryGetValue(entry.Key, out UsageInfo usageInfo))
+            {
+                  if(currentStatistics.WeaponUsageList.Find(e => e.WeaponID == entry.Key) != null)
+                {
+                     int index = currentStatistics.WeaponUsageList.FindIndex(e => e.WeaponID == entry.Key);
+                     weaponEntry.WavesCompleted = currentStatistics.WeaponUsageList[index].WavesCompleted;
+                }
+                else
+                {
+                    weaponEntry.WavesCompleted = 0;
+                }
+               
+            }
+           
+            currentStatistics.WeaponUsageList.Add(weaponEntry);
         }
     }
 
@@ -304,6 +361,7 @@ public class CharacterUsageEntry
 {
     public string CharacterID;
     public UsageInfo UsageInfo;
+    public int WavesCompleted;
 }
 
 [Serializable]
@@ -311,8 +369,8 @@ public class WeaponUsageEntry
 {
     public string WeaponID;
     public UsageInfo UsageInfo;
+    public int WavesCompleted;
 }
-
 
 [Serializable]
 public class UsageInfo

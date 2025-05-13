@@ -24,7 +24,7 @@ public class CollectionSectionUI : MonoBehaviour
             if (characterData != null)
             {
                 CollectionContainerUI instance = Instantiate(characterCollectionContainerUI, collectionParent);
-                instance.Configure(characterData.Icon, characterData.Name, characterUsage.UsageInfo.UsageCount, characterUsage.UsageInfo.LastUsed);
+                instance.Configure(characterData.Icon, characterData.Name, characterUsage.UsageInfo.UsageCount, characterUsage.WavesCompleted, characterUsage.UsageInfo.LastUsed);
             }
         }
     }
@@ -39,7 +39,7 @@ public class CollectionSectionUI : MonoBehaviour
             if (weaponData != null)
             {
                 CollectionContainerUI instance = Instantiate(weaponCollectionContainerUI, collectionParent);
-                instance.Configure(weaponData.Icon, weaponData.Name, weaponUsage.UsageInfo.UsageCount, weaponUsage.UsageInfo.LastUsed);
+                instance.Configure(weaponData.Icon, weaponData.Name, weaponUsage.UsageInfo.UsageCount, weaponUsage.WavesCompleted, weaponUsage.UsageInfo.LastUsed);
             }
         }
     }

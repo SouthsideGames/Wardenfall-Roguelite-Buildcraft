@@ -1,20 +1,22 @@
-using System;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;   
+using UnityEngine.UI;
+using TMPro;
+using System;
 
 public class CollectionContainerUI : MonoBehaviour
 {
-    [SerializeField] private Image iconImage;
+    [SerializeField] private Image icon;
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private TextMeshProUGUI usageCountText;
-    [SerializeField] private TextMeshProUGUI lastUsedDateText;
+    [SerializeField] private TextMeshProUGUI wavesCompletedText;
+    [SerializeField] private TextMeshProUGUI lastUsedText;
 
-    public void Configure(Sprite _icon, string _name, int _usageCount, DateTime _lastUsed)
+    public void Configure(Sprite _icon, string _name, int _usageCount, int _wavesCompleted, DateTime _lastUsed)
     {
-        iconImage.sprite = _icon;
-        nameText.text = _name;  
-        usageCountText.text = $"Times Used: {_usageCount}";
-        lastUsedDateText.text = $"Last Used: {_lastUsed.ToShortDateString()}";
+        icon.sprite = _icon;
+        nameText.text = _name;
+        usageCountText.text = $"Used: {_usageCount} times";
+        wavesCompletedText.text = $"Waves: {_wavesCompleted}";
+        lastUsedText.text = $"Last Used: {_lastUsed:g}";
     }
 }
