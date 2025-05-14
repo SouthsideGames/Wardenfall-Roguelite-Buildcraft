@@ -133,7 +133,22 @@ public enum CardEffectType
     Reborn,
     ArcaneCoolant,
     ChaosStorm,
-    QuantumBarrage
+    QuantumBarrage,
+    MightSurge,
+    SpeedSurge,
+    CriticalPrecision,
+    BrutalStrikes,
+    SwiftSteps,
+    VitalGuard,
+    ExtendedReach,
+    RapidRecovery,
+    HealingPulse,
+    IronWill,
+    LuckyCharm,
+    PhaseDance,
+    VampiricEdge,
+    Resolve,
+    MagneticPull
     // Add more as needed
 }
 

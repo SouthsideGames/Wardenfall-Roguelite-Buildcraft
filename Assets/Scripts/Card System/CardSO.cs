@@ -15,7 +15,6 @@ public class CardSO : ScriptableObject
     public CardRarity rarity;
     public float effectValue;
     public float activeTime;
-    public int level;
 
     [Header("DECK & UI")]
     public int cost;

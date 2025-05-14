@@ -127,7 +127,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 
                 localCounters[index]++;
 
-                if (segment.spawnOnce) 
+                if (segment.bossWave) 
                 {
                     localCounters[index] += Mathf.Infinity;
                     PrepareArenaForBoss();
@@ -248,7 +248,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     {
         foreach (var segment in currentWave.segments) 
         {
-            if (segment.spawnOnce)
+            if (segment.bossWave)
                 return true;
         }
             return false;
@@ -407,7 +407,7 @@ public struct WaveSegment
     [Tooltip("Possible enemies that can be spawned in this wave")]
     public GameObject[] enemiesToSpawn;
     [Tooltip("Spawn this prefab once?")]
-    public bool spawnOnce;
+    public bool bossWave;
 
     [HideInInspector] public float tStart;
     [HideInInspector] public float tEnd;
