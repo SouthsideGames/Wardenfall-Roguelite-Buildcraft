@@ -10,22 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 01c04db6dc61045148b0ba561a26b5b8, type: 3}
-  m_Name: Frost Field
+  m_Name: Neural Decay
   m_EditorClassIdentifier: 
-  cardID: frost_field
-  cardName: Frost Field
-  description: Freezes enemies in place briefly.
+  cardID: neural_decay
+  cardName: Neural Decay
+  description: "A mind-eroding mix of draining force and slowness. Confuse enemies
+    into attacking each other.\t"
   icon: {fileID: 0}
-  synergyWith:
-  - scorched_earth
-  - jolt_trap
-  effectType: 51
-  rarity: 2
+  synergyWith: []
+  effectType: 62
+  rarity: 3
   effectValue: 0
-  activeTime: 2
-  cost: 2
-  cooldown: 0
-  effectPrefab: {fileID: 3593128091077254015, guid: e4a5475510653db42939a0c6e7938a92, type: 3}
+  activeTime: 5
+  cost: 3
+  cooldown: 24
+  effectPrefab: {fileID: 3593128091077254015, guid: 18163c1af47353047a7e2b94bb0498e4, type: 3}
   cooldownStartsOnUse: 1
   isUnlocked: 1
-  unlockHint: Freeze 10 enemies in a single wave to unlock this card.
+  unlockHint: Apply both Drain and Slow to 5 enemies in one wave unlock.
