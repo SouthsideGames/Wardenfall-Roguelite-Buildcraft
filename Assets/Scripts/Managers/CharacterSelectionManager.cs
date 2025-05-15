@@ -25,7 +25,7 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
     private int selectedCharacterIndex;
     private int lastSelectedCharacterIndex;
 
-    private Dictionary<CharacterCardRarityType, GameObject> characterCardFrameDictionary;
+    private Dictionary<CharacterRarityType, GameObject> characterCardFrameDictionary;
 
     private const string characterUnlockedStatesKey = "CharacterUnlockStatesKey";
     private const string lastSelectedCharacterKey = "LastSelectedCharacterKey";
@@ -56,7 +56,7 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
 
     private void InitializeCharacterFrames()
     {
-        characterCardFrameDictionary = new Dictionary<CharacterCardRarityType, GameObject>();
+        characterCardFrameDictionary = new Dictionary<CharacterRarityType, GameObject>();
         foreach (CharacterCardFrameMapping mapping in characterCardFramesByRarity)
         {
             if (!characterCardFrameDictionary.ContainsKey(mapping.rarity))
@@ -175,6 +175,6 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
 [Serializable]
 public class CharacterCardFrameMapping
 {
-    public CharacterCardRarityType rarity;
+    public CharacterRarityType rarity;
     public GameObject CharacterCardFramePrefab;
 }

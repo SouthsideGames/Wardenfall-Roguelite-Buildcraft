@@ -47,15 +47,15 @@ public class CharacterInfoPanelUI : MonoBehaviour
     private void ChangeBackgrounds(CharacterDataSO _characterDataSO)
     {
 
-        if (_characterDataSO.Rarity == CharacterCardRarityType.Common)
+        if (_characterDataSO.Rarity == CharacterRarityType.Common)
             backgroundImage.sprite = commonImage;
-        else if (_characterDataSO.Rarity == CharacterCardRarityType.Uncommon)
+        else if (_characterDataSO.Rarity == CharacterRarityType.Uncommon)
             backgroundImage.sprite = uncommonImage;
-        else if (_characterDataSO.Rarity == CharacterCardRarityType.Rare)
+        else if (_characterDataSO.Rarity == CharacterRarityType.Rare)
             backgroundImage.sprite = rareImage;
-        else if (_characterDataSO.Rarity == CharacterCardRarityType.Epic)
+        else if (_characterDataSO.Rarity == CharacterRarityType.Epic)
             backgroundImage.sprite = epicImage;
-        else if (_characterDataSO.Rarity == CharacterCardRarityType.Legendary)
+        else if (_characterDataSO.Rarity == CharacterRarityType.Legendary)
             backgroundImage.sprite = legendaryImage;
     }
 }

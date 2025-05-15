@@ -77,7 +77,7 @@ public enum RewardType
 
 
 
-public enum CharacterCardRarityType
+public enum CharacterRarityType
 {
     Common,
     Uncommon,
@@ -85,73 +85,6 @@ public enum CharacterCardRarityType
     Epic,
     Legendary
 }
-
-public enum CardRarity
-{
-    Common,
-    Uncommon,
-    Rare,
-    Epic,
-    Legendary,
-    Mythic,
-    Exalted
-}
-
-public enum CardEffectType
-{
-    Fireball,
-    GuardianSpirit,
-    DeathRay,
-    ThunderStrike,
-    PoisonCloud,
-    PhaseShift,
-    VoltageSpike, 
-    Void,
-    BladeStorm,
-    TemporalReset,
-    TimeShift,
-    CardCycle,
-    HealingSurge,
-    EnduranceCore,
-    Hyperstride,
-    QuantumPull,
-    VitalBloom,
-    WildcardProtocol,
-    ChaosDrift,
-    ToxicPulse,
-    TraitSuppression,
-    OblivionPulse,
-    ParadoxCore,
-    PrecisionSurge,
-    InfernoHalo,
-    PhantomEcho,
-    PulseWard,
-    Burnwake,
-    RadiantCore,
-    ToxicSpray,
-    Fearmonger,
-    Reborn,
-    ArcaneCoolant,
-    ChaosStorm,
-    QuantumBarrage,
-    MightSurge,
-    SpeedSurge,
-    CriticalPrecision,
-    BrutalStrikes,
-    SwiftSteps,
-    VitalGuard,
-    ExtendedReach,
-    RapidRecovery,
-    HealingPulse,
-    IronWill,
-    LuckyCharm,
-    PhaseDance,
-    VampiricEdge,
-    Resolve,
-    MagneticPull
-    // Add more as needed
-}
-
 
 public enum StatusEffectType
 {
