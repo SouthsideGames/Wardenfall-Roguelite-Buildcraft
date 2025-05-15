@@ -43,7 +43,7 @@ public class CodexManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI cardDetailCooldown;
     [SerializeField] private TextMeshProUGUI cardDetailDuration;
     [SerializeField] private TextMeshProUGUI cardDetailSynergies;
-    [SerializeField] private CharacterSynergyManager synergyManager;
+    [SerializeField] private CardSynergyManager synergyManager;
 
 
     [SerializeField] private GameObject statPrefab;

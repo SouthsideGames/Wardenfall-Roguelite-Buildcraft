@@ -1,11 +1,25 @@
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
 
-public class CharacterSynergyManager : MonoBehaviour 
+using UnityEngine;
+using System.Collections.Generic;
+
+public class CardSynergyManager : MonoBehaviour 
 {
+    public static CardSynergyManager Instance { get; private set; }
     [SerializeField] private List<CardSynergy> availableSynergies = new();
     public event System.Action<string> OnSynergyActivated;
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     public List<(CardEffectType, CardSO)> GetSynergiesForCard(CardEffectType cardType)
     {
@@ -29,7 +43,6 @@ public class CharacterSynergyManager : MonoBehaviour
             CardSO cardA = null;
             CardSO cardB = null;
             
-            // Find matching cards in deck
             foreach (var card in deck)
             {
                 if (card.effectType == synergy.cardTypeA && cardA == null)
@@ -41,10 +54,8 @@ public class CharacterSynergyManager : MonoBehaviour
                     break;
             }
             
-            // If we found both cards, apply synergy
             if (cardA != null && cardB != null)
             {
-                // Remove both cards and add synergy card
                 characterCards.RemoveCard(cardA);
                 characterCards.RemoveCard(cardB);
                 characterCards.AddCard(synergy.resultCard);
