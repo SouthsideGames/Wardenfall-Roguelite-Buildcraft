@@ -5026,6 +5026,7 @@ GameObject:
   - component: {fileID: 5305826073402471318}
   - component: {fileID: 3996425046921535557}
   - component: {fileID: 4822862956781776345}
+  - component: {fileID: 5925305581047437566}
   m_Layer: 6
   m_Name: Swarmite
   m_TagString: Enemy
@@ -5086,6 +5087,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1df196f4cdc489348839f4606228daf5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  movement: {fileID: 0}
   anim: {fileID: 0}
   _spriteRenderer: {fileID: 9108187414904206737}
   spawnIndicator: {fileID: 4142629268000162496}
@@ -5238,6 +5240,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canPerformCriticalHit: 0
+--- !u!114 &5925305581047437566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7989277444111341517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47492a4f67d7fe343ab3239811b016d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &9193595992969736329
 GameObject:
   m_ObjectHideFlags: 0

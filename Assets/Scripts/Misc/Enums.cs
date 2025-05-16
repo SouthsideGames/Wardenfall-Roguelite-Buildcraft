@@ -99,6 +99,7 @@ public enum StatusEffectType
     Paralyze,
     Fear,
     ArmorBreak,
+    DeathMark
 }
 
 public enum StackBehavior

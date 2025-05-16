@@ -7,12 +7,13 @@ public class BulletBase : MonoBehaviour
     [SerializeField] protected float lifetime = 3f;
     [SerializeField] protected LayerMask enemyMask;
 
-    protected int damage;
+    public int damage { get; private set; }
     protected bool isCriticalHit;
     protected Rigidbody2D rb;
     private Collider2D col;
-    protected RangedWeapon rangedWeapon;
+    public RangedWeapon rangedWeapon { get; private set; }
     protected Enemy target;
+    private bool destroyOnHit = true;
 
     protected virtual void Awake()
     {
@@ -45,6 +46,14 @@ public class BulletBase : MonoBehaviour
                 CancelInvoke();
                 ApplyDamage(target);
                 ApplyOnHitEffects(target);
+
+                foreach (var mod in GetComponents<IBulletModifier>())
+                    mod.Apply(this, target);
+
+                if (destroyOnHit)
+                    Release();
+
+                destroyOnHit = true;
                 Release();
             }
         }
@@ -59,10 +68,7 @@ public class BulletBase : MonoBehaviour
         {
             EnemyStatus status = enemy.GetComponent<EnemyStatus>();
             if (status != null && status.HasAnyEffect())
-            {
                 finalDamage = Mathf.RoundToInt(damage * 1.1f);
-                Debug.Log("Radiant Core triggered: bonus damage applied.");
-            }
         }
 
         enemy.TakeDamage(finalDamage, isCriticalHit);
@@ -104,16 +110,17 @@ public class BulletBase : MonoBehaviour
 
     protected virtual void DestroyBullet() => gameObject.SetActive(false);
     protected bool IsInLayerMask(int layer, LayerMask layerMask) => (layerMask.value & (1 << layer)) != 0;
+    public void CancelDestroyOnHit() => destroyOnHit = false;
 
-    protected virtual void Release()
+    public virtual void Release()
     {
-       if (!gameObject.activeSelf)
-        return;
+        if (!gameObject.activeSelf)
+            return;
 
         if (rangedWeapon == null)
         {
             Debug.LogError("RangedWeapon reference is missing! Did you forget to call Configure()?");
-            DestroyBullet(); 
+            DestroyBullet();
             return;
         }
 

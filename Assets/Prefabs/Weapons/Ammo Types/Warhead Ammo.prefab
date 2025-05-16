@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4984762908753706765}
   - component: {fileID: 4419764841312052443}
   - component: {fileID: -548060330186964440}
+  - component: {fileID: 5550379782985134516}
   m_Layer: 0
   m_Name: Warhead Ammo
   m_TagString: Untagged
@@ -115,11 +116,21 @@ MonoBehaviour:
   enemyMask:
     serializedVersion: 2
     m_Bits: 64
-  explosionRadius: 3
-  waveFrequency: 0
-  waveAmplitude: 0
   explosionPrefab: {fileID: 2433282508537954060, guid: 3ef3ae421f71c5c4e97fe12dc2fc6312, type: 3}
   explosionSoundEffect: {fileID: 8300000, guid: c7c6b8ea3d4cb1446a7cbeb95385b284, type: 3}
+--- !u!114 &5550379782985134516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5579916199222765347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2469f7aa8ab18d547a012ef2ac8a94ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bulletPrefab: {fileID: 5579916199222765347}
 --- !u!1 &7157034293000149365
 GameObject:
   m_ObjectHideFlags: 0

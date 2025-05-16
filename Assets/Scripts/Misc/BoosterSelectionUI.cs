@@ -17,7 +17,7 @@ public class BoosterSelectionUI : MonoBehaviour
                 continue;
 
             GameObject go = Instantiate(boosterCardPrefab, contentParent);
-            BoosterCardUI cardUI = go.GetComponent<BoosterCardUI>();
+            BoosterUI cardUI = go.GetComponent<BoosterUI>();
             cardUI.Configure(booster, equipmentUI);
         }
     }

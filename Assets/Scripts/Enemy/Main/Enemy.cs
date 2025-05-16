@@ -19,7 +19,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
 
     [Header("ELEMENTS:")]
     protected CharacterManager character;
-    protected EnemyMovement movement;
+    [HideInInspector] public EnemyMovement movement;
     [SerializeField] protected Animator anim;
     [SerializeField] protected SpriteRenderer _spriteRenderer;
     [SerializeField] protected SpriteRenderer spawnIndicator;
@@ -49,7 +49,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
     [SerializeField] private bool showGizmos;
 
     private EnemyStatus status;
-    public EnemyModifierHandler modifierHandler { get; private set; }   
+    public EnemyModifierHandler modifierHandler { get; private set; }
     protected Transform playerTransform;
     public int CurrentHealth => health;
     public int MaxHealth => maxHealth;
@@ -84,6 +84,14 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
         ChangeDirections();
     }
 
+    public virtual void Initialize(EnemyDataSO data)
+    {
+        maxHealth = data.maxHealth;
+        health = maxHealth;
+        contactDamage = data.contactDamage;
+        playerDetectionRadius = data.detectionRadius;
+    }
+
     protected virtual void ChangeDirections()
     {
         if (playerTransform != null)
@@ -91,8 +99,6 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
             _spriteRenderer.flipX = playerTransform.position.x > transform.position.x;
         }
     }
-
-    protected bool CanAttack() => _spriteRenderer.enabled;
 
     protected virtual void Attack()
     {
@@ -175,14 +181,6 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
         MissionIncrement();
         DieAfterWave();
     }
-    
-    private void MissionIncrement()
-    {
-        MissionManager.Increment(MissionType.eliminate100Enemies, 1);
-        MissionManager.Increment(MissionType.eliminate500Enemies, 1);
-        MissionManager.Increment(MissionType.eliminate1000Enemies, 1);
-        MissionManager.Increment(MissionType.eliminate2000Enemies, 1);
-    }
 
     public void DieAfterWave()
     {
@@ -197,7 +195,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
     private void Spawn()
     {
         SetRenderersVisibility(false);
-        movement.canMove = false;  
+        movement.canMove = false;
 
         Vector3 targetScale = spawnIndicator.transform.localScale * spawnSize;
         LeanTween.scale(spawnIndicator.gameObject, targetScale, spawnTime)
@@ -231,9 +229,6 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
     public void DisableAttacks() => attacksEnabled = false;
     public void EnableAttacks() => attacksEnabled = true;
 
-    public void DisableAbilities() => Debug.Log("Enemy abilities disabled.");
-    public void EnableAbilities() => Debug.Log("Enemy abilities enabled.");
-
     public void SetTargetToOtherEnemies()
     {
         playerTransform = null;
@@ -264,36 +259,27 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
 
     #endregion
 
+    #region MISSION FUNCTIONS
+    private void MissionIncrement()
+    {
+        MissionManager.Increment(MissionType.eliminate100Enemies, 1);
+        MissionManager.Increment(MissionType.eliminate500Enemies, 1);
+        MissionManager.Increment(MissionType.eliminate1000Enemies, 1);
+        MissionManager.Increment(MissionType.eliminate2000Enemies, 1);
+    }
+
+    #endregion
+
     private IEnumerator ApplyTraitsNextFrame()
     {
         yield return null;
         modifierHandler?.ApplyTraits();
     }
 
-    private void OnDrawGizmos()
-    {
-        if (!showGizmos) return;
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, playerDetectionRadius);
-    }
-
-    public Vector2 GetCenter() => (Vector2)transform.position + _collider.offset;
-    public void TakeDamage(int damage) => TakeDamage(damage, false); 
-    public void MoveTo(Transform target) => movement?.SetTarget(target);
-    public void AttackTarget() => Attack();
-
     public virtual void ApplyEffect(StatusEffect effect)
     {
         if (status != null)
             status.ApplyEffect(effect);
-    }
-
-     public virtual void Initialize(EnemyDataSO data)
-    {
-        maxHealth = data.maxHealth;
-        health = maxHealth;
-        contactDamage = data.contactDamage;
-        playerDetectionRadius = data.detectionRadius;
     }
 
     public virtual void UpdateBehavior()
@@ -317,7 +303,29 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
         isInvincible = false;
     }
 
-    public void Heal(int _damage) => health += _damage; 
+    #region SET FUNCTIONS
+
+    public void Heal(int _damage) => health += _damage;
+    public Vector2 GetCenter() => (Vector2)transform.position + _collider.offset;
+    public void TakeDamage(int damage) => TakeDamage(damage, false);
+    public void MoveTo(Transform target) => movement?.SetTarget(target);
+    public void AttackTarget() => Attack();
+    protected bool CanAttack() => _spriteRenderer.enabled;
+
+    #endregion
+
+    #region DEBUGS & GIZMOS
+
+    public void DisableAbilities() => Debug.Log("Enemy abilities disabled.");
+    public void EnableAbilities() => Debug.Log("Enemy abilities enabled.");
+    private void OnDrawGizmos()
+    {
+        if (!showGizmos) return;
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, playerDetectionRadius);
+    }
+
+    #endregion
 
 
 }

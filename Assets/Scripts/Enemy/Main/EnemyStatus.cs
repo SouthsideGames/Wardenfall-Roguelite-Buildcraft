@@ -1,4 +1,3 @@
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,7 +13,7 @@ public class EnemyStatus : MonoBehaviour
 
     private Dictionary<StatusEffectType, ActiveEffect> activeEffects = new();
     private StatusEffectUIManager statusUI;
-    
+
     [SerializeField] private List<StatusEffectType> immunities = new List<StatusEffectType>();
     [SerializeField] private float statusResistance = 0f;
 
@@ -32,8 +31,14 @@ public class EnemyStatus : MonoBehaviour
         originalMoveSpeed = movement.moveSpeed;
     }
 
-    public void ApplyEffect(StatusEffect effect)
+    public void ApplyEffect(StatusEffect effect, float delay = 0f)
     {
+        if (delay > 0f)
+        {
+            StartCoroutine(DelayedApply(effect, delay));
+            return;
+        }
+
         // Check immunity
         if (IsImmuneToEffect(effect.EffectType))
             return;
@@ -81,6 +86,12 @@ public class EnemyStatus : MonoBehaviour
         statusUI?.AddOrUpdateEffect(effect);
     }
 
+    private IEnumerator DelayedApply(StatusEffect effect, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        ApplyEffect(effect);
+    }
+
     private IEnumerator HandleEffect(ActiveEffect activeEffect)
     {
         var effect = activeEffect.Effect;
@@ -104,7 +115,6 @@ public class EnemyStatus : MonoBehaviour
         }
 
         RemoveEffect(effect.EffectType);
-       
     }
 
     private void ApplyTick(StatusEffect effect)

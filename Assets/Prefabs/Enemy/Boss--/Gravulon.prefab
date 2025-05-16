@@ -668,6 +668,7 @@ GameObject:
   - component: {fileID: 6104678240116091026}
   - component: {fileID: 5001650185750629083}
   - component: {fileID: -8216891799426476878}
+  - component: {fileID: 3674423465755428012}
   m_Layer: 6
   m_Name: Gravulon
   m_TagString: Enemy
@@ -809,6 +810,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 123f8c3abc3192b4599b40d98ee1fd98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  movement: {fileID: 0}
   anim: {fileID: 5222419820969825839}
   _spriteRenderer: {fileID: 6455084394197434225}
   spawnIndicator: {fileID: 7008401377191656658}
@@ -872,6 +874,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &3674423465755428012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2497664888247412960}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47492a4f67d7fe343ab3239811b016d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6378806998035929997
 GameObject:
   m_ObjectHideFlags: 0

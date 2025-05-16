@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 
 
-public class BoosterCardUI : MonoBehaviour
+public class BoosterUI : MonoBehaviour
 {
     [SerializeField] private Image icon;
     [SerializeField] private TextMeshProUGUI label;

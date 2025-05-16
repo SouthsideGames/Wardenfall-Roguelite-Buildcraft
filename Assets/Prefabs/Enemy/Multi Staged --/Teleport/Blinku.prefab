@@ -9800,6 +9800,7 @@ GameObject:
   - component: {fileID: 9095330309024375354}
   - component: {fileID: 2991173065937439289}
   - component: {fileID: 2399374470509028887}
+  - component: {fileID: -475665593224376686}
   m_Layer: 6
   m_Name: Blinku
   m_TagString: Enemy
@@ -9862,6 +9863,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee99e8be3abff204184af3ad94523e81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  movement: {fileID: 0}
   anim: {fileID: 0}
   _spriteRenderer: {fileID: 5849116310684472047}
   spawnIndicator: {fileID: 4646277414147585081}
@@ -10030,6 +10032,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canPerformCriticalHit: 0
+--- !u!114 &-475665593224376686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2533266184513460296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47492a4f67d7fe343ab3239811b016d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3146728229942722955
 GameObject:
   m_ObjectHideFlags: 0

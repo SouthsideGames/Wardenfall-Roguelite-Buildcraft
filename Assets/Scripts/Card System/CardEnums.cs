@@ -17,7 +17,7 @@ public enum CardEffectType
     ThunderStrike,
     PoisonCloud,
     PhaseShift,
-    VoltageSpike, 
+    VoltageSpike,
     Void,
     BladeStorm,
     TemporalReset,
@@ -75,7 +75,14 @@ public enum CardEffectType
     ToxicShock,
     NeuralDecay,
     Electrofreeze,
-    MoltenCrack, 
-    TerrorSurge
+    MoltenCrack,
+    TerrorSurge,
+    RecoilBoost,
+    DeathMark,
+    PierceShot,
+    SplitFire,
+    DoubleDrop,
+    BloodNova,
+    TetherField
     // Add more as needed
 }

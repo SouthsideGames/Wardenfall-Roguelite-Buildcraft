@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 6889160504432484258}
   - component: {fileID: 4884034916235339722}
   - component: {fileID: 2422747950828109912}
+  - component: {fileID: -8080895261722447901}
   m_Layer: 6
   m_Name: Nightdart
   m_TagString: Enemy
@@ -142,6 +143,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e05657ae18914dd45b5b93faf8f66205, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  movement: {fileID: 0}
   anim: {fileID: 0}
   _spriteRenderer: {fileID: 6846065440196266612}
   spawnIndicator: {fileID: 6901306003155265661}
@@ -245,6 +247,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canPerformCriticalHit: 0
+--- !u!114 &-8080895261722447901
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 796357530644533229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47492a4f67d7fe343ab3239811b016d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1949002788816201444
 GameObject:
   m_ObjectHideFlags: 0

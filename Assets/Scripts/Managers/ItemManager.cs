@@ -110,6 +110,20 @@ public class ItemManager : MonoBehaviour
             itemToDrop.transform.position = _enemyPosition;
         }
 
+        if (CharacterManager.Instance.cards.HasCard("double_drop"))
+        {
+            float chance = 0.25f; // 25% chance
+            if (Random.value < chance)
+            {
+                Item duplicate = Random.Range(0f, 100f) < cashChance ? cashPool.Get() : meatPool.Get();
+                if (duplicate != null)
+                {
+                    duplicate.transform.position = _enemyPosition;
+                }
+            }
+        }
+
+
         TryDropChest(_enemyPosition);
     }
 

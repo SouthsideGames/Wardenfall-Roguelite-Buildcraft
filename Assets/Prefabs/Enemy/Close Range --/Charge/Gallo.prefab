@@ -5026,6 +5026,7 @@ GameObject:
   - component: {fileID: 7382393630559290276}
   - component: {fileID: -6903256014510598490}
   - component: {fileID: 5604395167982939854}
+  - component: {fileID: 7219391018446419372}
   m_Layer: 6
   m_Name: Gallo
   m_TagString: Enemy
@@ -5149,6 +5150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d558ad2273ccd541a223b61690d12ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  movement: {fileID: 0}
   anim: {fileID: 1115717940247550522}
   _spriteRenderer: {fileID: 4171277772667265588}
   spawnIndicator: {fileID: 7310978342789289596}
@@ -5240,6 +5242,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canPerformCriticalHit: 0
+--- !u!114 &7219391018446419372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4838427843806296356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47492a4f67d7fe343ab3239811b016d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5280339864739325919
 GameObject:
   m_ObjectHideFlags: 0
