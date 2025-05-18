@@ -130,8 +130,10 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
 
         OnDamageTaken?.Invoke(_damage, transform.position, _isCriticalHit);
 
-        if (health <= 0 && this != null && gameObject != null)
-            Die();
+        if (CurrentHealth <= 0 && IsAlive)
+        {
+            DieByPlayer();
+        }
     }
 
     public void ApplyLifeDrain(int damage, float duration, float interval)
@@ -140,14 +142,19 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
         status.ApplyEffect(drainEffect);
     }
 
-    public virtual void Die()
+    public virtual void DieByPlayer()
     {
         if (this == null || gameObject == null) return;
 
+        // Statistics tracking
+        StatisticsManager.Instance?.TotalEnemyKillsHandler();
+
+        // Event notifications
         OnDeath?.Invoke(transform.position);
         OnEnemyKilled?.Invoke();
 
-        if (TraitManager.Instance.HasTrait("T-007"))
+        // Ghost trait handling
+        if (TraitManager.Instance != null && TraitManager.Instance.HasTrait("T-007"))
         {
             GameObject ghostPrefab = Resources.Load<GameObject>("Prefabs/Enemy/Enemy Ghost");
             if (ghostPrefab != null)
@@ -157,11 +164,12 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
 
                 int stacks = TraitManager.Instance.GetStackCount("T-007");
 
-                if (ghostComponent != null)
+                if (ghostComponent != null && _spriteRenderer != null)
                     ghostComponent.InitializeFrom(_spriteRenderer, stacks);
             }
         }
 
+        // Multi-kill tracking
         float timeSinceLastKill = Time.time - lastKillTime;
         if (timeSinceLastKill <= multiKillTimeWindow)
         {
@@ -178,15 +186,30 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
         }
         lastKillTime = Time.time;
 
+        // Mission increments
         MissionIncrement();
-        DieAfterWave();
+        
+        // Death cleanup
+        Die();
+    }
+
+    public virtual void Die()
+    {
+        if (deathParticles != null)
+        {
+            deathParticles.transform.SetParent(null);
+            deathParticles.Play();
+        }
+        Destroy(gameObject);
     }
 
     public void DieAfterWave()
     {
-        deathParticles.transform.SetParent(null);
-        deathParticles.Play();
-
+        if (deathParticles != null)
+        {
+            deathParticles.transform.SetParent(null);
+            deathParticles.Play();
+        }
         Destroy(gameObject);
     }
 
