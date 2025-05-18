@@ -3,6 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterHealth))]
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(CharacterLevel))]
+[RequireComponent(typeof(CharacterWeapon))]
 [RequireComponent(typeof(CharacterDetection))]
 [RequireComponent(typeof(CharacterWeapon))]
 [RequireComponent(typeof(CharacterObjects))]
@@ -10,6 +11,7 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterCards))]
 [RequireComponent(typeof(CharacterAnimator))]
 [RequireComponent(typeof(CharacterEquipment))]
+[RequireComponent(typeof(CharacterDatabase))]
 public class CharacterManager : MonoBehaviour
 {
     public static CharacterManager Instance;
@@ -23,6 +25,7 @@ public class CharacterManager : MonoBehaviour
     public CharacterController controller { get; private set; }
     public CharacterCards cards {get; private set; }
     public CharacterEquipment equipment {get; private set;}
+    public CharacterDatabase database {get; private set;}
     [SerializeField] private CircleCollider2D _col;
     public SpriteRenderer _sr {get; private set; }
     private CharacterDataSO characterData;
@@ -43,6 +46,7 @@ public class CharacterManager : MonoBehaviour
         stats = GetComponent<CharacterStats>();
         controller = GetComponent<CharacterController>(); 
         cards = GetComponent<CharacterCards>();
+        database = GetComponent<CharacterDatabase>();
         equipment = GetComponent<CharacterEquipment>();
         _sr = GetComponentInChildren<SpriteRenderer>();
 

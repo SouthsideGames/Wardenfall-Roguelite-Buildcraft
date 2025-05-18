@@ -217,7 +217,7 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
                 return () => Debug.Log("Invalid Stat");
         }
 
-        return () => CharacterStats.Instance.AddStat(_characterStat, value);    
+        return () => CharacterManager.Instance.stats.AddStat(_characterStat, value);    
     }
 
     private void ChestCollectedCallback(Chest chest) => chestsCollected++;

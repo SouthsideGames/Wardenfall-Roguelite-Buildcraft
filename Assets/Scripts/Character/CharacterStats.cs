@@ -5,7 +5,6 @@ using System;
 
 public class CharacterStats : MonoBehaviour
 {
-    public static CharacterStats Instance;
     public Action OnDataStored;
 
     [Header("DATA:")]
@@ -21,11 +20,6 @@ public class CharacterStats : MonoBehaviour
     private void Awake()
     {
         CharacterSelectionManager.OnCharacterSelected += CharacterSelectedCallback;
-
-        if (Instance == null)
-            Instance = this;
-        else
-            Destroy(gameObject);
 
         stats = characterData.BaseStats;
 

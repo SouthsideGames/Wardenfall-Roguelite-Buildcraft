@@ -22,7 +22,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     [SerializeField] private float waveDuration;
     private float timer;
     private bool hasWaveStarted;
-    public int currentWaveIndex;
+    public int currentWaveIndex { get; private set; }
 
     [Header("WAVES BASED SETTINGS:")]
     [SerializeField] private Wave[] wave;
@@ -266,7 +266,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         // Update final stage statistics
         var stats = StatisticsManager.Instance.currentStatistics;
         stats.CurrentRunDuration = Time.time - GameManager.Instance.runStartTime;
-        stats.MostEffectiveWeaponInRun = CharacterWeapon.Instance.GetMostEffectiveWeapon();
+        stats.MostEffectiveWeaponInRun = CharacterManager.Instance.weapon.GetMostEffectiveWeapon();
         
         ui.StageCompleted();
         UIManager.Instance.UpdateStageCompletionPanel();

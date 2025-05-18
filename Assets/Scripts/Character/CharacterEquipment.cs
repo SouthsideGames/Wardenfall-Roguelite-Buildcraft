@@ -2,13 +2,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using SouthsideGames.SaveManager;
 
-[System.Serializable]
-public class EquippedBooster
-{
-    public StatBoosterSO booster;
-    public Stat chosenStat;
-}
-
 public class CharacterEquipment : MonoBehaviour, IWantToBeSaved
 {
     public List<EquippedBooster> equippedBoosters = new List<EquippedBooster>();
@@ -50,7 +43,7 @@ public class CharacterEquipment : MonoBehaviour, IWantToBeSaved
         SaveManager.GameData.Add(BOOSTER_SAVE_KEY, typeof(string), result);
     }
 
-   public void LoadEquippedBoosters()
+    public void LoadEquippedBoosters()
     {
         equippedBoosters.Clear();
 
@@ -88,3 +81,11 @@ public class CharacterEquipment : MonoBehaviour, IWantToBeSaved
     public void Save() => SaveEquippedBoosters();
     public void Load() => LoadEquippedBoosters();
 }
+
+[System.Serializable]
+public class EquippedBooster
+{
+    public StatBoosterSO booster;
+    public Stat chosenStat;
+}
+

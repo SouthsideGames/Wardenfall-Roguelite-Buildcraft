@@ -20401,7 +20401,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.38823533, g: 0.14509805, b: 0.121568635, a: 0.77254903}
+  m_BackGroundColor: {r: 1, g: 1, b: 1, a: 0.77254903}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -39903,452 +39903,282 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   character: {fileID: 2122840539}
   waveDuration: 25
-  currentWaveIndex: 0
   wave:
-  - name: Wave 00
+  - name: Crawl of the Swarm
     segments:
-    - spawnPercentage: {x: 0, y: 100}
-      spawnFrequency: 0.5
-      enemiesToSpawn: []
+    - spawnPercentage: {x: 0, y: 75}
+      spawnFrequency: 1.5
+      enemiesToSpawn:
+      - {fileID: 5829535922412643463, guid: 52d8d00f7e20f0546bbdd77942577be7, type: 3}
+      - {fileID: 4838427843806296356, guid: 18040fa9258af2f418580e5a8d180f96, type: 3}
       bossWave: 0
       tStart: 0
       tEnd: 0
       selectedPrefab: {fileID: 0}
-  - name: Wave 01
+  - name: Sharp Beginnings
+    segments:
+    - spawnPercentage: {x: 5, y: 25}
+      spawnFrequency: 1.3
+      enemiesToSpawn:
+      - {fileID: 5829535922412643463, guid: 52d8d00f7e20f0546bbdd77942577be7, type: 3}
+      bossWave: 0
+      tStart: 0
+      tEnd: 0
+      selectedPrefab: {fileID: 0}
+    - spawnPercentage: {x: 20, y: 80}
+      spawnFrequency: 1.1
+      enemiesToSpawn:
+      - {fileID: 831428353397795802, guid: 9a1e14b3966de4245959d846d609c14f, type: 3}
+      - {fileID: 796357530644533229, guid: 0908c98750083364ea9748500e33ccf2, type: 3}
+      bossWave: 0
+      tStart: 0
+      tEnd: 0
+      selectedPrefab: {fileID: 0}
+  - name: Crossfire Rush
+    segments:
+    - spawnPercentage: {x: 0, y: 60}
+      spawnFrequency: 1.2
+      enemiesToSpawn:
+      - {fileID: 4838427843806296356, guid: 18040fa9258af2f418580e5a8d180f96, type: 3}
+      - {fileID: 796357530644533229, guid: 0908c98750083364ea9748500e33ccf2, type: 3}
+      bossWave: 0
+      tStart: 0
+      tEnd: 0
+      selectedPrefab: {fileID: 0}
+    - spawnPercentage: {x: 30, y: 90}
+      spawnFrequency: 0.8
+      enemiesToSpawn:
+      - {fileID: 787633396471871806, guid: 77dc51955f308c44a87301d162db36e4, type: 3}
+      bossWave: 0
+      tStart: 0
+      tEnd: 0
+      selectedPrefab: {fileID: 0}
+  - name: Gelatin Divide
+    segments:
+    - spawnPercentage: {x: 10, y: 75}
+      spawnFrequency: 1
+      enemiesToSpawn:
+      - {fileID: 7989277444111341517, guid: 51ee293df9e9c1f4b87fa8c0a577722b, type: 3}
+      - {fileID: 2145636691612748121, guid: eb4f69463d9ca014981ee3f5e78df190, type: 3}
+      bossWave: 0
+      tStart: 0
+      tEnd: 0
+      selectedPrefab: {fileID: 0}
+  - name: Iron Hammer
+    segments:
+    - spawnPercentage: {x: 0, y: 100}
+      spawnFrequency: 1.5
+      enemiesToSpawn:
+      - {fileID: 5424207264188696762, guid: 22b7bf5ccd67c2340bc9fd7d7dc867ee, type: 3}
+      bossWave: 1
+      tStart: 0
+      tEnd: 0
+      selectedPrefab: {fileID: 0}
+  - name: Crawling Corruption
+    segments:
+    - spawnPercentage: {x: 5, y: 60}
+      spawnFrequency: 1.1
+      enemiesToSpawn:
+      - {fileID: 5829535922412643463, guid: 49d5186d2b5e0b54393571b1af32b963, type: 3}
+      - {fileID: 796357530644533229, guid: 0908c98750083364ea9748500e33ccf2, type: 3}
+      bossWave: 0
+      tStart: 0
+      tEnd: 0
+      selectedPrefab: {fileID: 0}
+    - spawnPercentage: {x: 40, y: 90}
+      spawnFrequency: 1
+      enemiesToSpawn:
+      - {fileID: 796357530644533229, guid: 3c2e3637eec3daa4cb2c15a930ea5d98, type: 3}
+      bossWave: 0
+      tStart: 0
+      tEnd: 0
+      selectedPrefab: {fileID: 0}
+  - name: Shieldbreak Shuffle
     segments:
     - spawnPercentage: {x: 0, y: 50}
       spawnFrequency: 1.2
-      enemiesToSpawn: []
+      enemiesToSpawn:
+      - {fileID: 2145636691612748121, guid: 3010970ac94bafc4ba97f606cd3d291b, type: 3}
+      - {fileID: 5829535922412643463, guid: 52d8d00f7e20f0546bbdd77942577be7, type: 3}
       bossWave: 0
       tStart: 0
       tEnd: 0
       selectedPrefab: {fileID: 0}
-    - spawnPercentage: {x: 40, y: 100}
-      spawnFrequency: 0.8
-      enemiesToSpawn: []
+    - spawnPercentage: {x: 30, y: 85}
+      spawnFrequency: 1
+      enemiesToSpawn:
+      - {fileID: 7989277444111341517, guid: e32cd66fc6645b54f96f3c9a54c3de0d, type: 3}
+      - {fileID: 796357530644533229, guid: 0908c98750083364ea9748500e33ccf2, type: 3}
       bossWave: 0
       tStart: 0
       tEnd: 0
       selectedPrefab: {fileID: 0}
-  - name: Wave 02
+  - name: Needlestorm
     segments:
-    - spawnPercentage: {x: 0, y: 25}
-      spawnFrequency: 0.8
-      enemiesToSpawn: []
+    - spawnPercentage: {x: 10, y: 80}
+      spawnFrequency: 1.1
+      enemiesToSpawn:
+      - {fileID: 831428353397795802, guid: 9a1e14b3966de4245959d846d609c14f, type: 3}
+      - {fileID: 796357530644533229, guid: 3c2e3637eec3daa4cb2c15a930ea5d98, type: 3}
+      - {fileID: 4838427843806296356, guid: 18040fa9258af2f418580e5a8d180f96, type: 3}
       bossWave: 0
       tStart: 0
       tEnd: 0
       selectedPrefab: {fileID: 0}
-    - spawnPercentage: {x: 26, y: 80}
-      spawnFrequency: 2
-      enemiesToSpawn: []
+  - name: Blink and Burn
+    segments:
+    - spawnPercentage: {x: 15, y: 85}
+      spawnFrequency: 1
+      enemiesToSpawn:
+      - {fileID: 2533266184513460296, guid: de7b20eb4abf8034a8243aa9ff89b8f4, type: 3}
+      - {fileID: 787633396471871806, guid: 77dc51955f308c44a87301d162db36e4, type: 3}
+      - {fileID: 796357530644533229, guid: 0908c98750083364ea9748500e33ccf2, type: 3}
       bossWave: 0
       tStart: 0
       tEnd: 0
       selectedPrefab: {fileID: 0}
-    - spawnPercentage: {x: 65, y: 100}
+  - name: Hellfire Run
+    segments:
+    - spawnPercentage: {x: 20, y: 75}
+      spawnFrequency: 1
+      enemiesToSpawn:
+      - {fileID: 6512723806045197110, guid: 53e8f804c64745f44ad4c96f610137c5, type: 3}
+      bossWave: 1
+      tStart: 0
+      tEnd: 0
+      selectedPrefab: {fileID: 0}
+  - name: Wounded Rush
+    segments:
+    - spawnPercentage: {x: 5, y: 80}
+      spawnFrequency: 1.2
+      enemiesToSpawn:
+      - {fileID: 5829535922412643463, guid: 49d5186d2b5e0b54393571b1af32b963, type: 3}
+      - {fileID: 4838427843806296356, guid: 18040fa9258af2f418580e5a8d180f96, type: 3}
+      - {fileID: 5829535922412643463, guid: 52d8d00f7e20f0546bbdd77942577be7, type: 3}
+      bossWave: 0
+      tStart: 0
+      tEnd: 0
+      selectedPrefab: {fileID: 0}
+  - name: They Keep Coming
+    segments:
+    - spawnPercentage: {x: 10, y: 60}
+      spawnFrequency: 1
+      enemiesToSpawn:
+      - {fileID: 5703549388772972490, guid: 68f2ddd1aa10049bcbde662e8b3caca7, type: 3}
+      - {fileID: 6610243285245234481, guid: 3e0b9ed5b8804ff4d89310c5b9413651, type: 3}
+      bossWave: 0
+      tStart: 0
+      tEnd: 0
+      selectedPrefab: {fileID: 0}
+    - spawnPercentage: {x: 45, y: 90}
+      spawnFrequency: 1.2
+      enemiesToSpawn:
+      - {fileID: 796357530644533229, guid: 0908c98750083364ea9748500e33ccf2, type: 3}
+      - {fileID: 831428353397795802, guid: 9a1e14b3966de4245959d846d609c14f, type: 3}
+      bossWave: 0
+      tStart: 0
+      tEnd: 0
+      selectedPrefab: {fileID: 0}
+  - name: Wall of Thorns
+    segments:
+    - spawnPercentage: {x: 0, y: 50}
       spawnFrequency: 1.3
-      enemiesToSpawn: []
+      enemiesToSpawn:
+      - {fileID: 2145636691612748121, guid: 3010970ac94bafc4ba97f606cd3d291b, type: 3}
+      - {fileID: 796357530644533229, guid: 3c2e3637eec3daa4cb2c15a930ea5d98, type: 3}
+      - {fileID: 4838427843806296356, guid: 18040fa9258af2f418580e5a8d180f96, type: 3}
       bossWave: 0
       tStart: 0
       tEnd: 0
       selectedPrefab: {fileID: 0}
-  - name: Wave 03
+    - spawnPercentage: {x: 40, y: 85}
+      spawnFrequency: 1.1
+      enemiesToSpawn:
+      - {fileID: 7989277444111341517, guid: e32cd66fc6645b54f96f3c9a54c3de0d, type: 3}
+      - {fileID: 831428353397795802, guid: 9a1e14b3966de4245959d846d609c14f, type: 3}
+      bossWave: 0
+      tStart: 0
+      tEnd: 0
+      selectedPrefab: {fileID: 0}
+  - name: Chaotic Echoes
     segments:
-    - spawnPercentage: {x: 0, y: 35}
-      spawnFrequency: 1
-      enemiesToSpawn: []
-      bossWave: 0
-      tStart: 0
-      tEnd: 0
-      selectedPrefab: {fileID: 0}
-    - spawnPercentage: {x: 20, y: 50}
+    - spawnPercentage: {x: 5, y: 80}
       spawnFrequency: 1.2
-      enemiesToSpawn: []
+      enemiesToSpawn:
+      - {fileID: 2533266184513460296, guid: de7b20eb4abf8034a8243aa9ff89b8f4, type: 3}
+      - {fileID: 7989277444111341517, guid: 51ee293df9e9c1f4b87fa8c0a577722b, type: 3}
+      - {fileID: 7989277444111341517, guid: e32cd66fc6645b54f96f3c9a54c3de0d, type: 3}
       bossWave: 0
       tStart: 0
       tEnd: 0
       selectedPrefab: {fileID: 0}
-    - spawnPercentage: {x: 50, y: 100}
-      spawnFrequency: 0.8
-      enemiesToSpawn: []
-      bossWave: 0
-      tStart: 0
-      tEnd: 0
-      selectedPrefab: {fileID: 0}
-  - name: Wave 04
+  - name: Crimson Dive
     segments:
-    - spawnPercentage: {x: 0, y: 100}
-      spawnFrequency: 1.5
-      enemiesToSpawn: []
+    - spawnPercentage: {x: 20, y: 70}
+      spawnFrequency: 1.1
+      enemiesToSpawn:
+      - {fileID: 2308060102410810228, guid: 9166de232cdbb3f47a5ad57ab160ec2d, type: 3}
       bossWave: 0
       tStart: 0
       tEnd: 0
       selectedPrefab: {fileID: 0}
-  - name: Boss 01
+  - name: Deadeye Winds
     segments:
-    - spawnPercentage: {x: 0, y: 100}
-      spawnFrequency: 1
-      enemiesToSpawn: []
-      bossWave: 0
-      tStart: 0
-      tEnd: 0
-      selectedPrefab: {fileID: 0}
-  - name: Wave 06
-    segments:
-    - spawnPercentage: {x: 0, y: 40}
+    - spawnPercentage: {x: 0, y: 55}
       spawnFrequency: 1.2
-      enemiesToSpawn: []
+      enemiesToSpawn:
+      - {fileID: 796357530644533229, guid: 16e7dd87e890c904995eb253c7c2f573, type: 3}
+      - {fileID: 796357530644533229, guid: 3c2e3637eec3daa4cb2c15a930ea5d98, type: 3}
+      - {fileID: 6610243285245234481, guid: 3e0b9ed5b8804ff4d89310c5b9413651, type: 3}
       bossWave: 0
       tStart: 0
       tEnd: 0
       selectedPrefab: {fileID: 0}
-    - spawnPercentage: {x: 20, y: 60}
-      spawnFrequency: 2
-      enemiesToSpawn: []
-      bossWave: 0
-      tStart: 0
-      tEnd: 0
-      selectedPrefab: {fileID: 0}
-    - spawnPercentage: {x: 60, y: 100}
-      spawnFrequency: 0.8
-      enemiesToSpawn: []
-      bossWave: 0
-      tStart: 0
-      tEnd: 0
-      selectedPrefab: {fileID: 0}
-  - name: Wave 07
+  - name: Swarm Protocol
     segments:
-    - spawnPercentage: {x: 0, y: 75}
+    - spawnPercentage: {x: 5, y: 85}
       spawnFrequency: 1.3
-      enemiesToSpawn: []
+      enemiesToSpawn:
+      - {fileID: 5829535922412643463, guid: 52d8d00f7e20f0546bbdd77942577be7, type: 3}
+      - {fileID: 831428353397795802, guid: 9a1e14b3966de4245959d846d609c14f, type: 3}
+      - {fileID: 7989277444111341517, guid: 51ee293df9e9c1f4b87fa8c0a577722b, type: 3}
+      - {fileID: 7989277444111341517, guid: e32cd66fc6645b54f96f3c9a54c3de0d, type: 3}
       bossWave: 0
       tStart: 0
       tEnd: 0
       selectedPrefab: {fileID: 0}
-    - spawnPercentage: {x: 76, y: 100}
-      spawnFrequency: 1.5
-      enemiesToSpawn: []
-      bossWave: 0
-      tStart: 0
-      tEnd: 0
-      selectedPrefab: {fileID: 0}
-  - name: Wave 08
+  - name: Hit and Vanish
     segments:
-    - spawnPercentage: {x: 0, y: 40}
-      spawnFrequency: 1.2
-      enemiesToSpawn: []
+    - spawnPercentage: {x: 10, y: 80}
+      spawnFrequency: 1.1
+      enemiesToSpawn:
+      - {fileID: 2533266184513460296, guid: de7b20eb4abf8034a8243aa9ff89b8f4, type: 3}
+      - {fileID: 787633396471871806, guid: 77dc51955f308c44a87301d162db36e4, type: 3}
+      - {fileID: 796357530644533229, guid: 3c2e3637eec3daa4cb2c15a930ea5d98, type: 3}
+      - {fileID: 2145636691612748121, guid: eb4f69463d9ca014981ee3f5e78df190, type: 3}
       bossWave: 0
       tStart: 0
       tEnd: 0
       selectedPrefab: {fileID: 0}
-    - spawnPercentage: {x: 41, y: 100}
-      spawnFrequency: 1.4
-      enemiesToSpawn: []
-      bossWave: 0
-      tStart: 0
-      tEnd: 0
-      selectedPrefab: {fileID: 0}
-  - name: Wave 09
+  - name: Stone March
     segments:
-    - spawnPercentage: {x: 0, y: 100}
-      spawnFrequency: 1.4
-      enemiesToSpawn: []
-      bossWave: 0
-      tStart: 0
-      tEnd: 0
-      selectedPrefab: {fileID: 0}
-    - spawnPercentage: {x: 60, y: 100}
+    - spawnPercentage: {x: 0, y: 65}
       spawnFrequency: 1
-      enemiesToSpawn: []
+      enemiesToSpawn:
+      - {fileID: 5829535922412643463, guid: c88aff18d97f9d54d99275c4f18929c6, type: 3}
+      - {fileID: 2145636691612748121, guid: 3010970ac94bafc4ba97f606cd3d291b, type: 3}
+      - {fileID: 5829535922412643463, guid: 49d5186d2b5e0b54393571b1af32b963, type: 3}
       bossWave: 0
       tStart: 0
       tEnd: 0
       selectedPrefab: {fileID: 0}
-  - name: Boss 2
+  - name: Void Barrage
     segments:
-    - spawnPercentage: {x: 0, y: 100}
-      spawnFrequency: 0.5
-      enemiesToSpawn: []
-      bossWave: 0
-      tStart: 0
-      tEnd: 0
-      selectedPrefab: {fileID: 0}
-  - name: Wave 10
-    segments:
-    - spawnPercentage: {x: 0, y: 30}
-      spawnFrequency: 1.4
-      enemiesToSpawn: []
-      bossWave: 0
-      tStart: 0
-      tEnd: 0
-      selectedPrefab: {fileID: 0}
-    - spawnPercentage: {x: 30, y: 40}
+    - spawnPercentage: {x: 20, y: 75}
       spawnFrequency: 1
-      enemiesToSpawn: []
-      bossWave: 0
-      tStart: 0
-      tEnd: 0
-      selectedPrefab: {fileID: 0}
-    - spawnPercentage: {x: 41, y: 60}
-      spawnFrequency: 0.9
-      enemiesToSpawn: []
-      bossWave: 0
-      tStart: 0
-      tEnd: 0
-      selectedPrefab: {fileID: 0}
-    - spawnPercentage: {x: 61, y: 80}
-      spawnFrequency: 1.7
-      enemiesToSpawn: []
-      bossWave: 0
-      tStart: 0
-      tEnd: 0
-      selectedPrefab: {fileID: 0}
-    - spawnPercentage: {x: 80, y: 100}
-      spawnFrequency: 1.4
-      enemiesToSpawn: []
-      bossWave: 0
-      tStart: 0
-      tEnd: 0
-      selectedPrefab: {fileID: 0}
-  - name: Wave 11
-    segments:
-    - spawnPercentage: {x: 0, y: 30}
-      spawnFrequency: 1.7
-      enemiesToSpawn: []
-      bossWave: 0
-      tStart: 0
-      tEnd: 0
-      selectedPrefab: {fileID: 0}
-    - spawnPercentage: {x: 31, y: 100}
-      spawnFrequency: 2
-      enemiesToSpawn: []
-      bossWave: 0
-      tStart: 0
-      tEnd: 0
-      selectedPrefab: {fileID: 0}
-  - name: Wave 12
-    segments:
-    - spawnPercentage: {x: 0, y: 100}
-      spawnFrequency: 1.4
-      enemiesToSpawn: []
-      bossWave: 0
-      tStart: 0
-      tEnd: 0
-      selectedPrefab: {fileID: 0}
-    - spawnPercentage: {x: 35, y: 55}
-      spawnFrequency: 1
-      enemiesToSpawn: []
-      bossWave: 0
-      tStart: 0
-      tEnd: 0
-      selectedPrefab: {fileID: 0}
-    - spawnPercentage: {x: 0, y: 100}
-      spawnFrequency: 1
-      enemiesToSpawn: []
-      bossWave: 0
-      tStart: 0
-      tEnd: 0
-      selectedPrefab: {fileID: 0}
-  - name: Wave 13
-    segments:
-    - spawnPercentage: {x: 0, y: 100}
-      spawnFrequency: 1.7
-      enemiesToSpawn: []
-      bossWave: 0
-      tStart: 0
-      tEnd: 0
-      selectedPrefab: {fileID: 0}
-    - spawnPercentage: {x: 50, y: 70}
-      spawnFrequency: 1.2
-      enemiesToSpawn: []
-      bossWave: 0
-      tStart: 0
-      tEnd: 0
-      selectedPrefab: {fileID: 0}
-  - name: Wave 14
-    segments:
-    - spawnPercentage: {x: 0, y: 100}
-      spawnFrequency: 1.4
-      enemiesToSpawn: []
-      bossWave: 0
-      tStart: 0
-      tEnd: 0
-      selectedPrefab: {fileID: 0}
-    - spawnPercentage: {x: 40, y: 60}
-      spawnFrequency: 1
-      enemiesToSpawn: []
-      bossWave: 0
-      tStart: 0
-      tEnd: 0
-      selectedPrefab: {fileID: 0}
-    - spawnPercentage: {x: 80, y: 100}
-      spawnFrequency: 0
-      enemiesToSpawn: []
-      bossWave: 0
-      tStart: 0
-      tEnd: 0
-      selectedPrefab: {fileID: 0}
-  - name: Boss 3
-    segments:
-    - spawnPercentage: {x: 0, y: 100}
-      spawnFrequency: 0.5
-      enemiesToSpawn: []
-      bossWave: 0
-      tStart: 0
-      tEnd: 0
-      selectedPrefab: {fileID: 0}
-  - name: Wave 15
-    segments:
-    - spawnPercentage: {x: 0, y: 0}
-      spawnFrequency: 1.8
-      enemiesToSpawn: []
-      bossWave: 0
-      tStart: 0
-      tEnd: 0
-      selectedPrefab: {fileID: 0}
-    - spawnPercentage: {x: 0, y: 0}
-      spawnFrequency: 1
-      enemiesToSpawn: []
-      bossWave: 0
-      tStart: 0
-      tEnd: 0
-      selectedPrefab: {fileID: 0}
-  - name: Wave 16
-    segments:
-    - spawnPercentage: {x: 0, y: 75}
-      spawnFrequency: 1
-      enemiesToSpawn: []
-      bossWave: 0
-      tStart: 0
-      tEnd: 0
-      selectedPrefab: {fileID: 0}
-    - spawnPercentage: {x: 76, y: 100}
-      spawnFrequency: 1
-      enemiesToSpawn: []
-      bossWave: 0
-      tStart: 0
-      tEnd: 0
-      selectedPrefab: {fileID: 0}
-  - name: Wave 17
-    segments:
-    - spawnPercentage: {x: 0, y: 40}
-      spawnFrequency: 0.5
-      enemiesToSpawn: []
-      bossWave: 0
-      tStart: 0
-      tEnd: 0
-      selectedPrefab: {fileID: 0}
-    - spawnPercentage: {x: 30, y: 100}
-      spawnFrequency: 0.9
-      enemiesToSpawn: []
-      bossWave: 0
-      tStart: 0
-      tEnd: 0
-      selectedPrefab: {fileID: 0}
-    - spawnPercentage: {x: 50, y: 100}
-      spawnFrequency: 1.8
-      enemiesToSpawn: []
-      bossWave: 0
-      tStart: 0
-      tEnd: 0
-      selectedPrefab: {fileID: 0}
-  - name: Wave 18
-    segments:
-    - spawnPercentage: {x: 0, y: 35}
-      spawnFrequency: 1.2
-      enemiesToSpawn: []
-      bossWave: 0
-      tStart: 0
-      tEnd: 0
-      selectedPrefab: {fileID: 0}
-    - spawnPercentage: {x: 30, y: 50}
-      spawnFrequency: 1.6
-      enemiesToSpawn: []
-      bossWave: 0
-      tStart: 0
-      tEnd: 0
-      selectedPrefab: {fileID: 0}
-    - spawnPercentage: {x: 51, y: 100}
-      spawnFrequency: 1.8
-      enemiesToSpawn: []
-      bossWave: 0
-      tStart: 0
-      tEnd: 0
-      selectedPrefab: {fileID: 0}
-  - name: Wave 19
-    segments:
-    - spawnPercentage: {x: 0, y: 100}
-      spawnFrequency: 0.9
-      enemiesToSpawn: []
-      bossWave: 0
-      tStart: 0
-      tEnd: 0
-      selectedPrefab: {fileID: 0}
-    - spawnPercentage: {x: 0, y: 40}
-      spawnFrequency: 1
-      enemiesToSpawn: []
-      bossWave: 0
-      tStart: 0
-      tEnd: 0
-      selectedPrefab: {fileID: 0}
-  - name: Wave 20
-    segments:
-    - spawnPercentage: {x: 0, y: 100}
-      spawnFrequency: 1.8
-      enemiesToSpawn: []
-      bossWave: 0
-      tStart: 0
-      tEnd: 0
-      selectedPrefab: {fileID: 0}
-    - spawnPercentage: {x: 20, y: 100}
-      spawnFrequency: 0.9
-      enemiesToSpawn: []
-      bossWave: 0
-      tStart: 0
-      tEnd: 0
-      selectedPrefab: {fileID: 0}
-    - spawnPercentage: {x: 40, y: 100}
-      spawnFrequency: 1.2
-      enemiesToSpawn: []
-      bossWave: 0
-      tStart: 0
-      tEnd: 0
-      selectedPrefab: {fileID: 0}
-    - spawnPercentage: {x: 50, y: 100}
-      spawnFrequency: 1
-      enemiesToSpawn: []
-      bossWave: 0
-      tStart: 0
-      tEnd: 0
-      selectedPrefab: {fileID: 0}
-    - spawnPercentage: {x: 60, y: 100}
-      spawnFrequency: 0.5
-      enemiesToSpawn: []
-      bossWave: 0
-      tStart: 0
-      tEnd: 0
-      selectedPrefab: {fileID: 0}
-    - spawnPercentage: {x: 75, y: 100}
-      spawnFrequency: 1.6
-      enemiesToSpawn: []
-      bossWave: 0
-      tStart: 0
-      tEnd: 0
-      selectedPrefab: {fileID: 0}
-    - spawnPercentage: {x: 85, y: 100}
-      spawnFrequency: 1
-      enemiesToSpawn: []
-      bossWave: 0
-      tStart: 0
-      tEnd: 0
-      selectedPrefab: {fileID: 0}
-  - name: Boss 4
-    segments:
-    - spawnPercentage: {x: 0, y: 100}
-      spawnFrequency: 0.5
-      enemiesToSpawn: []
-      bossWave: 0
+      enemiesToSpawn:
+      - {fileID: 2497664888247412960, guid: e146ede2a2604d9419a69903158b2a47, type: 3}
+      bossWave: 1
       tStart: 0
       tEnd: 0
       selectedPrefab: {fileID: 0}
@@ -78189,9 +78019,9 @@ GameObject:
   - component: {fileID: 2122840547}
   - component: {fileID: 2122840550}
   - component: {fileID: 2122840551}
-  - component: {fileID: 2122840552}
   - component: {fileID: 2122840554}
   - component: {fileID: 2122840555}
+  - component: {fileID: 2122840552}
   m_Layer: 7
   m_Name: Character
   m_TagString: Player
@@ -78382,7 +78212,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83716c8541e3b4742a8e95abb6c34c7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterData: {fileID: 11400000, guid: 8ab938063b740b9489527a9185c11e4b, type: 2}
+  characterData: {fileID: 11400000, guid: a86cd6f47f77b56458baef757c072730, type: 2}
 --- !u!114 &2122840545
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -78549,7 +78379,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1736394ea9a8b4b62855b6b69ce1360b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentTotalCost: 0
 --- !u!114 &2122840551
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -78562,7 +78391,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3736a867984bce448e884e1cdd86735, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterManager: {fileID: 2122840539}
 --- !u!114 &2122840552
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -78607,7 +78435,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 365109597e13b4f14af0c252c2adb95a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allCharacters: []
+  allCharacters:
+  - {fileID: 11400000, guid: a86cd6f47f77b56458baef757c072730, type: 2}
+  - {fileID: 11400000, guid: bcb016fb8ef03d941a16ab3e57fd9bf6, type: 2}
+  - {fileID: 11400000, guid: e470f43463f4bdb40a6ea54ebf440993, type: 2}
+  - {fileID: 11400000, guid: 8ab938063b740b9489527a9185c11e4b, type: 2}
+  - {fileID: 11400000, guid: 1071761a2be264f4ba197b436d619c63, type: 2}
+  - {fileID: 11400000, guid: ce4a9a0b756ba1e4589721931a852687, type: 2}
+  - {fileID: 11400000, guid: c0e72d6d0371b4bdfbaeec66f560c723, type: 2}
+  - {fileID: 11400000, guid: 3633efb5c7e304a9b89344fd1b9a0132, type: 2}
+  - {fileID: 11400000, guid: 78adf70a2ff4b47598305b64d95ae549, type: 2}
+  - {fileID: 11400000, guid: 64a047e656899a54c89e7145a5a699cd, type: 2}
 --- !u!1 &2123535925
 GameObject:
   m_ObjectHideFlags: 0

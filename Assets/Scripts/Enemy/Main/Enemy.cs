@@ -109,7 +109,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
         if (modifierHandler.CanCrit())
         {
             float enemyCritChance = (UnityEngine.Random.Range(0, 5) / 100f) * modifierHandler.GetCritChanceModifier();
-            if (enemyCritChance >= CharacterStats.Instance.GetStatValue(Stat.CritResist))
+            if (enemyCritChance >= CharacterManager.Instance.stats.GetStatValue(Stat.CritResist))
             {
                 int critDamage = Mathf.FloorToInt(contactDamage * 2 * modifierHandler.GetDamageMultiplier());
                 character.TakeDamage(critDamage);

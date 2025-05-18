@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using SouthsideGames.DailyMissions;
@@ -5,7 +6,6 @@ using UnityEngine;
 
 public class CardEffectManager : MonoBehaviour
 {
-    [SerializeField] private CharacterManager characterManager;
     private List<GameObject> activeEffects = new();
     private Dictionary<string, int> cardUsageCounts = new Dictionary<string, int>();
 
@@ -24,14 +24,6 @@ public class CardEffectManager : MonoBehaviour
         }
 
         return mostUsedCardId;
-    }
-
-    private void Awake()
-    {
-        if (characterManager == null)
-        {
-            characterManager = FindObjectOfType<CharacterManager>();
-        }
     }
 
     public void ActivateCard(CardSO card, InGameCardSlotUI slotUI)
@@ -67,12 +59,12 @@ public class CardEffectManager : MonoBehaviour
                 return;
             }
 
-            effect.Activate(characterManager, card);
+            effect.Activate(CharacterManager.Instance, card);
             activeEffects.Add(effectObj);
 
             HandleCooldown(card, slotUI);
         }
-        catch (System.Exception e)
+        catch (Exception e)
         {
             Debug.LogError($"Error activating card {card.cardName}: {e.Message}");
         }
@@ -115,8 +107,5 @@ public class CardEffectManager : MonoBehaviour
         activeEffects.Clear();
     }
 
-    private void OnDestroy()
-    {
-        ClearEffects();
-    }
+    private void OnDestroy() => ClearEffects();
 }

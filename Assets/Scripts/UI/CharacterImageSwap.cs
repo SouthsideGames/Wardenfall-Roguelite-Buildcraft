@@ -17,7 +17,7 @@ public class CharacterImageSwap : MonoBehaviour
     {
         if (SaveManager.GameData.TryGetValue(LAST_SELECTED_CHARACTER_KEY, out var _, out var characterID))
         {
-            CharacterDataSO selectedCharacter = CharacterDatabase.Instance.GetCharacterByID(characterID);
+            CharacterDataSO selectedCharacter = CharacterManager.Instance.database.GetCharacterByID(characterID);
             if (selectedCharacter != null && targetImage != null)
             {
                 targetImage.sprite = selectedCharacter.Icon;

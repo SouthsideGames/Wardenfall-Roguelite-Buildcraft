@@ -10,7 +10,7 @@ public class CharacterCards : MonoBehaviour
     private const int baseDeckCost = 10;
     private int cardCapModifier = 0;
     private List<CardSO> currentDeck = new List<CardSO>();
-    public int currentTotalCost;
+    public int currentTotalCost { get; private set; }
 
     public IReadOnlyList<CardSO> Deck => currentDeck;
 
@@ -65,11 +65,7 @@ public class CharacterCards : MonoBehaviour
 
     public void ModifyCardCap(int change) => cardCapModifier += change;
     public int GetEffectiveDeckCap() => baseDeckCost + cardCapModifier;
-
-    public bool HasCard(string cardID)
-    {
-        return currentDeck.Any(card => card.cardID == cardID);
-    }
+    public bool HasCard(string cardID) => currentDeck.Any(card => card.cardID == cardID);
 
 #endregion
 

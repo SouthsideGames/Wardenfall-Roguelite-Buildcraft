@@ -12,7 +12,7 @@ public class MinionManager : MonoBehaviour
     
     public void InitializeMinion(float _lifetime, int _damage)
     {
-        characterSprite.sprite = CharacterStats.Instance.CharacterData.Icon;
+        characterSprite.sprite = CharacterManager.Instance.stats.CharacterData.Icon;
         lifetime = _lifetime;
         damage = _damage;
     }

@@ -58,7 +58,7 @@ public class GameManager : MonoBehaviour
         var stats = StatisticsManager.Instance.currentStatistics;
         stats.CurrentRunDuration = Time.time - runStartTime;
         stats.MostUsedCardInRun = CardDraftManager.Instance.cardEffectManager.GetMostUsedCard();
-        stats.MostEffectiveWeaponInRun = CharacterWeapon.Instance.GetMostEffectiveWeapon();
+        stats.MostEffectiveWeaponInRun = CharacterManager.Instance.weapon.GetMostEffectiveWeapon();
 
         UIManager.Instance.UpdateGameoverPanel();
         SetGameState(GameState.GameOver); 

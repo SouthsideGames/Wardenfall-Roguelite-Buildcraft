@@ -4,20 +4,11 @@ using UnityEngine;
 
 public class CharacterWeapon : MonoBehaviour
 {
-    public static CharacterWeapon Instance { get; private set; }
 
     [Header("ELEMENTS:")]
     [SerializeField] private WeaponPosition[] weaponPositions;
 
     private Dictionary<string, int> weaponUsageCounts = new Dictionary<string, int>();
-
-    private void Awake()
-    {
-        if (Instance == null)
-            Instance = this;
-        else
-            Destroy(gameObject);
-    }
 
     public bool AddWeapon(WeaponDataSO _selectedWeapon, int _weaponLevel)
     {
