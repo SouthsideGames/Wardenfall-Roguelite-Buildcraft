@@ -172,7 +172,7 @@ public class StatisticsManager : MonoBehaviour
         SaveStats();
     }
 
-    private void TotalEnemyKillsHandler()
+    public void TotalEnemyKillsHandler()
     {
         CurrentRunKills++;
         currentStatistics.TotalKills++;
