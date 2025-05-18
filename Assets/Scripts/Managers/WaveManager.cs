@@ -1,3 +1,4 @@
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,19 +15,9 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     public static WaveManager Instance;
     public static Action OnWaveCompleted;
 
-    [Header("PERFORMANCE SETTINGS:")]
-    [SerializeField] private int poolSize = 100;
-    [SerializeField] private bool useObjectPooling = true;
-    [SerializeField] private int maxConcurrentSpawns = 3;
-    [SerializeField] private float minSpawnInterval = 0.1f;
-    [SerializeField] private bool useFormationSpawning = true;
-    
     [Header("ELEMENTS:")]
     [SerializeField] private CharacterManager character;
     private WaveUI ui;
-    
-    private Dictionary<string, Queue<GameObject>> enemyPools;
-    private HashSet<GameObject> activeEnemies;
 
     [Header("SETTINGS:")]
     [SerializeField] private float waveDuration;
@@ -56,38 +47,6 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 
         ui = GetComponent<WaveUI>();
         CharacterHealth.OnCharacterDeath += CharacterDeathCallback;
-        
-        enemyPools = new Dictionary<string, Queue<GameObject>>();
-        activeEnemies = new HashSet<GameObject>();
-        InitializePools();
-    }
-
-    private void InitializePools()
-    {
-        if (!useObjectPooling) return;
-
-        foreach (var wave in waves)
-        {
-            foreach (var segment in wave.segments)
-            {
-                foreach (var enemyType in segment.enemiesToSpawn)
-                {
-                    if (!enemyPools.ContainsKey(enemyType))
-                    {
-                        var pool = new Queue<GameObject>();
-                        enemyPools[enemyType] = pool;
-
-                        // Pre-instantiate enemies
-                        for (int i = 0; i < poolSize; i++)
-                        {
-                            var enemy = CreateEnemy(enemyType);
-                            enemy.SetActive(false);
-                            pool.Enqueue(enemy);
-                        }
-                    }
-                }
-            }
-        }
     }
 
     private void OnDestroy() => CharacterHealth.OnCharacterDeath -= CharacterDeathCallback;
@@ -148,11 +107,9 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     private void SpawnWaveSegments()
     {
         // Check if we've hit enemy limit
-        if (activeEnemies.Count >= maxEnemiesOnScreen) return;
+        if (transform.childCount >= maxEnemiesOnScreen) return;
 
         UpdatePlayerPerformance();
-        
-        int spawnsThisFrame = 0;
 
         foreach (var (segment, index) in currentWave.segments.WithIndex())
         {
@@ -180,20 +137,6 @@ public class WaveManager : MonoBehaviour, IGameStateListener
                 CleanupSpawnHistory();
             }
         }
-    }
-
-
-    private float frameTimeAverage;
-    private const float TARGET_FRAMETIME = 0.0167f; // 60 FPS
-    
-    private void UpdateSpawnRates()
-    {
-        frameTimeAverage = Mathf.Lerp(frameTimeAverage, Time.deltaTime, 0.1f);
-        float performanceRatio = TARGET_FRAMETIME / frameTimeAverage;
-        
-        // Adjust spawn rates based on performance
-        maxConcurrentSpawns = Mathf.RoundToInt(Mathf.Lerp(1, 3, performanceRatio));
-        minSpawnInterval = Mathf.Lerp(0.3f, 0.1f, performanceRatio);
     }
 
     private Vector2 GetOptimizedSpawnPosition()
@@ -226,57 +169,6 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     }
 
     private bool IsTooCloseToOtherSpawns(Vector2 position) => recentSpawnPoints.Any(p => Vector2.Distance(p, position) < minDistanceBetweenSpawns);
-
-    private GameObject GetEnemy(string enemyType)
-    {
-        if (!useObjectPooling)
-        {
-            return CreateEnemy(enemyType);
-        }
-
-        var pool = enemyPools[enemyType];
-        GameObject enemy;
-
-        if (pool.Count > 0)
-        {
-            enemy = pool.Dequeue();
-            enemy.SetActive(true);
-        }
-        else
-        {
-            enemy = CreateEnemy(enemyType);
-        }
-
-        activeEnemies.Add(enemy);
-        return enemy;
-    }
-
-    private void RecycleEnemy(GameObject enemy)
-    {
-        if (!useObjectPooling)
-        {
-            Destroy(enemy);
-            return;
-        }
-
-        enemy.SetActive(false);
-        activeEnemies.Remove(enemy);
-        
-        var enemyComponent = enemy.GetComponent<Enemy>();
-        if (enemyComponent != null)
-        {
-            enemyPools[enemyComponent.enemyType].Enqueue(enemy);
-        }
-    }
-
-    private GameObject CreateEnemy(string enemyType)
-    {
-        // Your existing enemy creation logic here
-        GameObject enemy = Instantiate(ResourceManager.Instance.GetEnemyPrefab(enemyType), Vector3.zero, Quaternion.identity, transform);
-        enemy.GetComponent<Enemy>().enemyType = enemyType;
-        return enemy;
-    }
-
 
     private void CleanupSpawnHistory()
     {
