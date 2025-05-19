@@ -11,7 +11,7 @@ public class UsernamePopupUI : MonoBehaviour
 
     private void Start()
     {
-        confirmButton.onClick.AddListener(OnConfirmUsername);
+        
         usernameInput.onSelect.AddListener(OnInputSelect);
         
         if (UserManager.Instance.IsFirstTimePlayer())
@@ -39,7 +39,7 @@ public class UsernamePopupUI : MonoBehaviour
 
     public void Show() => usernameInput.text = "";
 
-    private void OnConfirmUsername()
+    public void OnConfirmUsername()
     {
         if (string.IsNullOrEmpty(usernameInput.text))
             return;
