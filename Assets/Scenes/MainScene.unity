@@ -6121,6 +6121,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1188458670}
+        m_TargetAssemblyTypeName: StatisticsSectionUI, Assembly-CSharp
+        m_MethodName: PopulateWeaponCollectionSection
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &138678331
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -49095,6 +49107,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1188458668}
   - component: {fileID: 1188458669}
+  - component: {fileID: 1188458670}
   m_Layer: 0
   m_Name: StatisticsManager
   m_TagString: Untagged
@@ -49256,6 +49269,21 @@ MonoBehaviour:
   recordButton: {fileID: 76182006}
   recordContainer: {fileID: 587173965}
   collectionContainer: {fileID: 663069173}
+--- !u!114 &1188458670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1188458667}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c2ac440768f7364d941fec5a06b459a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collectionParent: {fileID: 511739005}
+  weaponCollectionContainerUI: {fileID: 7167565983495812019, guid: b43cd1aa5e629e34db55947e06eaa073, type: 3}
+  characterCollectionContainerUI: {fileID: 7167565983495812019, guid: 9764aebc7e65c0b45a2777fc50c7cf0d, type: 3}
 --- !u!1 &1190124961
 GameObject:
   m_ObjectHideFlags: 0
@@ -64981,13 +65009,13 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1188458667}
-        m_TargetAssemblyTypeName: HapticFeedbackUI, Assembly-CSharp
-        m_MethodName: 
+      - m_Target: {fileID: 1188458670}
+        m_TargetAssemblyTypeName: StatisticsSectionUI, Assembly-CSharp
+        m_MethodName: PopulateCharacterCollectionSection
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -75925,7 +75953,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2021406420}
   - component: {fileID: 2021406422}
-  - component: {fileID: 2021406423}
   m_Layer: 5
   m_Name: Statistics Parents
   m_TagString: Untagged
@@ -75962,21 +75989,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2021406419}
   m_CullTransparentMesh: 1
---- !u!114 &2021406423
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2021406419}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c2ac440768f7364d941fec5a06b459a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  collectionParent: {fileID: 511739005}
-  weaponCollectionContainerUI: {fileID: 7167565983495812019, guid: b43cd1aa5e629e34db55947e06eaa073, type: 3}
-  characterCollectionContainerUI: {fileID: 7167565983495812019, guid: 9764aebc7e65c0b45a2777fc50c7cf0d, type: 3}
 --- !u!1 &2023953678
 GameObject:
   m_ObjectHideFlags: 0
@@ -77398,7 +77410,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 9.066772, y: -14.747742}
+  m_AnchoredPosition: {x: 9.066895, y: -14.747681}
   m_SizeDelta: {x: 349.59863, y: 185.44043}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2087839026

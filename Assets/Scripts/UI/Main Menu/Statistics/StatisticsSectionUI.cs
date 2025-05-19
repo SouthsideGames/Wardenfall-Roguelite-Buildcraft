@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class CollectionSectionUI : MonoBehaviour
+public class StatisticsSectionUI : MonoBehaviour
 {
     [SerializeField] private Transform collectionParent;
-    [SerializeField] private CollectionContainerUI weaponCollectionContainerUI;
-    [SerializeField] private CollectionContainerUI characterCollectionContainerUI;
+    [SerializeField] private StatisticsContainerUI weaponCollectionContainerUI;
+    [SerializeField] private StatisticsContainerUI characterCollectionContainerUI;
 
     private void Start()
     {
-        PopulateWeaponCollectionSection();
+        PopulateCharacterCollectionSection();
     }
 
     public void PopulateCharacterCollectionSection()
@@ -23,7 +23,7 @@ public class CollectionSectionUI : MonoBehaviour
             CharacterDataSO characterData = FindCharacterByID(characterUsage.CharacterID);
             if (characterData != null)
             {
-                CollectionContainerUI instance = Instantiate(characterCollectionContainerUI, collectionParent);
+                StatisticsContainerUI instance = Instantiate(characterCollectionContainerUI, collectionParent);
                 instance.Configure(characterData.Icon, characterData.Name, characterUsage.UsageInfo.UsageCount, characterUsage.WavesCompleted, characterUsage.UsageInfo.LastUsed);
             }
         }
@@ -38,7 +38,7 @@ public class CollectionSectionUI : MonoBehaviour
             WeaponDataSO weaponData = FindWeaponByID(weaponUsage.WeaponID);
             if (weaponData != null)
             {
-                CollectionContainerUI instance = Instantiate(weaponCollectionContainerUI, collectionParent);
+                StatisticsContainerUI instance = Instantiate(weaponCollectionContainerUI, collectionParent);
                 instance.Configure(weaponData.Icon, weaponData.Name, weaponUsage.UsageInfo.UsageCount, weaponUsage.WavesCompleted, weaponUsage.UsageInfo.LastUsed);
             }
         }
