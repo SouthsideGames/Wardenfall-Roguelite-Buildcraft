@@ -33,6 +33,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
 
     [Header("ADD. OBJECTS:")]
     [SerializeField] private List<GameObject> blockers = new();
+    [SerializeField] private AudioClip introMusic;
 
     [Header("COUNTER TEXT:")]
     [SerializeField] private TextMeshProUGUI killCounterText;
@@ -365,6 +366,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
     
         if (!introPlayed)
         {
+            AudioManager.Instance.ChangeMusic(introMusic);
             introPanel.SetActive(true);
             menuPanel.SetActive(false);
             usernamePanel.SetActive(false);

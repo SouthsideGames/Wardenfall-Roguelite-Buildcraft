@@ -4,7 +4,6 @@ using SouthsideGames.SaveManager;
 public class UserManager : MonoBehaviour, IWantToBeSaved
 {
     public static UserManager Instance { get; private set; }
-
     private const string USERNAME_KEY = "username";
     private string username;
     public string Username => username;
@@ -19,10 +18,7 @@ public class UserManager : MonoBehaviour, IWantToBeSaved
         Load();
     }
 
-    public bool IsFirstTimePlayer()
-    {
-        return string.IsNullOrEmpty(username);
-    }
+    public bool IsFirstTimePlayer() => string.IsNullOrEmpty(username);
 
     public void SetUsername(string newUsername)
     {
@@ -32,21 +28,15 @@ public class UserManager : MonoBehaviour, IWantToBeSaved
 
     public void ClearAllData()
     {
-        // Clear all game data
         SaveManager.ClearData();
 
-        // Reset username
         username = "";
         Save();
 
-        // Restart game
         GameManager.Instance.Restart();
     }
 
-    public void Save()
-    {
-        SaveManager.Save(this, USERNAME_KEY, username);
-    }
+    public void Save() => SaveManager.Save(this, USERNAME_KEY, username);
 
     public void Load()
     {

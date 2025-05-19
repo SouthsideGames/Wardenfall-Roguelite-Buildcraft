@@ -39,6 +39,11 @@ public class GameManager : MonoBehaviour
         SetGameState(GameState.Menu);
     }
 
+    public void StartIntro()
+    {
+        SetGameState(GameState.Intro);
+    }
+
     public void StartGame()
     {
         runStartTime = Time.time;

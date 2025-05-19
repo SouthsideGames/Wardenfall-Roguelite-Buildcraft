@@ -6,8 +6,6 @@ using System.Linq;
 using UnityEngine;
 using NaughtyAttributes;
 using SouthsideGames.DailyMissions;
-using UnityEngine.Pool;
-
 
 [RequireComponent(typeof(WaveUI))]
 public class WaveManager : MonoBehaviour, IGameStateListener
@@ -291,7 +289,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         switch(currentWave.segments.Count % 11)
         {
             case 0: //Circle Formation
-                float angle = (enemyIndex * 360f / maxEnemiesOnScreen) * Mathf.Deg2Rad;
+                float angle = enemyIndex * 360f / maxEnemiesOnScreen * Mathf.Deg2Rad;
                 return basePos + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * radius;
             case 1: // V formation
                 float forwardOffset = enemyIndex * spacing;
@@ -308,18 +306,18 @@ public class WaveManager : MonoBehaviour, IGameStateListener
                         new Vector2(diagOffset, - diagOffset));
             case 4: //Double circle formation
                 float innerRadius = radius * 0.5f;
-                float angleDouble = (enemyIndex * 360f / (maxEnemiesOnScreen / 2)) * Mathf.Deg2Rad;
+                float angleDouble = enemyIndex * 360f / (maxEnemiesOnScreen / 2) * Mathf.Deg2Rad;
                 return basePos + new Vector2(Mathf.Cos(angleDouble), Mathf.Sin(angleDouble)) * (enemyIndex % 2 == 0 ? radius : innerRadius);
             case 5: //Diamond formation
                 int layer = Mathf.Min(enemyIndex / 4, 3);
-                float diamondAngle = ((enemyIndex % 4) * 90f) * Mathf.Deg2Rad;
+                float diamondAngle = enemyIndex % 4 * 90f * Mathf.Deg2Rad;
                 float layerRadius = (layer + 1) * spacing;
                 return basePos + new Vector2(Mathf.Cos(diamondAngle), Mathf.Sin(diamondAngle)) * layerRadius;
             case 6: // Pentagon formation
-                float pentagonAngle = (enemyIndex * 72f) * Mathf.Deg2Rad;
+                float pentagonAngle = enemyIndex * 72f * Mathf.Deg2Rad;
                 return basePos + new Vector2(Mathf.Cos(pentagonAngle), Mathf.Sin(pentagonAngle)) * radius;
             case 7: //Hexagon Formation
-                float hexAngle = (enemyIndex * 60f) * Mathf.Deg2Rad;
+                float hexAngle = enemyIndex * 60f * Mathf.Deg2Rad;
                 return basePos + new Vector2(Mathf.Cos(hexAngle), Mathf.Sin(hexAngle)) * radius;
             case 8: //Cross formation
                 int arm = enemyIndex % 4;
@@ -332,8 +330,8 @@ public class WaveManager : MonoBehaviour, IGameStateListener
                 };
                 return basePos + dir * (dist + 1) * spacing;
             case 9: // Sprial Formation
-                float spiralAngle = (enemyIndex * 30f) * Mathf.Deg2Rad;
-                float spiralRadius = (enemyIndex * 0.05f * spacing);
+                float spiralAngle = enemyIndex * 30f * Mathf.Deg2Rad;
+                float spiralRadius = enemyIndex * 0.05f * spacing;
                 return basePos + new Vector2(Mathf.Cos(spiralAngle), Mathf.Sin(spiralAngle)) * spiralRadius;
             
             default: // Random formation with minimum spacing
