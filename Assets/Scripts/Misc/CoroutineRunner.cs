@@ -51,10 +51,7 @@ public static class CoroutinePool
 {
     private static readonly Stack<PooledCoroutine> pool = new();
 
-    public static PooledCoroutine Get()
-    {
-        return pool.Count > 0 ? pool.Pop() : new PooledCoroutine();
-    }
+    public static PooledCoroutine Get() => pool.Count > 0 ? pool.Pop() : new PooledCoroutine();
 
     public static void ReturnToPool(PooledCoroutine task)
     {

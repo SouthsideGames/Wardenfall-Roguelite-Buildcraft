@@ -25,6 +25,7 @@ public class CodexManager : MonoBehaviour
     [SerializeField] private Image enemyDetailIcon;
     [SerializeField] private TextMeshProUGUI enemyDetailName;
     [SerializeField] private TextMeshProUGUI enemyDetailDescription;
+    [SerializeField] private TextMeshProUGUI enemyDetailTypeText;
 
     [Header("OBJECT VIEW:")]
     [SerializeField] private GameObject objectDetailContainer;
@@ -95,6 +96,7 @@ public class CodexManager : MonoBehaviour
     private void LoadAndDisplayCardCodex()
     {
         ClearCards();
+        progressText.gameObject.SetActive(true);
         var allCards = cardLibrary.allCards;
 
         foreach (var card in allCards)
@@ -162,6 +164,7 @@ public class CodexManager : MonoBehaviour
     private void LoadAndDisplayCharacterCards()
     {
         ClearCards();
+        progressText.gameObject.SetActive(false);
         var characterDataItems = Resources.LoadAll<CharacterDataSO>("Data/Characters");
 
         foreach (var characterData in characterDataItems)
@@ -175,6 +178,7 @@ public class CodexManager : MonoBehaviour
     private void LoadAndDisplayWeaponCards()
     {
         ClearCards();
+        progressText.gameObject.SetActive(false);
         var weaponItems = Resources.LoadAll<WeaponDataSO>("Data/Weapons");
 
         foreach (var weaponData in weaponItems)
@@ -188,6 +192,7 @@ public class CodexManager : MonoBehaviour
     private void LoadAndDisplayObjectCards()
     {
         ClearCards();
+        progressText.gameObject.SetActive(false);
         var objectItems = Resources.LoadAll<ObjectDataSO>("Data/Objects");
 
         foreach (var objectData in objectItems)
@@ -201,6 +206,7 @@ public class CodexManager : MonoBehaviour
     private void LoadAndDisplayEnemyCards()
     {
         ClearCards();
+        progressText.gameObject.SetActive(false);
         var enemyItems = Resources.LoadAll<EnemyDataSO>("Data/Enemies");
 
         foreach (var enemyData in enemyItems)
@@ -243,11 +249,13 @@ public class CodexManager : MonoBehaviour
         objectDetailContainer.SetActive(true);
     }
 
-    public void OpenEnemyDetailView(EnemyDataSO _enemyData)
+    public void OpenEnemyDetailView(EnemyDataSO enemyData)
     {
-        enemyDetailIcon.sprite = _enemyData.Icon;
-        enemyDetailName.text = _enemyData.Name;
-        enemyDetailDescription.text = _enemyData.Description;
+        enemyDetailIcon.sprite = enemyData.Icon;
+        enemyDetailName.text = enemyData.Name;
+        enemyDetailDescription.text = enemyData.Description;
+        enemyDetailTypeText.text = $"Type: {enemyData.Type}";
+
         enemyDetailContainer.SetActive(true);
     }
 
@@ -286,7 +294,7 @@ public class CodexManager : MonoBehaviour
             GameObject statEntry = Instantiate(statPrefab, objectStatContainersParent);
             StatContainerUI statContainerUI = statEntry.GetComponent<StatContainerUI>();
             Sprite statIcon = ResourceManager.GetStatIcon(stat.Key);
-            statContainerUI.Configure(statIcon, Enums.FormatStatName(stat.Key), stat.Value, true);
+            statContainerUI.Configure(statIcon, Enums.FormatStatName(stat.Key), stat.Value, false);
         }
     }
 

@@ -51,26 +51,32 @@ public class ChargeEnemy : Enemy
     }
 
     private IEnumerator Grow()
-    {     
+    {
         float elapsed = 0f;
         Vector3 targetScale = originalScale * growFactor;
 
         while (elapsed < chargeTime)
         {
+            if (this == null || gameObject == null) yield break;
+
             transform.localScale = Vector3.Lerp(originalScale, targetScale, elapsed / chargeTime);
             elapsed += Time.deltaTime;
             yield return null;
         }
 
-        transform.localScale = targetScale;
+        if (this != null && gameObject != null)
+            transform.localScale = targetScale;
     }
 
     private void LocatePlayer()
     {
-        if (character != null)
-            chargeDirection = (character.transform.position - transform.position).normalized; 
-        else
-            chargeDirection = Vector2.right;
+        if (this == null || gameObject == null || character == null || character.transform == null) 
+        {
+            chargeDirection = Vector2.right; // Default direction or skip entirely
+            return;
+        }
+
+        chargeDirection = (character.transform.position - transform.position).normalized;
     }
 
     private IEnumerator DashTowardsPlayer()
@@ -82,6 +88,8 @@ public class ChargeEnemy : Enemy
 
         while (distanceTraveled < chargeDistance)
         {
+            if (this == null || gameObject == null) yield break;
+
             float step = chargeSpeed * Time.deltaTime;
             transform.position = Vector2.MoveTowards(transform.position, targetPosition, step);
             distanceTraveled += step;
@@ -93,6 +101,7 @@ public class ChargeEnemy : Enemy
         }
     }
 
+
     private IEnumerator Shrink()
     {
         float elapsed = 0f;
@@ -100,13 +109,17 @@ public class ChargeEnemy : Enemy
 
         while (elapsed < chargeTime)
         {
+            if (this == null || gameObject == null) yield break;
+
             transform.localScale = Vector3.Lerp(transform.localScale, targetScale, elapsed / chargeTime);
             elapsed += Time.deltaTime;
             yield return null;
         }
 
-        transform.localScale = targetScale;
+        if (this != null && gameObject != null)
+            transform.localScale = targetScale;
     }
+
 
     private void TryAttack()
     {

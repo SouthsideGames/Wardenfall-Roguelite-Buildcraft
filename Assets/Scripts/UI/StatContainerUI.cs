@@ -14,8 +14,16 @@ public class StatContainerUI : MonoBehaviour
 
     public void Configure(Sprite _icon, string _statName, float _statValue, bool _shouldColor = false)
     {
-        statImage.sprite = _icon;
-        statNameText.text    = _statName;
+        // Hide the image if no icon is provided
+        if (_icon == null)
+            statImage.gameObject.SetActive(false);
+        else
+        {
+            statImage.gameObject.SetActive(true);
+            statImage.sprite = _icon;
+        }
+
+        statNameText.text = _statName;
 
         if (_shouldColor)
             ColorizeStatValue(_statValue);
@@ -24,8 +32,6 @@ public class StatContainerUI : MonoBehaviour
             statValueText.color = Color.white;
             statValueText.text = _statValue.ToString("F2");
         }
-
-       
     }
 
     public float GetFontSize()

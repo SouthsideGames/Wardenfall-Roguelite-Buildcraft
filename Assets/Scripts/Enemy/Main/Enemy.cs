@@ -27,13 +27,13 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
     protected bool hasSpawned = false;
 
     [Header("ATTACK:")]
-    public int contactDamage;
-    public float playerDetectionRadius;
+    [HideInInspector] public int contactDamage;
+    [HideInInspector] public float playerDetectionRadius;
     protected float attackTimer;
     private bool attacksEnabled = true;
 
     [Header("HEALTH:")]
-    public int maxHealth;
+    [HideInInspector] public int maxHealth;
     [HideInInspector] public int health;
     [HideInInspector] public bool isInvincible = false;
 
@@ -130,7 +130,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
 
         OnDamageTaken?.Invoke(_damage, transform.position, _isCriticalHit);
 
-        if (CurrentHealth <= 0 && IsAlive)
+        if (CurrentHealth <= 0)
         {
             DieByPlayer();
         }
@@ -146,14 +146,11 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
     {
         if (this == null || gameObject == null) return;
 
-        // Statistics tracking
         StatisticsManager.Instance?.TotalEnemyKillsHandler();
 
-        // Event notifications
         OnDeath?.Invoke(transform.position);
         OnEnemyKilled?.Invoke();
 
-        // Ghost trait handling
         if (TraitManager.Instance != null && TraitManager.Instance.HasTrait("T-007"))
         {
             GameObject ghostPrefab = Resources.Load<GameObject>("Prefabs/Enemy/Enemy Ghost");
@@ -169,7 +166,6 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
             }
         }
 
-        // Multi-kill tracking
         float timeSinceLastKill = Time.time - lastKillTime;
         if (timeSinceLastKill <= multiKillTimeWindow)
         {
@@ -186,10 +182,8 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
         }
         lastKillTime = Time.time;
 
-        // Mission increments
         MissionIncrement();
         
-        // Death cleanup
         Die();
     }
 

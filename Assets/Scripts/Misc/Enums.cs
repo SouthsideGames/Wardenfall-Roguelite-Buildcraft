@@ -87,6 +87,21 @@ public enum CharacterRarityType
     Legendary
 }
 
+public enum EnemyType
+{
+    Melee,
+    Explode,
+    Berserker,
+    Shield,
+    Charge,
+    Shooter,
+    Healer,
+    Summoner,
+    Splitter,
+    Teleport,
+    Boss
+}
+
 public enum StatusEffectType
 {
     Burn,
