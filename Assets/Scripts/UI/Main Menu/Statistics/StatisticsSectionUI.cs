@@ -6,8 +6,8 @@ using System.Linq;
 public class StatisticsSectionUI : MonoBehaviour
 {
     [SerializeField] private Transform collectionParent;
-    [SerializeField] private StatisticsContainerUI weaponCollectionContainerUI;
-    [SerializeField] private StatisticsContainerUI characterCollectionContainerUI;
+    [SerializeField] private WeaponStatisticsContainerUI weaponStatisticsContainerUI;
+    [SerializeField] private CharacterStatisticsContainerUI characterStatisticsContainerUI;
 
     private void Start()
     {
@@ -23,7 +23,7 @@ public class StatisticsSectionUI : MonoBehaviour
             CharacterDataSO characterData = FindCharacterByID(characterUsage.CharacterID);
             if (characterData != null)
             {
-                StatisticsContainerUI instance = Instantiate(characterCollectionContainerUI, collectionParent);
+                CharacterStatisticsContainerUI instance = Instantiate(characterStatisticsContainerUI, collectionParent);
                 instance.Configure(characterData.Icon, characterData.Name, characterUsage.UsageInfo.UsageCount, characterUsage.WavesCompleted, characterUsage.UsageInfo.LastUsed);
             }
         }
@@ -38,19 +38,14 @@ public class StatisticsSectionUI : MonoBehaviour
             WeaponDataSO weaponData = FindWeaponByID(weaponUsage.WeaponID);
             if (weaponData != null)
             {
-                StatisticsContainerUI instance = Instantiate(weaponCollectionContainerUI, collectionParent);
-                instance.Configure(weaponData.Icon, weaponData.Name, weaponUsage.UsageInfo.UsageCount, weaponUsage.WavesCompleted, weaponUsage.UsageInfo.LastUsed);
+                WeaponStatisticsContainerUI instance = Instantiate(weaponStatisticsContainerUI, collectionParent);
+                instance.Configure(weaponData.Icon, weaponData.Name, weaponUsage.TimesUsed, weaponUsage.HighestDamageDealt);
             }
         }
     }
 
-    private CharacterDataSO FindCharacterByID(string id)
-    {
-        return ResourceManager.Characters.FirstOrDefault(c => c.ID == id);
-    }
 
-    private WeaponDataSO FindWeaponByID(string id)
-    {
-        return ResourceManager.Weapons.FirstOrDefault(w => w.ID == id);
-    }
+    private CharacterDataSO FindCharacterByID(string id) => ResourceManager.Characters.FirstOrDefault(c => c.ID == id);
+
+    private WeaponDataSO FindWeaponByID(string id) => ResourceManager.Weapons.FirstOrDefault(w => w.ID == id);
 }

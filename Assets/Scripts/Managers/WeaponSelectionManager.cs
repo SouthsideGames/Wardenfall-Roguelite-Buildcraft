@@ -65,7 +65,7 @@ public class WeaponSelectionManager : MonoBehaviour, IGameStateListener
     {
         selectedWeapon = _weaponData;
         initialWeaponLevel = _level;
-        StatisticsManager.Instance.RecordWeaponUsage(_weaponData.ID);
+        StatisticsManager.Instance.RecordWeaponUsage(_weaponData.ID,0);
 
         foreach (WeaponSelectionContainerUI container in containersParent.GetComponentsInChildren<WeaponSelectionContainerUI>())
         {

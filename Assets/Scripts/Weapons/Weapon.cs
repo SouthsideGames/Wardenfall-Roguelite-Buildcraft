@@ -77,15 +77,17 @@ public abstract class Weapon : MonoBehaviour, IStats, IWeaponSystem
     protected int GetDamage(out bool isCriticalHit)
     {
         isCriticalHit = false;
+        int finalDamage = damage;
 
         if (Random.Range(0, 101) <= criticalHitChance)
         {
             isCriticalHit = true;
             MissionManager.Increment(MissionType.criticalHitMastery, 1);
-            return Mathf.RoundToInt(damage * criticalHitDamageAmount);
+            finalDamage = Mathf.RoundToInt(damage * criticalHitDamageAmount);
         }
 
-        return damage;
+        StatisticsManager.Instance.RecordWeaponUsage(WeaponData.ID, finalDamage);
+        return finalDamage;
     }
 
     protected virtual void AutoAimLogic()

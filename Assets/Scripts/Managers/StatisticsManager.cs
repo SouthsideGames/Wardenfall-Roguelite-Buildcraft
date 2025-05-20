@@ -223,7 +223,7 @@ public class StatisticsManager : MonoBehaviour
         SaveStats();
     }
 
-    public void RecordWeaponUsage(string weaponID)
+    public void RecordWeaponUsage(string weaponID, int damageDealt)
     {
         if (!weaponUsageDict.ContainsKey(weaponID))
         {
@@ -267,8 +267,6 @@ public class StatisticsManager : MonoBehaviour
         {
             WeaponUsageEntry weaponEntry = currentStatistics.WeaponUsageList.Find(entry => entry.WeaponID == weaponID);
 
-            if(weaponEntry != null)
-                 weaponEntry.WavesCompleted++;
         }
         ConvertDictionariesToLists();
         SaveStats();
@@ -303,16 +301,10 @@ public class StatisticsManager : MonoBehaviour
 
             if(weaponUsageDict.TryGetValue(entry.Key, out UsageInfo usageInfo))
             {
-                  if(currentStatistics.WeaponUsageList.Find(e => e.WeaponID == entry.Key) != null)
+                if(currentStatistics.WeaponUsageList.Find(e => e.WeaponID == entry.Key) != null)
                 {
-                     int index = currentStatistics.WeaponUsageList.FindIndex(e => e.WeaponID == entry.Key);
-                     weaponEntry.WavesCompleted = currentStatistics.WeaponUsageList[index].WavesCompleted;
+                    int index = currentStatistics.WeaponUsageList.FindIndex(e => e.WeaponID == entry.Key);
                 }
-                else
-                {
-                    weaponEntry.WavesCompleted = 0;
-                }
-               
             }
            
             currentStatistics.WeaponUsageList.Add(weaponEntry);
@@ -369,7 +361,8 @@ public class WeaponUsageEntry
 {
     public string WeaponID;
     public UsageInfo UsageInfo;
-    public int WavesCompleted;
+    public float HighestDamageDealt;
+    public int TimesUsed;
 }
 
 [Serializable]
