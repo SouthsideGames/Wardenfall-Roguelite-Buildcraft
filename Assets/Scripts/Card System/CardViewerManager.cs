@@ -1,7 +1,7 @@
 using UnityEngine;
 using TMPro;
 
-public class ViewCardManager : MonoBehaviour
+public class CardViewerManager : MonoBehaviour
 {
     [SerializeField] private Transform currentCardContainer;  
     [SerializeField] private TextMeshProUGUI currentCostText;

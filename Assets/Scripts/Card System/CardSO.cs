@@ -24,5 +24,5 @@ public class CardSO : ScriptableObject
 
     [Header("UNLOCKING")]
     public bool isUnlocked;
-    public string unlockHint;
+    public int requiredCardPoints;
 }

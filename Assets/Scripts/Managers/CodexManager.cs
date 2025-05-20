@@ -3,6 +3,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using SouthsideGames.SaveManager;
+using Unity.VisualScripting;
 
 public class CodexManager : MonoBehaviour
 {
@@ -45,10 +47,10 @@ public class CodexManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI cardDetailDuration;
     [SerializeField] private TextMeshProUGUI cardDetailSynergies;
     [SerializeField] private CardSynergyManager synergyManager;
+    [SerializeField] private Button unlockButton;
 
 
     [SerializeField] private GameObject statPrefab;
-    [SerializeField] private Sprite lockedIcon;
 
     private void Awake() => InitializeDropdown();
 
@@ -56,6 +58,7 @@ public class CodexManager : MonoBehaviour
     {
         CloseDetailView();
         LoadAndDisplayCharacterCards();
+        CardUnlockManager.Instance.LoadAllCardUnlockStates(cardLibrary);
     }
 
     private void InitializeDropdown()
@@ -115,43 +118,53 @@ public class CodexManager : MonoBehaviour
     {
         if (card == null) return;
 
-        if (cardDetailIcon != null) cardDetailIcon.sprite = card.isUnlocked ? card.icon : lockedIcon;
-        if (cardDetailName != null) cardDetailName.text = card.isUnlocked ? card.cardName : "???";
-        if (cardDetailDescription != null) cardDetailDescription.text = card.isUnlocked ? card.description : card.unlockHint;
-
         if (card.isUnlocked)
         {
-            if (cardDetailCost != null) cardDetailCost.text = $"Cost: {card.cost}";
-            if (cardDetailRarity != null) cardDetailRarity.text = $"Rarity: {card.rarity}";
-            if (cardDetailCooldown != null) cardDetailCooldown.text = card.cooldown > 0 ? $"Cooldown: {card.cooldown}s" : "";
-            if (cardDetailDuration != null) cardDetailDuration.text = card.activeTime > 0 ? $"Duration: {card.activeTime}s" : "";
-
-            // Display synergies
-            if (cardDetailSynergies != null && synergyManager != null)
-            {
-                var cardSynergies = synergyManager.GetSynergiesForCard(card.effectType);
-                if (cardSynergies.Count > 0)
-                {
-                    System.Text.StringBuilder sb = new System.Text.StringBuilder("Synergies:\n");
-                    foreach (var (partnerType, resultCard) in cardSynergies)
-                    {
-                        sb.AppendLine($"+ {partnerType} → {resultCard.cardName}");
-                    }
-                    cardDetailSynergies.text = sb.ToString();
-                }
-                else
-                {
-                    cardDetailSynergies.text = "";
-                }
-            }
+            unlockButton.gameObject.SetActive(false);
         }
         else
         {
-            if (cardDetailCost != null) cardDetailCost.text = "";
-            if (cardDetailRarity != null) cardDetailRarity.text = "";
-            if (cardDetailCooldown != null) cardDetailCooldown.text = "";
-            if (cardDetailDuration != null) cardDetailDuration.text = "";
-            if (cardDetailSynergies != null) cardDetailSynergies.text = "";
+            bool canUnlock = CardUnlockManager.Instance.CanUnlock(card);
+            unlockButton.gameObject.SetActive(true);
+            unlockButton.interactable = canUnlock;
+
+            unlockButton.onClick.RemoveAllListeners();
+            unlockButton.onClick.AddListener(() =>
+            {
+                if (CardUnlockManager.Instance.TryUnlockCard(card))
+                {
+                    LoadAndDisplayCardCodex();
+                    OpenCardDetail(card); 
+                }
+            });
+        }
+
+        if (cardId != null) cardId.text = $"ID: {card.cardID}";
+        if (cardDetailIcon != null) cardDetailIcon.sprite = card.icon;
+        if (cardDetailName != null) cardDetailName.text = card.cardName;
+        if (cardDetailDescription != null) cardDetailDescription.text = card.isUnlocked ? card.description : $"Required Card Points: {card.requiredCardPoints}";
+
+        if (cardDetailCost != null) cardDetailCost.text = $"Cost: {card.cost}";
+        if (cardDetailRarity != null) cardDetailRarity.text = $"Rarity: {card.rarity}";
+        if (cardDetailCooldown != null) cardDetailCooldown.text = card.cooldown > 0 ? $"Cooldown: {card.cooldown}s" : "";
+        if (cardDetailDuration != null) cardDetailDuration.text = card.activeTime > 0 ? $"Duration: {card.activeTime}s" : "";
+
+        if (cardDetailSynergies != null && synergyManager != null)
+        {
+            var cardSynergies = synergyManager.GetSynergiesForCard(card.effectType);
+            if (cardSynergies.Count > 0)
+            {
+                System.Text.StringBuilder sb = new System.Text.StringBuilder("Synergies:\n");
+                foreach (var (partnerType, resultCard) in cardSynergies)
+                {
+                    sb.AppendLine($"+ {partnerType} → {resultCard.cardName}");
+                }
+                cardDetailSynergies.text = sb.ToString();
+            }
+            else
+            {
+                cardDetailSynergies.text = "";
+            }
         }
 
         if (cardDetailContainer != null) cardDetailContainer.SetActive(true);
@@ -305,4 +318,5 @@ public class CodexManager : MonoBehaviour
     private void ClearCards() => detailParent.Clear();
 
     #endregion
+
 }

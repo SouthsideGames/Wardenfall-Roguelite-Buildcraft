@@ -9,7 +9,6 @@ public class CodexCardUI : MonoBehaviour
     [SerializeField] private Image icon;
     [SerializeField] private TextMeshProUGUI cardName;
     [SerializeField] private Button cardButton;
-    [SerializeField] private Sprite lockedIcon;
 
     private CharacterDataSO characterData;
     private WeaponDataSO weaponData;
@@ -51,8 +50,8 @@ public class CodexCardUI : MonoBehaviour
         codexManager = manager;
         cardData = card;
 
-        icon.sprite = card.isUnlocked ? card.icon : lockedIcon;
-        cardName.text = card.isUnlocked ? card.cardName : "???";
+        icon.sprite = card.icon;
+        cardName.text = card.cardName;
 
         cardButton.onClick.RemoveAllListeners();
         cardButton.onClick.AddListener(() => codexManager.OpenCardDetail(card));
@@ -68,4 +67,6 @@ public class CodexCardUI : MonoBehaviour
     }
 
     
+
+
 }
