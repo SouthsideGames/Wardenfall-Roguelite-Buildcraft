@@ -8,6 +8,11 @@ public class UIManager : MonoBehaviour, IGameStateListener
 {
     public static UIManager Instance;
     public static Action<Panel> OnPanelShown;
+    public Canvas mainCanvas;
+
+    [SerializeField] private GameObject[] mainMenuButtons;
+    private int currentTutorialStep = 0;
+    [SerializeField] private TutorialDataSO newGameTutorialData;
 
     [Header("PANELS:")]
     [SerializeField] private GameObject usernamePanel;
@@ -16,7 +21,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
     [SerializeField] private GameObject weaponSelectPanel;
     [SerializeField] private GameObject gamePanel;
     [SerializeField] private GameObject gameoverPanel;
-    [SerializeField] private GameObject waveBasedCompletePanel;
+    [SerializeField] private GameObject stageCompletePanel;
     [SerializeField] private GameObject waveTransitionPanel;
     [SerializeField] private GameObject traitSelectTransitionPanel;
     [SerializeField] private GameObject progressionPanel;
@@ -59,7 +64,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
             weaponSelectPanel,
             gamePanel,
             gameoverPanel,
-            waveBasedCompletePanel,
+            stageCompletePanel,
             waveTransitionPanel,
             traitSelectTransitionPanel,
             progressionPanel,
@@ -70,7 +75,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
         GameManager.OnGameResumed += ResumeGameCallback;
 
         pausePanel.SetActive(false);
-        statisticsPanel.SetActive(false);   
+        statisticsPanel.SetActive(false);
         codexPanel.SetActive(false);
 
         HideConfirmationPanel();
@@ -90,7 +95,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
 
     private void Update() => UpdateCounterText();
 
-    private void OnDestroy() 
+    private void OnDestroy()
     {
         GameManager.OnGamePaused -= PauseGameCallback;
         GameManager.OnGameResumed -= ResumeGameCallback;
@@ -98,7 +103,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
 
     public void GameStateChangedCallback(GameState _gameState)
     {
-        switch(_gameState)
+        switch (_gameState)
         {
             case GameState.Username:
                 ShowPanel(usernamePanel);
@@ -116,7 +121,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
                 ShowPanel(gameoverPanel);
                 break;
             case GameState.StageCompleted:
-                ShowPanel(waveBasedCompletePanel);
+                ShowPanel(stageCompletePanel);
                 break;
             case GameState.WaveTransition:
                 ShowPanel(waveTransitionPanel);
@@ -170,7 +175,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
 
     private void ResumeGameCallback()
     {
-        AudioManager.Instance.ResetMusicVolume();   
+        AudioManager.Instance.ResetMusicVolume();
         pausePanel.SetActive(false);
     }
 
@@ -358,12 +363,11 @@ public class UIManager : MonoBehaviour, IGameStateListener
         SaveManager.TryLoad(this, "IntroPlayed", out object introPlayedObj);
         if (introPlayedObj is bool b && b)
             introPlayed = true;
-    
+
         bool hasUsername = !UserManager.Instance.IsFirstTimePlayer();
 
-            // 🔍 Add this debug line right here
         Debug.Log($"IntroPlayed = {introPlayed}, HasUsername = {hasUsername}");
-    
+
         if (!introPlayed)
         {
             AudioManager.Instance.ChangeMusic(introMusic);
@@ -393,13 +397,13 @@ public class UIManager : MonoBehaviour, IGameStateListener
         introPanel.SetActive(false);
         usernamePanel.SetActive(true); // instead of menu
     }
-    
+
     public void UpdateGameoverPanel()
     {
         gameoverKillCounterText.text = StatisticsManager.Instance.CurrentRunKills.ToString();
         levelUpText.text = StatisticsManager.Instance.CurrentLevelUp.ToString();
         wavesCompletedUpText.text = StatisticsManager.Instance.CurrentWaveCompleted.ToString();
-        meatCollectedText.text = StatisticsManager.Instance.CurrentMeatCollected.ToString();    
+        meatCollectedText.text = StatisticsManager.Instance.CurrentMeatCollected.ToString();
 
         if (gameoverPanel.TryGetComponent<GameOverStatsUI>(out var statsUI))
         {
@@ -409,10 +413,71 @@ public class UIManager : MonoBehaviour, IGameStateListener
 
     public void UpdateStageCompletionPanel()
     {
-        if (waveBasedCompletePanel.TryGetComponent<StageCompletionStatsUI>(out var statsUI))
+        if (stageCompletePanel.TryGetComponent<StageCompletionStatsUI>(out var statsUI))
         {
             statsUI.UpdateStats();
         }
+    }
+    
+    public void ShowFirstTimeUI()
+    {
+        foreach (GameObject button in mainMenuButtons)
+        {
+            button.SetActive(false);
+        }
+    }
+
+    public void CompleteTutorial()
+    {
+        foreach (GameObject button in mainMenuButtons)
+        {
+            button.SetActive(true);
+        }
+    }
+
+    public void ShowNextTutorialStep()
+    {
+        if (currentTutorialStep >= newGameTutorialData.dialogueLines.Length)
+        {
+            CompleteTutorial();
+            return;
+        }
+
+        GameObject tutorialInstance = Instantiate(TutorialManager.Instance.tutorialPrefab, mainCanvas.transform);
+        RectTransform tutorialRect = tutorialInstance.GetComponent<RectTransform>();
+
+        // Start tutorial off-screen
+        tutorialRect.anchoredPosition = new Vector2(0, Screen.height);
+
+        // Initialize the tutorial
+        tutorialInstance.GetComponent<TutorialPrefabUI>().Initialize(new TutorialDataSO 
+        {
+            dialogueLines = new string[] { newGameTutorialData.dialogueLines[currentTutorialStep] },
+            panelId = "main_menu_tutorial_" + currentTutorialStep
+        });
+
+        // Animate tutorial into view
+        LeanTween.moveY(tutorialRect, 0, 0.5f)
+            .setEaseOutBack()
+            .setIgnoreTimeScale(true);
+
+        if (currentTutorialStep > 0 && currentTutorialStep < mainMenuButtons.Length + 1)
+        {
+            GameObject button = mainMenuButtons[currentTutorialStep - 1];
+            button.SetActive(true);
+
+            // Animate button appearance
+            RectTransform buttonRect = button.GetComponent<RectTransform>();
+            Vector3 originalScale = buttonRect.localScale;
+            buttonRect.localScale = Vector3.zero;
+
+            LeanTween.scale(buttonRect, originalScale, 0.5f)
+                .setEaseOutBack()
+                .setDelay(0.3f)
+                .setIgnoreTimeScale(true);
+        }
+
+        currentTutorialStep++;
     }
 
     #endregion

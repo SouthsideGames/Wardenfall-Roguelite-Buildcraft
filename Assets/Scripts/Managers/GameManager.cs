@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour
         if (UserManager.Instance.IsFirstTimePlayer())
         {
             SetGameState(GameState.Username);
+            UIManager.Instance.ShowFirstTimeUI();
             return;
         }
 
@@ -51,7 +52,11 @@ public class GameManager : MonoBehaviour
         SetGameState(GameState.Game);
     }
 
-    public void StartMainMenu() => SetGameState(GameState.Menu);
+    public void StartMainMenu()
+    {
+        SetGameState(GameState.Menu);
+        UIManager.Instance.ShowNextTutorialStep();
+    }
     public void StartWeaponSelect() => SetGameState(GameState.WeaponSelect);
     public void StartShop() => SetGameState(GameState.Shop);    
     public void StartTraitSelection() => SetGameState(GameState.TraitSelection);
@@ -115,6 +120,8 @@ public class GameManager : MonoBehaviour
         UIManager.Instance.ShowCharacterProgressionPanel();
 
     }
+
+    
 
     public void RunPostProgressionCallback()
     {

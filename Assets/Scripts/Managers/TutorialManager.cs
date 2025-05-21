@@ -1,13 +1,12 @@
-
 using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
 
 public class TutorialManager : MonoBehaviour, IGameStateListener
 {
-     public static TutorialManager Instance { get; private set; }
+    public static TutorialManager Instance { get; private set; }
 
-    [SerializeField] private GameObject tutorialPrefab;
+    public GameObject tutorialPrefab;
     [SerializeField] private TutorialDataSO[] tutorials;
 
     private Dictionary<GameState, string> stateToTutorialMap;
@@ -23,9 +22,7 @@ public class TutorialManager : MonoBehaviour, IGameStateListener
             LoadCompletedTutorials();
         }
         else
-        {
             Destroy(gameObject);
-        }
     }
 
     private void InitializeStateTutorialMap()
@@ -54,9 +51,7 @@ public class TutorialManager : MonoBehaviour, IGameStateListener
     public void GameStateChangedCallback(GameState newState)
     {
         if (stateToTutorialMap.TryGetValue(newState, out string tutorialId))
-        {
             CheckForTutorial(tutorialId);
-        }
     }
 
     public void CheckForTutorial(string panelId)
@@ -64,19 +59,29 @@ public class TutorialManager : MonoBehaviour, IGameStateListener
         if (completedTutorials.ContainsKey(panelId) && completedTutorials[panelId])
             return;
 
+        GameState currentState = GameManager.Instance.gameState;
+        
+        if (currentState != GameState.Menu)
+            return;
+
+        bool isFirstTime = !PlayerPrefs.HasKey("HasPlayedBefore");
+        if (!isFirstTime)
+            return;
+
         foreach (var tutorial in tutorials)
         {
             if (tutorial.panelId == panelId)
             {
                 ShowTutorial(tutorial);
+                PlayerPrefs.SetInt("HasPlayedBefore", 1);
+                PlayerPrefs.Save();
                 break;
             }
         }
     }
-
     private void ShowTutorial(TutorialDataSO tutorial)
     {
-        GameObject tutorialInstance = Instantiate(tutorialPrefab);
+        GameObject tutorialInstance = Instantiate(tutorialPrefab, UIManager.Instance.mainCanvas.transform);
         tutorialInstance.GetComponent<TutorialPrefabUI>().Initialize(tutorial);
     }
 

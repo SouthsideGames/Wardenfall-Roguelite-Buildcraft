@@ -30,13 +30,19 @@ public class TutorialPrefabUI : MonoBehaviour
         }
     }
 
-    private void OnNextButtonClicked()
+     private void OnNextButtonClicked()
     {
         currentDialogueIndex++;
 
         if (currentDialogueIndex >= currentTutorial.dialogueLines.Length)
         {
             TutorialManager.Instance.CompleteTutorial(currentTutorial.panelId);
+            
+            if (currentTutorial.panelId.StartsWith("main_menu_tutorial_"))
+            {
+                UIManager.Instance.ShowNextTutorialStep();
+            }
+            
             Destroy(gameObject);
         }
         else
