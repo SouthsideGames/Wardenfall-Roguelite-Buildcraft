@@ -31,7 +31,7 @@ namespace SouthsideGames.DailyMissions
             mission = _mission; 
 
             rewardImage.sprite = _mission.Data.Icon;
-            rewardText.text = "x" + _mission.Data.RewardXp;
+            rewardText.text = "x" + _mission.Data.RewardXP;
             labelText.text = MissionDescriptionMapper.GetDescription(mission.Data);
 
             claimButton.onClick.RemoveAllListeners();

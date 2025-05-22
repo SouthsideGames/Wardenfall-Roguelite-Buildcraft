@@ -87,7 +87,7 @@ namespace SouthsideGames.DailyMissions
             Mission mission = activeMissions[index];
             mission.Claim();
 
-            int particleCount = mission.Data.RewardXp;
+            int particleCount = mission.Data.RewardXP;
 
             Vector2 screenCenter = new Vector2(Screen.width / 2, Screen.height / 2);
             ParticleSystem collectParticlesInstance = Instantiate(missionCollectParticles, screenCenter, Quaternion.identity, particleParent);

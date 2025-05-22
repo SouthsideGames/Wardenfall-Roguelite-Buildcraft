@@ -173,6 +173,7 @@ public class Boss : Enemy
     public override void Die()
     {
         MissionManager.Increment(MissionType.bossHunter, 1);
+        MissionManager.Increment(MissionType.bossHunter2, 1);
         OnBossDeath?.Invoke(transform.position);
         DieAfterWave();
     }

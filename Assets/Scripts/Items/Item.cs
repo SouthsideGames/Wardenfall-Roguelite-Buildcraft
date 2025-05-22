@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using SouthsideGames.DailyMissions;
 
 public abstract class Item : MonoBehaviour, ICollectable
 {
@@ -23,6 +24,10 @@ public abstract class Item : MonoBehaviour, ICollectable
             float healAmount = _character.health.maxHealth * 0.03f;
             _character.health.Heal((int)healAmount);
         }
+
+        MissionManager.Increment(MissionType.explorationExpert, 1);
+        MissionManager.Increment(MissionType.explorationExpert2, 1);
+        MissionManager.Increment(MissionType.explorationExpert3, 1);
 
         StartCoroutine(MoveTowardsPlayer(_character));
     }
