@@ -12,7 +12,6 @@ public class ChargeEnemy : Enemy
     [SerializeField] private float cooldownTime = 3f;
 
     [Header("EFFECTS:")]
-    [SerializeField] private GameObject objectToSpawn;
     private bool attackPerformed = false; 
     private Vector3 originalScale; 
     private Vector2 chargeDirection;
@@ -95,7 +94,6 @@ public class ChargeEnemy : Enemy
             distanceTraveled += step;
 
             TryAttack(); 
-            SpawnEffect();
 
             yield return null;
         }
@@ -146,7 +144,6 @@ public class ChargeEnemy : Enemy
         }
     }
 
-    private void SpawnEffect() => Instantiate(objectToSpawn, transform.position, Quaternion.identity);
     private void AnimationLogic() => anim.SetBool("isIdle", !attackPerformed);
     private void SpawnCompletedActions() => isCharging = false;
 

@@ -88,7 +88,7 @@ public class AudioManager : MonoBehaviour, IGameStateListener
 
     public void PlaySFX(AudioClip _audioToPlay)
     {
-        if(!isSFXMuted)
+        if(isSFXMuted)
            return;
 
         sFXSource.pitch = Random.Range(0.95f, 1.05f);
@@ -121,7 +121,7 @@ public class AudioManager : MonoBehaviour, IGameStateListener
         }
     }
 
-    private void MusicStateChangedCallback(bool _musicState) =>    isMusicMuted = !_musicState;
+    private void MusicStateChangedCallback(bool _musicState) => isMusicMuted = !_musicState;
     private void SFXStateChangedCallback(bool _sfxState) => isSFXMuted =  !_sfxState;
     public void DecreaseMusicVolume() => musicSource.volume = musicSource.volume /5;
     public void ResetMusicVolume() => musicSource.volume = 0.4f;

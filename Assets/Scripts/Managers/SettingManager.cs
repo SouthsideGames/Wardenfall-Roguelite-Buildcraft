@@ -31,9 +31,9 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
     [Header("Reset")]
     [SerializeField] private GameObject resetConfirmationPanel;
 
-    private bool sfxState;
-    private bool musicState;
-    private bool vibrateState;
+    public bool sfxState;
+    public bool musicState;
+    public bool vibrateState;
 
     private const string sfxKey = "SFX";
     private const string musicKey = "Music";

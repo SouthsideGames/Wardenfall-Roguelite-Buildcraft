@@ -21,6 +21,8 @@ public class ProgressionManager : MonoBehaviour
     public int LastGainedXP { get; private set; }
     public int PlayerLevel { get; private set; } = 1;
 
+    [SerializeField] private AudioClip levelUpSound;
+
     private const string XP_KEY = "meta_xp";
     private const string POINTS_KEY = "unlock_points";
     private const string LEVEL_KEY = "player_level";
@@ -74,10 +76,11 @@ public class ProgressionManager : MonoBehaviour
             ProgressionXP -= GetXPForNextLevel();
             PlayerLevel = Mathf.Min(PlayerLevel + 1, 99);
         }
-        
+
         if (PlayerLevel != startLevel)
         {
             OnLevelUp?.Invoke(PlayerLevel);
+            AudioManager.Instance.PlaySFX(levelUpSound);
         }
 
         OnXPGained?.Invoke(amount);
@@ -127,7 +130,7 @@ public class ProgressionManager : MonoBehaviour
         {
             unlockedIDs.Add(id);
             UnlockPoints--;
-            Save(); // persist state
+            Save();
         }
     }
 
