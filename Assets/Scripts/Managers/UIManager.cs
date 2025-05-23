@@ -8,7 +8,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
 {
     public static UIManager Instance;
     public static Action<Panel> OnPanelShown;
-    public Canvas mainCanvas;
+    public Transform mainCanvas;
 
     [SerializeField] private GameObject[] mainMenuButtons;
     private int currentTutorialStep = 0;
