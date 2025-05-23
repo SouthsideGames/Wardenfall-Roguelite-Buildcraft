@@ -104,12 +104,12 @@ public class CurrencyManager : MonoBehaviour, IWantToBeSaved
         if (SaveManager.TryLoad(this, premiumCurrencyKey, out object premiumCurrencyValue))
             AdjustPremiumCurrency((int)premiumCurrencyValue, false);
         else
-            AdjustPremiumCurrency(100, false);
+            AdjustPremiumCurrency(0, false);
 
         if (SaveManager.TryLoad(this, cardCurrencyKey, out object cardCurrencyValue))
             AdjustCardCurrency((int)cardCurrencyValue, false);
         else
-            AdjustCardCurrency(100, false);
+            AdjustCardCurrency(0, false);
     }
 
     public void EarlyInvestorSkillAction()

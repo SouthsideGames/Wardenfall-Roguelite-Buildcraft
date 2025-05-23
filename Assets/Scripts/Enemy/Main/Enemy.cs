@@ -173,6 +173,9 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
             if (simultaneousKills >= 3)
             {
                 MissionManager.Increment(MissionType.multiKills, 1);
+                MissionManager.Increment(MissionType.multiKills2, 1);
+                MissionManager.Increment(MissionType.multiKills3, 1);
+                MissionManager.Increment(MissionType.multiKills4, 1);
                 simultaneousKills = 0;
             }
         }

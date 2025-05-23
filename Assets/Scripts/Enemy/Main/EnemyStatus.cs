@@ -60,6 +60,7 @@ public class EnemyStatus : MonoBehaviour
         {
             case StatusEffectType.Stun:
                 movement.DisableMovement(effect.Duration);
+                MissionManager.Increment(MissionType.stunEnemies, 1);
                 break;
             case StatusEffectType.Burn:
                 MissionManager.Increment(MissionType.burnThemDown, (int)effect.Value);
@@ -67,19 +68,24 @@ public class EnemyStatus : MonoBehaviour
             case StatusEffectType.Slow:
                 slowFactor = movement.moveSpeed * (1 - effect.Value);
                 movement.moveSpeed = slowFactor;
+                MissionManager.Increment(MissionType.slowEnemies, 1);
                 break;
             case StatusEffectType.Weaken:
                 enemy.modifierHandler.ModifyDamage(-effect.Value);
+                MissionManager.Increment(MissionType.weakenEnemies, 1);
                 break;
             case StatusEffectType.Confuse:
                 enemy.SetTargetToOtherEnemies();
+                MissionManager.Increment(MissionType.confuseEnemies, 1);
                 break;
             case StatusEffectType.Paralyze:
                 movement.DisableMovement(effect.Duration);
                 enemy.DisableAttacks();
+                MissionManager.Increment(MissionType.paralyzeEnemies, 1);
                 break;
             case StatusEffectType.Fear:
                 movement.SetRunAwayFromPlayer();
+                MissionManager.Increment(MissionType.fearEnemies, 1);
                 break;
         }
 
