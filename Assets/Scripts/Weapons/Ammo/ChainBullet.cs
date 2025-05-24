@@ -30,7 +30,7 @@ public class ChainBullet : BulletBase
 
         ChainToTarget(transform.position, _damage, 0);
 
-        CoroutineRunner.Instance.RunPooled(ClearChainEffect());
+        ClearChainEffect();
         DestroyBullet();
     }
 

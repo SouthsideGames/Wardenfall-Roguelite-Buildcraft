@@ -8,7 +8,7 @@ public class MinionManager : MonoBehaviour
     private float lifetime;
     private int damage;
 
-    private void Start() => CoroutineRunner.Instance.RunPooled(LifetimeCountdown());
+    private void Start() => LifetimeCountdown();
     
     public void InitializeMinion(float _lifetime, int _damage)
     {

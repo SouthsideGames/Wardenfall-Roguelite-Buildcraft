@@ -50,7 +50,7 @@ public class BramblethornBoss : Boss
     }
 
     protected override void ExecuteStageOne() => RootSlam();
-    protected override void ExecuteStageTwo() => CoroutineRunner.Instance.RunPooled(ThornBarrage());
+    protected override void ExecuteStageTwo() => ThornBarrage();
     protected override void ExecuteStageThree() => BristleCharge();
 
     private void RootSlam()

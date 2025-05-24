@@ -10,15 +10,10 @@ public class CardSynergyManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+       if(Instance == null)
+               Instance = this;
+            else
+                Destroy(gameObject);
     }
 
     public List<(CardEffectType, CardSO)> GetSynergiesForCard(CardEffectType cardType)

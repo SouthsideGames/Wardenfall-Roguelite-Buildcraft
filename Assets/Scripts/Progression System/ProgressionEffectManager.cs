@@ -3,21 +3,7 @@ using UnityEngine;
 
 public class ProgressionEffectManager : MonoBehaviour
 {
-    public static ProgressionEffectManager Instance;
     private Dictionary<string, bool> _unlockCache = new Dictionary<string, bool>();
-
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
 
     // ===== CURRENCY EFFECTS =====
     public float MeatMultiplier => HasUnlock("GreedyTouch") ? 1.10f : 1f;

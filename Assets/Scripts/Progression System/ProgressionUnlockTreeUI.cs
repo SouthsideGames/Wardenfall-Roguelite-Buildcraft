@@ -1,7 +1,7 @@
 using UnityEngine;
 using TMPro;
 
-public class UnlockTreeUI : MonoBehaviour
+public class ProgressionUnlockTreeUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI pointsText;
 

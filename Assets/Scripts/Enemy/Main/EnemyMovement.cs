@@ -276,7 +276,7 @@ public class EnemyMovement : MonoBehaviour
         }
     }
 
-    public void DisableMovement(float duration) => CoroutineRunner.Instance.RunPooled(DisableMovementTemporarily(duration));
+    public void DisableMovement(float duration) => DisableMovementTemporarily(duration);
 
     public void EnableMovement() => canMove = true;
 

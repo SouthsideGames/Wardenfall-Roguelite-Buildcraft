@@ -30,7 +30,7 @@ public enum MeleeWeaponState
     Attack
 }
 
-public enum UnlockCategory
+public enum ProgressionUnlockCategory
 {
     StatBooster,
     ShopEconomy,

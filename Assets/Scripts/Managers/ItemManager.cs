@@ -132,7 +132,7 @@ public class ItemManager : MonoBehaviour
     private void TryDropChest(Vector2 _spawnPosition)
     {
         float baseChance = baseChestDropChance * chestDropChanceMultiplier * dropRateMultiplier;
-        float finalChance = baseChance + (ProgressionEffectManager.Instance != null ? ProgressionEffectManager.Instance.ChestDropBonus * 100f : 0f);
+        float finalChance = baseChance + (ProgressionManager.Instance != null ? ProgressionManager.Instance.progressionEffectManager.ChestDropBonus * 100f : 0f);
     
         bool shouldSpawnChest = Random.Range(0f, 100f) <= finalChance;
     
@@ -168,9 +168,6 @@ public class ItemManager : MonoBehaviour
 
     #endregion
 
-    public void ModifyDropRates(float multiplier)
-    {
-        dropRateMultiplier = multiplier;
-    }
+    public void ModifyDropRates(float multiplier) => dropRateMultiplier = multiplier;
 
 }

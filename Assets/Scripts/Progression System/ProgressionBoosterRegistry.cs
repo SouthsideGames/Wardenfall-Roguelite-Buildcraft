@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BoosterRegistry : MonoBehaviour
+public class ProgressionBoosterRegistry : MonoBehaviour
 {
-    public static BoosterRegistry Instance;
+    public static ProgressionBoosterRegistry Instance;
     public List<StatBoosterSO> allBoosters;
 
     private void Awake()

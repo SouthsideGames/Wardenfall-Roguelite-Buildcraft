@@ -196,13 +196,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
             deathParticles.transform.SetParent(null);
             deathParticles.Play();
         }
-        
-        LeanTween.sequence()
-            .append(LeanTween.scale(gameObject, Vector3.one * 1.2f, 0.1f).setEaseOutQuad())
-            .append(LeanTween.scale(gameObject, Vector3.zero, 0.2f).setEaseInQuad())
-            .append(() => {
-                Destroy(gameObject);
-            });
+        Destroy(gameObject);
     }
 
     public void DieAfterWave()

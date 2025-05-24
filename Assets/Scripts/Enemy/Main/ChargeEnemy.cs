@@ -31,7 +31,7 @@ public class ChargeEnemy : Enemy
         base.Update();
 
         if (!isCharging)
-            CoroutineRunner.Instance.RunPooled(ChargeRoutine());
+            ChargeRoutine();
     }
 
     private IEnumerator ChargeRoutine()
@@ -70,7 +70,7 @@ public class ChargeEnemy : Enemy
     {
         if (this == null || gameObject == null || character == null || character.transform == null) 
         {
-            chargeDirection = Vector2.right; // Default direction or skip entirely
+            chargeDirection = Vector2.right;
             return;
         }
 

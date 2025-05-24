@@ -23,9 +23,7 @@ public class UsernamePopupUI : MonoBehaviour
     private void OnInputSelect(string value)
     {
         if (TouchScreenKeyboard.isSupported)
-        {
             keyboard = TouchScreenKeyboard.Open(usernameInput.text, TouchScreenKeyboardType.Default);
-        }
     }
 
     private void Update()
@@ -45,7 +43,7 @@ public class UsernamePopupUI : MonoBehaviour
             return;
 
         UserManager.Instance.SetUsername(usernameInput.text);
-        ProgressionManager.Instance.progressionUI.UpdateInfo();
+        ProgressionManager.Instance.progressionMenuUI.UpdateInfo();
         GameManager.Instance.StartMainMenu();
     }
 }

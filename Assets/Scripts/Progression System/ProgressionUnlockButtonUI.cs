@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class UnlockButtonUI : MonoBehaviour
+public class ProgressionUnlockButtonUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI label;
     [SerializeField] private TextMeshProUGUI cost;
@@ -10,10 +10,10 @@ public class UnlockButtonUI : MonoBehaviour
     [SerializeField] private Image lockIcon;
     [SerializeField] private Button button;
 
-    private UnlockDataSO data;
+    private ProgressionUnlockDataSO data;
     private ProgressionTreeUI treeUI;
 
-    public void Configure(UnlockDataSO unlockData, ProgressionTreeUI manager)
+    public void Configure(ProgressionUnlockDataSO unlockData, ProgressionTreeUI manager)
     {
         data = unlockData;
         treeUI = manager;

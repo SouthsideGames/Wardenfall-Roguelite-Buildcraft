@@ -11,7 +11,7 @@ public class BoosterSelectionUI : MonoBehaviour
         foreach (Transform child in contentParent)
             Destroy(child.gameObject);
 
-        foreach (var booster in BoosterRegistry.Instance.allBoosters)
+        foreach (var booster in ProgressionBoosterRegistry.Instance.allBoosters)
         {
             if (!ProgressionManager.Instance.IsUnlockActive(booster.boosterID))
                 continue;

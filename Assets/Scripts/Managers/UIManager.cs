@@ -296,7 +296,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
     {
         TriggerPanelAction(progressionPanel);
         progressionPanel.SetActive(true);
-        ProgressionManager.Instance.inGameProgressionUI.Refresh();
+        ProgressionManager.Instance.progressionGameUI.Refresh();
     }
 
     public void HideCharacterProgressionPanel()
@@ -449,7 +449,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
         // Start tutorial off-screen
         tutorialRect.anchoredPosition = new Vector2(0, Screen.height);
 
-        // Initialize the tutorial
+
         tutorialInstance.GetComponent<TutorialPrefabUI>().Initialize(new TutorialDataSO 
         {
             dialogueLines = new string[] { newGameTutorialData.dialogueLines[currentTutorialStep] },

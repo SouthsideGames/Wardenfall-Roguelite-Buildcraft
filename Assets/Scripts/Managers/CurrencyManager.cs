@@ -106,7 +106,7 @@ public class CurrencyManager : MonoBehaviour, IWantToBeSaved
 
     public void EarlyInvestorSkillAction()
     {
-        int startingMeat = ProgressionEffectManager.Instance.StartingMeat;
+        int startingMeat = ProgressionManager.Instance.progressionEffectManager.StartingMeat;
         if (startingMeat > 0)
             AdjustCurrency(startingMeat);
     }
@@ -128,7 +128,7 @@ public class CurrencyManager : MonoBehaviour, IWantToBeSaved
     
     private void MeatCollectedCallback(Meat _meat)
     {
-        float multiplier = ProgressionEffectManager.Instance != null ? ProgressionEffectManager.Instance.MeatMultiplier : 1f;
+        float multiplier = ProgressionManager.Instance != null ? ProgressionManager.Instance.progressionEffectManager.MeatMultiplier : 1f;
         int reward = Mathf.RoundToInt(1 * multiplier);
         AdjustCurrency(reward);
     }

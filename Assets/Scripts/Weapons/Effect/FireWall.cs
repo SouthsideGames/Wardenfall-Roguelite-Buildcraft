@@ -17,7 +17,7 @@ public class FireWall : MonoBehaviour
     {
         damage = _damage;
         duration = _duration;
-        CoroutineRunner.Instance.StartCoroutine(DestroyAfterDuration());
+        DestroyAfterDuration();
     }
 
     private IEnumerator DestroyAfterDuration()
@@ -32,13 +32,11 @@ public class FireWall : MonoBehaviour
 
         if (enemy != null && !affectedEnemies.Contains(enemy))
         {
-            // Apply initial damage
+            
             enemy.TakeDamage(damage, false);
 
-            // Apply burn effect using EnemyStatus
             ApplyBurn(enemy);
 
-            // Add to affected list
             affectedEnemies.Add(enemy);
         }
     }

@@ -27,7 +27,7 @@ public class Shockwave : MonoBehaviour
         this.maxRadius = maxRadius;
     }
 
-    private void OnEnable() => CoroutineRunner.Instance.RunPooled(ExpandShockwave());
+    private void OnEnable() => ExpandShockwave();
 
     private IEnumerator ExpandShockwave()
     {

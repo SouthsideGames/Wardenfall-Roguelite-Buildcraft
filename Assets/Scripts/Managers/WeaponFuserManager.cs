@@ -75,7 +75,7 @@ public class WeaponFuserManager : MonoBehaviour
 
     private void FusionDividendAction()
     {
-        int fusionCash = ProgressionEffectManager.Instance.FusionCashReward;
+        int fusionCash = ProgressionManager.Instance.progressionEffectManager.FusionCashReward;
         if (fusionCash > 0)
         {
             CurrencyManager.Instance.AdjustPremiumCurrency(fusionCash);

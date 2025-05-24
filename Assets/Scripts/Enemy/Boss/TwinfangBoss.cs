@@ -37,7 +37,7 @@ public class TwinfangBoss : Boss
             enemyMovement.FollowCurrentTarget();
     }
 
-    protected override void ExecuteStageOne() => CoroutineRunner.Instance.RunPooled(LungeAttack());
+    protected override void ExecuteStageOne() => LungeAttack();
 
     private IEnumerator LungeAttack()
     {

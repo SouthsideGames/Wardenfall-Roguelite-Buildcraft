@@ -32,16 +32,13 @@ public class ShopManagerUI : MonoBehaviour
     private void Awake()
     {
         InputManager.OnCancel += CancelCallback;
-        CoroutineRunner.Instance.RunPooled(Start());
+    
     }
-
-
 
     private void OnDestroy() => InputManager.OnCancel -= CancelCallback;
 
-    IEnumerator Start()
+    private void Start()
     {
-        yield return null;
 
         ConfigureCharacterStatsPanel();
         ConfigureInventoryPanel();

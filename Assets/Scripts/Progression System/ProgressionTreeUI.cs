@@ -14,7 +14,7 @@ public class ProgressionTreeUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI detailCost;
     [SerializeField] private Button unlockButton;
 
-    private UnlockDataSO currentSelection;
+    private ProgressionUnlockDataSO currentSelection;
 
     private void Start()
     {
@@ -27,16 +27,16 @@ public class ProgressionTreeUI : MonoBehaviour
         foreach (Transform child in buttonParent)
             Destroy(child.gameObject);
 
-        foreach (var unlock in UnlockDatabase.Instance.allUnlocks)
+        foreach (var unlock in ProgressionManager.Instance.progressionUnlockDatabase.allUnlocks)
         {
             GameObject go = Instantiate(unlockButtonPrefab, buttonParent);
-            UnlockButtonUI buttonUI = go.GetComponent<UnlockButtonUI>();
+            ProgressionUnlockButtonUI buttonUI = go.GetComponent<ProgressionUnlockButtonUI>();
             buttonUI.Configure(unlock, this);
             
         }
     }
 
-    public void ShowDetail(UnlockDataSO unlock)
+    public void ShowDetail(ProgressionUnlockDataSO unlock)
     {
         currentSelection = unlock;
         detailPanel.SetActive(true);

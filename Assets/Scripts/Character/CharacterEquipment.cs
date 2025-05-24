@@ -50,7 +50,7 @@ public class CharacterEquipment : MonoBehaviour, IWantToBeSaved
         if (!SaveManager.GameData.TryGetValue(BOOSTER_SAVE_KEY, out var _, out var raw))
             return;
 
-        if (string.IsNullOrEmpty(raw) || BoosterRegistry.Instance == null)
+        if (string.IsNullOrEmpty(raw) || ProgressionBoosterRegistry.Instance == null)
         {
             Debug.LogWarning("BoosterRegistry not initialized yet — delaying booster load.");
             return;
@@ -65,7 +65,7 @@ public class CharacterEquipment : MonoBehaviour, IWantToBeSaved
             string boosterID = parts[0];
             int statIndex = int.Parse(parts[1]);
 
-            var booster = BoosterRegistry.Instance.allBoosters.Find(b => b.boosterID == boosterID);
+            var booster = ProgressionBoosterRegistry.Instance.allBoosters.Find(b => b.boosterID == boosterID);
             if (booster != null)
             {
                 equippedBoosters.Add(new EquippedBooster

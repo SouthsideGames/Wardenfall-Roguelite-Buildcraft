@@ -68,7 +68,7 @@ public class ShopManager : MonoBehaviour, IGameStateListener
             toDestroy.RemoveAt(0);
         }
 
-        int containersToAdd = (ProgressionEffectManager.Instance.HasExtraShelf ? 7 : 6) - containersParent.childCount;
+        int containersToAdd = (ProgressionManager.Instance.progressionEffectManager.HasExtraShelf ? 7 : 6) - containersParent.childCount;
         int weaponContainerCount = Random.Range(Mathf.Min(2, containersToAdd), containersToAdd);
         int objectContainerCount = containersToAdd - weaponContainerCount;
 
@@ -89,14 +89,14 @@ public class ShopManager : MonoBehaviour, IGameStateListener
 
     public void Reroll()
     {
-        int effectiveRerollCost = ProgressionEffectManager.Instance.HasFreeOrDiscountReroll ? Mathf.Max(0, rerollPrice - 1) : rerollPrice;
+        int effectiveRerollCost = ProgressionManager.Instance.progressionEffectManager.HasFreeOrDiscountReroll ? Mathf.Max(0, rerollPrice - 1) : rerollPrice;
         CurrencyManager.Instance.UseCurrency(effectiveRerollCost);
         ConfigureShop();
     }
 
     private void UpdateRerollVisuals()
     {
-        int effectiveRerollCost = ProgressionEffectManager.Instance.HasFreeOrDiscountReroll ? Mathf.Max(0, rerollPrice - 1) : rerollPrice;
+        int effectiveRerollCost = ProgressionManager.Instance.progressionEffectManager.HasFreeOrDiscountReroll ? Mathf.Max(0, rerollPrice - 1) : rerollPrice;
         rerollPriceText.text = effectiveRerollCost.ToString();
         rerollButton.interactable = CurrencyManager.Instance.HasEnoughCurrency(effectiveRerollCost);
 
@@ -119,7 +119,7 @@ public class ShopManager : MonoBehaviour, IGameStateListener
         if (characterWeapon.AddWeapon(_shopItemContainerUI.WeaponData, _weaponLevel))
         {
             int basePrice = WeaponStatCalculator.GetPurchasePrice(_shopItemContainerUI.WeaponData, _weaponLevel);
-            int finalPrice = Mathf.FloorToInt(basePrice * ProgressionEffectManager.Instance.ShopDiscount);
+            int finalPrice = Mathf.FloorToInt(basePrice * ProgressionManager.Instance.progressionEffectManager.ShopDiscount);
             CurrencyManager.Instance.UseCurrency(finalPrice);
 
             Destroy(_shopItemContainerUI.gameObject);
@@ -133,7 +133,7 @@ public class ShopManager : MonoBehaviour, IGameStateListener
         characterObject.AddObject(_shopItemContainerUI.ObjectData);
 
         int basePrice = _shopItemContainerUI.ObjectData.Price;
-        int finalPrice = Mathf.FloorToInt(basePrice * ProgressionEffectManager.Instance.ShopDiscount);
+        int finalPrice = Mathf.FloorToInt(basePrice * ProgressionManager.Instance.progressionEffectManager.ShopDiscount);
         CurrencyManager.Instance.UseCurrency(finalPrice);
 
         Destroy(_shopItemContainerUI.gameObject);
@@ -141,9 +141,6 @@ public class ShopManager : MonoBehaviour, IGameStateListener
         OnItemPurchased?.Invoke();
     }
 
-    private void ScrollCallback(float _xValue)
-    {
-        containersParent.GetComponent<RectTransform>().anchoredPosition -= _xValue * scrollSpeed * Time.deltaTime * Vector2.right;
-    }
+    private void ScrollCallback(float _xValue) => containersParent.GetComponent<RectTransform>().anchoredPosition -= _xValue * scrollSpeed * Time.deltaTime * Vector2.right;
 }
  

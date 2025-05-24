@@ -8,7 +8,7 @@ public static class TraitEffectUtils
         switch (tier.SpecialEffectID)
         {
             case "ArmoredShield":
-                CoroutineRunner.Instance.StartCoroutine(ApplyTimedInvincibility(enemy, tier.InvincibilityDuration));
+                ApplyTimedInvincibility(enemy, tier.InvincibilityDuration);
                 break;
             case "BerserkerT1":
                 enemy.maxHealth = Mathf.FloorToInt(enemy.maxHealth * 0.95f);
@@ -164,8 +164,7 @@ public static class TraitEffectUtils
         enemy.maxHealth = Mathf.FloorToInt(enemy.maxHealth * healthPercent);
         enemy.health = Mathf.Min(enemy.health, enemy.maxHealth);
 
-        // Start damage scaling
-        CoroutineRunner.Instance.StartCoroutine(BioChargeOverTime(enemy, damageGainPerTick));
+        BioChargeOverTime(enemy, damageGainPerTick);
     }
 
     private static IEnumerator BioChargeOverTime(Enemy enemy, float gainPerTick)

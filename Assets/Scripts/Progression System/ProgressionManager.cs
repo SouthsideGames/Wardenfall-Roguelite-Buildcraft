@@ -7,15 +7,17 @@ using System;
 
 public class ProgressionManager : MonoBehaviour
 {
-    
+    public static ProgressionManager Instance;
+
     public static Action OnUnlockPointsChanged;
-    
     public event Action<int> OnXPGained;
     public event Action<int> OnLevelUp;
-    
-    public static ProgressionManager Instance;
-    public InGameProgressionUI inGameProgressionUI { get; private set; }
-    public ProgressionUI progressionUI { get; private set; }
+
+    public ProgressionGameUI progressionGameUI { get; private set; }
+    public ProgressionMenuUI progressionMenuUI { get; private set; }
+    public ProgressionEffectManager progressionEffectManager {get; private set; }
+    public ProgressionUnlockDatabase progressionUnlockDatabase {get; private set;}
+
     public int ProgressionXP { get; private set; }
     public int UnlockPoints { get; private set; }
     public int LastGainedXP { get; private set; }
@@ -32,21 +34,22 @@ public class ProgressionManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-            Load();
-        }
-        else
-            Destroy(gameObject);
+        if(Instance == null)
+               Instance = this;
+            else
+                Destroy(gameObject);
 
-        inGameProgressionUI = GetComponent<InGameProgressionUI>();
-        progressionUI = GetComponent<ProgressionUI>();
+        Load();
     }
 
     void Start()
     {
+
+        progressionGameUI = GetComponent<ProgressionGameUI>();
+        progressionMenuUI = GetComponent<ProgressionMenuUI>();
+        progressionEffectManager = GetComponent<ProgressionEffectManager>();
+        progressionUnlockDatabase = GetComponent<ProgressionUnlockDatabase>();
+
         UpdateUI();
     }
 
@@ -92,7 +95,7 @@ public class ProgressionManager : MonoBehaviour
         if (UnlockPoints <= 0 || unlockedIDs.Contains(unlockID))
             return false;
     
-        var data = UnlockDatabase.Instance.GetUnlockByID(unlockID);
+        var data = ProgressionManager.Instance.progressionUnlockDatabase.GetUnlockByID(unlockID);
         if (data == null || data.cost > UnlockPoints)
             return false;
     
@@ -105,13 +108,13 @@ public class ProgressionManager : MonoBehaviour
         
         switch (data.category)
         {
-            case UnlockCategory.Card:
+            case ProgressionUnlockCategory.Card:
                 UnlockCard(unlockID);
                 break;
-            case UnlockCategory.StatBooster:
+            case ProgressionUnlockCategory.StatBooster:
                 // Booster slots are checked dynamically by ID
                 break;
-            case UnlockCategory.ShopEconomy:
+            case ProgressionUnlockCategory.ShopEconomy:
                 // Shop effects are handled by MetaEffectManager
                 break;
         }
@@ -165,6 +168,12 @@ public class ProgressionManager : MonoBehaviour
 
     private void Load()
     {
+        if (SaveManager.GameData == null)
+        {
+            Debug.LogError("SaveManager.GameData is not initialized.");
+            return;
+        }
+
         if (SaveManager.GameData.TryGetValue(XP_KEY, out var _, out var xpStr))
             ProgressionXP = int.Parse(xpStr);
 

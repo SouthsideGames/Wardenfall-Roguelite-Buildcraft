@@ -2,7 +2,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
-public class ProgressionUI : MonoBehaviour
+public class ProgressionMenuUI : MonoBehaviour
 {
     [SerializeField] private GameObject unlockTreePanel;
     [SerializeField] private TextMeshProUGUI usernameText;
@@ -15,7 +15,7 @@ public class ProgressionUI : MonoBehaviour
     public void OnOpenUnlockTree()
     {
         unlockTreePanel.SetActive(true);
-        unlockTreePanel.GetComponent<UnlockTreeUI>()?.Refresh();
+        unlockTreePanel.GetComponent<ProgressionUnlockTreeUI>()?.Refresh();
     }
 
     public void OnCloseUnlockTree() => unlockTreePanel.SetActive(false);
