@@ -36,14 +36,6 @@ public class BerserkerEnemy : Enemy
             Enrage();
         }
 
-        if (!hasEnraged)
-        {
-            anim.Play("Move");
-        }
-        else
-        {
-            anim.Play("Berserk");
-        }
 
         movement.FollowCurrentTarget();
     }

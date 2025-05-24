@@ -29,7 +29,6 @@ public class ChargeEnemy : Enemy
     protected override void Update()
     {
         base.Update();
-        AnimationLogic();
 
         if (!isCharging)
             CoroutineRunner.Instance.RunPooled(ChargeRoutine());
@@ -144,7 +143,6 @@ public class ChargeEnemy : Enemy
         }
     }
 
-    private void AnimationLogic() => anim.SetBool("isIdle", !attackPerformed);
     private void SpawnCompletedActions() => isCharging = false;
 
     private void OnDrawGizmosSelected()

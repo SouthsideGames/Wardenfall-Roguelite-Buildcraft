@@ -39,8 +39,6 @@ public class ExplodeEnemy : Enemy
        
         if (isExploding) return;
         isExploding = true;
-
-        anim.SetTrigger("Explode");
      
         if (explosionEffect != null)
         {

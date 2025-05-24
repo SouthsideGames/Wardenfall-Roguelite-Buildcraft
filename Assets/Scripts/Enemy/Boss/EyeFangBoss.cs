@@ -56,13 +56,13 @@ public class EyeFangBoss : Boss
 
     private void FireProjectileAttack()
     {
-        anim.Play("Shoot");
+        
         rangedAttack.AutoAim();
     }
 
     private void RadialBeamAttack()
     {
-        anim.Play("Expand");
+        
 
         float angleStep = 360f / beamCount;
         for (int i = 0; i < beamCount; i++)
@@ -74,7 +74,7 @@ public class EyeFangBoss : Boss
 
     private void KnockbackBurst()
     {
-        anim.Play("Deflate");
+        
 
         Collider2D[] hitObjects = Physics2D.OverlapCircleAll(transform.position, burstRadius);
         foreach (Collider2D hit in hitObjects)
@@ -83,6 +83,6 @@ public class EyeFangBoss : Boss
                 character.TakeDamage(burstDamage);
         }
 
-        anim.Play("Inflate");
+       
     }
 }

@@ -4901,11 +4901,11 @@ GameObject:
   m_Component:
   - component: {fileID: 7181145349571083936}
   - component: {fileID: -5513718091451831210}
+  - component: {fileID: 1737991944601084861}
+  - component: {fileID: -6325225333788615872}
   - component: {fileID: 8492554284247246475}
   - component: {fileID: 7180160589192734761}
   - component: {fileID: 3209966156504915730}
-  - component: {fileID: 1737991944601084861}
-  - component: {fileID: -6325225333788615872}
   - component: {fileID: 9095330309024375354}
   - component: {fileID: 683466642723086564}
   - component: {fileID: 2399374470509028887}
@@ -4926,7 +4926,7 @@ Transform:
   m_GameObject: {fileID: 2533266184513460296}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 13.76, y: -2.47, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.25, y: 1.25, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4960,83 +4960,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &8492554284247246475
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2533266184513460296}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee99e8be3abff204184af3ad94523e81, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  movement: {fileID: 0}
-  anim: {fileID: 0}
-  _spriteRenderer: {fileID: 5849116310684472047}
-  spawnIndicator: {fileID: 4646277414147585081}
-  _collider: {fileID: 1737991944601084861}
-  contactDamage: 0
-  playerDetectionRadius: 3
-  maxHealth: 70
-  health: 0
-  isInvincible: 0
-  spawnSize: 1
-  spawnTime: 1
-  numberOfLoops: 1
-  deathParticles: {fileID: 4061257971773157473}
-  showGizmos: 0
-  teleportCooldown: 3
-  teleportDistance: 5
---- !u!114 &7180160589192734761
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2533266184513460296}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d418cfad4450c5479bc4b82436a299c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  firePoint: {fileID: 7349613174165020262}
-  bulletPrefab: {fileID: 4821930258780714043, guid: f216b62c23b579840b54e709a7582ca3, type: 3}
-  bulletDamage: 0
-  fireRate: 1.5
-  attackDelay: 4
-  bulletSpeed: 10
---- !u!114 &3209966156504915730
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2533266184513460296}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ddebe7d82fbdf44daf06654154cf032, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 3
-  canMove: 1
-  pathUpdateRate: 0.2
-  avoidanceRadius: 1
-  chasePlayer: 1
-  wander: 0
-  patrol: 0
-  patrolPoints: []
-  patrolWaitTime: 1
-  patrolPointReachedDistance: 0.1
-  wanderRadius: 5
-  minWanderWaitTime: 2
-  maxWanderWaitTime: 5
-  wanderPointReachedDistance: 0.1
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  maxDistanceFromStart: 10
 --- !u!58 &1737991944601084861
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -5100,6 +5023,82 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &8492554284247246475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2533266184513460296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee99e8be3abff204184af3ad94523e81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movement: {fileID: 0}
+  _spriteRenderer: {fileID: 5849116310684472047}
+  spawnIndicator: {fileID: 4646277414147585081}
+  _collider: {fileID: 1737991944601084861}
+  contactDamage: 0
+  playerDetectionRadius: 3
+  maxHealth: 70
+  health: 0
+  isInvincible: 0
+  spawnSize: 1
+  spawnTime: 1
+  numberOfLoops: 1
+  deathParticles: {fileID: 4061257971773157473}
+  showGizmos: 0
+  teleportCooldown: 3
+  teleportDistance: 5
+--- !u!114 &7180160589192734761
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2533266184513460296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d418cfad4450c5479bc4b82436a299c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  firePoint: {fileID: 7349613174165020262}
+  bulletPrefab: {fileID: 4821930258780714043, guid: f216b62c23b579840b54e709a7582ca3, type: 3}
+  bulletDamage: 0
+  fireRate: 1.5
+  attackDelay: 4
+  bulletSpeed: 10
+--- !u!114 &3209966156504915730
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2533266184513460296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ddebe7d82fbdf44daf06654154cf032, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 3
+  canMove: 1
+  pathUpdateRate: 0.2
+  avoidanceRadius: 1
+  chasePlayer: 1
+  wander: 0
+  patrol: 0
+  patrolPoints: []
+  patrolWaitTime: 1
+  patrolPointReachedDistance: 0.1
+  wanderRadius: 5
+  minWanderWaitTime: 2
+  maxWanderWaitTime: 5
+  wanderPointReachedDistance: 0.1
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  maxDistanceFromStart: 10
 --- !u!114 &9095330309024375354
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5228,7 +5227,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: b8e8e3f5289b61440b0df71eeecea4ae, type: 3}
   m_Color: {r: 0.26666668, g: 0.2509804, b: 0.4117647, a: 1}
   m_FlipX: 0
@@ -5239,7 +5238,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
-  m_SpriteSortPoint: 1
+  m_SpriteSortPoint: 0
 --- !u!1 &3883369962430096542
 GameObject:
   m_ObjectHideFlags: 0
@@ -10187,7 +10186,7 @@ Transform:
   m_GameObject: {fileID: 5092848612879129032}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -11.008, y: 4.076, z: 0}
+  m_LocalPosition: {x: 0, y: 1.4, z: 0}
   m_LocalScale: {x: 0.24, y: 0.24, z: 0.19999999}
   m_ConstrainProportionsScale: 0
   m_Children: []

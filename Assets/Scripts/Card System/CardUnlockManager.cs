@@ -15,7 +15,7 @@ public class CardUnlockManager : MonoBehaviour
 
     public bool CanUnlock(CardSO card)
     {
-        return card != null && !card.isUnlocked && CurrencyManager.Instance.HasEnoughCardPoints(card.requiredCardPoints);
+        return card != null && !card.isUnlocked && CurrencyManager.Instance.HasEnoughCardCurrency(card.requiredCardPoints);
     }
 
     public bool TryUnlockCard(CardSO card)
@@ -26,7 +26,7 @@ public class CardUnlockManager : MonoBehaviour
             return false;
         }
 
-        CurrencyManager.Instance.UseCardPoints(card.requiredCardPoints);
+        CurrencyManager.Instance.UseCardCurrency(card.requiredCardPoints);
         card.isUnlocked = true;
 
         SaveManager.Save(this, card.cardName + "_Unlocked", true);

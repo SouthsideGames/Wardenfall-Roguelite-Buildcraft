@@ -42,7 +42,7 @@ public class DreadBoss : Boss
 
     private void GroundSlam()
     {
-        anim.Play("Slam");
+        
         transform.localScale = new Vector3(originalScale.x * 1.2f, originalScale.y * 0.8f, originalScale.z);
 
         for (int i = 0; i < numSpikes; i++)
@@ -57,7 +57,7 @@ public class DreadBoss : Boss
 
     private void WebTrap()
     {
-        anim.Play("SummonWebs");
+        
 
         for (int i = 0; i < numWebs; i++)
         {

@@ -68,14 +68,6 @@ public class CurrencyManager : MonoBehaviour, IWantToBeSaved
     }
 
 
-    public void AdjustCardPoints(int _amount)
-    {
-        CardCurrency += _amount;
-        UpdateVisuals();
-    }
-
-
-
     private void UpdateUI()
     {
         CurrencyUI[] currencyUIs = FindObjectsByType<CurrencyUI>(FindObjectsInactive.Include, FindObjectsSortMode.None);
@@ -130,11 +122,10 @@ public class CurrencyManager : MonoBehaviour, IWantToBeSaved
 
     public bool HasEnoughPremiumCurrency(int _amount) => PremiumCurrency >= _amount;
     public void UsePremiumCurrency(int _amount) => AdjustPremiumCurrency(-_amount);
+
     public bool HasEnoughCardCurrency(int _amount) => CardCurrency >= _amount;
     public void UseCardCurrency(int _amount) => AdjustCardCurrency(-_amount);
-    public bool HasEnoughCardPoints(int _amount) => CardCurrency >= _amount;
-    public void UseCardPoints(int _amount) => AdjustCardPoints(-_amount);
-
+    
     private void MeatCollectedCallback(Meat _meat)
     {
         float multiplier = ProgressionEffectManager.Instance != null ? ProgressionEffectManager.Instance.MeatMultiplier : 1f;

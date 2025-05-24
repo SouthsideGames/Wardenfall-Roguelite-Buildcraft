@@ -20,7 +20,6 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
     [Header("ELEMENTS:")]
     protected CharacterManager character;
     [HideInInspector] public EnemyMovement movement;
-    [SerializeField] protected Animator anim;
     [SerializeField] protected SpriteRenderer _spriteRenderer;
     [SerializeField] protected SpriteRenderer spawnIndicator;
     [SerializeField] private Collider2D _collider;
@@ -197,7 +196,13 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
             deathParticles.transform.SetParent(null);
             deathParticles.Play();
         }
-        Destroy(gameObject);
+        
+        LeanTween.sequence()
+            .append(LeanTween.scale(gameObject, Vector3.one * 1.2f, 0.1f).setEaseOutQuad())
+            .append(LeanTween.scale(gameObject, Vector3.zero, 0.2f).setEaseInQuad())
+            .append(() => {
+                Destroy(gameObject);
+            });
     }
 
     public void DieAfterWave()
@@ -327,7 +332,13 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
 
     public void Heal(int _damage) => health += _damage;
     public Vector2 GetCenter() => (Vector2)transform.position + _collider.offset;
-    public void TakeDamage(int damage) => TakeDamage(damage, false);
+    public void TakeDamage(int damage)
+    {
+        LeanTween.scale(gameObject, Vector3.one * 1.2f, 0.1f).setEasePunch();
+        LeanTween.color(gameObject, Color.red, 0.1f).setLoopPingPong(1);
+        
+        TakeDamage(damage, false);
+     } 
     public void MoveTo(Transform target) => movement?.SetTarget(target);
     public void AttackTarget() => Attack();
     protected bool CanAttack() => _spriteRenderer.enabled;

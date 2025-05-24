@@ -275,10 +275,23 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 
     private Vector2 GetSpawnPosition()
     {
+        Vector2 characterPos = (Vector2)character.transform.position;
         Vector2 direction = UnityEngine.Random.insideUnitCircle.normalized;
         Vector2 offset = direction * UnityEngine.Random.Range(6, 10);
-        return (Vector2)character.transform.position + offset;
+        Vector2 spawnPos = characterPos + offset;
+
+        float padding = 1f; 
+        float minX = -Constants.arenaSize.x/2 + padding;
+        float maxX = Constants.arenaSize.x/2 - padding;
+        float minY = -Constants.arenaSize.y/2 + padding;
+        float maxY = Constants.arenaSize.y/2 - padding;
+
+        spawnPos.x = Mathf.Clamp(spawnPos.x, minX, maxX);
+        spawnPos.y = Mathf.Clamp(spawnPos.y, minY, maxY);
+
+        return spawnPos;
     }
+
 
     private Vector2 GetFormationSpawnPosition(int enemyIndex)
     {

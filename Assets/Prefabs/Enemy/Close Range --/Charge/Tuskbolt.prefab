@@ -4966,7 +4966,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: b8e8e3f5289b61440b0df71eeecea4ae, type: 3}
   m_Color: {r: 0.9529412, g: 0.38039216, b: 0.28627452, a: 1}
   m_FlipX: 0
@@ -4977,7 +4977,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
-  m_SpriteSortPoint: 1
+  m_SpriteSortPoint: 0
 --- !u!1 &4097871404595091605
 GameObject:
   m_ObjectHideFlags: 0
@@ -5003,7 +5003,7 @@ Transform:
   m_GameObject: {fileID: 4097871404595091605}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.625, z: 0}
+  m_LocalPosition: {x: 0, y: 1.25, z: 0}
   m_LocalScale: {x: 0.29999998, y: 0.29999998, z: 0.19999999}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5151,7 +5151,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movement: {fileID: 0}
-  anim: {fileID: 675317277519339230}
   _spriteRenderer: {fileID: 4171277772667265588}
   spawnIndicator: {fileID: 7310978342789289596}
   _collider: {fileID: 3478709589087782155}
@@ -5170,7 +5169,6 @@ MonoBehaviour:
   chargeSpeed: 25
   chargeDistance: 12
   cooldownTime: 3.5
-  objectToSpawn: {fileID: 1688076354444117600, guid: f0ad7a5f1c59e164aa62b3689281c0f8, type: 3}
 --- !u!114 &7382393630559290276
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5329,7 +5327,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: c78b664a3016aae41a978152f88d1312, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
