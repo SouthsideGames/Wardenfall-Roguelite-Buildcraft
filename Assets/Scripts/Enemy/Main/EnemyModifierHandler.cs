@@ -54,6 +54,14 @@ public class EnemyModifierHandler : MonoBehaviour
         Debug.Log($"{gameObject.name} crit chance modifier set to {critChanceModifier:F2}");
     }
 
+    public void ModifySpeed(float modifier)
+    {
+        if (this == null || gameObject == null || movement == null)
+            return;
+
+        movement.moveSpeed *= (1f + modifier);
+    }
+
     public float GetDamageMultiplier() => damageMultiplier;
     public float GetCritChanceModifier() => critChanceModifier;
     public bool CanCrit() => canPerformCriticalHit;

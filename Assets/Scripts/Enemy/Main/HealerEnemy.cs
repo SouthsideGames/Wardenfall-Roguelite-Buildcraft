@@ -6,11 +6,17 @@ using UnityEngine;
 public class HealerEnemy : Enemy
 {
     [Header("HEALER SPECIFICS:")]
-    [SerializeField] private float tetherRadius = 5f; // Radius within which the totem will search for enemies to tether
-    [SerializeField] private int maxTetheredEnemies = 4; // Maximum number of enemies that can be tethered
-    [SerializeField] private LayerMask enemyLayer; // Layer mask to ensure only enemies are detected
+    [SerializeField] private float tetherRadius = 5f; // 
+    [SerializeField] private int maxTetheredEnemies = 4; // 
+    [SerializeField] private LayerMask enemyLayer; 
+    [SerializeField] private GameObject healingEmoji;
+    private List<Enemy> tetheredEnemies = new List<Enemy>(); 
 
-    private List<Enemy> tetheredEnemies = new List<Enemy>(); // List of tethered enemies
+    protected override void Start()
+    {
+        base.Start();
+        StartCoroutine(ShowRandomEmotes());
+    }
 
     protected override void SpawnCompleted()
     {
@@ -22,13 +28,11 @@ public class HealerEnemy : Enemy
 
     private void TetherRandomEnemies()
     {
-        // Find all enemies within the tether radius that are not invincible
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, tetherRadius, enemyLayer);
         List<Enemy> potentialEnemies = new List<Enemy>();
 
         foreach (Collider2D hit in hits)
         {
-            // Check if the hit object is an enemy and is not already invincible
             if (hit.TryGetComponent<Enemy>(out Enemy enemy) && enemy != this && !enemy.isInvincible)
             {
                 potentialEnemies.Add(enemy);
@@ -41,25 +45,48 @@ public class HealerEnemy : Enemy
             return;
         }
 
-        // Shuffle the list of potential enemies and select up to maxTetheredEnemies
         while (tetheredEnemies.Count < maxTetheredEnemies && potentialEnemies.Count > 0)
         {
             int randomIndex = Random.Range(0, potentialEnemies.Count);
             Enemy selectedEnemy = potentialEnemies[randomIndex];
             tetheredEnemies.Add(selectedEnemy);
-            selectedEnemy.isInvincible = true; // Make the selected enemy invincible
+            selectedEnemy.isInvincible = true; 
             potentialEnemies.RemoveAt(randomIndex);
         }
 
         Debug.Log($"Totem tethered {tetheredEnemies.Count} enemies, making them invincible.");
     }
 
-
-
     public override void Die()
     {
         base.Die(); 
         UntetherEnemies();
+    }
+
+    private IEnumerator ShowRandomEmotes()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(Random.Range(3f, 8f));
+            
+            if (healingEmoji != null)
+            {
+                var emote = Instantiate(healingEmoji, transform.position + Vector3.up, Quaternion.identity);
+                emote.transform.SetParent(transform);
+                Destroy(emote, 1f);
+            }
+        }
+    }
+
+    public override void OnHit()
+    {
+        base.OnHit();
+        // Run away dramatically when hit
+        if (movement != null)
+        {
+            Vector2 awayFromPlayer = (transform.position - playerTransform.position).normalized;
+            movement.AddForce(awayFromPlayer * 5f);
+        }
     }
 
 
@@ -69,7 +96,7 @@ public class HealerEnemy : Enemy
         {
             if (enemy != null)
             {
-                enemy.isInvincible = false; // Remove invincibility from tethered enemies
+                enemy.isInvincible = false;
             }
         }
 
@@ -79,7 +106,6 @@ public class HealerEnemy : Enemy
 
     private void OnDrawGizmosSelected()
     {
-        // Draw the tether radius in the editor for visualization
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(transform.position, tetherRadius);
     }

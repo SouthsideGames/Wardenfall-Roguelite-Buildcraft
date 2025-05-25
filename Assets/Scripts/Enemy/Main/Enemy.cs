@@ -307,7 +307,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
         ChangeDirections();
     }
 
-    public void OnHit()
+    public virtual void OnHit()
     {
         if (status != null)
         {
