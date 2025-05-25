@@ -107,6 +107,16 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
         
         selectedCharacterIndex = _index;
         CharacterDataSO characterData = characterDatas[_index];
+        
+        foreach (var card in CardLibrary.Instance.allCards)
+            card.isUnlocked = false;
+
+        foreach (string id in characterData.startingCards)
+        {
+            CardSO card = CardLibrary.Instance.GetCardByID(id);
+            if (card != null) card.isUnlocked = true;
+        }
+
 
         if (characterUnlockStates[_index])
         {
@@ -118,7 +128,7 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
         }
         else
         {
-    
+
             characterInfo.Button.interactable = CurrencyManager.Instance.HasEnoughPremiumCurrency(characterData.PurchasePrice);
         }
 

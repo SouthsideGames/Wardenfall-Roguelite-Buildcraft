@@ -119,7 +119,9 @@ public class CardDraftManager : MonoBehaviour, IGameStateListener
             }
         }
 
-        List<CardSO> pool = cardLibrary.GetCardsByRarity(CardDraftRarityConfig.Pools[currentDraftType]);
+        List<string> characterPool = CharacterManager.Instance.CurrentCharacter.startingCards;
+        string currentCharacterID = CharacterManager.Instance.CurrentCharacter.ID;
+        List<CardSO> pool = cardLibrary.GetCardsByRarityAndID(CardDraftRarityConfig.Pools[currentDraftType], characterPool, currentCharacterID);
         cardsNeeded = (currentDraftType == DraftType.Major ? 3 : 2) + bonusDraftOptions - lockedCards.Count;
         List<CardSO> randomCards = cardLibrary.PickRandomCards(pool, cardsNeeded);
 
