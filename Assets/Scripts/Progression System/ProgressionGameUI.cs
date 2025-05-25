@@ -11,6 +11,29 @@ public class ProgressionGameUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI pointsText;
     [SerializeField] private TextMeshProUGUI levelText;
     [SerializeField] private AudioClip xpGainSound;
+    [SerializeField] private GameObject levelUpArrow;
+
+    private void Start()
+    {
+        levelUpArrow.SetActive(false);
+    }
+
+    private void OnEnable()
+    {
+        if (ProgressionManager.Instance != null)
+            ProgressionManager.Instance.OnLevelUp += HandleLevelUp;
+    }
+
+    private void OnDisable()
+    {
+        if (ProgressionManager.Instance != null)
+            ProgressionManager.Instance.OnLevelUp -= HandleLevelUp;
+    }
+
+    private void HandleLevelUp(int newLevel)
+    {
+        levelUpArrow.SetActive(true);
+    }
 
     public void Refresh()
     {

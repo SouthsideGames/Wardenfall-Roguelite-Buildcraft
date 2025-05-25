@@ -146,7 +146,7 @@ public class CardDraftManager : MonoBehaviour, IGameStateListener
         }
     }
 
-    private void RerollDraft()
+    public void RerollDraft()
     {
         if (rerollCount >= maxRerolls) return;
         rerollCount++;

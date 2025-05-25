@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
 
     public GameState gameState { get; private set; }
 
+    private bool _isProcessingWaveCompletion = false; 
+
     private void Awake()
     {
         if(Instance == null)
@@ -90,6 +92,15 @@ public class GameManager : MonoBehaviour
 
     public void WaveCompletedCallback()
     {
+        // Prevent multiple simultaneous calls
+        if (_isProcessingWaveCompletion)
+        {
+            Debug.LogWarning("WaveCompletedCallback already in progress, ignoring duplicate call");
+            return;
+        }
+
+        _isProcessingWaveCompletion = true;
+
         OnWaveCompleted?.Invoke();
 
         StatisticsManager.Instance.StopTimer();
@@ -109,6 +120,8 @@ public class GameManager : MonoBehaviour
 
         _postProgressionCallback = () =>
         {
+            _isProcessingWaveCompletion = false; // Reset flag when progression is complete
+
             if (isBossWave)
                 StartTraitSelection();
             else if (hasLevelUp || hasChest)
@@ -118,8 +131,8 @@ public class GameManager : MonoBehaviour
         };
 
         UIManager.Instance.ShowCharacterProgressionPanel();
-
     }
+
 
     
 
