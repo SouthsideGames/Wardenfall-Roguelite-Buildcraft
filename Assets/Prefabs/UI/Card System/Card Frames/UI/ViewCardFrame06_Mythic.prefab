@@ -299,11 +299,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d366f872ae5f4406b01f60449236844, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  icon: {fileID: 1697291721381882329}
+  lockButton: {fileID: 0}
+  lockedSprite: {fileID: 0}
+  unlockedSprite: {fileID: 0}
+  iconImage: {fileID: 0}
   nameText: {fileID: 3426529169813195905}
-  descriptionText: {fileID: 8585875257793019}
   costText: {fileID: 1392375049529367541}
+  descriptionText: {fileID: 8585875257793019}
   selectButton: {fileID: 7861616799629743116}
+  card: {fileID: 0}
 --- !u!1 &2595784331132505261
 GameObject:
   m_ObjectHideFlags: 0
@@ -1091,7 +1095,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 1241.7473, y: -14.09668}
-  m_SizeDelta: {x: 500, y: 700}
+  m_SizeDelta: {x: 500, y: 600}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &7861616799629743116
 MonoBehaviour:

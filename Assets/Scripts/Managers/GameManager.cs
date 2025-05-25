@@ -62,7 +62,14 @@ public class GameManager : MonoBehaviour
     public void StartWeaponSelect() => SetGameState(GameState.WeaponSelect);
     public void StartShop() => SetGameState(GameState.Shop);    
     public void StartTraitSelection() => SetGameState(GameState.TraitSelection);
-    public void StartCardDraft() => SetGameState(GameState.CardDraft);
+    public void StartCardDraft()
+    {
+        // Only start card draft if we're not in active gameplay
+        if (gameState != GameState.Game)
+        {
+            SetGameState(GameState.CardDraft);
+        }
+    }
 
     public void StartGameOver()
     {

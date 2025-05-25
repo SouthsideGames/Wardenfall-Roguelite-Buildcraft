@@ -216,6 +216,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 
     private void HandleWaveTransition()
     {
+         Debug.Log($"[Wave End] Timer hit: {timer:F2}");
         OnWaveCompleted?.Invoke();
 
         MissionIncrement();
@@ -234,8 +235,10 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         }
         else
         {
+           
             if (IsCurrentWaveBoss())
             {
+                Debug.Log("[WaveManager] Showing Major Draft after boss wave.");
                 FindAnyObjectByType<CardDraftManager>()?.ShowMajorDraft();
             }
 

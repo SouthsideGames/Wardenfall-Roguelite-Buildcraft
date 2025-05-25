@@ -63,6 +63,12 @@ public class CardDraftManager : MonoBehaviour, IGameStateListener
     {
         if (state == GameState.CardDraft)
         {
+            if (!WaveManager.Instance.IsCurrentWaveBoss())
+            {
+                Debug.LogWarning("Prevented draft from showing because current wave is not a boss.");
+                return;
+            }
+
             ShowDraft(DraftType.Major);
         }
         else
@@ -70,7 +76,7 @@ public class CardDraftManager : MonoBehaviour, IGameStateListener
             panel.SetActive(false);
         }
     }
-
+    
     public void ShowMajorDraft()
     {
         ShowDraft(DraftType.Major);

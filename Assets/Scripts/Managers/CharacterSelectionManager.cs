@@ -42,7 +42,7 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
         characterInfo.Button.onClick.RemoveAllListeners();
         characterInfo.Button.onClick.AddListener(PurchaseSelectedCharacter);
 
-        if (characterDatas.Length > 0)
+        if (characterDatas != null && characterDatas.Length > 0)
         {
             Initialize();
             CharacterSelectCallback(lastSelectedCharacterIndex);
@@ -104,19 +104,24 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
 
     private void CharacterSelectCallback(int _index)
     {
-        
         selectedCharacterIndex = _index;
         CharacterDataSO characterData = characterDatas[_index];
         
-        foreach (var card in CardLibrary.Instance.allCards)
-            card.isUnlocked = false;
-
-        foreach (string id in characterData.startingCards)
+        // Check if CardLibrary is initialized before accessing it
+        if (CardLibrary.Instance != null && CardLibrary.Instance.allCards != null)
         {
-            CardSO card = CardLibrary.Instance.GetCardByID(id);
-            if (card != null) card.isUnlocked = true;
-        }
+            foreach (var card in CardLibrary.Instance.allCards)
+                card.isUnlocked = false;
 
+            if (characterData.startingCards != null)
+            {
+                foreach (string id in characterData.startingCards)
+                {
+                    CardSO card = CardLibrary.Instance.GetCardByID(id);
+                    if (card != null) card.isUnlocked = true;
+                }
+            }
+        }
 
         if (characterUnlockStates[_index])
         {
@@ -127,7 +132,13 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
             OnCharacterSelected?.Invoke(characterData);
         }
         else
-            characterInfo.Button.interactable = CurrencyManager.Instance.HasEnoughPremiumCurrency(characterData.PurchasePrice);
+        {
+            // Check if CurrencyManager is initialized before accessing it
+            if (CurrencyManager.Instance != null)
+                characterInfo.Button.interactable = CurrencyManager.Instance.HasEnoughPremiumCurrency(characterData.PurchasePrice);
+            else
+                characterInfo.Button.interactable = false;
+        }
 
         characterInfo.ConfigureInfoPanel(characterData, characterUnlockStates[_index]);
     }

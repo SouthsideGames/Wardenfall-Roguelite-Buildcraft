@@ -197,19 +197,26 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
         musicState = true;
         vibrateState = true;
 
-        if(SaveManager.TryLoad(this, sfxKey, out object sfxStateObject))
+        if (SaveManager.TryLoad(this, sfxKey, out object sfxStateObject))
             sfxState = (bool)sfxStateObject;
 
-        if(SaveManager.TryLoad(this, musicKey, out object musicStateObject))
+        if (SaveManager.TryLoad(this, musicKey, out object musicStateObject))
             musicState = (bool)musicStateObject;
 
-        if(SaveManager.TryLoad(this, vibrateKey, out object vibrateStateObject))
+        if (SaveManager.TryLoad(this, vibrateKey, out object vibrateStateObject))
             vibrateState = (bool)vibrateStateObject;
 
 
         UpdateMusicVisuals();
         UpdateSFXVisuals();
         UpdateVibrateVisuals();
+        
+         if(!SaveManager.TryLoad(this, sfxKey, out _) || 
+           !SaveManager.TryLoad(this, musicKey, out _) || 
+           !SaveManager.TryLoad(this, vibrateKey, out _))
+        {
+            Save();
+        }
     }
 
     public void Save()
