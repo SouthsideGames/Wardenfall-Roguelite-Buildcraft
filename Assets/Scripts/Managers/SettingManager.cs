@@ -12,6 +12,8 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
     public static Action<bool> onSFXStateChanged;
     public static Action<bool> onMusicStateChanged;
     public static Action<bool> onVibrateStateChanged;
+    public static Action<bool> onColorblindSupportChanged;
+    public static Action<bool> onJoystickPositionChanged;
 
     [Header("ELEMENTS:")]
     [SerializeField] private Sprite offImage;
@@ -31,13 +33,20 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
     [Header("Reset")]
     [SerializeField] private GameObject resetConfirmationPanel;
 
+    [Header("ACCESSIBILITY")]
+    [SerializeField] private Button colorblindSupportButton;
+
     public bool sfxState;
     public bool musicState;
     public bool vibrateState;
+    public bool colorblindSupport;
+    public bool joystickOnRight; // true = right side, false = left side
 
     private const string sfxKey = "SFX";
     private const string musicKey = "Music";
     private const string vibrateKey = "Vibrate";
+    private const string colorblindKey = "ColorblindSupport";
+    private const string joystickPositionKey = "JoystickPosition";
 
     private float lastButtonPressTime;
     private const float buttonCooldown = 0.5f;
@@ -67,6 +76,9 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
         creditsButton.onClick.RemoveAllListeners();
         creditsButton.onClick.AddListener(CreditsButtonCallback);
 
+        colorblindSupportButton.onClick.RemoveAllListeners();
+        colorblindSupportButton.onClick.AddListener(ColorblindSupportButtonCallback);
+
     }
 
     private void Start() 
@@ -76,6 +88,8 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
         onSFXStateChanged?.Invoke(sfxState);
         onMusicStateChanged?.Invoke(musicState);    
         onVibrateStateChanged?.Invoke(vibrateState);
+        onColorblindSupportChanged?.Invoke(colorblindSupport);
+        onJoystickPositionChanged?.Invoke(joystickOnRight);
     }
 
     private void AskButtonCallback()
@@ -127,6 +141,19 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
         onVibrateStateChanged?.Invoke(vibrateState);
     }
 
+    private void ColorblindSupportButtonCallback()
+    {
+        if (Time.time - lastButtonPressTime < buttonCooldown) return;
+        lastButtonPressTime = Time.time;
+
+        colorblindSupport = !colorblindSupport;
+
+        UpdateColorblindSupportVisuals();
+
+        Save();
+
+        onColorblindSupportChanged?.Invoke(colorblindSupport);
+    }
 
     private void UpdateSFXVisuals()
     {
@@ -170,6 +197,20 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
         }
     }
 
+    private void UpdateColorblindSupportVisuals()
+    {
+        if(colorblindSupport)
+        {
+            colorblindSupportButton.image.sprite = onImage;
+            colorblindSupportButton.GetComponentInChildren<TextMeshProUGUI>().text = "ON";
+        }
+        else 
+        {
+            colorblindSupportButton.image.sprite = offImage;
+            colorblindSupportButton.GetComponentInChildren<TextMeshProUGUI>().text = "OFF";
+        }
+    }
+
     public void OpenResetConfirmation()
     {
         resetConfirmationPanel.SetActive(true);
@@ -196,6 +237,8 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
         sfxState = true;
         musicState = true;
         vibrateState = true;
+        colorblindSupport = false; // Always default to false on restart
+        joystickOnRight = false; // Default to left side
 
         if (SaveManager.TryLoad(this, sfxKey, out object sfxStateObject))
             sfxState = (bool)sfxStateObject;
@@ -206,14 +249,22 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
         if (SaveManager.TryLoad(this, vibrateKey, out object vibrateStateObject))
             vibrateState = (bool)vibrateStateObject;
 
+        // Don't load colorblind setting - always start with false
+        // if (SaveManager.TryLoad(this, colorblindKey, out object colorblindStateObject))
+        //     colorblindSupport = (bool)colorblindStateObject;
+
+        if (SaveManager.TryLoad(this, joystickPositionKey, out object joystickPositionObject))
+            joystickOnRight = (bool)joystickPositionObject;
 
         UpdateMusicVisuals();
         UpdateSFXVisuals();
         UpdateVibrateVisuals();
-        
+        UpdateColorblindSupportVisuals();
+ 
          if(!SaveManager.TryLoad(this, sfxKey, out _) || 
            !SaveManager.TryLoad(this, musicKey, out _) || 
-           !SaveManager.TryLoad(this, vibrateKey, out _))
+           !SaveManager.TryLoad(this, vibrateKey, out _) ||
+           !SaveManager.TryLoad(this, joystickPositionKey, out _))
         {
             Save();
         }
@@ -224,5 +275,7 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
         SaveManager.Save(this, sfxKey, sfxState);
         SaveManager.Save(this, musicKey, musicState);
         SaveManager.Save(this, vibrateKey, vibrateState);
+        SaveManager.Save(this, colorblindKey, colorblindSupport);
+        SaveManager.Save(this, joystickPositionKey, joystickOnRight);
     }
 }

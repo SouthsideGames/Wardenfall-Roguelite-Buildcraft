@@ -33,6 +33,13 @@ public class ShopManager : MonoBehaviour, IGameStateListener
         InputManager.OnScroll += ScrollCallback;
     }
 
+    private void OnEnable()
+    {
+        // Ensure we don't double-subscribe
+        CurrencyManager.onCurrencyUpdate -= CurrencyUpdatedCallback;
+        CurrencyManager.onCurrencyUpdate += CurrencyUpdatedCallback;
+    }
+
     private void OnDestroy()
     {
         ShopItemContainerUI.onPurchased -= ItemPurchasedCallback;
@@ -96,7 +103,16 @@ public class ShopManager : MonoBehaviour, IGameStateListener
 
     private void UpdateRerollVisuals()
     {
-        int effectiveRerollCost = ProgressionManager.Instance.progressionEffectManager.HasFreeOrDiscountReroll ? Mathf.Max(0, rerollPrice - 1) : rerollPrice;
+        if (rerollPriceText == null || rerollButton == null)
+        {
+            Debug.LogWarning("ShopManager: UI references missing during UpdateRerollVisuals.");
+            return;
+        }
+
+        int effectiveRerollCost = ProgressionManager.Instance.progressionEffectManager.HasFreeOrDiscountReroll 
+            ? Mathf.Max(0, rerollPrice - 1) 
+            : rerollPrice;
+
         rerollPriceText.text = effectiveRerollCost.ToString();
         rerollButton.interactable = CurrencyManager.Instance.HasEnoughCurrency(effectiveRerollCost);
 
