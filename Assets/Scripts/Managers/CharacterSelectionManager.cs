@@ -113,11 +113,10 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
             foreach (var card in CardLibrary.Instance.allCards)
                 card.isUnlocked = false;
 
-            if (characterData.startingCards != null)
+            if (characterData.StartingCards != null)
             {
-                foreach (string id in characterData.startingCards)
+                foreach (CardSO card in characterData.StartingCards)
                 {
-                    CardSO card = CardLibrary.Instance.GetCardByID(id);
                     if (card != null) card.isUnlocked = true;
                 }
             }

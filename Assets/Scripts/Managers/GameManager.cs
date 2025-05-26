@@ -11,13 +11,10 @@ public class GameManager : MonoBehaviour
     public static Action OnGamePaused;
     public static Action OnGameResumed; 
     public static Action OnWaveCompleted;
-    private Action _postProgressionCallback;
 
     [HideInInspector] public float runStartTime;
 
     public GameState gameState { get; private set; }
-
-    private bool _isProcessingWaveCompletion = false; 
 
     private void Awake()
     {
@@ -62,14 +59,7 @@ public class GameManager : MonoBehaviour
     public void StartWeaponSelect() => SetGameState(GameState.WeaponSelect);
     public void StartShop() => SetGameState(GameState.Shop);    
     public void StartTraitSelection() => SetGameState(GameState.TraitSelection);
-    public void StartCardDraft()
-    {
-        // Only start card draft if we're not in active gameplay
-        if (gameState != GameState.Game)
-        {
-            SetGameState(GameState.CardDraft);
-        }
-    }
+    public void StartCardDraft() => SetGameState(GameState.CardDraft);
 
     public void StartGameOver()
     {
@@ -81,72 +71,25 @@ public class GameManager : MonoBehaviour
 
         UIManager.Instance.UpdateGameoverPanel();
         SetGameState(GameState.GameOver); 
-    }  
+    }
 
 
     public void SetGameState(GameState _gameState)
     {
         gameState = _gameState;
 
-        IEnumerable<IGameStateListener> gameStateListeners = 
+        IEnumerable<IGameStateListener> gameStateListeners =
             FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None)
-            .OfType<IGameStateListener>();   
+            .OfType<IGameStateListener>();
 
-        foreach(IGameStateListener gameStateListener in gameStateListeners) 
+        foreach (IGameStateListener gameStateListener in gameStateListeners)
             gameStateListener.GameStateChangedCallback(_gameState);
-
-    }
-
-    public void WaveCompletedCallback()
-    {
-        // Prevent multiple simultaneous calls
-        if (_isProcessingWaveCompletion)
+            
+        if (_gameState == GameState.Progression)
         {
-            Debug.LogWarning("WaveCompletedCallback already in progress, ignoring duplicate call");
-            return;
+            UIManager.Instance.ShowCharacterProgressionPanel();
         }
 
-        _isProcessingWaveCompletion = true;
-
-        OnWaveCompleted?.Invoke();
-
-        StatisticsManager.Instance.StopTimer();
-        StatisticsManager.Instance.EndRun();
-
-        // Always award XP
-        int difficultyMultiplier = 1;
-        int traitCount = TraitManager.Instance.GetActiveTraitCount();
-        int waveNumber = WaveManager.Instance.currentWaveIndex;
-        int metaXP = ProgressionXPGranter.CalculateMetaXP(waveNumber, difficultyMultiplier, traitCount);
-        ProgressionManager.Instance.AddMetaXP(metaXP);
-
-        // Determine what to do after progression screen
-        bool hasLevelUp = CharacterManager.Instance.HasLeveledUp();
-        bool hasChest = WaveTransitionManager.Instance.HasCollectedChest();
-        bool isBossWave = WaveManager.Instance.IsCurrentWaveBoss();
-
-        _postProgressionCallback = () =>
-        {
-            _isProcessingWaveCompletion = false; // Reset flag when progression is complete
-
-            if (isBossWave)
-                StartTraitSelection();
-            else if (hasLevelUp || hasChest)
-                SetGameState(GameState.WaveTransition);
-            else
-                SetGameState(GameState.Shop);
-        };
-
-        UIManager.Instance.ShowCharacterProgressionPanel();
-    }
-
-
-    
-
-    public void RunPostProgressionCallback()
-    {
-        _postProgressionCallback?.Invoke();
-        _postProgressionCallback = null;
     }
 
     public void ManageGameOver() => SceneManager.LoadScene(0);

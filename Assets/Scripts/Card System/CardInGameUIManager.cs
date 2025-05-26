@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InGameCardUIManager : MonoBehaviour
+public class CardInGameUIManager : MonoBehaviour
 {
     [SerializeField] private Transform cardSlotContainer;
     [SerializeField] private InGameCardSlotUI cardSlotPrefab;

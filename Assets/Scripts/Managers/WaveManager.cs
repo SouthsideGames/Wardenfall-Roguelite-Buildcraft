@@ -57,7 +57,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         if (timer < waveDuration)
             HandleWaveProgression();
         else
-            HandleWaveTransition();
+            WaveWrapUp();
 
     }
 
@@ -67,7 +67,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         hasWaveStarted = true;
         timer = 0;
 
-        FindAnyObjectByType<InGameCardUIManager>()?.ResetAllCooldowns();
+        FindAnyObjectByType<CardInGameUIManager>()?.ResetAllCooldowns();
 
         UpdateUIForWaveStart();
     }
@@ -214,36 +214,23 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         }
     }
 
-    private void HandleWaveTransition()
+    private void WaveWrapUp()
     {
-         Debug.Log($"[Wave End] Timer hit: {timer:F2}");
         OnWaveCompleted?.Invoke();
 
         MissionIncrement();
         DefeatAllEnemies();
         hasWaveStarted = false;
+
+        if (currentWaveIndex + 1 >= wave.Length)
+        {
+            EndGame();
+            return;
+        }
+
         currentWaveIndex++;
 
-       HandleWaveBasedTransition();
-    }
-
-    private void HandleWaveBasedTransition()
-    {
-        if (currentWaveIndex >= wave.Length)
-        {
-            EndWaveBasedStage();
-        }
-        else
-        {
-           
-            if (IsCurrentWaveBoss())
-            {
-                Debug.Log("[WaveManager] Showing Major Draft after boss wave.");
-                FindAnyObjectByType<CardDraftManager>()?.ShowMajorDraft();
-            }
-
-            GameManager.Instance.WaveCompletedCallback();
-        }
+       GameManager.Instance.SetGameState(GameState.Progression);
     }
 
     public bool IsCurrentWaveBoss() 
@@ -263,7 +250,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         ui.UpdateTimerText(((int)(waveDuration - timer)).ToString());
     }
 
-    private void EndWaveBasedStage()
+    private void EndGame()
     {
         // Update final stage statistics
         var stats = StatisticsManager.Instance.currentStatistics;

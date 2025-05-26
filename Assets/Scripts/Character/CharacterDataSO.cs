@@ -14,7 +14,7 @@ public class CharacterDataSO : ScriptableObject
     [field: SerializeField] public int PurchasePrice { get; private set; }   
     [SerializeField] private CharacterRarityType rarity;     
     public CharacterRarityType Rarity => rarity;
-    public List<string> startingCards;
+    [field: SerializeField] public List<CardSO> StartingCards { get; private set; }
 
     [HorizontalLine]
     [SerializeField, Tooltip("Base attack damage.")] private float attack;

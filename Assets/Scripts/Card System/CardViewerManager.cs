@@ -7,13 +7,13 @@ public class CardViewerManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI currentCostText;
 
     [Header("VIEW CARD RARITY PREFABS")]
-    [SerializeField] private ViewCardOptionUI commonOptionPrefab;
-    [SerializeField] private ViewCardOptionUI uncommonOptionPrefab;
-    [SerializeField] private ViewCardOptionUI rareOptionPrefab;
-    [SerializeField] private ViewCardOptionUI epicOptionPrefab;
-    [SerializeField] private ViewCardOptionUI legendaryOptionPrefab;
-    [SerializeField] private ViewCardOptionUI mythicOptionPrefab;
-    [SerializeField] private ViewCardOptionUI exaltedOptionPrefab;
+    [SerializeField] private CardViewOptionUI commonOptionPrefab;
+    [SerializeField] private CardViewOptionUI uncommonOptionPrefab;
+    [SerializeField] private CardViewOptionUI rareOptionPrefab;
+    [SerializeField] private CardViewOptionUI epicOptionPrefab;
+    [SerializeField] private CardViewOptionUI legendaryOptionPrefab;
+    [SerializeField] private CardViewOptionUI mythicOptionPrefab;
+    [SerializeField] private CardViewOptionUI exaltedOptionPrefab;
 
     [Header("VIEW CARD PANEL")]
     [SerializeField] private GameObject viewCardPanel;
@@ -35,15 +35,15 @@ public class CardViewerManager : MonoBehaviour
 
         foreach (CardSO card in CharacterManager.Instance.cards.Deck)
         {
-            ViewCardOptionUI prefabToUse = GetPrefabByRarity(card.rarity);
+            CardViewOptionUI prefabToUse = GetPrefabByRarity(card.rarity);
             if (prefabToUse == null) continue;
 
-            ViewCardOptionUI newCardUI = Instantiate(prefabToUse, currentCardContainer);
+            CardViewOptionUI newCardUI = Instantiate(prefabToUse, currentCardContainer);
             newCardUI.Configure(card);
         }
     }
 
-    private ViewCardOptionUI GetPrefabByRarity(CardRarity rarity)
+    private CardViewOptionUI GetPrefabByRarity(CardRarity rarity)
     {
         return rarity switch
         {

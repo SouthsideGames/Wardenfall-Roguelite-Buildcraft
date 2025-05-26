@@ -76,5 +76,34 @@ public class ProgressionGameUI : MonoBehaviour
         LeanTween.scale(pointsText.gameObject, Vector3.one * 1.1f, 0.3f).setEasePunch();
     }
 
-    public void OnContinuePressed() => GameManager.Instance.RunPostProgressionCallback();
+    public void OnContinuePressed()
+    {
+
+        StatisticsManager.Instance.StopTimer();
+        StatisticsManager.Instance.EndRun();
+
+        // Always award XP
+        int difficultyMultiplier = 1;
+        int traitCount = TraitManager.Instance.GetActiveTraitCount();
+        int waveNumber = WaveManager.Instance.currentWaveIndex;
+        int metaXP = ProgressionXPGranter.CalculateMetaXP(waveNumber, difficultyMultiplier, traitCount);
+        ProgressionManager.Instance.AddMetaXP(metaXP);
+
+        bool isBossWave = WaveManager.Instance.IsCurrentWaveBoss();
+        bool hasChest = WaveTransitionManager.Instance.HasCollectedChest();
+        bool hasLevelUp = CharacterManager.Instance.HasLeveledUp();
+
+        if (hasChest || hasLevelUp)
+        {
+            GameManager.Instance.SetGameState(GameState.WaveTransition);
+        }
+        else if (isBossWave)
+        {
+            GameManager.Instance.SetGameState(GameState.TraitSelection);
+        }
+        else
+        {
+            GameManager.Instance.StartShop(); // sets GameState to Shop
+        }
+    }
 }

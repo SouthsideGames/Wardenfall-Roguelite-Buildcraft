@@ -10,6 +10,7 @@ public enum GameState
     WeaponSelect,
     Game,
     GameOver,
+    Progression,
     StageCompleted,
     WaveTransition,
     CardDraft,

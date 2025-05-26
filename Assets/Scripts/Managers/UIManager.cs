@@ -64,6 +64,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
             weaponSelectPanel,
             gamePanel,
             gameoverPanel,
+            progressionPanel,
             stageCompletePanel,
             waveTransitionPanel,
             traitSelectTransitionPanel,
@@ -84,7 +85,6 @@ public class UIManager : MonoBehaviour, IGameStateListener
         HideMissionPanel();
         HideAllBlockers();
         HideEquipmentSelectPanel();
-        HideProgressionTreeSelectPanel();
 
     }
 
@@ -119,6 +119,10 @@ public class UIManager : MonoBehaviour, IGameStateListener
                 break;
             case GameState.GameOver:
                 ShowPanel(gameoverPanel);
+                break;
+            case GameState.Progression:
+                ShowPanel(progressionPanel);
+                ProgressionManager.Instance.progressionGameUI.Refresh();
                 break;
             case GameState.StageCompleted:
                 ShowPanel(stageCompletePanel);
@@ -276,21 +280,6 @@ public class UIManager : MonoBehaviour, IGameStateListener
         menuPanel.SetActive(true);
         TriggerPanelAction(equipmentPanel);
     }
-
-    public void ShowProgressionTreeSelectPanel()
-    {
-        progressionTreePanel.SetActive(true);
-        TriggerPanelAction(progressionTreePanel);
-        menuPanel.SetActive(false);
-    }
-
-    public void HideProgressionTreeSelectPanel()
-    {
-        progressionTreePanel.SetActive(false);
-        menuPanel.SetActive(true);
-        TriggerPanelAction(progressionTreePanel);
-    }
-
 
     public void ShowCharacterProgressionPanel()
     {

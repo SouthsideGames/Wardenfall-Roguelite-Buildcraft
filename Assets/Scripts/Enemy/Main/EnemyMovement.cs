@@ -45,11 +45,24 @@ public class EnemyMovement : MonoBehaviour
 
     private Vector2 startPosition;
 
-    private void Start()
+    private void Awake()
+    {
+        LeanTween.init(1200);
+    }
+
+   private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        currentTarget = CharacterManager.Instance.transform;
+
+        if (CharacterManager.Instance != null)
+            currentTarget = CharacterManager.Instance.transform;
+
         startPosition = transform.position;
+    }
+
+    private void OnDestroy()
+    {
+        LeanTween.cancel(gameObject); // prevent ghost tweens
     }
 
     private void FixedUpdate()
@@ -61,10 +74,6 @@ public class EnemyMovement : MonoBehaviour
             Vector2 direction = ((Vector2)currentTarget.position - (Vector2)transform.position).normalized;
             Vector2 newPos = (Vector2)transform.position + direction * moveSpeed * Time.fixedDeltaTime + externalForce * Time.fixedDeltaTime;
             rb.MovePosition(newPos);
-
-            float moveScale = Mathf.Abs(direction.x) > 0.1f || Mathf.Abs(direction.y) > 0.1f ? 1.1f : 1f;
-            LeanTween.scale(gameObject, new Vector3(moveScale, 1f/moveScale, 1f), 0.1f).setEaseOutQuad();
-
             externalForce = Vector2.Lerp(externalForce, Vector2.zero, Time.deltaTime * 5f);
         }
     }

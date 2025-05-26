@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class ViewCardOptionUI : MonoBehaviour
+public class CardViewOptionUI : MonoBehaviour
 {
      [Header("UI Elements")]
     [SerializeField] private Image icon;

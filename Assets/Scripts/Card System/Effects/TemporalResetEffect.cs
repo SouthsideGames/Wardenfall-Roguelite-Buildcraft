@@ -7,7 +7,7 @@ public class TemporalResetEffect : MonoBehaviour, ICardEffect
         if (target == null)
             return;
 
-        InGameCardUIManager uiManager = FindAnyObjectByType<InGameCardUIManager>();
+        CardInGameUIManager uiManager = FindAnyObjectByType<CardInGameUIManager>();
         if (uiManager != null)
             uiManager.ResetAllCooldowns();
 

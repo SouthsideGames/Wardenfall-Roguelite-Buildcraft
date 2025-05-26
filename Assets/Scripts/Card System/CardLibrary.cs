@@ -27,12 +27,14 @@ public class CardLibrary : ScriptableObject, IWantToBeSaved
         return allCards.Find(card => card.cardID == id);
     }
 
-    public List<CardSO> GetCardsByRarityAndID(CardRarity[] rarities, List<string> startingCards, string currentCharacterID)
+    public List<CardSO> GetCardsByRarityAndID(CardRarity[] rarities, List<string> excludedCardIDs, string currentCharacterID)
     {
+        var temporaryUnlocks = CharacterManager.Instance?.TemporaryUnlockedCards ?? new List<CardSO>();
+
         return allCards.Where(card =>
             rarities.Contains(card.rarity) &&
-            startingCards.Contains(card.cardID) &&
-            card.isUnlocked
+            !excludedCardIDs.Contains(card.cardID) &&
+            (card.isUnlocked || temporaryUnlocks.Contains(card))
         ).ToList();
     }
 

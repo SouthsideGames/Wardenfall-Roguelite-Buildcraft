@@ -127,7 +127,19 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
         TraitSelectionManager.Instance.OpenTraitSelection(); 
     }
 
-    private void BonusSelectedCallback() => GameManager.Instance.WaveCompletedCallback();
+    private void BonusSelectedCallback()
+    {
+        bool isBossWave = WaveManager.Instance.IsCurrentWaveBoss();
+
+        if (isBossWave)
+        {
+            GameManager.Instance.SetGameState(GameState.TraitSelection);
+        }
+        else
+        {
+            GameManager.Instance.SetGameState(GameState.Shop);
+        }
+    }
 
     private Action GetActionToPeform(Stat _characterStat, out string _buttonString)    
     {

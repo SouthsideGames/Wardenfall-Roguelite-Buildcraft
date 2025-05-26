@@ -51,7 +51,12 @@ public class CharacterLevel : MonoBehaviour
         levelsEarned++;
         UpdateRequiredXP();
 
-        FindAnyObjectByType<CardDraftManager>()?.ShowMiniDraft();
+        //if the player reaches a level that is a multiple of 5, pause the game and do mini draft
+        if(level % 5 == 0)
+        {
+            CardDraftManager.Instance.ShowMiniDraft();
+        }
+        
     }
 
     public bool HasLeveledUp()

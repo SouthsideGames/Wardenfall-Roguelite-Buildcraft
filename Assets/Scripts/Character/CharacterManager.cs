@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterHealth))]
@@ -23,28 +24,30 @@ public class CharacterManager : MonoBehaviour
     public CharacterHealth health { get; private set; }
     public CharacterStats stats { get; private set; }
     public CharacterController controller { get; private set; }
-    public CharacterCards cards {get; private set; }
-    public CharacterEquipment equipment {get; private set;}
-    public CharacterDatabase database {get; private set;}
+    public CharacterCards cards { get; private set; }
+    public CharacterEquipment equipment { get; private set; }
+    public CharacterDatabase database { get; private set; }
     [SerializeField] private CircleCollider2D _col;
-    public SpriteRenderer _sr {get; private set; }
+    public SpriteRenderer _sr { get; private set; }
     private CharacterDataSO characterData;
     public CharacterDataSO CurrentCharacter => characterData;
-    
-    
+
+    public List<CardSO> TemporaryUnlockedCards { get; private set; } = new List<CardSO>();
+
+
     private void Awake()
     {
-        if(Instance == null)
-           Instance = this;
+        if (Instance == null)
+            Instance = this;
         else
             Destroy(gameObject);
 
-        health = GetComponent<CharacterHealth>();  
+        health = GetComponent<CharacterHealth>();
         level = GetComponent<CharacterLevel>();
-        weapon = GetComponent<CharacterWeapon>(); 
-        anim = GetComponent<CharacterAnimator>();  
+        weapon = GetComponent<CharacterWeapon>();
+        anim = GetComponent<CharacterAnimator>();
         stats = GetComponent<CharacterStats>();
-        controller = GetComponent<CharacterController>(); 
+        controller = GetComponent<CharacterController>();
         cards = GetComponent<CharacterCards>();
         database = GetComponent<CharacterDatabase>();
         equipment = GetComponent<CharacterEquipment>();
@@ -53,7 +56,7 @@ public class CharacterManager : MonoBehaviour
         CharacterSelectionManager.OnCharacterSelected += CharacterSelectionCallback;
     }
 
-    private void OnDestroy() =>  CharacterSelectionManager.OnCharacterSelected -= CharacterSelectionCallback;
+    private void OnDestroy() => CharacterSelectionManager.OnCharacterSelected -= CharacterSelectionCallback;
     public void TakeDamage(int _damage) => health.TakeDamage(_damage);
     public Vector2 GetColliderCenter() => (Vector2)transform.position + _col.offset;
     public bool HasLeveledUp() => level.HasLeveledUp();
@@ -63,16 +66,22 @@ public class CharacterManager : MonoBehaviour
         characterData = _characterData;
         StatisticsManager.Instance.RecordCharacterUsage(_characterData.ID);
         _sr.sprite = _characterData.Icon;
-    } 
+    }
 
     public Vector2 GetAimDirection()
     {
         Vector2 aimDirection = controller.MoveDirection;
 
         if (aimDirection == Vector2.zero)
-            aimDirection = Vector2.right; 
+            aimDirection = Vector2.right;
 
         return aimDirection.normalized;
+    }
+    
+    public void SetCurrentCharacter(CharacterDataSO characterData)
+    {
+        
+        TemporaryUnlockedCards = new List<CardSO>(characterData.StartingCards);
     }
         
 }

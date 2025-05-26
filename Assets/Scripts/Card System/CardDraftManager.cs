@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -63,12 +64,6 @@ public class CardDraftManager : MonoBehaviour, IGameStateListener
     {
         if (state == GameState.CardDraft)
         {
-            if (!WaveManager.Instance.IsCurrentWaveBoss())
-            {
-                Debug.LogWarning("Prevented draft from showing because current wave is not a boss.");
-                return;
-            }
-
             ShowDraft(DraftType.Major);
         }
         else
@@ -125,7 +120,9 @@ public class CardDraftManager : MonoBehaviour, IGameStateListener
             }
         }
 
-        List<string> characterPool = CharacterManager.Instance.CurrentCharacter.startingCards;
+        List<string> characterPool = CharacterManager.Instance.CurrentCharacter.StartingCards
+            .Select(card => card.cardID)
+            .ToList();
         string currentCharacterID = CharacterManager.Instance.CurrentCharacter.ID;
         List<CardSO> pool = cardLibrary.GetCardsByRarityAndID(CardDraftRarityConfig.Pools[currentDraftType], characterPool, currentCharacterID);
         cardsNeeded = (currentDraftType == DraftType.Major ? 3 : 2) + bonusDraftOptions - lockedCards.Count;
