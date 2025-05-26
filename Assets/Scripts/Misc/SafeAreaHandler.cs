@@ -1,27 +1,40 @@
-
 using UnityEngine;
 
 public class SafeAreaHandler : MonoBehaviour
 {
+    [Header("Safe Area Settings")]
+    [SerializeField] private bool applyToX = true;
+    [SerializeField] private bool applyToY = true;
+    [SerializeField] private bool conformX = true;
+    [SerializeField] private bool conformY = true;
+    
     private RectTransform rectTransform;
     private Rect lastSafeArea = Rect.zero;
-    private Vector2 anchorMin;
-    private Vector2 anchorMax;
+    private Vector2 lastScreenSize = Vector2.zero;
+    private ScreenOrientation lastOrientation = ScreenOrientation.AutoRotation;
 
     void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
-        anchorMin = rectTransform.anchorMin;
-        anchorMax = rectTransform.anchorMax;
+        lastOrientation = Screen.orientation;
+        lastScreenSize = new Vector2(Screen.width, Screen.height);
         ApplySafeArea();
     }
 
     void Update()
     {
-        if (lastSafeArea != Screen.safeArea)
+        if (HasChanged())
         {
             ApplySafeArea();
         }
+    }
+
+    private bool HasChanged()
+    {
+        return lastSafeArea != Screen.safeArea || 
+               lastScreenSize.x != Screen.width || 
+               lastScreenSize.y != Screen.height ||
+               lastOrientation != Screen.orientation;
     }
 
     void ApplySafeArea()
@@ -30,16 +43,34 @@ public class SafeAreaHandler : MonoBehaviour
             return;
 
         Rect safeArea = Screen.safeArea;
-        Vector2 anchorMinNew = safeArea.position;
-        Vector2 anchorMaxNew = safeArea.position + safeArea.size;
-        anchorMinNew.x /= Screen.width;
-        anchorMinNew.y /= Screen.height;
-        anchorMaxNew.x /= Screen.width;
-        anchorMaxNew.y /= Screen.height;
+        Vector2 anchorMin = safeArea.position;
+        Vector2 anchorMax = safeArea.position + safeArea.size;
+        
+        anchorMin.x /= Screen.width;
+        anchorMin.y /= Screen.height;
+        anchorMax.x /= Screen.width;
+        anchorMax.y /= Screen.height;
 
-        rectTransform.anchorMin = new Vector2(anchorMin.x + anchorMinNew.x, anchorMin.y + anchorMinNew.y);
-        rectTransform.anchorMax = new Vector2(anchorMax.x * anchorMaxNew.x, anchorMax.y * anchorMaxNew.y);
+        if (conformX)
+        {
+            if (applyToX)
+            {
+                rectTransform.anchorMin = new Vector2(anchorMin.x, rectTransform.anchorMin.y);
+                rectTransform.anchorMax = new Vector2(anchorMax.x, rectTransform.anchorMax.y);
+            }
+        }
+        
+        if (conformY)
+        {
+            if (applyToY)
+            {
+                rectTransform.anchorMin = new Vector2(rectTransform.anchorMin.x, anchorMin.y);
+                rectTransform.anchorMax = new Vector2(rectTransform.anchorMax.x, anchorMax.y);
+            }
+        }
 
         lastSafeArea = Screen.safeArea;
+        lastScreenSize = new Vector2(Screen.width, Screen.height);
+        lastOrientation = Screen.orientation;
     }
 }
