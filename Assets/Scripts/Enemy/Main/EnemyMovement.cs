@@ -28,22 +28,28 @@ public class EnemyMovement : MonoBehaviour
     public bool chasePlayer = true;
     public bool wander = false;
     public bool patrol = false;
+    public bool multiCharge = false;
+
+
+    [Header("Patrol Settings")]
     [SerializeField] private Vector2[] patrolPoints;
     private int currentPatrolIndex = 0;
     private float patrolTimer = 0f;
     [SerializeField] private float patrolWaitTime = 1f;
     [SerializeField] private float patrolPointReachedDistance = 0.1f;
 
+    [Header("Wandering Settings")]
     private Vector2 wanderPoint;
     [SerializeField] private float wanderRadius = 5f;
     private float wanderTimer = 0f;
     [SerializeField] private float minWanderWaitTime = 2f;
     [SerializeField] private float maxWanderWaitTime = 5f;
     [SerializeField] private float wanderPointReachedDistance = 0.1f;
-    [SerializeField] private LayerMask obstacleLayer; 
-    private Vector2 externalForce;
     [SerializeField] private float maxDistanceFromStart = 10f;
 
+    [Header("Additional Settings")]
+    [SerializeField] private LayerMask obstacleLayer; 
+    private Vector2 externalForce;
     [SerializeField] private float detectionRange = 5f;
 
     private Vector2 startPosition;

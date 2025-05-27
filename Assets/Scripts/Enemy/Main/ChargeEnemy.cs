@@ -10,6 +10,9 @@ public class ChargeEnemy : Enemy
     [SerializeField] private float chargeSpeed = 20f; 
     [SerializeField] private float chargeDistance = 10f;
     [SerializeField] private float cooldownTime = 3f;
+    [SerializeField] private bool multiCharge = false;
+    [SerializeField] private int numberOfCharges = 3;
+    [SerializeField] private float interChargeDelay = 0.4f;
 
     [Header("EFFECTS:")]
     private bool attackPerformed = false; 
@@ -31,21 +34,30 @@ public class ChargeEnemy : Enemy
         base.Update();
 
         if (!isCharging)
-            ChargeRoutine();
+            StartCoroutine(ChargeRoutine());
     }
 
     private IEnumerator ChargeRoutine()
     {
-        isCharging = true; 
-        attackPerformed = false; 
+        isCharging = true;
 
-        yield return Grow();
-        LocatePlayer();
-        yield return DashTowardsPlayer();
-        yield return Shrink();
+        int charges = multiCharge ? numberOfCharges : 1;
+
+        for (int i = 0; i < charges; i++)
+        {
+            attackPerformed = false;
+
+            yield return Grow();
+            LocatePlayer();
+            yield return DashTowardsPlayer();
+            yield return Shrink();
+
+            if (i < charges - 1)
+                yield return new WaitForSeconds(interChargeDelay);
+        }
 
         yield return new WaitForSeconds(cooldownTime);
-        isCharging = false; 
+        isCharging = false;
     }
 
     private IEnumerator Grow()
