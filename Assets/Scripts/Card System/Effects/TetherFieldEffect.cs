@@ -10,7 +10,7 @@ public class TetherFieldEffect : MonoBehaviour, ICardEffect
     [SerializeField] private float damageSharePercent = 0.5f;
     [SerializeField] private LayerMask enemyMask;
 
-    private List<TetheredHelper> tetheredEnemies = new();
+    private List<EnemyTetheredHelper> tetheredEnemies = new();
 
     public void Activate(CharacterManager target, CardSO card)
     {
@@ -27,7 +27,7 @@ public class TetherFieldEffect : MonoBehaviour, ICardEffect
 
         foreach (var col in colliders)
         {
-            if (col.TryGetComponent(out TetheredHelper tether) && !tether.enabled)
+            if (col.TryGetComponent(out EnemyTetheredHelper tether) && !tether.enabled)
             {
                 tether.enabled = true;
                 tether.Initialize(damageSharePercent);

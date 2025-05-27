@@ -12,7 +12,7 @@ public class EnemyStatus : MonoBehaviour
     private float slowFactor;
 
     private Dictionary<StatusEffectType, ActiveEffect> activeEffects = new();
-    private StatusEffectUIManager statusUI;
+    private EnemyStatusEffectUI statusUI;
 
     [SerializeField] private List<StatusEffectType> immunities = new List<StatusEffectType>();
     [SerializeField] private float statusResistance = 0f;
@@ -23,7 +23,7 @@ public class EnemyStatus : MonoBehaviour
     {
         movement = GetComponent<EnemyMovement>();
         enemy = GetComponent<Enemy>();
-        statusUI = GetComponent<StatusEffectUIManager>();
+        statusUI = GetComponent<EnemyStatusEffectUI>();
 
         if (movement == null)
             Debug.LogError("EnemyMovement script not found on " + gameObject.name);

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Collections;
 
-public class StatusEffectUIManager : MonoBehaviour
+public class EnemyStatusEffectUI : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Transform iconAnchor;

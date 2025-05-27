@@ -2,12 +2,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Enemy))]
-public class TetheredHelper : MonoBehaviour
+public class EnemyTetheredHelper : MonoBehaviour
 {
     private Enemy enemy;
     private float lastHealth;
     private float damageSharePercent;
-    private List<TetheredHelper> tetherGroup;
+    private List<EnemyTetheredHelper> tetherGroup;
 
     private void Awake()
     {
@@ -21,7 +21,7 @@ public class TetheredHelper : MonoBehaviour
         lastHealth = enemy.CurrentHealth;
     }
 
-    public void SetTetherGroup(List<TetheredHelper> group)
+    public void SetTetherGroup(List<EnemyTetheredHelper> group)
     {
         tetherGroup = group;
     }
