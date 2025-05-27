@@ -167,11 +167,11 @@ public class UIScaleManager : MonoBehaviour
         float fontMultiplier = GetFontMultiplier();
         
         // Apply to StatContainerManager if it exists
-        if (StatContainerManager.Instance != null)
+        if (StatContainerManager.instance != null)
         {
             float baseFontSize = 24f; // Adjust base font size as needed
             float scaledFontSize = baseFontSize * fontMultiplier;
-            StatContainerManager.Instance.SetMinFontSize(scaledFontSize);
+            StatContainerManager.instance.SetMinFontSize(scaledFontSize);
         }
     }
     
@@ -193,10 +193,13 @@ public class UIScaleManager : MonoBehaviour
     private void NotifyUIComponents()
     {
         // Notify UI components that might need to adjust
-        var adaptiveComponents = FindObjectsOfType<IUIAdaptive>();
-        foreach (var component in adaptiveComponents)
+        var monoBehaviours = FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None);
+        foreach (var mb in monoBehaviours)
         {
-            component.OnScreenSizeChanged(CurrentDeviceType, currentScaleFactor);
+            if (mb is IUIAdaptive adaptive)
+            {
+                adaptive.OnScreenSizeChanged(CurrentDeviceType, currentScaleFactor);
+            }
         }
     }
     
