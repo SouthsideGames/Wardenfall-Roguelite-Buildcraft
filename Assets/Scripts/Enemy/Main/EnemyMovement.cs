@@ -8,6 +8,7 @@ public class EnemyMovement : MonoBehaviour
     private Transform currentTarget;
     private Vector2 targetPosition;
     private bool isTargetPositionSet = false;
+    
 
     [Header("SETTINGS:")]
     public float moveSpeed = 3f;
@@ -43,6 +44,8 @@ public class EnemyMovement : MonoBehaviour
     private Vector2 externalForce;
     [SerializeField] private float maxDistanceFromStart = 10f;
 
+    [SerializeField] private float detectionRange = 5f;
+
     private Vector2 startPosition;
 
     private void Awake()
@@ -62,12 +65,23 @@ public class EnemyMovement : MonoBehaviour
 
     private void OnDestroy()
     {
-        LeanTween.cancel(gameObject); // prevent ghost tweens
+        LeanTween.cancel(gameObject);
     }
 
     private void FixedUpdate()
     {
         if (!canMove || isKnockedBack || currentTarget == null) return;
+
+        if (wander && !chasePlayer)
+        {
+            float distance = Vector2.Distance(transform.position, currentTarget.position);
+            if (distance < detectionRange)
+            {
+                chasePlayer = true;
+                wander = false;
+                moveSpeed += 1.0f;
+            }
+        }
 
         if (chasePlayer)
         {
