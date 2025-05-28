@@ -331,7 +331,7 @@ MonoBehaviour:
   deathParticles: {fileID: 4164785758290427616}
   showGizmos: 1
   attackRate: 0.9
-  shieldHealth: 50
+  shieldHealth: 100
   shield: {fileID: 2512326149274488663}
 --- !u!114 &1905146589038196524
 MonoBehaviour:
@@ -345,24 +345,49 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ddebe7d82fbdf44daf06654154cf032, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 2
+  moveSpeed: 2.8
   canMove: 1
   pathUpdateRate: 0.2
   avoidanceRadius: 1
-  chasePlayer: 1
+  chasePlayer: 0
   wander: 0
-  patrol: 0
-  patrolPoints: []
-  patrolWaitTime: 1
-  patrolPointReachedDistance: 0.1
+  patrol: 1
+  multiCharge: 0
+  advanceThenStop: 0
+  strafeAroundPlayer: 0
+  supportAnchor: 0
+  jitterChase: 0
+  teleportMovement: 0
+  patrolPoints:
+  - {x: -3, y: 1}
+  - {x: 0, y: -2}
+  - {x: 3, y: 1}
+  patrolWaitTime: 1.5
+  patrolPointReachedDistance: 0.2
   wanderRadius: 5
   minWanderWaitTime: 2
   maxWanderWaitTime: 5
   wanderPointReachedDistance: 0.1
+  maxDistanceFromStart: 10
+  stopDistance: 6
+  strafeRadius: 6
+  strafeSpeed: 2
+  strafeOrbitSpeed: 120
+  jitterFrequency: 0.3
+  jitterStrength: 1.2
+  teleportCooldown: 4.5
+  teleportDelay: 0.4
+  teleportDistanceMin: 3.5
+  teleportDistanceMax: 7
+  teleportObstacleMask:
+    serializedVersion: 2
+    m_Bits: 0
+  teleportVFX: {fileID: 0}
+  teleportSFX: {fileID: 0}
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 0
-  maxDistanceFromStart: 10
+  detectionRange: 5
 --- !u!114 &1122862972469765393
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -376,7 +401,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   immunities: 
-  statusResistance: 0
 --- !u!114 &7192267261878298305
 MonoBehaviour:
   m_ObjectHideFlags: 0

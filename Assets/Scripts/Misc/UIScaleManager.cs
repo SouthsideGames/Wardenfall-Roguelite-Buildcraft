@@ -6,7 +6,6 @@ public class UIScaleManager : MonoBehaviour
     [Header("Screen Size Thresholds")]
     [SerializeField] private int smallScreenWidth = 800;
     [SerializeField] private int mediumScreenWidth = 1200;
-    [SerializeField] private int largeScreenWidth = 1920;
     
     [Header("Scale Factors")]
     [SerializeField] private float mobileScaleFactor = 1.0f;
@@ -22,12 +21,7 @@ public class UIScaleManager : MonoBehaviour
     [SerializeField] private CanvasScaler[] canvasScalers;
     [SerializeField] private Transform[] uiPanels;
     
-    public enum DeviceType
-    {
-        Mobile,
-        Tablet,
-        Desktop
-    }
+
     
     public static UIScaleManager Instance { get; private set; }
     public DeviceType CurrentDeviceType { get; private set; }
@@ -44,7 +38,7 @@ public class UIScaleManager : MonoBehaviour
             
             if (canvasScalers == null || canvasScalers.Length == 0)
             {
-                canvasScalers = FindObjectsOfType<CanvasScaler>();
+                canvasScalers = FindObjectsByType<CanvasScaler>(FindObjectsSortMode.None);
             }
             
             ApplyScaling();
@@ -144,32 +138,15 @@ public class UIScaleManager : MonoBehaviour
         }
     }
     
-    private float GetMatchValue()
-    {
-        // Portrait vs Landscape consideration
-        bool isPortrait = Screen.height > Screen.width;
-        
-        switch (CurrentDeviceType)
-        {
-            case DeviceType.Mobile:
-                return isPortrait ? 0.0f : 1.0f; // Match width in portrait, height in landscape
-            case DeviceType.Tablet:
-                return 0.5f; // Balance between width and height
-            case DeviceType.Desktop:
-                return 1.0f; // Match height primarily
-            default:
-                return 0.5f;
-        }
-    }
+    private float GetMatchValue() => 1.0f; 
     
     private void ApplyFontScaling()
     {
         float fontMultiplier = GetFontMultiplier();
         
-        // Apply to StatContainerManager if it exists
         if (StatContainerManager.instance != null)
         {
-            float baseFontSize = 24f; // Adjust base font size as needed
+            float baseFontSize = 24f; 
             float scaledFontSize = baseFontSize * fontMultiplier;
             StatContainerManager.instance.SetMinFontSize(scaledFontSize);
         }
@@ -192,7 +169,6 @@ public class UIScaleManager : MonoBehaviour
     
     private void NotifyUIComponents()
     {
-        // Notify UI components that might need to adjust
         var monoBehaviours = FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None);
         foreach (var mb in monoBehaviours)
         {
@@ -207,8 +183,3 @@ public class UIScaleManager : MonoBehaviour
     public DeviceType GetDeviceType() => CurrentDeviceType;
 }
 
-// Interface for UI components that need to adapt to screen changes
-public interface IUIAdaptive
-{
-    void OnScreenSizeChanged(UIScaleManager.DeviceType deviceType, float scaleFactor);
-}

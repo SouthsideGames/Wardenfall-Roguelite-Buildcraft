@@ -46,7 +46,7 @@ public class ResponsiveUIElement : MonoBehaviour, IUIAdaptive
         }
     }
     
-    public void OnScreenSizeChanged(UIScaleManager.DeviceType deviceType, float scaleFactor)
+    public void OnScreenSizeChanged(DeviceType deviceType, float scaleFactor)
     {
         ApplySize(deviceType);
         ApplyPosition(deviceType);
@@ -54,15 +54,15 @@ public class ResponsiveUIElement : MonoBehaviour, IUIAdaptive
         ApplySpacing(deviceType);
     }
     
-    private void ApplySize(UIScaleManager.DeviceType deviceType)
+    private void ApplySize(DeviceType deviceType)
     {
         if (rectTransform == null) return;
         
         Vector2 targetSize = deviceType switch
         {
-            UIScaleManager.DeviceType.Mobile => mobileSize,
-            UIScaleManager.DeviceType.Tablet => tabletSize,
-            UIScaleManager.DeviceType.Desktop => desktopSize,
+            DeviceType.Mobile => mobileSize,
+            DeviceType.Tablet => tabletSize,
+            DeviceType.Desktop => desktopSize,
             _ => mobileSize
         };
         
@@ -72,15 +72,15 @@ public class ResponsiveUIElement : MonoBehaviour, IUIAdaptive
         }
     }
     
-    private void ApplyPosition(UIScaleManager.DeviceType deviceType)
+    private void ApplyPosition(DeviceType deviceType)
     {
         if (rectTransform == null) return;
         
         Vector2 targetPosition = deviceType switch
         {
-            UIScaleManager.DeviceType.Mobile => mobilePosition,
-            UIScaleManager.DeviceType.Tablet => tabletPosition,
-            UIScaleManager.DeviceType.Desktop => desktopPosition,
+            DeviceType.Mobile => mobilePosition,
+            DeviceType.Tablet => tabletPosition,
+            DeviceType.Desktop => desktopPosition,
             _ => mobilePosition
         };
         
@@ -90,13 +90,13 @@ public class ResponsiveUIElement : MonoBehaviour, IUIAdaptive
         }
     }
     
-    private void ApplyFontSize(UIScaleManager.DeviceType deviceType)
+    private void ApplyFontSize(DeviceType deviceType)
     {
         float targetSize = deviceType switch
         {
-            UIScaleManager.DeviceType.Mobile => mobileFontSize,
-            UIScaleManager.DeviceType.Tablet => tabletFontSize,
-            UIScaleManager.DeviceType.Desktop => desktopFontSize,
+            DeviceType.Mobile => mobileFontSize,
+            DeviceType.Tablet => tabletFontSize,
+            DeviceType.Desktop => desktopFontSize,
             _ => mobileFontSize
         };
         
@@ -111,13 +111,13 @@ public class ResponsiveUIElement : MonoBehaviour, IUIAdaptive
         }
     }
     
-    private void ApplySpacing(UIScaleManager.DeviceType deviceType)
+    private void ApplySpacing(DeviceType deviceType)
     {
         float targetSpacing = deviceType switch
         {
-            UIScaleManager.DeviceType.Mobile => mobileSpacing,
-            UIScaleManager.DeviceType.Tablet => tabletSpacing,
-            UIScaleManager.DeviceType.Desktop => desktopSpacing,
+            DeviceType.Mobile => mobileSpacing,
+            DeviceType.Tablet => tabletSpacing,
+            DeviceType.Desktop => desktopSpacing,
             _ => mobileSpacing
         };
         

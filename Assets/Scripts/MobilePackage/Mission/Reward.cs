@@ -31,6 +31,12 @@ public class Reward : Item
             case ItemRewardType.Cash:
                 CurrencyManager.Instance.AdjustPremiumCurrency(amount);
                 break;
+            case ItemRewardType.CardPoints:
+                CurrencyManager.Instance.AdjustCardCurrency(amount);
+                break;
+            case ItemRewardType.UnlockTickets:
+                ProgressionManager.Instance.AdjustUnlockCurrency(amount);
+                break;
         }
 
         OnCollected?.Invoke(this);

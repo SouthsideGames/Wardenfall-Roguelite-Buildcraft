@@ -47,7 +47,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
     [Header("DEBUG:")]
     [SerializeField] private bool showGizmos;
 
-    private EnemyStatus status;
+    public EnemyStatus status { get; private set; }
     public EnemyModifierHandler modifierHandler { get; private set; }
     protected Transform playerTransform;
     public int CurrentHealth => health;
@@ -336,6 +336,31 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
     public void MoveTo(Transform target) => movement?.SetTarget(target);
     public void AttackTarget() => Attack();
     protected bool CanAttack() => _spriteRenderer.enabled;
+
+    public Enemy FindClosestWoundedAlly(float radius)
+    {
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, radius);
+        Enemy closest = null;
+        float closestDist = Mathf.Infinity;
+
+        foreach (Collider2D hit in hits)
+        {
+            if (hit.TryGetComponent<Enemy>(out Enemy ally) && ally != this)
+            {
+                if (ally.CurrentHealth < ally.MaxHealth)
+                {
+                    float dist = Vector2.Distance(transform.position, ally.transform.position);
+                    if (dist < closestDist)
+                    {
+                        closest = ally;
+                        closestDist = dist;
+                    }
+                }
+            }
+        }
+
+        return closest;
+    }
 
     #endregion
 

@@ -83,6 +83,10 @@ public enum CardEffectType
     SplitFire,
     DoubleDrop,
     BloodNova,
-    TetherField
+    TetherField,
+    FlameCrawler,
+    SporePod,
+    ArcTurret,
+    TeamUp
     // Add more as needed
 }

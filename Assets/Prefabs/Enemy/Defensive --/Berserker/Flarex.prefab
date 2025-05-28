@@ -5047,9 +5047,9 @@ MonoBehaviour:
   deathParticles: {fileID: 573814231150591861}
   showGizmos: 0
   enragedThreshold: 0.5
-  enragedAttackMultiplier: 2.5
-  enragedSpeedMultiplier: 1.7
-  attackRate: 0.7
+  enragedAttackMultiplier: 1.5
+  enragedSpeedMultiplier: 1.75
+  attackRate: 1.2
 --- !u!114 &5592513278735401760
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5062,13 +5062,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ddebe7d82fbdf44daf06654154cf032, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 2.5
+  moveSpeed: 3
   canMove: 1
   pathUpdateRate: 0.2
-  avoidanceRadius: 1
+  avoidanceRadius: 1.1
   chasePlayer: 1
   wander: 0
   patrol: 0
+  multiCharge: 0
+  advanceThenStop: 0
+  strafeAroundPlayer: 0
+  supportAnchor: 0
+  jitterChase: 0
+  teleportMovement: 0
   patrolPoints: []
   patrolWaitTime: 1
   patrolPointReachedDistance: 0.1
@@ -5076,10 +5082,26 @@ MonoBehaviour:
   minWanderWaitTime: 2
   maxWanderWaitTime: 5
   wanderPointReachedDistance: 0.1
+  maxDistanceFromStart: 10
+  stopDistance: 6
+  strafeRadius: 6
+  strafeSpeed: 2
+  strafeOrbitSpeed: 120
+  jitterFrequency: 0.3
+  jitterStrength: 1.2
+  teleportCooldown: 4.5
+  teleportDelay: 0.4
+  teleportDistanceMin: 3.5
+  teleportDistanceMax: 7
+  teleportObstacleMask:
+    serializedVersion: 2
+    m_Bits: 0
+  teleportVFX: {fileID: 0}
+  teleportSFX: {fileID: 0}
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 0
-  maxDistanceFromStart: 10
+  detectionRange: 5
 --- !u!114 &1297417035062969690
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5093,7 +5115,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   immunities: 
-  statusResistance: 0
 --- !u!114 &4152942165163069484
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5120,7 +5141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d3c57c0cf82a1642819f8f9d90d26cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canPerformCriticalHit: 0
+  canPerformCriticalHit: 1
 --- !u!114 &5131504472157720202
 MonoBehaviour:
   m_ObjectHideFlags: 0

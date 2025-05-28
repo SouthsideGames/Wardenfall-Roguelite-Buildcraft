@@ -55,7 +55,7 @@ public class ProgressionManager : MonoBehaviour
 
     
     [Button]
-    private void AddSigils()
+    public void AddSigils()
     {
         UnlockPoints += 1;
         OnUnlockPointsChanged?.Invoke();
@@ -95,7 +95,7 @@ public class ProgressionManager : MonoBehaviour
         if (UnlockPoints <= 0 || unlockedIDs.Contains(unlockID))
             return false;
     
-        var data = ProgressionManager.Instance.progressionUnlockDatabase.GetUnlockByID(unlockID);
+        var data = progressionUnlockDatabase.GetUnlockByID(unlockID);
         if (data == null || data.cost > UnlockPoints)
             return false;
     
@@ -150,6 +150,14 @@ public class ProgressionManager : MonoBehaviour
     }
 
     public void ClearLastGainedXP() => LastGainedXP = 0;
+
+    public void AdjustUnlockCurrency(int _amount)
+    {
+        UnlockPoints += _amount;
+        UpdateUI();
+        Save();
+    }
+
 
     private void UpdateUI()
     {

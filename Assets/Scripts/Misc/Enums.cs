@@ -20,7 +20,10 @@ public enum GameState
 
 public enum ItemRewardType
 {
-    Cash
+    Cash,
+    CardPoints,
+    UnlockTickets
+
 }
 
 
@@ -77,7 +80,12 @@ public enum RewardType
     Special_01 = 200
 }
 
-
+public enum DeviceType
+{
+     Mobile,
+    Tablet,
+    Desktop
+}
 
 public enum CharacterRarityType
 {

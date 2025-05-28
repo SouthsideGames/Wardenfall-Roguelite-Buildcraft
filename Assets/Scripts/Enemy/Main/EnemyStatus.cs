@@ -15,7 +15,7 @@ public class EnemyStatus : MonoBehaviour
     private EnemyStatusEffectUI statusUI;
 
     [SerializeField] private List<StatusEffectType> immunities = new List<StatusEffectType>();
-    [SerializeField] private float statusResistance = 0f;
+    private float statusResistance = 3f;
 
     public bool IsImmuneToEffect(StatusEffectType effectType) => immunities.Contains(effectType);
 

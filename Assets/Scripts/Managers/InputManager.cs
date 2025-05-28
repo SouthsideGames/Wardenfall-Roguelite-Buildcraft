@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -37,7 +35,7 @@ public class InputManager : MonoBehaviour
             return;
         }
 
-        bool isMobile = SystemInfo.deviceType == DeviceType.Handheld || forceHandheld;
+        bool isMobile = Application.isMobilePlatform || forceHandheld;
         joystick.gameObject.SetActive(isMobile);
         pauseButton.gameObject.SetActive(isMobile);
 
@@ -73,7 +71,7 @@ public class InputManager : MonoBehaviour
 
     public Vector2 GetMoveVector()
     {
-        if (SystemInfo.deviceType == DeviceType.Desktop && !forceHandheld)
+        if (SystemInfo.deviceType == UnityEngine.DeviceType.Desktop && !forceHandheld)
             return GetDesktopMoveVector();
         else
             return joystick.GetMoveVector();

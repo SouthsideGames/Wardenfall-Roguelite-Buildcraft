@@ -13,7 +13,7 @@ public class EnemyDataSO : ScriptableObject
     [field: SerializeField] public EnemyType Type { get; private set; }
 
     public int contactDamage;
-    public float detectionRadius;
+    public float detectionRadius = 6.0f;
     public int maxHealth;
 
 }

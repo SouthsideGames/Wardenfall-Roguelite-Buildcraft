@@ -4988,10 +4988,10 @@ GameObject:
   m_Component:
   - component: {fileID: 163166376413015675}
   - component: {fileID: 1527374111907362491}
-  - component: {fileID: 7188596315716425609}
   - component: {fileID: 4061870340684110219}
   - component: {fileID: 7738888938450879937}
   - component: {fileID: 2819584679116783585}
+  - component: {fileID: 7188596315716425609}
   - component: {fileID: 4443748951534977508}
   - component: {fileID: 6018557319076822309}
   - component: {fileID: 4822862956781776345}
@@ -5044,36 +5044,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &7188596315716425609
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7989277444111341517}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ddebe7d82fbdf44daf06654154cf032, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 2.5
-  canMove: 1
-  pathUpdateRate: 0.2
-  avoidanceRadius: 1
-  chasePlayer: 1
-  wander: 0
-  patrol: 0
-  patrolPoints: []
-  patrolWaitTime: 1
-  patrolPointReachedDistance: 0.1
-  wanderRadius: 5
-  minWanderWaitTime: 2
-  maxWanderWaitTime: 5
-  wanderPointReachedDistance: 0.1
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  maxDistanceFromStart: 10
 --- !u!58 &4061870340684110219
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -5165,8 +5135,58 @@ MonoBehaviour:
   showGizmos: 1
   maxSplits: 1
   smallerVersionPrefab: {fileID: 5829535922412643463, guid: 5a93d24fc4a1d4a4a93ae4b14bcaf4ed, type: 3}
-  splitScaleFactor: 0.5
+  splitScaleFactor: 0.55
   splitHealthFactor: 2
+--- !u!114 &7188596315716425609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7989277444111341517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ddebe7d82fbdf44daf06654154cf032, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 2.7
+  canMove: 1
+  chasePlayer: 1
+  wander: 0
+  patrol: 0
+  multiCharge: 0
+  advanceThenStop: 0
+  strafeAroundPlayer: 0
+  supportAnchor: 0
+  jitterChase: 0
+  teleportMovement: 0
+  patrolPoints: []
+  patrolWaitTime: 1
+  patrolPointReachedDistance: 0.1
+  wanderRadius: 5
+  minWanderWaitTime: 2
+  maxWanderWaitTime: 5
+  wanderPointReachedDistance: 0.1
+  maxDistanceFromStart: 10
+  stopDistance: 6
+  strafeRadius: 6
+  strafeSpeed: 2
+  strafeOrbitSpeed: 120
+  jitterFrequency: 0.3
+  jitterStrength: 1.2
+  teleportCooldown: 4.5
+  teleportDelay: 0.4
+  teleportDistanceMin: 3.5
+  teleportDistanceMax: 7
+  teleportObstacleMask:
+    serializedVersion: 2
+    m_Bits: 0
+  teleportVFX: {fileID: 0}
+  teleportSFX: {fileID: 0}
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  detectionRange: 5
 --- !u!114 &4443748951534977508
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5180,7 +5200,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   immunities: 
-  statusResistance: 0
 --- !u!114 &6018557319076822309
 MonoBehaviour:
   m_ObjectHideFlags: 0
