@@ -29,7 +29,8 @@ public class EnemyMovement : MonoBehaviour
     public bool wander = false;
     public bool patrol = false;
     public bool multiCharge = false;
-
+    public bool advanceThenStop = false;
+    public bool strafeAroundPlayer = false;
 
     [Header("Patrol Settings")]
     [SerializeField] private Vector2[] patrolPoints;
@@ -46,6 +47,15 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] private float maxWanderWaitTime = 5f;
     [SerializeField] private float wanderPointReachedDistance = 0.1f;
     [SerializeField] private float maxDistanceFromStart = 10f;
+
+    [Header("Advance-Then-Stop Settings")]
+    [SerializeField] private float stopDistance = 6f;
+
+    [Header("Strafe Settings")]
+    [SerializeField] private float strafeRadius = 6f; 
+    [SerializeField] private float strafeSpeed = 2f; 
+    [SerializeField] private float strafeOrbitSpeed = 120f;
+    private float strafeAngleOffset = 0f;
 
     [Header("Additional Settings")]
     [SerializeField] private LayerMask obstacleLayer; 
@@ -78,6 +88,13 @@ public class EnemyMovement : MonoBehaviour
     {
         if (!canMove || isKnockedBack || currentTarget == null) return;
 
+        // Strafe-around logic
+        if (strafeAroundPlayer)
+        {
+            HandleStrafeAroundPlayer();
+            return;
+        }
+
         if (wander && !chasePlayer)
         {
             float distance = Vector2.Distance(transform.position, currentTarget.position);
@@ -87,6 +104,19 @@ public class EnemyMovement : MonoBehaviour
                 wander = false;
                 moveSpeed += 1.0f;
             }
+        }
+
+        if (advanceThenStop)
+        {
+            float distanceToPlayer = Vector2.Distance(transform.position, currentTarget.position);
+            if (distanceToPlayer > stopDistance)
+            {
+                Vector2 direction = ((Vector2)currentTarget.position - (Vector2)transform.position).normalized;
+                Vector2 newPos = (Vector2)transform.position + direction * moveSpeed * Time.fixedDeltaTime + externalForce * Time.fixedDeltaTime;
+                rb.MovePosition(newPos);
+            }
+            externalForce = Vector2.Lerp(externalForce, Vector2.zero, Time.deltaTime * 5f);
+            return;
         }
 
         if (chasePlayer)
@@ -217,6 +247,24 @@ public class EnemyMovement : MonoBehaviour
             currentPatrolIndex = (currentPatrolIndex + 1) % patrolPoints.Length;
             patrolTimer = patrolWaitTime;
         }
+    }
+
+    private void HandleStrafeAroundPlayer()
+    {
+        if (currentTarget == null) return;
+
+        Vector2 playerPos = currentTarget.position;
+        strafeAngleOffset += strafeOrbitSpeed * Time.fixedDeltaTime;
+        if (strafeAngleOffset > 360f) strafeAngleOffset -= 360f;
+
+        float angleRad = strafeAngleOffset * Mathf.Deg2Rad;
+        Vector2 offset = new Vector2(Mathf.Cos(angleRad), Mathf.Sin(angleRad)) * strafeRadius;
+        Vector2 targetPosition = (Vector2)playerPos + offset;
+
+        Vector2 direction = (targetPosition - (Vector2)transform.position).normalized;
+        Vector2 newPos = (Vector2)transform.position + direction * strafeSpeed * Time.fixedDeltaTime;
+
+        rb.MovePosition(newPos);
     }
 
     private void UpdatePath()

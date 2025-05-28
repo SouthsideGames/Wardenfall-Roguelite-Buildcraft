@@ -34,10 +34,8 @@ public class RangedEnemy : Enemy
     {
         float distanceToPlayer = Vector2.Distance(transform.position, character.transform.position);
 
-        if(distanceToPlayer <= playerDetectionRadius)
+        if (distanceToPlayer <= playerDetectionRadius)
             TryAttack();
-        else
-            movement.FollowCurrentTarget();
     }
 
 
