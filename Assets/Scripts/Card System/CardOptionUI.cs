@@ -20,10 +20,11 @@ public class CardOptionUI : MonoBehaviour
     private bool isLocked = false;
     public bool IsLocked => isLocked;
 
-    public void SetCard(CardSO cardData, Action onClick)
+    public void SetCard(CardSO cardData, Action onClick, bool locked = false)
     {
         card = cardData;
         onSelected = onClick;
+        isLocked = locked;
 
         iconImage.sprite = card.icon;
         nameText.text = card.cardName;
@@ -32,6 +33,11 @@ public class CardOptionUI : MonoBehaviour
 
         selectButton.onClick.RemoveAllListeners();
         selectButton.onClick.AddListener(() => onSelected?.Invoke());
+
+        lockButton.onClick.RemoveAllListeners();
+        lockButton.onClick.AddListener(ToggleLockState);
+
+        SetLockVisual(isLocked);
     }
 
     public void ToggleLockState()

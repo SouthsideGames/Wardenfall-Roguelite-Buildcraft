@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,6 +12,7 @@ public class CardDraftManager : MonoBehaviour, IGameStateListener
     [SerializeField] private GameObject panel;
     [SerializeField] private Transform cardContainer;
     [SerializeField] private Button rerollButton;
+    [SerializeField] private TextMeshProUGUI rerollCountText;
     public CardEffectManager cardEffectManager { get; private set; }
 
     [Header("Card Sources")]
@@ -40,6 +42,7 @@ public class CardDraftManager : MonoBehaviour, IGameStateListener
             Destroy(gameObject);
 
         cardEffectManager = GetComponent<CardEffectManager>();
+    
     }
 
     private void Update()
@@ -101,10 +104,11 @@ public class CardDraftManager : MonoBehaviour, IGameStateListener
         RenderDraft();
     }
 
-    private void RenderDraft()
+   private void RenderDraft()
     {
         List<CardSO> lockedCards = new List<CardSO>();
 
+        // Preserve locked cards and remove the rest
         for (int i = cardContainer.childCount - 1; i >= 0; i--)
         {
             Transform child = cardContainer.GetChild(i);
@@ -120,39 +124,54 @@ public class CardDraftManager : MonoBehaviour, IGameStateListener
             }
         }
 
+        // Generate pool of available cards for the current character
         List<string> characterPool = CharacterManager.Instance.CurrentCharacter.StartingCards
             .Select(card => card.cardID)
             .ToList();
+
         string currentCharacterID = CharacterManager.Instance.CurrentCharacter.ID;
-        List<CardSO> pool = cardLibrary.GetCardsByRarityAndID(CardDraftRarityConfig.Pools[currentDraftType], characterPool, currentCharacterID);
+
+        List<CardSO> pool = cardLibrary.GetCardsByRarityAndID(
+            CardDraftRarityConfig.Pools[currentDraftType],
+            characterPool,
+            currentCharacterID
+        );
+
         cardsNeeded = (currentDraftType == DraftType.Major ? 3 : 2) + bonusDraftOptions - lockedCards.Count;
+
         List<CardSO> randomCards = cardLibrary.PickRandomCards(pool, cardsNeeded);
 
+        // Re-add locked cards first and reapply lock visuals
         foreach (CardSO card in lockedCards)
         {
             CardOptionUI slot = Instantiate(GetOptionPrefab(card.rarity), cardContainer);
-            slot.SetCard(card, () => OnCardSelected(card));
+            slot.SetCard(card, () => OnCardSelected(card), true); // Pass true to re-lock the card
         }
 
+        // Add newly drawn cards
         foreach (CardSO card in randomCards)
         {
             CardOptionUI slot = Instantiate(GetOptionPrefab(card.rarity), cardContainer);
-            slot.SetCard(card, () => OnCardSelected(card));
+            slot.SetCard(card, () => OnCardSelected(card), false);
         }
 
+        // Reroll button setup
         if (currentDraftType == DraftType.Major && rerollButton != null)
         {
             int effectiveRerollLimit = maxRerolls - rerollSuppression;
+            rerollCountText.text = maxRerolls.ToString();
             rerollButton.gameObject.SetActive(rerollCount < effectiveRerollLimit);
             rerollButton.onClick.RemoveAllListeners();
             rerollButton.onClick.AddListener(RerollDraft);
         }
     }
 
+
     public void RerollDraft()
     {
         if (rerollCount >= maxRerolls) return;
         rerollCount++;
+        rerollCountText.text = (maxRerolls - rerollCount).ToString();
         RenderDraft();
     }
 
