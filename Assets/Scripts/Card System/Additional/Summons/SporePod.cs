@@ -5,8 +5,6 @@ public class SporePod : MonoBehaviour
 {
     [SerializeField] private GameObject gasCloudPrefab;
     [SerializeField] private float releaseInterval = 3f;
-    [SerializeField] private float effectRadius = 2f;
-
     private float activeDuration;
 
     public void Initialize(float duration)

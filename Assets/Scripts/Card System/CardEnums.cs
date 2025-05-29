@@ -87,6 +87,9 @@ public enum CardEffectType
     FlameCrawler,
     SporePod,
     ArcTurret,
-    TeamUp
+    TeamUp,
+    ObsidianGolem,
+    VoidWarden, 
+    Doomnut
     // Add more as needed
 }
