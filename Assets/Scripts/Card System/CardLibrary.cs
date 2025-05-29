@@ -29,7 +29,7 @@ public class CardLibrary : ScriptableObject, IWantToBeSaved
 
     public List<CardSO> GetCardsByRarityAndID(CardRarity[] rarities, List<string> excludedCardIDs, string currentCharacterID)
     {
-        var temporaryUnlocks = CharacterManager.Instance?.TemporaryUnlockedCards ?? new List<CardSO>();
+        var temporaryUnlocks = CharacterManager.Instance?.cards.TemporaryUnlockedCards ?? new List<CardSO>();
 
         return allCards.Where(card =>
             rarities.Contains(card.rarity) &&

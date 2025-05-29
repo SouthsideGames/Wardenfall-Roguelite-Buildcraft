@@ -9,17 +9,22 @@ public class TutorialPrefabUI : MonoBehaviour
 
     private TutorialDataSO currentTutorial;
     private int currentDialogueIndex;
+    private bool isSingleLine;
 
-    private void Awake()
-    {
-        nextButton.onClick.AddListener(OnNextButtonClicked);
-    }
+    private void Awake() => nextButton.onClick.AddListener(OnNextButtonClicked);
 
     public void Initialize(TutorialDataSO tutorialData)
     {
         currentTutorial = tutorialData;
         currentDialogueIndex = 0;
+        isSingleLine = false;
         UpdateDialogueText();
+    }
+
+    public void InitializeSingleLine(string line)
+    {
+        dialogueText.text = line;
+        isSingleLine = true;
     }
 
     private void UpdateDialogueText()
@@ -30,19 +35,20 @@ public class TutorialPrefabUI : MonoBehaviour
         }
     }
 
-     private void OnNextButtonClicked()
+    private void OnNextButtonClicked()
     {
+        if (isSingleLine)
+        {
+            UIManager.Instance.ShowNextTutorialStep();
+            Destroy(gameObject);
+            return;
+        }
+
         currentDialogueIndex++;
 
         if (currentDialogueIndex >= currentTutorial.dialogueLines.Length)
         {
-            TutorialManager.Instance.CompleteTutorial(currentTutorial.panelId);
-            
-            if (currentTutorial.panelId.StartsWith("main_menu_tutorial_"))
-            {
-                UIManager.Instance.ShowNextTutorialStep();
-            }
-            
+            TutorialManager.Instance.CompleteTutorial(currentTutorial);
             Destroy(gameObject);
         }
         else

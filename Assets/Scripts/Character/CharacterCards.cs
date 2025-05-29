@@ -11,7 +11,7 @@ public class CharacterCards : MonoBehaviour
     private int cardCapModifier = 0;
     private List<CardSO> currentDeck = new List<CardSO>();
     public int currentTotalCost { get; private set; }
-
+    public List<CardSO> TemporaryUnlockedCards { get; private set; } = new List<CardSO>();
     public IReadOnlyList<CardSO> Deck => currentDeck;
 
     public void AddCard(CardSO newCard)
@@ -59,6 +59,8 @@ public class CharacterCards : MonoBehaviour
             OnDeckChanged?.Invoke();
         }
     }
+
+    public void SetCurrentCharacterStartingCards(CharacterDataSO characterData) => TemporaryUnlockedCards = new List<CardSO>(characterData.StartingCards);
 
 
 #region For Traits

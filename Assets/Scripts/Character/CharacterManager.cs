@@ -32,9 +32,6 @@ public class CharacterManager : MonoBehaviour
     private CharacterDataSO characterData;
     public CharacterDataSO CurrentCharacter => characterData;
 
-    public List<CardSO> TemporaryUnlockedCards { get; private set; } = new List<CardSO>();
-
-
     private void Awake()
     {
         if (Instance == null)
@@ -66,6 +63,8 @@ public class CharacterManager : MonoBehaviour
         characterData = _characterData;
         StatisticsManager.Instance.RecordCharacterUsage(_characterData.ID);
         _sr.sprite = _characterData.Icon;
+
+        cards.SetCurrentCharacterStartingCards(_characterData);
     }
 
     public Vector2 GetAimDirection()
@@ -76,12 +75,6 @@ public class CharacterManager : MonoBehaviour
             aimDirection = Vector2.right;
 
         return aimDirection.normalized;
-    }
-    
-    public void SetCurrentCharacter(CharacterDataSO characterData)
-    {
-        
-        TemporaryUnlockedCards = new List<CardSO>(characterData.StartingCards);
     }
         
 }

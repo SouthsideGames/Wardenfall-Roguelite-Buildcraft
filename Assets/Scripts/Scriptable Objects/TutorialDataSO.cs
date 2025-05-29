@@ -6,5 +6,4 @@ public class TutorialDataSO : ScriptableObject
 {
     [TextArea(3, 10)]
     public string[] dialogueLines;
-    public string panelId;
 }

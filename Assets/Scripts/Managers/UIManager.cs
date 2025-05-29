@@ -162,9 +162,9 @@ public class UIManager : MonoBehaviour, IGameStateListener
 
     private void CheckPanelTutorial(GameObject panel)
     {
-        if (panel.TryGetComponent<Panel>(out Panel panelComponent))
+        if (panel.TryGetComponent<Panel>(out var panelComponent) && panelComponent.TutorialData != null)
         {
-            TutorialManager.Instance.CheckForTutorial(panelComponent.PanelId);
+            TutorialManager.Instance.CheckForTutorial(panelComponent.TutorialData);
         }
     }
 
@@ -346,16 +346,12 @@ public class UIManager : MonoBehaviour, IGameStateListener
         usernamePanel.SetActive(false);
         menuPanel.SetActive(false);
 
-        Debug.Log("✅ CheckFirstTimeLoad() called.");
-
         bool introPlayed = false;
         SaveManager.TryLoad(this, "IntroPlayed", out object introPlayedObj);
         if (introPlayedObj is bool b && b)
             introPlayed = true;
 
         bool hasUsername = !UserManager.Instance.IsFirstTimePlayer();
-
-        Debug.Log($"IntroPlayed = {introPlayed}, HasUsername = {hasUsername}");
 
         if (!introPlayed)
         {
@@ -376,8 +372,6 @@ public class UIManager : MonoBehaviour, IGameStateListener
             usernamePanel.SetActive(false);
             menuPanel.SetActive(true);
         }
-
-        Debug.Log($"IntroPanel active: {introPanel.activeSelf}, UsernamePanel active: {usernamePanel.activeSelf}, MenuPanel active: {menuPanel.activeSelf}");
     }
 
     public void CompleteIntro()
@@ -438,12 +432,8 @@ public class UIManager : MonoBehaviour, IGameStateListener
         // Start tutorial off-screen
         tutorialRect.anchoredPosition = new Vector2(0, Screen.height);
 
-
-        tutorialInstance.GetComponent<TutorialPrefabUI>().Initialize(new TutorialDataSO 
-        {
-            dialogueLines = new string[] { newGameTutorialData.dialogueLines[currentTutorialStep] },
-            panelId = "main_menu_tutorial_" + currentTutorialStep
-        });
+        string currentLine = newGameTutorialData.dialogueLines[currentTutorialStep];
+        tutorialInstance.GetComponent<TutorialPrefabUI>().InitializeSingleLine(currentLine);
 
         // Animate tutorial into view
         LeanTween.moveY(tutorialRect, 0, 0.5f)
@@ -468,6 +458,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
 
         currentTutorialStep++;
     }
+
 
     #endregion
 }
