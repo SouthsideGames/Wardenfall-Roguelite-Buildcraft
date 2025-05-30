@@ -38,6 +38,17 @@ public class CardOptionUI : MonoBehaviour
         lockButton.onClick.AddListener(ToggleLockState);
 
         SetLockVisual(isLocked);
+
+        if (cardData.cost + CharacterManager.Instance.cards.currentTotalCost > CharacterManager.Instance.cards.GetEffectiveDeckCap())
+        {
+            costText.color = Color.red;
+            selectButton.interactable = false;
+        }
+        else
+        {
+            costText.color = Color.white; 
+            selectButton.interactable = true; 
+        }
     }
 
     public void ToggleLockState()
