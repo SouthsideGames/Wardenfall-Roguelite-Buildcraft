@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class CardEffectManager : MonoBehaviour
 {
+    public static Action OnCardActivated;
     private List<GameObject> activeEffects = new();
     private Dictionary<string, int> cardUsageCounts = new Dictionary<string, int>();
 
@@ -61,6 +62,8 @@ public class CardEffectManager : MonoBehaviour
 
             effect.Activate(CharacterManager.Instance, card);
             activeEffects.Add(effectObj);
+
+            OnCardActivated?.Invoke();
 
             HandleCooldown(card, slotUI);
         }

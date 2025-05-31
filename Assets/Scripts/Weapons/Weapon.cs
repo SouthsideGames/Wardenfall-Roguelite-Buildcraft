@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using SouthsideGames.DailyMissions;
@@ -7,6 +8,8 @@ using UnityEngine;
 public abstract class Weapon : MonoBehaviour, IStats, IWeaponSystem
 {
     [field: SerializeField] public WeaponDataSO WeaponData { get; private set; }
+
+    public static Action OnCriticalHit;
 
     [Header("ELEMENTS:")]
     protected float range;
@@ -43,7 +46,7 @@ public abstract class Weapon : MonoBehaviour, IStats, IWeaponSystem
     {
         if (audioSource != null && WeaponData.AttackSound != null)
         {
-            audioSource.pitch = Random.Range(0.95f, 1.05f);
+            audioSource.pitch = UnityEngine.Random.Range(0.95f, 1.05f);
             audioSource.Play();
         }
     }
@@ -74,16 +77,19 @@ public abstract class Weapon : MonoBehaviour, IStats, IWeaponSystem
         return closestEnemy;
     }
 
-    protected int GetDamage(out bool isCriticalHit)
+   protected int GetDamage(out bool isCriticalHit)
     {
         isCriticalHit = false;
         int finalDamage = damage;
 
-        if (Random.Range(0, 101) <= criticalHitChance)
+        if (UnityEngine.Random.Range(0, 101) <= criticalHitChance)
         {
             isCriticalHit = true;
             MissionManager.Increment(MissionType.criticalHitMastery, 1);
             finalDamage = Mathf.RoundToInt(damage * criticalHitDamageAmount);
+
+            // 🔥 Fire the crit event
+            OnCriticalHit?.Invoke();
         }
 
         StatisticsManager.Instance.RecordWeaponUsage(WeaponData.ID, finalDamage);
