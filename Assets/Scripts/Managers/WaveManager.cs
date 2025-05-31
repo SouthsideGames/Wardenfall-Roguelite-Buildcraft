@@ -64,6 +64,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     private void StartWave(int waveIndex)
     {
         InitializeWave(waveIndex);
+        AudioManager.Instance.PlayCrowdAmbience();
         hasWaveStarted = true;
         timer = 0;
 
@@ -104,7 +105,6 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 
     private void SpawnWaveSegments()
     {
-        // Check if we've hit enemy limit
         if (transform.childCount >= maxEnemiesOnScreen) return;
 
         UpdatePlayerPerformance();
@@ -215,23 +215,32 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     }
 
     private void WaveWrapUp()
+{
+    OnWaveCompleted?.Invoke();
+
+    // Check for low health gasp reaction
+    float currentHealth = CharacterManager.Instance.health.CurrentHealth;
+    float maxHealth = character.stats.GetStatValue(Stat.MaxHealth);
+    if (maxHealth > 0 && (currentHealth / maxHealth) < 0.10f)
     {
-        OnWaveCompleted?.Invoke();
-
-        MissionIncrement();
-        DefeatAllEnemies();
-        hasWaveStarted = false;
-
-        if (currentWaveIndex + 1 >= wave.Length)
-        {
-            EndGame();
-            return;
-        }
-
-        currentWaveIndex++;
-
-       GameManager.Instance.SetGameState(GameState.Progression);
+        AudioManager.Instance?.PlayCrowdReaction(CrowdReactionType.Gasp);
     }
+
+    AudioManager.Instance?.StopAmbientLoop();
+    MissionIncrement();
+    DefeatAllEnemies();
+    hasWaveStarted = false;
+
+    if (currentWaveIndex + 1 >= wave.Length)
+    {
+        EndGame();
+        return;
+    }
+
+    currentWaveIndex++;
+    GameManager.Instance.SetGameState(GameState.Progression);
+}
+
 
     public bool IsCurrentWaveBoss() 
     {
@@ -252,7 +261,6 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 
     private void EndGame()
     {
-        // Update final stage statistics
         var stats = StatisticsManager.Instance.currentStatistics;
         stats.CurrentRunDuration = Time.time - GameManager.Instance.runStartTime;
         stats.MostEffectiveWeaponInRun = CharacterManager.Instance.weapon.GetMostEffectiveWeapon();
@@ -366,12 +374,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     }
 
 
-    private void CharacterDeathCallback()
-    {
-        
-        GameManager.Instance.SetGameState(GameState.GameOver);
-    }
-
+    private void CharacterDeathCallback() => GameManager.Instance.SetGameState(GameState.GameOver);
     private void MissionIncrement()
     {
         MissionManager.Increment(MissionType.complete50Waves, 1);

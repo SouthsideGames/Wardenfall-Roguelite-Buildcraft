@@ -31,6 +31,8 @@ public class CardUnlockManager : MonoBehaviour
 
         SaveManager.Save(this, card.cardName + "_Unlocked", true);
         Debug.Log($"{card.cardName} unlocked using {card.requiredCardPoints} card points.");
+
+        AudioManager.Instance?.PlayCrowdReaction(CrowdReactionType.Whistle);
         return true;
     }
 

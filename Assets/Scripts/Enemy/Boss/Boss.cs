@@ -43,6 +43,7 @@ public class Boss : Enemy
     protected override void Start()
     {
         base.Start();
+        AudioManager.Instance?.PlayCrowdReaction(CrowdReactionType.Roar);
         InitializeBoss();
         attackTimer = attackCooldown;
     }

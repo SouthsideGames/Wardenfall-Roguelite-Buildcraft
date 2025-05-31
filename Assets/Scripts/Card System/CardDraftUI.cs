@@ -52,6 +52,7 @@ public class CardDraftUI : MonoBehaviour
     {
         CharacterManager.Instance.cards.SkipCard();
         pendingReplacementCard = null;
+        AudioManager.Instance.PlayCrowdReaction(CrowdReactionType.Boo);
     }
 
     public void HideReplaceCardPrompt()

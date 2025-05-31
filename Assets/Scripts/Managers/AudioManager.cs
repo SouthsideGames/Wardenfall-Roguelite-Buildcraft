@@ -1,7 +1,9 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using NaughtyAttributes;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.UI;
 
 public class AudioManager : MonoBehaviour, IGameStateListener
@@ -14,17 +16,31 @@ public class AudioManager : MonoBehaviour, IGameStateListener
     [SerializeField] private AudioClip stageCompleteMusic;
     [SerializeField] private AudioClip gameoverMusic;
 
-    [Header("SETTINGS:")]
+    [Header("SOURCES:")]
     [SerializeField] private AudioSource musicSource;
     [SerializeField] private AudioSource sFXSource;
+    [SerializeField] private AudioSource crowdNoiseSource;
+    [SerializeField] private AudioSource crowdReactionSource;
     [SerializeField] private AudioSource uISource;
 
-    public bool isSFXMuted{get; private set;}  
-    public bool isMusicMuted{get; private set;}  
+    [Header("Crowd Reactions")]
+    [SerializeField] private List<AudioClip> crowdCheers;
+    [SerializeField] private List<AudioClip> crowdGasps;
+    [SerializeField] private List<AudioClip> crowdRoars;
+    [SerializeField] private List<AudioClip> crowdBoos;
+    [SerializeField] private List<AudioClip> crowdLaughs;
+    [SerializeField] private List<AudioClip> crowdChants;
+    [SerializeField] private List<AudioClip> crowdWhistles;
+    [SerializeField] private List<AudioClip> crowdSilenceDrops;
+    [SerializeField] private List<AudioClip> crowdSlowClaps;
+    [SerializeField] private List<AudioClip> crowdAnnouncerWhoa;
 
-    private void Awake() 
+    public bool isSFXMuted { get; private set; }
+    public bool isMusicMuted { get; private set; }
+
+    private void Awake()
     {
-        if(Instance == null)
+        if (Instance == null)
             Instance = this;
         else
             Destroy(gameObject);
@@ -33,50 +49,38 @@ public class AudioManager : MonoBehaviour, IGameStateListener
         SettingManager.onMusicStateChanged += MusicStateChangedCallback;
     }
 
-    private void OnDestroy() 
+    private void OnDestroy()
     {
         SettingManager.onSFXStateChanged -= SFXStateChangedCallback;
         SettingManager.onMusicStateChanged -= MusicStateChangedCallback;
     }
 
-  
-
-    void Start() => PlayBackgroundMusic();
-
-    private void Update() 
+    void Start()
     {
-       if(isMusicMuted)
-          musicSource.mute = true;
-       else
-         musicSource.mute = false;
+        PlayBackgroundMusic();
+    }
 
+    private void Update()
+    {
+        musicSource.mute = isMusicMuted;
+        crowdNoiseSource.mute = isSFXMuted;
+        crowdReactionSource.mute = isSFXMuted;
     }
 
     private void PlayBackgroundMusic()
-    { 
+    {
         musicSource.clip = SelectRandomBackgroundMusic();
         musicSource.Play();
     }
 
     private AudioClip SelectRandomBackgroundMusic()
     {
-        AudioClip randomClip = null;
-
-        if(backgroundMusic.Length > 0)
+        if (backgroundMusic.Length > 0)
         {
-            int randomAudio = Random.Range(0, backgroundMusic.Length);    
-
-            for (int i = 0; i < backgroundMusic.Length; i++)
-            {
-                if (i == randomAudio)
-                {
-                    randomClip = backgroundMusic[i];
-                    break; 
-                }
-            }
+            int index = Random.Range(0, backgroundMusic.Length);
+            return backgroundMusic[index];
         }
-
-        return randomClip;
+        return null;
     }
 
     public void ChangeMusic(AudioClip _musicToPlay)
@@ -88,17 +92,76 @@ public class AudioManager : MonoBehaviour, IGameStateListener
 
     public void PlaySFX(AudioClip _audioToPlay)
     {
-        if(isSFXMuted)
-           return;
+        if (isSFXMuted) return;
 
         sFXSource.pitch = Random.Range(0.95f, 1.05f);
         sFXSource.PlayOneShot(_audioToPlay);
     }
 
+    public void PlayCrowdAmbience()
+    {
+        if (isSFXMuted || crowdNoiseSource.isPlaying) return;
+
+        crowdNoiseSource.loop = true;
+        crowdNoiseSource.Play();
+    }
+
+    
+    public void StopAmbientLoop()
+    {
+        if (crowdNoiseSource.isPlaying)
+            crowdNoiseSource.Stop();
+    }
+
+    public void PlayCrowdReaction(CrowdReactionType type)
+    {
+        if (isSFXMuted || crowdReactionSource == null) return;
+
+        AudioClip clip = GetRandomReaction(type);
+        if (clip != null)
+        {
+            crowdReactionSource.pitch = Random.Range(0.95f, 1.05f);
+            crowdReactionSource.PlayOneShot(clip);
+        }
+    }
+
+    private AudioClip GetRandomReaction(CrowdReactionType type)
+    {
+        switch (type)
+        {
+            case CrowdReactionType.Cheer: return GetRandomFromList(crowdCheers);
+            case CrowdReactionType.Gasp: return GetRandomFromList(crowdGasps);
+            case CrowdReactionType.Roar: return GetRandomFromList(crowdRoars);
+            case CrowdReactionType.Boo: return GetRandomFromList(crowdBoos);
+            case CrowdReactionType.Laugh: return GetRandomFromList(crowdLaughs);
+            case CrowdReactionType.Chant: return GetRandomFromList(crowdChants);
+            case CrowdReactionType.Whistle: return GetRandomFromList(crowdWhistles);
+            case CrowdReactionType.Silence: return GetRandomFromList(crowdSilenceDrops);
+            case CrowdReactionType.SlowClap: return GetRandomFromList(crowdSlowClaps);
+            case CrowdReactionType.AnnouncerWhoa: return GetRandomFromList(crowdAnnouncerWhoa);
+        }
+        return null;
+    }
+
+    private AudioClip GetRandomFromList(List<AudioClip> list)
+    {
+        if (list == null || list.Count == 0) return null;
+        return list[Random.Range(0, list.Count)];
+    }
+
+    private void MusicStateChangedCallback(bool _musicState) => isMusicMuted = !_musicState;
+
+    private void SFXStateChangedCallback(bool _sfxState)
+    {
+        isSFXMuted = !_sfxState;
+
+        crowdReactionSource.mute = isSFXMuted;
+        crowdNoiseSource.mute = isSFXMuted;
+    }
+
     public void GameStateChangedCallback(GameState _gameState)
     {
-
-        switch(_gameState)
+        switch (_gameState)
         {
             case GameState.Menu:
                 PlayBackgroundMusic();
@@ -113,17 +176,14 @@ public class AudioManager : MonoBehaviour, IGameStateListener
                 ChangeMusic(stageCompleteMusic);
                 break;
             case GameState.WaveTransition:
-                DecreaseMusicVolume();
-                break;
             case GameState.Shop:
                 DecreaseMusicVolume();
                 break;
         }
     }
 
-    private void MusicStateChangedCallback(bool _musicState) => isMusicMuted = !_musicState;
-    private void SFXStateChangedCallback(bool _sfxState) => isSFXMuted =  !_sfxState;
-    public void DecreaseMusicVolume() => musicSource.volume = musicSource.volume /5;
+    public void DecreaseMusicVolume() => musicSource.volume = musicSource.volume / 5;
     public void ResetMusicVolume() => musicSource.volume = 0.4f;
-
 }
+
+

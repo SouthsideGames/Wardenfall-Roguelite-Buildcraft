@@ -139,6 +139,8 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
                 characterInfo.Button.interactable = false;
         }
 
+        AudioManager.Instance?.PlayCrowdReaction(CrowdReactionType.Laugh);
+
         characterInfo.ConfigureInfoPanel(characterData, characterUnlockStates[_index]);
     }
 

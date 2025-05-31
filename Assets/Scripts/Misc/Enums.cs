@@ -140,6 +140,20 @@ public enum DraftType
     Mini 
 }
 
+public enum CrowdReactionType
+{
+    Cheer,
+    Gasp,
+    Roar,
+    Boo,
+    Laugh,
+    Chant,
+    Whistle,
+    Silence,
+    SlowClap,
+    AnnouncerWhoa
+}
+
 public static class Enums
 {
     public static string FormatStatName(Stat _stat)
@@ -147,17 +161,17 @@ public static class Enums
         string formated = "";
         string unformatedString = _stat.ToString();
 
-        if(unformatedString.Length <= 0)
+        if (unformatedString.Length <= 0)
             return "Unvalid Stat Name";
 
         formated += unformatedString[0];
 
         for (int i = 1; i < unformatedString.Length; i++)
         {
-            if(char.IsUpper(unformatedString[i]))
-              formated += " ";
+            if (char.IsUpper(unformatedString[i]))
+                formated += " ";
 
-            formated += unformatedString[i];    
+            formated += unformatedString[i];
         }
 
 

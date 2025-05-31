@@ -32,6 +32,7 @@ public class ProgressionTreeUI : MonoBehaviour
             GameObject go = Instantiate(unlockButtonPrefab, buttonParent);
             ProgressionUnlockButtonUI buttonUI = go.GetComponent<ProgressionUnlockButtonUI>();
             buttonUI.Configure(unlock, this);
+            AudioManager.Instance?.PlayCrowdReaction(CrowdReactionType.SlowClap);
             
         }
     }
