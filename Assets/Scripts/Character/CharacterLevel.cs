@@ -50,13 +50,15 @@ public class CharacterLevel : MonoBehaviour
         currentXp = 0;
         levelsEarned++;
         UpdateRequiredXP();
-        AudioManager.Instance.PlayCrowdReaction(CrowdReactionType.Cheer);
 
-        //if the player reaches a level that is a multiple of 5, pause the game and do mini draft
+        CrowdReactionType reaction = UnityEngine.Random.value < 0.7f
+            ? CrowdReactionType.Boo
+            : CrowdReactionType.Cheer;
+
+        AudioManager.Instance?.PlayCrowdReaction(reaction);
+
         if (level % 5 == 0)
-        {
             CardDraftManager.Instance.ShowMiniDraft();
-        }
         
     }
 
@@ -64,8 +66,7 @@ public class CharacterLevel : MonoBehaviour
     {
         if(debug)
           return true;
-
-          
+  
         if(levelsEarned > 0)
         {
             levelsEarned--;

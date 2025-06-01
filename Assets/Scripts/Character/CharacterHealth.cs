@@ -108,7 +108,7 @@ public class CharacterHealth : MonoBehaviour, IStats, IDamageable
             return;
         }
 
-        AudioManager.Instance?.PlayCrowdReaction(CrowdReactionType.Silence);
+        AudioManager.Instance?.PlayCrowdReaction(CrowdReactionType.Ouch);
         OnCharacterDeath?.Invoke();
         GameManager.Instance.SetGameState(GameState.GameOver);
     }

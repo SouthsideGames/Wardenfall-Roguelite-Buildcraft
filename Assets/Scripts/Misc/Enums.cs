@@ -147,11 +147,8 @@ public enum CrowdReactionType
     Roar,
     Boo,
     Laugh,
-    Chant,
     Whistle,
-    Silence,
-    SlowClap,
-    AnnouncerWhoa
+    Ouch,
 }
 
 public static class Enums

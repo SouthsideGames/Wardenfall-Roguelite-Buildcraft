@@ -141,6 +141,12 @@ public class ShopManager : MonoBehaviour, IGameStateListener
             Destroy(_shopItemContainerUI.gameObject);
         }
 
+        CrowdReactionType reaction = UnityEngine.Random.value < 0.7f
+            ? CrowdReactionType.Whistle
+            : CrowdReactionType.Laugh;
+
+        AudioManager.Instance?.PlayCrowdReaction(reaction);
+        
         OnItemPurchased?.Invoke();
     }
 

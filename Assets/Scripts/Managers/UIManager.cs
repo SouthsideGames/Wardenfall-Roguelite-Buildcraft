@@ -38,7 +38,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
     [SerializeField] private GameObject lorePanel;
 
     [Header("ADD. OBJECTS:")]
-    [SerializeField] private List<GameObject> blockers = new();
+    [SerializeField] private List<CanvasGroup> blockers = new();
     [SerializeField] private AudioClip introMusic;
 
     [Header("COUNTER TEXT:")]
@@ -102,6 +102,59 @@ public class UIManager : MonoBehaviour, IGameStateListener
         GameManager.OnGameResumed -= ResumeGameCallback;
     }
 
+    private void ShowPanel(GameObject panel, bool _hidePreviousPanels = true)
+    {
+        if (_hidePreviousPanels)
+        {
+            foreach (GameObject p in panels)
+            {
+                p.SetActive(p == panel);
+                if (p == panel)
+                {
+                    TriggerPanelAction(panel);
+                    CheckPanelTutorial(panel);
+                }
+            }
+        }
+        else
+        {
+            panel.SetActive(true);
+            CheckPanelTutorial(panel);
+        }
+    }
+
+    private void CheckPanelTutorial(GameObject panel)
+    {
+        if (panel.TryGetComponent<Panel>(out var panelComponent) && panelComponent.TutorialData != null)
+        {
+            TutorialManager.Instance.CheckForTutorial(panelComponent.TutorialData);
+        }
+    }
+
+    private void UpdateCounterText() => killCounterText.text = StatisticsManager.Instance.CurrentRunKills.ToString();
+   
+
+    private void TriggerPanelAction(GameObject _panelObject)
+    {
+        if (_panelObject.TryGetComponent(out Panel panelComponent))
+            OnPanelShown?.Invoke(panelComponent);
+    }
+
+    public static void ShowPanelInteractability(GameObject _gameObject, bool _interactable)
+    {
+        if (_gameObject.TryGetComponent(out CanvasGroup cg))
+            cg.interactable = _interactable;
+    }
+
+    public void TransitionPanel(GameObject fromPanel, GameObject toPanel)
+    {
+        if (fromPanel != null) fromPanel.SetActive(false);
+        if (toPanel != null) toPanel.SetActive(true);
+
+        TriggerPanelAction(toPanel);
+    }
+
+    #region Callback Functions
     public void GameStateChangedCallback(GameState _gameState)
     {
         switch (_gameState)
@@ -140,37 +193,6 @@ public class UIManager : MonoBehaviour, IGameStateListener
         }
     }
 
-    private void ShowPanel(GameObject panel, bool _hidePreviousPanels = true)
-    {
-        if (_hidePreviousPanels)
-        {
-            foreach (GameObject p in panels)
-            {
-                p.SetActive(p == panel);
-                if (p == panel)
-                {
-                    TriggerPanelAction(panel);
-                    CheckPanelTutorial(panel);
-                }
-            }
-        }
-        else
-        {
-            panel.SetActive(true);
-            CheckPanelTutorial(panel);
-        }
-    }
-
-    private void CheckPanelTutorial(GameObject panel)
-    {
-        if (panel.TryGetComponent<Panel>(out var panelComponent) && panelComponent.TutorialData != null)
-        {
-            TutorialManager.Instance.CheckForTutorial(panelComponent.TutorialData);
-        }
-    }
-
-    private void UpdateCounterText() => killCounterText.text = StatisticsManager.Instance.CurrentRunKills.ToString();
-
     private void PauseGameCallback()
     {
         AudioManager.Instance.DecreaseMusicVolume();
@@ -183,6 +205,10 @@ public class UIManager : MonoBehaviour, IGameStateListener
         AudioManager.Instance.ResetMusicVolume();
         pausePanel.SetActive(false);
     }
+
+#endregion
+
+    #region Show/Hide Panels
 
     public void ShowConfirmationPanel()
     {
@@ -268,13 +294,13 @@ public class UIManager : MonoBehaviour, IGameStateListener
         TriggerPanelAction(menuPanel);
     }
 
-    public void OpenLorePanel()
+    public void ShowLorePanel()
     {
         lorePanel.SetActive(true);
         LorePanelUI.Instance.Initialize();
     }
 
-    public void CloseLorePanel()
+    public void HideLorePanel()
     {
         lorePanel.SetActive(false);
     }
@@ -306,31 +332,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
         progressionPanel.SetActive(false);
     }
 
-    private void TriggerPanelAction(GameObject _panelObject)
-    {
-        if (_panelObject.TryGetComponent(out Panel panelComponent))
-            OnPanelShown?.Invoke(panelComponent);
-    }
-
-    public static void ShowPanelInteractability(GameObject _gameObject, bool _interactable)
-    {
-        if (_gameObject.TryGetComponent(out CanvasGroup cg))
-            cg.interactable = _interactable;
-    }
-
-    public void TransitionPanel(GameObject fromPanel, GameObject toPanel)
-    {
-        if (fromPanel != null) fromPanel.SetActive(false);
-        if (toPanel != null) toPanel.SetActive(true);
-
-        TriggerPanelAction(toPanel);
-    }
-
-    public void SkipIntroAndGoTo(GameObject targetPanel)
-    {
-        SaveManager.Save(this, "IntroPlayed", true);
-        TransitionPanel(introPanel, targetPanel);
-    }
+    #endregion
 
     #region Traits
 
@@ -338,14 +340,27 @@ public class UIManager : MonoBehaviour, IGameStateListener
     {
         for (int i = 0; i < blockers.Count; i++)
         {
-            blockers[i].SetActive(i < blockerIndex);
+            if (blockers[i].TryGetComponent(out CanvasGroup cg))
+            {
+                cg.alpha = i < blockerIndex ? 1f : 0f;
+                cg.interactable = i < blockerIndex;
+                cg.blocksRaycasts = i < blockerIndex;
+            }
         }
     }
+
 
     public void HideAllBlockers()
     {
         foreach (var blocker in blockers)
-            blocker.SetActive(false);
+        {
+            if (blocker.TryGetComponent(out CanvasGroup cg))
+            {
+                cg.alpha = 0f;
+                cg.interactable = false;
+                cg.blocksRaycasts = false;
+            }
+        }
     }
 
     #endregion
@@ -413,7 +428,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
             statsUI.UpdateStats();
         }
     }
-    
+
     public void ShowFirstTimeUI()
     {
         foreach (GameObject button in mainMenuButtons)
@@ -469,6 +484,12 @@ public class UIManager : MonoBehaviour, IGameStateListener
         }
 
         currentTutorialStep++;
+    }
+    
+    public void SkipIntroAndGoTo(GameObject targetPanel)
+    {
+        SaveManager.Save(this, "IntroPlayed", true);
+        TransitionPanel(introPanel, targetPanel);
     }
 
 

@@ -35,6 +35,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     [SerializeField] private float minDistanceBetweenSpawns = 2f;
     [SerializeField] private int maxEnemiesOnScreen = 50;
     private List<Vector2> recentSpawnPoints = new List<Vector2>();
+    private float lastTickSecond = -1f;
 
     private void Awake()
     {
@@ -256,7 +257,37 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     private void UpdateWaveTimer()
     {
         timer += Time.deltaTime;
-        ui.UpdateTimerText(((int)(waveDuration - timer)).ToString());
+        float remaining = Mathf.Max(0f, waveDuration - timer);
+        TimeSpan timeSpan = TimeSpan.FromSeconds(remaining);
+        string formatted = string.Format("{0:D2}:{1:D2}", timeSpan.Minutes, timeSpan.Seconds);
+
+        // Set color based on time
+        if (remaining <= 5f)
+        {
+            ui.SetTimerColor(Color.red);
+            ui.FlashTimerUI();
+        }
+        else if (remaining <= 15f)
+        {
+            ui.SetTimerColor(Color.yellow);
+        }
+        else
+        {
+            ui.SetTimerColor(Color.white);
+        }
+
+        // Play beep each second under 10s
+        if (remaining <= 10f)
+        {
+            int currentSecond = Mathf.FloorToInt(remaining);
+            if (currentSecond != Mathf.FloorToInt(lastTickSecond))
+            {
+                AudioManager.Instance?.PlaySFX(ui.tickSound);
+                lastTickSecond = currentSecond;
+            }
+        }
+
+        ui.UpdateTimerText(formatted);
     }
 
     private void EndGame()
@@ -350,8 +381,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         }
     }
 
-    private void UpdateUIForWaveStart() => ui.UpdateWaveText($"Trial {currentWaveIndex + 1} / {wave.Length}");
-
+    private void UpdateUIForWaveStart() => ui.UpdateWaveText($"CAM: {(currentWaveIndex + 1).ToString("D2")}");
 
     private void DefeatAllEnemies()
     {

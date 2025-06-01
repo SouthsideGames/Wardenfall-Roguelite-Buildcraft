@@ -21,7 +21,6 @@ public class AudioManager : MonoBehaviour, IGameStateListener
     [SerializeField] private AudioSource sFXSource;
     [SerializeField] private AudioSource crowdNoiseSource;
     [SerializeField] private AudioSource crowdReactionSource;
-    [SerializeField] private AudioSource uISource;
 
     [Header("Crowd Reactions")]
     [SerializeField] private List<AudioClip> crowdCheers;
@@ -29,11 +28,10 @@ public class AudioManager : MonoBehaviour, IGameStateListener
     [SerializeField] private List<AudioClip> crowdRoars;
     [SerializeField] private List<AudioClip> crowdBoos;
     [SerializeField] private List<AudioClip> crowdLaughs;
-    [SerializeField] private List<AudioClip> crowdChants;
     [SerializeField] private List<AudioClip> crowdWhistles;
-    [SerializeField] private List<AudioClip> crowdSilenceDrops;
-    [SerializeField] private List<AudioClip> crowdSlowClaps;
-    [SerializeField] private List<AudioClip> crowdAnnouncerWhoa;
+    [SerializeField] private List<AudioClip> crowdOuchDrops;
+    [SerializeField] private AudioClip commericalClip;  
+    [SerializeField] private AudioClip stageOverClip;  
 
     public bool isSFXMuted { get; private set; }
     public bool isMusicMuted { get; private set; }
@@ -55,10 +53,7 @@ public class AudioManager : MonoBehaviour, IGameStateListener
         SettingManager.onMusicStateChanged -= MusicStateChangedCallback;
     }
 
-    void Start()
-    {
-        PlayBackgroundMusic();
-    }
+    void Start() => PlayBackgroundMusic();
 
     private void Update()
     {
@@ -134,11 +129,8 @@ public class AudioManager : MonoBehaviour, IGameStateListener
             case CrowdReactionType.Roar: return GetRandomFromList(crowdRoars);
             case CrowdReactionType.Boo: return GetRandomFromList(crowdBoos);
             case CrowdReactionType.Laugh: return GetRandomFromList(crowdLaughs);
-            case CrowdReactionType.Chant: return GetRandomFromList(crowdChants);
             case CrowdReactionType.Whistle: return GetRandomFromList(crowdWhistles);
-            case CrowdReactionType.Silence: return GetRandomFromList(crowdSilenceDrops);
-            case CrowdReactionType.SlowClap: return GetRandomFromList(crowdSlowClaps);
-            case CrowdReactionType.AnnouncerWhoa: return GetRandomFromList(crowdAnnouncerWhoa);
+            case CrowdReactionType.Ouch: return GetRandomFromList(crowdOuchDrops);
         }
         return null;
     }
@@ -170,13 +162,16 @@ public class AudioManager : MonoBehaviour, IGameStateListener
                 ChangeMusic(gameMusic);
                 break;
             case GameState.GameOver:
-                ChangeMusic(gameoverMusic);
+                PlaySFX(stageOverClip);
+                Invoke("ChangeMusic(gameoverMusic)", 3f);
                 break;
             case GameState.StageCompleted:
+                PlaySFX(stageOverClip);
                 ChangeMusic(stageCompleteMusic);
                 break;
             case GameState.WaveTransition:
             case GameState.Shop:
+                PlaySFX(commericalClip);
                 DecreaseMusicVolume();
                 break;
         }

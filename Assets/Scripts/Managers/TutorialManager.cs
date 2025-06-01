@@ -33,10 +33,7 @@ public class TutorialManager : MonoBehaviour, IGameStateListener
 
         foreach (var tutorial in tutorials)
         {
-            // You can assign tutorials manually here
-            // Or expand TutorialDataSO to include a GameState reference
-            // Example:
-            // if (tutorial.relatedGameState == GameState.WeaponSelect) stateToTutorialMap[GameState.WeaponSelect] = tutorial;
+
         }
     }
 

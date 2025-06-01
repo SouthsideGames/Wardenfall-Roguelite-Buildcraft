@@ -70,6 +70,8 @@ public class WeaponFuserManager : MonoBehaviour
 
         MissionManager.Increment(MissionType.fusionFanatic, 1);
 
+        AudioManager.Instance.PlayCrowdReaction(CrowdReactionType.Boo);
+
         onFuse?.Invoke(weapon);
     }
 
