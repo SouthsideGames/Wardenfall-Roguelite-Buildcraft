@@ -76,6 +76,21 @@ public class GameManager : MonoBehaviour
 
     public void SetGameState(GameState _gameState)
     {
+        if (CameraEffectsManager.Instance != null)
+        {
+            CameraEffectsManager.Instance.PlayChannelSwitchEffect(() => {
+                ApplyGameState(_gameState);
+            });
+        }
+        else
+        {
+            ApplyGameState(_gameState);
+        }
+
+    }
+
+    private void ApplyGameState(GameState _gameState)
+    {
         gameState = _gameState;
 
         IEnumerable<IGameStateListener> gameStateListeners =
@@ -84,13 +99,13 @@ public class GameManager : MonoBehaviour
 
         foreach (IGameStateListener gameStateListener in gameStateListeners)
             gameStateListener.GameStateChangedCallback(_gameState);
-            
+
         if (_gameState == GameState.Progression)
         {
             UIManager.Instance.ShowCharacterProgressionPanel();
         }
-
     }
+
 
     public void ManageGameOver() => SceneManager.LoadScene(0);
 
