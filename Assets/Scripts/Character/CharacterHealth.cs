@@ -79,6 +79,7 @@ public class CharacterHealth : MonoBehaviour, IStats, IDamageable
         if (health <= 0)
             Die();
 
+        WaveManager.Instance?.ReportPlayerHit();
         MissionTotalDamageReceived(_damage);
 
     }
@@ -122,6 +123,7 @@ public class CharacterHealth : MonoBehaviour, IStats, IDamageable
 
     private bool ShouldDodge()
     {
+        WaveManager.Instance?.AdjustViewerScore(0.02f);
         float clampedDodge = Mathf.Clamp(dodge, 0f, 50f);
         return UnityEngine.Random.Range(0f, 100f) < clampedDodge;
     }

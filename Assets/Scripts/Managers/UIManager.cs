@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using System;
 using SouthsideGames.SaveManager;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour, IGameStateListener
 {
@@ -40,6 +41,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
     [Header("ADD. OBJECTS:")]
     [SerializeField] private List<CanvasGroup> blockers = new();
     [SerializeField] private AudioClip introMusic;
+    public ViewerRatingUI viewerRatingSlider;
 
     [Header("COUNTER TEXT:")]
     [SerializeField] private TextMeshProUGUI killCounterText;
@@ -84,7 +86,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
         HideCharacterSelectPanel();
         HideSettingsPanel();
         HideMissionPanel();
-        HideAllBlockers();
+        ShowBlockersUpTo(3);
         HideEquipmentSelectPanel();
 
     }
@@ -122,6 +124,8 @@ public class UIManager : MonoBehaviour, IGameStateListener
             CheckPanelTutorial(panel);
         }
     }
+
+    
 
     private void CheckPanelTutorial(GameObject panel)
     {

@@ -5229,7 +5229,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   immunities: 
-  statusResistance: 0
 --- !u!114 &1969873319376816778
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5244,11 +5243,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 5
   canMove: 1
-  pathUpdateRate: 0.2
-  avoidanceRadius: 1
   chasePlayer: 1
   wander: 0
   patrol: 0
+  multiCharge: 0
+  advanceThenStop: 0
+  strafeAroundPlayer: 0
+  supportAnchor: 0
+  jitterChase: 0
+  teleportMovement: 0
   patrolPoints: []
   patrolWaitTime: 1
   patrolPointReachedDistance: 0.1
@@ -5256,10 +5259,26 @@ MonoBehaviour:
   minWanderWaitTime: 2
   maxWanderWaitTime: 5
   wanderPointReachedDistance: 0.1
+  maxDistanceFromStart: 10
+  stopDistance: 6
+  strafeRadius: 6
+  strafeSpeed: 2
+  strafeOrbitSpeed: 120
+  jitterFrequency: 0.3
+  jitterStrength: 1.2
+  teleportCooldown: 4.5
+  teleportDelay: 0.4
+  teleportDistanceMin: 3.5
+  teleportDistanceMax: 7
+  teleportObstacleMask:
+    serializedVersion: 2
+    m_Bits: 0
+  teleportVFX: {fileID: 0}
+  teleportSFX: {fileID: 0}
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 0
-  maxDistanceFromStart: 10
+  detectionRange: 5
 --- !u!114 &4778504599208135756
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5518,10 +5537,10 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1.28, y: 1.28}
+  m_Size: {x: 2.56, y: 2.56}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &3689793978250020739

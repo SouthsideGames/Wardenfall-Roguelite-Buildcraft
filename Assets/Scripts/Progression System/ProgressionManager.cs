@@ -63,7 +63,7 @@ public class ProgressionManager : MonoBehaviour
         Save();
     } 
 
-    public void AddMetaXP(int amount)
+    public void AddXP(int amount)
     {
         if (amount < 0) return;
         

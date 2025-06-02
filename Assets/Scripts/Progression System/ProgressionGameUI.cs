@@ -87,7 +87,7 @@ public class ProgressionGameUI : MonoBehaviour
         int traitCount = TraitManager.Instance.GetActiveTraitCount();
         int waveNumber = WaveManager.Instance.currentWaveIndex;
         int metaXP = ProgressionXPGranter.CalculateMetaXP(waveNumber, difficultyMultiplier, traitCount);
-        ProgressionManager.Instance.AddMetaXP(metaXP);
+        ProgressionManager.Instance.AddXP(metaXP);
 
         bool isBossWave = WaveManager.Instance.IsCurrentWaveBoss();
         bool hasChest = WaveTransitionManager.Instance.HasCollectedChest();
@@ -103,7 +103,7 @@ public class ProgressionGameUI : MonoBehaviour
         }
         else
         {
-            GameManager.Instance.StartShop(); // sets GameState to Shop
+            GameManager.Instance.StartShop();
         }
     }
 }

@@ -35,6 +35,7 @@ public class CardEffectManager : MonoBehaviour
             return;
         }
 
+        WaveManager.Instance?.AdjustViewerScore(0.05f);
         MissionManager.Increment(MissionType.cardsUsed, 1);
 
         // Track card usage

@@ -175,6 +175,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
                 MissionManager.Increment(MissionType.multiKills2, 1);
                 MissionManager.Increment(MissionType.multiKills3, 1);
                 MissionManager.Increment(MissionType.multiKills4, 1);
+                WaveManager.Instance?.AdjustViewerScore(0.15f);
                 simultaneousKills = 0;
             }
         }
@@ -185,7 +186,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
         lastKillTime = Time.time;
 
         MissionIncrement();
-        
+        WaveManager.Instance?.ReportKill();
         Die();
     }
 

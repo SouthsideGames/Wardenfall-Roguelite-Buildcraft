@@ -1,4 +1,3 @@
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -25,15 +24,17 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 
     [Header("WAVES BASED SETTINGS:")]
     [SerializeField] private Wave[] wave;
-    private List<float> localCounters = new List<float>();
+    [SerializeField] private float minDistanceBetweenSpawns = 2f;
+    [SerializeField] private int maxEnemiesOnScreen = 50;
 
+    private List<float> localCounters = new List<float>();
+    private float currentViewerScore = 0.5f;
     private Wave currentWave;
     private float playerPerformanceScore = 1f;
     private int enemiesKilledThisWave = 0;
     private float damageTakenThisWave = 0f;
-
-    [SerializeField] private float minDistanceBetweenSpawns = 2f;
-    [SerializeField] private int maxEnemiesOnScreen = 50;
+    private float timeSinceLastKill = 0f;
+    private bool droppedBelow20Triggered = false;
     private List<Vector2> recentSpawnPoints = new List<Vector2>();
     private float lastTickSecond = -1f;
 
@@ -56,7 +57,11 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         if (!hasWaveStarted) return;
 
         if (timer < waveDuration)
+        {
             HandleWaveProgression();
+            AdjustViewerScore(-0.01f * Time.deltaTime); 
+            ViewerScoreAdjustments();
+        }
         else
             WaveWrapUp();
 
@@ -68,7 +73,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         AudioManager.Instance.PlayCrowdAmbience();
         hasWaveStarted = true;
         timer = 0;
-
+        timeSinceLastKill = 0f;
         FindAnyObjectByType<CardInGameUIManager>()?.ResetAllCooldowns();
 
         UpdateUIForWaveStart();
@@ -126,8 +131,10 @@ public class WaveManager : MonoBehaviour, IGameStateListener
                 AdjustEnemyDifficulty(enemy.GetComponent<Enemy>());
 
                 localCounters[index]++;
+                
+                AdjustViewerScore(+0.01f); 
 
-                if (segment.bossWave) 
+                if (segment.bossWave)
                 {
                     localCounters[index] += Mathf.Infinity;
                     PrepareArenaForBoss();
@@ -215,33 +222,84 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         }
     }
 
+    #region Viewer Score Management
+    public void AdjustViewerScore(float amount)
+    {
+        currentViewerScore = Mathf.Clamp01(currentViewerScore + amount);
+        UIManager.Instance?.viewerRatingSlider.UpdateBar(currentViewerScore);
+    }
+
+    public void ReportKill()
+    {
+        enemiesKilledThisWave++;
+        AdjustViewerScore(+0.05f);
+        timeSinceLastKill = 0f;
+        
+        
+    }
+
+    public void ReportPlayerHit()
+    {
+        damageTakenThisWave += 10f;
+        AdjustViewerScore(-0.05f);
+    }
+
+    private void ViewerScoreAdjustments()
+    {
+        if (character.controller.MoveDirection.sqrMagnitude > 0.01f)
+        {
+            AdjustViewerScore(0.01f * Time.deltaTime);
+        }
+
+        timeSinceLastKill += Time.deltaTime;
+
+        if (timeSinceLastKill >= 5f)
+        {
+            AdjustViewerScore(-0.10f);
+            timeSinceLastKill = 0f;
+        }
+
+        float currentHealthRatio = character.health.CurrentHealth / character.stats.GetStatValue(Stat.MaxHealth);
+        if (!droppedBelow20Triggered && currentHealthRatio < 0.2f)
+        {
+            AdjustViewerScore(-0.10f);
+            droppedBelow20Triggered = true;
+        }
+    }
+
+    #endregion
+
+
     private void WaveWrapUp()
-{
-    OnWaveCompleted?.Invoke();
-
-    // Check for low health gasp reaction
-    float currentHealth = CharacterManager.Instance.health.CurrentHealth;
-    float maxHealth = character.stats.GetStatValue(Stat.MaxHealth);
-    if (maxHealth > 0 && (currentHealth / maxHealth) < 0.10f)
     {
-        AudioManager.Instance?.PlayCrowdReaction(CrowdReactionType.Gasp);
+        OnWaveCompleted?.Invoke();
+
+        float currentHealth = CharacterManager.Instance.health.CurrentHealth;
+        float maxHealth = character.stats.GetStatValue(Stat.MaxHealth);
+        if (maxHealth > 0 && (currentHealth / maxHealth) < 0.10f)
+        {
+            AudioManager.Instance?.PlayCrowdReaction(CrowdReactionType.Gasp);
+        }
+
+        int baseXP = 100;
+        float bonusMultiplier = Mathf.Lerp(0.5f, 2f, currentViewerScore);
+        int xpEarned = Mathf.RoundToInt(baseXP * bonusMultiplier);
+        ProgressionManager.Instance.AddXP(xpEarned);
+
+        AudioManager.Instance?.StopAmbientLoop();
+        MissionIncrement();
+        DefeatAllEnemies();
+        hasWaveStarted = false;
+
+        if (currentWaveIndex + 1 >= wave.Length)
+        {
+            EndGame();
+            return;
+        }
+
+        currentWaveIndex++;
+        GameManager.Instance.SetGameState(GameState.Progression);
     }
-
-    AudioManager.Instance?.StopAmbientLoop();
-    MissionIncrement();
-    DefeatAllEnemies();
-    hasWaveStarted = false;
-
-    if (currentWaveIndex + 1 >= wave.Length)
-    {
-        EndGame();
-        return;
-    }
-
-    currentWaveIndex++;
-    GameManager.Instance.SetGameState(GameState.Progression);
-}
-
 
     public bool IsCurrentWaveBoss() 
     {

@@ -173,8 +173,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 4
   canMove: 1
-  pathUpdateRate: 0.2
-  avoidanceRadius: 1
   chasePlayer: 1
   wander: 0
   patrol: 0
@@ -224,7 +222,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   immunities: 03000000
-  statusResistance: 0
 --- !u!114 &6312522726506859348
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -345,10 +342,10 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1.28, y: 1.28}
+  m_Size: {x: 2.56, y: 2.56}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &3442179304565409983

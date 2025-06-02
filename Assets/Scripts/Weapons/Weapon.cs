@@ -88,7 +88,7 @@ public abstract class Weapon : MonoBehaviour, IStats, IWeaponSystem
             MissionManager.Increment(MissionType.criticalHitMastery, 1);
             finalDamage = Mathf.RoundToInt(damage * criticalHitDamageAmount);
             AudioManager.Instance.PlayCrowdReaction(CrowdReactionType.Gasp);
-            // 🔥 Fire the crit event
+            WaveManager.Instance?.AdjustViewerScore(0.03f);
             OnCriticalHit?.Invoke();
         }
 

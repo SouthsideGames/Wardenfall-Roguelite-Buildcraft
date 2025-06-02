@@ -175,6 +175,7 @@ public class Boss : Enemy
     {
         MissionManager.Increment(MissionType.bossHunter, 1);
         MissionManager.Increment(MissionType.bossHunter2, 1);
+        WaveManager.Instance?.AdjustViewerScore(0.20f);
         OnBossDeath?.Invoke(transform.position);
         DieAfterWave();
     }
