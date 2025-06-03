@@ -51,6 +51,13 @@ public class WeaponSelectionContainerUI : MonoBehaviour
 
         LeanTween.scale(gameObject, Vector3.one * scaleSize, animationSpeed).setEase(LeanTweenType.easeOutElastic);
 
+        
+        CrowdReactionType reaction = UnityEngine.Random.value < 0.7f
+            ? CrowdReactionType.Boo
+            : CrowdReactionType.Gasp;
+
+        AudioManager.Instance?.PlayCrowdReaction(reaction);
+
         GameManager.Instance.StartGame();
     }
 

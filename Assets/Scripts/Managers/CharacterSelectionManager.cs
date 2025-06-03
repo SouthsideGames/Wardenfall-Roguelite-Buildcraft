@@ -139,6 +139,12 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
                 characterInfo.Button.interactable = false;
         }
 
+        CrowdReactionType reaction = UnityEngine.Random.value < 0.7f
+            ? CrowdReactionType.Boo
+            : CrowdReactionType.Cheer;
+
+        AudioManager.Instance?.PlayCrowdReaction(reaction);
+
         characterInfo.ConfigureInfoPanel(characterData, characterUnlockStates[_index]);
     }
 
@@ -151,6 +157,13 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
         
         characterButtonParent.GetChild(selectedCharacterIndex).GetComponent<CharacterContainerUI>().Unlock();
         CharacterSelectCallback(selectedCharacterIndex);
+
+        CrowdReactionType reaction = UnityEngine.Random.value < 0.7f
+            ? CrowdReactionType.Boo
+            : CrowdReactionType.Cheer;
+
+        AudioManager.Instance?.PlayCrowdReaction(reaction);
+
         Save();
     }
 
