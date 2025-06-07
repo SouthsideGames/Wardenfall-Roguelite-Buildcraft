@@ -14,12 +14,12 @@ public class CardLibrary : ScriptableObject, IWantToBeSaved
     private void Awake()
     {
         Instance = this;
-        LoadCardUnlockStates();
+        CardUnlockManager.Instance?.LoadAllCardUnlockStates(this);
     }
 
     public List<CardSO> GetUnlockedCards()
     {
-        return allCards.FindAll(card => card.isUnlocked);
+        return allCards.FindAll(card => card.unlockData.unlocked);
     }
 
     public CardSO GetCardByID(string id)
@@ -34,7 +34,7 @@ public class CardLibrary : ScriptableObject, IWantToBeSaved
         return allCards.Where(card =>
             rarities.Contains(card.rarity) &&
             !excludedCardIDs.Contains(card.cardID) &&
-            (card.isUnlocked || temporaryUnlocks.Contains(card))
+            (card.unlockData.unlocked || temporaryUnlocks.Contains(card))
         ).ToList();
     }
 
@@ -56,25 +56,13 @@ public class CardLibrary : ScriptableObject, IWantToBeSaved
     public void UnlockCardGlobally(string cardID)
     {
         CardSO card = GetCardByID(cardID);
-        if (card != null && !card.isUnlocked)
+        if (card != null && !card.unlockData.unlocked)
         {
-            card.isUnlocked = true;
+            card.unlockData.unlocked = true;
             SaveManager.Save(this, CardUnlockPrefix + cardID, true);
         }
     }
 
-    private void LoadCardUnlockStates()
-    {
-        foreach (CardSO card in allCards)
-        {
-            string key = CardUnlockPrefix + card.cardID;
-            if (SaveManager.TryLoad(this, key, out object result) && result is bool unlocked && unlocked)
-            {
-                card.isUnlocked = true;
-            }
-        }
-    }
-
-    public void Save() {}
-    public void Load() {}
+    public void Save() { }
+    public void Load() { }
 }

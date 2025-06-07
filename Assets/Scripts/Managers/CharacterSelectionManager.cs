@@ -102,22 +102,27 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
         characterButtonInstance.Button.onClick.AddListener(() => CharacterSelectCallback(_index));
     }
 
-    private void CharacterSelectCallback(int _index)
+   private void CharacterSelectCallback(int _index)
     {
         selectedCharacterIndex = _index;
         CharacterDataSO characterData = characterDatas[_index];
-        
-        // Check if CardLibrary is initialized before accessing it
+
+        // Reset all card unlocks (temporary)
         if (CardLibrary.Instance != null && CardLibrary.Instance.allCards != null)
         {
             foreach (var card in CardLibrary.Instance.allCards)
-                card.isUnlocked = false;
+            {
+                if (card != null && card.unlockData != null)
+                    card.unlockData.unlocked = false;
+            }
 
+            // Unlock the starting cards for this character
             if (characterData.StartingCards != null)
             {
                 foreach (CardSO card in characterData.StartingCards)
                 {
-                    if (card != null) card.isUnlocked = true;
+                    if (card != null && card.unlockData != null)
+                        card.unlockData.unlocked = true;
                 }
             }
         }

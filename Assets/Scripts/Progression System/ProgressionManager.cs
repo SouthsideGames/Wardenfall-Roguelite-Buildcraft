@@ -15,8 +15,8 @@ public class ProgressionManager : MonoBehaviour
 
     public ProgressionGameUI progressionGameUI { get; private set; }
     public ProgressionMenuUI progressionMenuUI { get; private set; }
-    public ProgressionEffectManager progressionEffectManager {get; private set; }
-    public ProgressionUnlockDatabase progressionUnlockDatabase {get; private set;}
+    public ProgressionEffectManager progressionEffectManager { get; private set; }
+    public ProgressionUnlockDatabase progressionUnlockDatabase { get; private set; }
 
     public int ProgressionXP { get; private set; }
     public int UnlockPoints { get; private set; }
@@ -34,17 +34,16 @@ public class ProgressionManager : MonoBehaviour
 
     private void Awake()
     {
-        if(Instance == null)
-               Instance = this;
-            else
-                Destroy(gameObject);
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
 
         Load();
     }
 
     void Start()
     {
-
         progressionGameUI = GetComponent<ProgressionGameUI>();
         progressionMenuUI = GetComponent<ProgressionMenuUI>();
         progressionEffectManager = GetComponent<ProgressionEffectManager>();
@@ -53,7 +52,6 @@ public class ProgressionManager : MonoBehaviour
         UpdateUI();
     }
 
-    
     [Button]
     public void AddSigils()
     {
@@ -61,12 +59,12 @@ public class ProgressionManager : MonoBehaviour
         OnUnlockPointsChanged?.Invoke();
         UpdateUI();
         Save();
-    } 
+    }
 
     public void AddXP(int amount)
     {
         if (amount < 0) return;
-        
+
         ProgressionXP += amount;
         LastGainedXP = amount;
 
@@ -94,18 +92,18 @@ public class ProgressionManager : MonoBehaviour
     {
         if (UnlockPoints <= 0 || unlockedIDs.Contains(unlockID))
             return false;
-    
+
         var data = progressionUnlockDatabase.GetUnlockByID(unlockID);
         if (data == null || data.cost > UnlockPoints)
             return false;
-    
+
         unlockedIDs.Add(unlockID);
         UnlockPoints -= data.cost;
         OnUnlockPointsChanged?.Invoke();
         MissionManager.Increment(MissionType.upgradesPurchased, 1);
         MissionManager.Increment(MissionType.upgradesPurchased2, 1);
         MissionManager.Increment(MissionType.upgradesPurchased3, 1);
-        
+
         switch (data.category)
         {
             case ProgressionUnlockCategory.Card:
@@ -120,7 +118,6 @@ public class ProgressionManager : MonoBehaviour
         }
 
         UpdateUI();
-    
         Save();
         return true;
     }
@@ -139,9 +136,14 @@ public class ProgressionManager : MonoBehaviour
 
     private void UnlockCard(string unlockID)
     {
+        if (CardLibrary.Instance == null || CardLibrary.Instance.allCards == null)
+            return;
+
         CardSO card = CardLibrary.Instance.allCards.Find(c => c.cardID == unlockID);
-        if (card != null)
-            card.isUnlocked = true;
+        if (card != null && card.unlockData != null)
+        {
+            card.unlockData.unlocked = true;
+        }
     }
 
     public int GetXPForNextLevel()
@@ -157,7 +159,6 @@ public class ProgressionManager : MonoBehaviour
         UpdateUI();
         Save();
     }
-
 
     private void UpdateUI()
     {

@@ -49,7 +49,6 @@ public class CodexManager : MonoBehaviour
     [SerializeField] private CardSynergyManager synergyManager;
     [SerializeField] private Button unlockButton;
 
-
     [SerializeField] private GameObject statPrefab;
 
     private void Awake() => InitializeDropdown();
@@ -73,28 +72,14 @@ public class CodexManager : MonoBehaviour
     {
         switch (selectedIndex)
         {
-            case 0:
-                LoadAndDisplayCharacterCards();
-                break;
-            case 1:
-                LoadAndDisplayWeaponCards();
-                break;
-            case 2:
-                LoadAndDisplayObjectCards();
-                break;
-            case 3:
-                LoadAndDisplayEnemyCards();
-                break;
-            case 4:
-                LoadAndDisplayCardCodex();
-                break;
-            default:
-                Debug.LogWarning("Invalid category selected.");
-                break;
+            case 0: LoadAndDisplayCharacterCards(); break;
+            case 1: LoadAndDisplayWeaponCards(); break;
+            case 2: LoadAndDisplayObjectCards(); break;
+            case 3: LoadAndDisplayEnemyCards(); break;
+            case 4: LoadAndDisplayCardCodex(); break;
+            default: Debug.LogWarning("Invalid category selected."); break;
         }
     }
-
-    #region Card Codex View
 
     private void LoadAndDisplayCardCodex()
     {
@@ -109,7 +94,7 @@ public class CodexManager : MonoBehaviour
             cardUI.InitializeCardCodex(card, this);
         }
 
-        int unlockedCount = allCards.FindAll(c => c.isUnlocked).Count;
+        int unlockedCount = allCards.FindAll(c => c.unlockData != null && c.unlockData.unlocked).Count;
         int total = allCards.Count;
         progressText.text = $"Unlocked: {unlockedCount} / {total} cards ({(int)((float)unlockedCount / total * 100)}%)";
     }
@@ -118,7 +103,7 @@ public class CodexManager : MonoBehaviour
     {
         if (card == null) return;
 
-        if (card.isUnlocked)
+        if (card.unlockData != null && card.unlockData.unlocked)
         {
             unlockButton.gameObject.SetActive(false);
         }
@@ -134,7 +119,7 @@ public class CodexManager : MonoBehaviour
                 if (CardUnlockManager.Instance.TryUnlockCard(card))
                 {
                     LoadAndDisplayCardCodex();
-                    OpenCardDetail(card); 
+                    OpenCardDetail(card);
                 }
             });
         }
@@ -142,7 +127,10 @@ public class CodexManager : MonoBehaviour
         if (cardId != null) cardId.text = $"ID: {card.cardID}";
         if (cardDetailIcon != null) cardDetailIcon.sprite = card.icon;
         if (cardDetailName != null) cardDetailName.text = card.cardName;
-        if (cardDetailDescription != null) cardDetailDescription.text = card.isUnlocked ? card.description : $"Required Card Points: {card.requiredCardPoints}";
+
+        cardDetailDescription.text = card.unlockData != null && card.unlockData.unlocked
+            ? card.description
+            : $"Required Unlock Tickets: {card.unlockData.unlockCost}";
 
         if (cardDetailCost != null) cardDetailCost.text = $"Cost: {card.cost}";
         if (cardDetailRarity != null) cardDetailRarity.text = $"Rarity: {card.rarity}";
@@ -169,10 +157,6 @@ public class CodexManager : MonoBehaviour
 
         if (cardDetailContainer != null) cardDetailContainer.SetActive(true);
     }
-
-    #endregion
-
-    #region Card Loading Methods
 
     private void LoadAndDisplayCharacterCards()
     {
@@ -230,10 +214,6 @@ public class CodexManager : MonoBehaviour
         }
     }
 
-    #endregion
-
-    #region Detail View Methods
-
     public void OpenDetailView(CharacterDataSO _characterData)
     {
         detailIcon.sprite = _characterData.Icon;
@@ -268,14 +248,12 @@ public class CodexManager : MonoBehaviour
         enemyDetailName.text = enemyData.Name;
         enemyDetailDescription.text = enemyData.Description;
         enemyDetailTypeText.text = $"Type: {enemyData.Type}";
-
         enemyDetailContainer.SetActive(true);
     }
 
     private void DisplayCharacterStats(CharacterDataSO characterData)
     {
         statContainersParent.Clear();
-
         foreach (var stat in characterData.NonNeutralStats)
         {
             GameObject statEntry = Instantiate(statPrefab, statContainersParent);
@@ -288,7 +266,6 @@ public class CodexManager : MonoBehaviour
     private void DisplayWeaponStats(WeaponDataSO weaponData)
     {
         statContainersParent.Clear();
-
         foreach (var stat in weaponData.BaseStats)
         {
             GameObject statEntry = Instantiate(statPrefab, statContainersParent);
@@ -301,7 +278,6 @@ public class CodexManager : MonoBehaviour
     private void DisplayObjectStats(ObjectDataSO _objectData)
     {
         objectStatContainersParent.Clear();
-
         foreach (var stat in _objectData.BaseStats)
         {
             GameObject statEntry = Instantiate(statPrefab, objectStatContainersParent);
@@ -316,7 +292,4 @@ public class CodexManager : MonoBehaviour
     public void CloseObjectDetailView() => objectDetailContainer.SetActive(false);
     public void CloseCardDetailView() => cardDetailContainer.SetActive(false);
     private void ClearCards() => detailParent.Clear();
-
-    #endregion
-
 }

@@ -15,22 +15,24 @@ public class CardUnlockManager : MonoBehaviour
 
     public bool CanUnlock(CardSO card)
     {
-        return card != null && !card.isUnlocked && CurrencyManager.Instance.HasEnoughCardCurrency(card.requiredCardPoints);
+        return card != null &&
+               !card.unlockData.unlocked &&
+               CurrencyManager.Instance.HasEnoughCardCurrency(card.unlockData.unlockCost);
     }
 
     public bool TryUnlockCard(CardSO card)
     {
         if (!CanUnlock(card))
         {
-            Debug.Log("Cannot unlock card. Either it's null, already unlocked, or not enough card points.");
+            Debug.Log("Cannot unlock card. Either it's null, already unlocked, or not enough unlock tickets.");
             return false;
         }
 
-        CurrencyManager.Instance.UseCardCurrency(card.requiredCardPoints);
-        card.isUnlocked = true;
+        CurrencyManager.Instance.UseCardCurrency(card.unlockData.unlockCost);
+        card.unlockData.unlocked = true;
 
-        SaveManager.Save(this, card.cardName + "_Unlocked", true);
-        Debug.Log($"{card.cardName} unlocked using {card.requiredCardPoints} card points.");
+        SaveManager.Save(this, card.cardID + "_Unlocked", true);
+        Debug.Log($"{card.cardName} unlocked using {card.unlockData.unlockCost} unlock tickets.");
 
         AudioManager.Instance?.PlayCrowdReaction(CrowdReactionType.Whistle);
         return true;
@@ -40,8 +42,8 @@ public class CardUnlockManager : MonoBehaviour
     {
         if (card == null) return;
 
-        if (SaveManager.TryLoad(this, card.cardName + "_Unlocked", out object unlocked))
-            card.isUnlocked = (bool)unlocked;
+        if (SaveManager.TryLoad(this, card.cardID + "_Unlocked", out object unlocked))
+            card.unlockData.unlocked = (bool)unlocked;
     }
 
     public void LoadAllCardUnlockStates(CardLibrary library)
