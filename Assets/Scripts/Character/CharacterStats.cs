@@ -12,10 +12,11 @@ public class CharacterStats : MonoBehaviour
     public CharacterDataSO CharacterData => characterData;
 
     [Header("SETTINGS:")]
-    private Dictionary<Stat, float> addends = new Dictionary<Stat, float>();
-    private Dictionary<Stat, float> stats = new Dictionary<Stat, float>();
-    private Dictionary<Stat, float> objectAddends = new Dictionary<Stat, float>();
-    private Dictionary<Stat, float> boostedStats = new Dictionary<Stat, float>();
+    private Dictionary<Stat, float> addends = new();
+    private Dictionary<Stat, float> stats = new();
+    private Dictionary<Stat, float> objectAddends = new();
+    private Dictionary<Stat, float> boostedStats = new();
+    private readonly List<IStats> statReceivers = new();
 
     private void Awake()
     {
@@ -23,63 +24,57 @@ public class CharacterStats : MonoBehaviour
 
         stats = characterData.BaseStats;
 
-        foreach (KeyValuePair<Stat, float> kvp in stats)
+        foreach (Stat stat in Enum.GetValues(typeof(Stat)))
         {
-            addends.Add(kvp.Key, 0);
-            objectAddends.Add(kvp.Key, 0);
-            boostedStats.Add(kvp.Key, 0);
+            addends.TryAdd(stat, 0f);
+            objectAddends.TryAdd(stat, 0f);
+            boostedStats.TryAdd(stat, 0f);
         }
     }
 
     private void OnDestroy() => CharacterSelectionManager.OnCharacterSelected -= CharacterSelectedCallback;
 
-    void Start() => UpdateStats();
+    private void Start() => UpdateStats();
 
-    public void AddStat(Stat _stat, float _value)
+    public void AddStat(Stat stat, float value)
     {
-        if (addends.ContainsKey(_stat))
-            addends[_stat] += _value;
+        if (addends.ContainsKey(stat))
+            addends[stat] += value;
 
         UpdateStats();
     }
 
-    private void UpdateStats()
+    public float GetStatValue(Stat stat)
     {
-        IEnumerable<IStats> stats =
-            FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include, FindObjectsSortMode.None)
-            .OfType<IStats>();
+        float baseValue = stats.TryGetValue(stat, out float baseStat) ? baseStat : 0f;
+        float additive = addends.TryGetValue(stat, out float add) ? add : 0f;
+        float objectBonus = objectAddends.TryGetValue(stat, out float objAdd) ? objAdd : 0f;
+        float boosterBonus = boostedStats.TryGetValue(stat, out float boost) ? boost : 0f;
 
-        foreach (IStats stat in stats)
-            stat.UpdateWeaponStats(this);
+        float total = baseValue + additive + objectBonus + boosterBonus;
+        return Mathf.Max(1, total);
     }
 
-    public float GetStatValue(Stat _stat)
+    public void AddObject(Dictionary<Stat, float> objectStats)
     {
-        
-        float totalValue = stats[_stat] + addends[_stat] + objectAddends[_stat];
-        return Mathf.Max(1, totalValue);
-    }
-
-    public void AddObject(Dictionary<Stat, float> _objectStats)
-    {
-        foreach (KeyValuePair<Stat, float> kvp in _objectStats)
+        foreach (var kvp in objectStats)
             objectAddends[kvp.Key] += kvp.Value;
 
         UpdateStats();
     }
 
-    public void RemoveObjectStats(Dictionary<Stat, float> _objectStats)
+    public void RemoveObjectStats(Dictionary<Stat, float> objectStats)
     {
-        foreach (KeyValuePair<Stat, float> kvp in _objectStats)
+        foreach (var kvp in objectStats)
             objectAddends[kvp.Key] -= kvp.Value;
 
         UpdateStats();
     }
 
-    private void CharacterSelectedCallback(CharacterDataSO _characterData)
+    private void CharacterSelectedCallback(CharacterDataSO selectedData)
     {
         OnDataStored?.Invoke();
-        characterData = _characterData;
+        characterData = selectedData;
         stats = characterData.BaseStats;
 
         CharacterEquipment equipment = GetComponent<CharacterEquipment>();
@@ -89,24 +84,20 @@ public class CharacterStats : MonoBehaviour
         UpdateStats();
     }
 
-    public void BoostStat(Stat _stat, float _value)
+    public void BoostStat(Stat stat, float value)
     {
-        if (boostedStats.ContainsKey(_stat))
+        if (boostedStats.ContainsKey(stat))
         {
-            float currentAddend = addends[_stat];
-            boostedStats[_stat] = currentAddend;
-
-            addends[_stat] += _value;
+            boostedStats[stat] += value;
             UpdateStats();
         }
     }
 
-    public void RevertBoost(Stat _stat)
+    public void RevertBoost(Stat stat)
     {
-        if (boostedStats.ContainsKey(_stat))
+        if (boostedStats.ContainsKey(stat))
         {
-            addends[_stat] = boostedStats[_stat];
-            boostedStats[_stat] = 0; 
+            boostedStats[stat] = 0f;
             UpdateStats();
         }
     }
@@ -117,6 +108,26 @@ public class CharacterStats : MonoBehaviour
         {
             if (equipped.booster != null)
                 BoostStat(equipped.chosenStat, equipped.booster.bonusValue);
+        }
+    }
+    
+    public void RegisterStatReceiver(IStats receiver)
+    {
+        if (!statReceivers.Contains(receiver))
+            statReceivers.Add(receiver);
+    }
+
+    public void UnregisterStatReceiver(IStats receiver)
+    {
+        if (statReceivers.Contains(receiver))
+            statReceivers.Remove(receiver);
+    }
+
+    private void UpdateStats()
+    {
+        foreach (var receiver in statReceivers)
+        {
+            receiver.UpdateWeaponStats(this);
         }
     }
 

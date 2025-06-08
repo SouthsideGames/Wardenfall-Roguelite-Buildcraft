@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BoosterSelectionUI : MonoBehaviour
 {
     [SerializeField] private Transform contentParent;
     [SerializeField] private GameObject boosterCardPrefab;
+    [SerializeField] private Button EquipButton;
 
     public void ShowAvailableBoosters(EquipmentUI equipmentUI)
     {
@@ -19,6 +21,7 @@ public class BoosterSelectionUI : MonoBehaviour
             GameObject go = Instantiate(boosterCardPrefab, contentParent);
             BoosterUI cardUI = go.GetComponent<BoosterUI>();
             cardUI.Configure(booster, equipmentUI);
+
         }
     }
 }
