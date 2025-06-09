@@ -13,6 +13,7 @@ public class CardDraftManager : MonoBehaviour, IGameStateListener
     [SerializeField] private Transform cardContainer;
     [SerializeField] private Button rerollButton;
     [SerializeField] private TextMeshProUGUI rerollCountText;
+    [SerializeField] private Button skipButton;
     public CardEffectManager cardEffectManager { get; private set; }
 
     [Header("Card Sources")]
@@ -42,12 +43,12 @@ public class CardDraftManager : MonoBehaviour, IGameStateListener
             Destroy(gameObject);
 
         cardEffectManager = GetComponent<CardEffectManager>();
-    
+
     }
 
     private void Update()
     {
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.M))
         {
             ShowMajorDraft();
@@ -60,7 +61,7 @@ public class CardDraftManager : MonoBehaviour, IGameStateListener
         {
             rerollCount = 0;
         }
-    #endif
+#endif
     }
 
     public void GameStateChangedCallback(GameState state)
@@ -74,7 +75,7 @@ public class CardDraftManager : MonoBehaviour, IGameStateListener
             panel.SetActive(false);
         }
     }
-    
+
     public void ShowMajorDraft()
     {
         ShowDraft(DraftType.Major);
@@ -104,7 +105,7 @@ public class CardDraftManager : MonoBehaviour, IGameStateListener
         RenderDraft();
     }
 
-   private void RenderDraft()
+    private void RenderDraft()
     {
         List<CardSO> lockedCards = new List<CardSO>();
 
@@ -172,6 +173,7 @@ public class CardDraftManager : MonoBehaviour, IGameStateListener
         if (rerollCount >= maxRerolls) return;
         rerollCount++;
         rerollCountText.text = (maxRerolls - rerollCount).ToString();
+        AudioManager.Instance.PlayCrowdReaction(CrowdReactionType.Gasp);
         RenderDraft();
     }
 
@@ -211,6 +213,15 @@ public class CardDraftManager : MonoBehaviour, IGameStateListener
             case CardRarity.Exalted: return exaltedOptionPrefab;
             default: return commonOptionPrefab;
         }
+    }
+
+    public void SkipDraft()
+    {
+        AudioManager.Instance.PlayCrowdReaction(CrowdReactionType.Boo);
+            panel.SetActive(false);
+
+        GameManager.Instance.StartShop();
+ 
     }
 
 } 
