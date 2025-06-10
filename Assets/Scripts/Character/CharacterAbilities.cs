@@ -3,7 +3,7 @@ using System.Collections;
 
 public class CharacterAbility : MonoBehaviour
 {
-    [SerializeField] private CharacterController controller;
+    private CharacterController controller;
     public AbilityType currentAbility;
 
     private float cooldownTime;
