@@ -9,6 +9,12 @@ public class CharacterAbility : MonoBehaviour
     private float cooldownTime;
     private float cooldownRemaining;
 
+    void Awake()
+    {
+        controller = CharacterManager.Instance.controller;
+
+    }
+
     private void Update()
     {
         if (cooldownRemaining > 0)
