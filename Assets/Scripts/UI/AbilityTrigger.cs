@@ -6,7 +6,7 @@ public class AbilityTrigger : MonoBehaviour
 {
     [Header("UI")]
     [SerializeField] private Button abilityButton;
-    [SerializeField] private Image overlayImage;
+    [SerializeField] private CanvasGroup cooldownAlphaGroup;
     [SerializeField] private TextMeshProUGUI cooldownText;
 
     [Header("Cooldown Settings")]
@@ -20,8 +20,10 @@ public class AbilityTrigger : MonoBehaviour
     {
         characterAbility = CharacterManager.Instance.ability;
         abilityButton.onClick.AddListener(OnPressed);
-        overlayImage.gameObject.SetActive(false);
         cooldownText.gameObject.SetActive(false);
+
+        if (cooldownAlphaGroup != null)
+            cooldownAlphaGroup.alpha = 0f;
     }
 
     private void Update()
@@ -43,27 +45,31 @@ public class AbilityTrigger : MonoBehaviour
     private void OnPressed()
     {
         if (isCoolingDown || characterAbility == null) return;
-
+        AudioManager.Instance.PlayCrowdReaction(CrowdReactionType.Cheer);
         characterAbility.TryUseAbility();
         StartCooldown(characterAbility.GetCooldownTime());
     }
 
-    private void StartCooldown(float duration)
+   private void StartCooldown(float duration)
     {
         cooldownDuration = duration;
         cooldownRemaining = duration;
         isCoolingDown = true;
 
-        overlayImage.gameObject.SetActive(true);
         cooldownText.gameObject.SetActive(true);
         abilityButton.interactable = false;
+
+        if (cooldownAlphaGroup != null)
+            cooldownAlphaGroup.alpha = 1f;
     }
 
     private void EndCooldown()
     {
         isCoolingDown = false;
-        overlayImage.gameObject.SetActive(false);
         cooldownText.gameObject.SetActive(false);
         abilityButton.interactable = true;
+
+        if (cooldownAlphaGroup != null)
+            cooldownAlphaGroup.alpha = 0f;
     }
 }
