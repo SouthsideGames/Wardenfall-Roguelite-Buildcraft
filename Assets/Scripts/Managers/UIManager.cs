@@ -36,7 +36,6 @@ public class UIManager : MonoBehaviour, IGameStateListener
     [SerializeField] private GameObject missionPanel;
     [SerializeField] private GameObject equipmentPanel;
     [SerializeField] private GameObject progressionTreePanel;
-    [SerializeField] private GameObject lorePanel;
 
     [Header("ADD. OBJECTS:")]
     [SerializeField] private List<CanvasGroup> blockers = new();
@@ -296,17 +295,6 @@ public class UIManager : MonoBehaviour, IGameStateListener
         missionPanel.SetActive(false);
         menuPanel.SetActive(true);
         TriggerPanelAction(menuPanel);
-    }
-
-    public void ShowLorePanel()
-    {
-        lorePanel.SetActive(true);
-        LorePanelUI.Instance.Initialize();
-    }
-
-    public void HideLorePanel()
-    {
-        lorePanel.SetActive(false);
     }
 
     public void ShowEquipmentSelectPanel()

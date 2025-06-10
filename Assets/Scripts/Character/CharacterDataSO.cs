@@ -32,10 +32,17 @@ public class CharacterDataSO : ScriptableObject
     [SerializeField, Tooltip("Damage converted to health (%).")] private float lifeSteal;
     [SerializeField, Range(1.1f, 5f), Tooltip("Reduces enemy crit (%).")] private float critResist;
     [SerializeField, Tooltip("Radius for auto item pickup.")] private float pickupRange;
+    
+    [field: SerializeField] public AbilityType Ability { get; private set; }
+    [field: SerializeField] public string AbilityName { get; private set; }
+    [field: SerializeField, TextArea] public string AbilityDescription { get; private set; }
+    [field: SerializeField] public Sprite AbilityIcon { get; private set; }
+
+
 
     public Dictionary<Stat, float> BaseStats
     {
-        get 
+        get
         {
             return new Dictionary<Stat, float>
             {
@@ -53,12 +60,12 @@ public class CharacterDataSO : ScriptableObject
                 {Stat.Dodge,           dodge},
                 {Stat.LifeSteal,       lifeSteal},
                 {Stat.CritResist,      critResist},
-                {Stat.PickupRange,     pickupRange},   
+                {Stat.PickupRange,     pickupRange},
 
             };
         }
 
-        private set{}
+        private set { }
     }
 
     public Dictionary<Stat, float> NonNeutralStats

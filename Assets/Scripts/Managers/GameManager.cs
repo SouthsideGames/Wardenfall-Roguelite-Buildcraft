@@ -56,6 +56,7 @@ public class GameManager : MonoBehaviour
         SetGameState(GameState.Menu);
         UIManager.Instance.ShowNextTutorialStep();
     }
+    
     public void StartWeaponSelect() => SetGameState(GameState.WeaponSelect);
     public void StartShop() => SetGameState(GameState.Shop);    
     public void StartTraitSelection() => SetGameState(GameState.TraitSelection);

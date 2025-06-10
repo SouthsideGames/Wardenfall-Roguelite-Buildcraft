@@ -20,6 +20,9 @@ public class CodexManager : MonoBehaviour
     [SerializeField] private Image detailIcon;
     [SerializeField] private TextMeshProUGUI detailName;
     [SerializeField] private TextMeshProUGUI detailDescription;
+    [SerializeField] private Image abilityIcon;
+    [SerializeField] private TextMeshProUGUI abilityName;
+    [SerializeField] private TextMeshProUGUI abilityDescription;
     [SerializeField] private Transform statContainersParent;
 
     [Header("ENEMY VIEW:")]
@@ -219,6 +222,9 @@ public class CodexManager : MonoBehaviour
         detailIcon.sprite = _characterData.Icon;
         detailName.text = _characterData.Name;
         detailDescription.text = _characterData.Description;
+        abilityIcon.sprite = _characterData.AbilityIcon;
+        abilityName.text = _characterData.AbilityName;
+        abilityDescription.text = _characterData.AbilityDescription;
         DisplayCharacterStats(_characterData);
         detailContainer.SetActive(true);
     }

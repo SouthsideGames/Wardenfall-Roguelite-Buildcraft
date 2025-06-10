@@ -13,6 +13,7 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterAnimator))]
 [RequireComponent(typeof(CharacterEquipment))]
 [RequireComponent(typeof(CharacterDatabase))]
+[RequireComponent(typeof(CharacterAbility))]
 public class CharacterManager : MonoBehaviour
 {
     public static CharacterManager Instance;
@@ -25,6 +26,7 @@ public class CharacterManager : MonoBehaviour
     public CharacterStats stats { get; private set; }
     public CharacterController controller { get; private set; }
     public CharacterCards cards { get; private set; }
+    public CharacterAbility ability { get; private set; }
     public CharacterEquipment equipment { get; private set; }
     public CharacterDatabase database { get; private set; }
     [SerializeField] private CircleCollider2D _col;
@@ -46,6 +48,7 @@ public class CharacterManager : MonoBehaviour
         stats = GetComponent<CharacterStats>();
         controller = GetComponent<CharacterController>();
         cards = GetComponent<CharacterCards>();
+        ability = GetComponent<CharacterAbility>();
         database = GetComponent<CharacterDatabase>();
         equipment = GetComponent<CharacterEquipment>();
         _sr = GetComponentInChildren<SpriteRenderer>();

@@ -14,7 +14,15 @@ public class CharacterController : MonoBehaviour, IStats
     private Vector2 moveDirection;
     public Vector2 MoveDirection => moveDirection;
 
-    void Start() => _rb = GetComponent<Rigidbody2D>(); 
+    private Vector2 lastInputDirection = Vector2.down;
+    public Vector2 LastInputDirection => lastInputDirection;
+
+    // Dash State
+    private bool isDashing = false;
+    private float dashTimer;
+    private Vector2 dashVelocity;
+
+    void Start() => _rb = GetComponent<Rigidbody2D>();
 
     private void FixedUpdate()
     {
@@ -25,7 +33,30 @@ public class CharacterController : MonoBehaviour, IStats
         }
 
         moveDirection = InputManager.Instance.GetMoveVector();
-        _rb.linearVelocity = InputManager.Instance.GetMoveVector() * moveSpeed * Time.deltaTime;
+        if (moveDirection != Vector2.zero)
+            lastInputDirection = moveDirection.normalized;
+
+        if (isDashing)
+        {
+            dashTimer -= Time.fixedDeltaTime;
+            _rb.linearVelocity = dashVelocity;
+
+            if (dashTimer <= 0)
+            {
+                isDashing = false;
+            }
+        }
+        else
+        {
+            _rb.linearVelocity = moveDirection * moveSpeed * Time.fixedDeltaTime;
+        }
+    }
+
+    public void TriggerDash(Vector2 direction, float dashSpeed, float duration)
+    {
+        isDashing = true;
+        dashTimer = duration;
+        dashVelocity = direction.normalized * dashSpeed;
     }
 
     public void UpdateWeaponStats(CharacterStats _statsManager)
@@ -46,5 +77,4 @@ public class CharacterController : MonoBehaviour, IStats
     public void SetMovementMultiplier(float multiplier) => moveSpeed = baseMoveSpeed * multiplier;
 
     private void OnDisable() => CancelInvoke(nameof(EnableMovement));
-
 }

@@ -127,6 +127,20 @@ public enum StatusEffectType
     DeathMark
 }
 
+public enum AbilityType
+{
+    FlameJet,
+    LuckyRoll,
+    TargetLockDash,
+    SlipstreamSurge,
+    BeastLunge,
+    QuantumBlink,
+    UppercutDash,
+    Shadowstep,
+    GhostGlide,
+    SoulFlicker
+}
+
 public enum StackBehavior
 {
     Refresh,

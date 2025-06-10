@@ -2,7 +2,6 @@ using System;
 using NaughtyAttributes;
 using UnityEngine;
 using SouthsideGames.SaveManager;
-using UnityEngine.Purchasing;
 
 public class CurrencyManager : MonoBehaviour, IWantToBeSaved
 {

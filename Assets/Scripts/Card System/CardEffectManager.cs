@@ -34,6 +34,7 @@ public class CardEffectManager : MonoBehaviour
             Debug.LogWarning("Attempted to activate null card");
             return;
         }
+        
 
         WaveManager.Instance?.AdjustViewerScore(0.05f);
         MissionManager.Increment(MissionType.cardsUsed, 1);
