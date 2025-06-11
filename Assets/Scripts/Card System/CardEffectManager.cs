@@ -10,6 +10,8 @@ public class CardEffectManager : MonoBehaviour
     private List<GameObject> activeEffects = new();
     private Dictionary<string, int> cardUsageCounts = new Dictionary<string, int>();
 
+    private float globalCooldownMultiplier = 1f;
+
     public string GetMostUsedCard()
     {
         string mostUsedCardId = "";
@@ -73,6 +75,16 @@ public class CardEffectManager : MonoBehaviour
         {
             Debug.LogError($"Error activating card {card.cardName}: {e.Message}");
         }
+    }
+
+    public void SetGlobalCooldownMultiplier(float multiplier)
+    {
+        globalCooldownMultiplier = multiplier;
+    }
+
+    public float GetCooldownMultiplier()
+    {
+        return globalCooldownMultiplier;
     }
 
     private void HandleCooldown(CardSO card, InGameCardSlotUI slotUI)

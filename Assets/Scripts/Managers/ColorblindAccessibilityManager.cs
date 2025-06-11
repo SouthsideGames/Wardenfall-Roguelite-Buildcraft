@@ -230,7 +230,6 @@ public class ColorblindAccessibilityManager : MonoBehaviour
                 ApplyColorToText(kvp.Key, kvp.Value);
         }
         
-        Debug.Log($"Applied colorblind mode: {isColorblindModeEnabled}. Registered Images: {registeredImages.Count}, Registered Texts: {registeredTexts.Count}");
     }
 
     private void ApplyColorToImage(Image image, string colorType)

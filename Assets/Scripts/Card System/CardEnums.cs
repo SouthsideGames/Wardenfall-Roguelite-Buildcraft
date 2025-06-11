@@ -89,7 +89,8 @@ public enum CardEffectType
     ArcTurret,
     TeamUp,
     ObsidianGolem,
-    VoidWarden, 
-    Doomnut
+    VoidWarden,
+    Doomnut,
+    QuickReflexes,
     // Add more as needed
 }

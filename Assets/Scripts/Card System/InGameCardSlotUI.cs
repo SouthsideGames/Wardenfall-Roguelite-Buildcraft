@@ -77,7 +77,12 @@ public class InGameCardSlotUI : MonoBehaviour
             duration *= 0.75f;
         }
 
-        cooldownRemaining = duration;
+        float globalModifier = CharacterManager.Instance
+            .GetComponent<CardEffectManager>()
+            .GetCooldownMultiplier();
+
+        cooldownRemaining = duration * globalModifier;
+        
         isCoolingDown = true;
         clickButton.interactable = false; // ✅ Disable button during cooldown
         cooldownText.text = Mathf.CeilToInt(duration).ToString();

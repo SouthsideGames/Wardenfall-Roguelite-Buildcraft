@@ -32,7 +32,7 @@ public static class TraitEffectUtils
                 ApplyAggressiveModifier(enemy, 1.5f, 0.5f);
                 break;
             case "AggressiveT3":
-                ApplyAggressiveModifier(enemy, 2f, 0f); 
+                ApplyAggressiveModifier(enemy, 2f, 0f);
                 break;
             case "StingyT1":
                 enemy.contactDamage = Mathf.FloorToInt(enemy.contactDamage * 0.75f);
@@ -103,12 +103,22 @@ public static class TraitEffectUtils
                 break;
             case "TacticalOverflowT3":
                 CardDraftManager.Instance.ModifyTacticalOverflow(+3, 99); // disables reroll
-    break;
+                break;
+
+            case "TimeWarpedT1":
+                ApplyTimeWarpedEffect(0.10f);
+                break;
+            case "TimeWarpedT2":
+                ApplyTimeWarpedEffect(0.20f);
+                break;
+            case "TimeWarpedT3":
+                ApplyTimeWarpedEffect(0.30f);
+                break;
 
             default:
                 Debug.LogWarning($"Unknown special effect ID: {tier.SpecialEffectID}");
                 break;
-            
+
         }
     }
 
@@ -126,10 +136,10 @@ public static class TraitEffectUtils
         }
     }
 
-   public static void ApplySizeModifier(Enemy enemy, TraitTier tier, int stack)
+    public static void ApplySizeModifier(Enemy enemy, TraitTier tier, int stack)
     {
         float chance = 0f;
-        float scaleFactor = 1.5f; 
+        float scaleFactor = 1.5f;
 
         switch (tier.TierName)
         {
@@ -145,7 +155,7 @@ public static class TraitEffectUtils
             EnemyMovement movement = enemy.GetComponent<EnemyMovement>();
             if (movement != null)
             {
-                movement.moveSpeed *= 1f + tier.SpeedModifier; 
+                movement.moveSpeed *= 1f + tier.SpeedModifier;
             }
 
         }
@@ -183,5 +193,24 @@ public static class TraitEffectUtils
             handler.ModifyDamage(gainPerTick);
         }
     }
+    
+    private static void ApplyTimeWarpedEffect(float percent)
+    {
+        if (CharacterManager.Instance == null) return;
+
+        float cooldownScale = 1f - percent;
+        float dashPenalty = 1f + percent;
+
+        // Apply dash cooldown modifier
+        var ability = CharacterManager.Instance.GetComponent<CharacterAbility>();
+        if (ability != null)
+            ability.ApplyDashCooldownModifier(dashPenalty);
+
+        // Apply card cooldown modifier
+        var cardEffectManager = CharacterManager.Instance.GetComponent<CardEffectManager>();
+        if (cardEffectManager != null)
+            cardEffectManager.SetGlobalCooldownMultiplier(cooldownScale);
+    }
+
 
 }

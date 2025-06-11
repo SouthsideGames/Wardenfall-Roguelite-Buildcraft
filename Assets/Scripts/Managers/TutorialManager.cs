@@ -74,8 +74,7 @@ public class TutorialManager : MonoBehaviour, IGameStateListener
         var tutorialUI = tutorialInstance.GetComponent<TutorialPrefabUI>();
         if (tutorialUI != null)
             tutorialUI.Initialize(tutorial);
-        else
-            Debug.LogError("TutorialPrefabUI component missing on tutorialPrefab.");
+
     }
 
     public void CompleteTutorial(TutorialDataSO tutorial)

@@ -9,6 +9,8 @@ public class CharacterAbility : MonoBehaviour
     private float cooldownTime;
     private float cooldownRemaining;
 
+    private float dashCooldownModifier = 1f;
+
     void Awake()
     {
         controller = CharacterManager.Instance.controller;
@@ -20,6 +22,12 @@ public class CharacterAbility : MonoBehaviour
         if (cooldownRemaining > 0)
             cooldownRemaining -= Time.deltaTime;
     }
+
+    public void ApplyDashCooldownModifier(float modifier)
+    {
+        dashCooldownModifier = modifier;
+    }
+
 
     public void TryUseAbility()
     {
@@ -49,7 +57,7 @@ public class CharacterAbility : MonoBehaviour
                 UseSoulFlicker(); cooldownTime = 6f; break;
         }
 
-        cooldownRemaining = cooldownTime;
+        cooldownRemaining = cooldownTime * dashCooldownModifier;
     }
 
     public float GetCooldownTime() => cooldownTime;
@@ -64,7 +72,7 @@ public class CharacterAbility : MonoBehaviour
 
     private IEnumerator ApplyTemporaryDodge(float duration)
     {
-      
+
         CharacterManager.Instance.stats.BoostStat(Stat.Dodge, 30f);
         yield return new WaitForSeconds(duration);
         CharacterManager.Instance.stats.RevertBoost(Stat.Dodge);
@@ -92,7 +100,14 @@ public class CharacterAbility : MonoBehaviour
         controller.TriggerDash(GetInputDirectionOrFallback(), 22f, 0.15f);
         Heal(10);
     }
-    private void UseBeastLunge() => controller.TriggerDash(GetInputDirectionOrFallback(), 17f, 0.25f);
+    private void UseBeastLunge()
+    {
+        Vector2 dashDir = GetInputDirectionOrFallback();
+        controller.TriggerDash(dashDir, 17f, 0.25f);
+        StartCoroutine(ApplyDeathMarkAfterDash(0.25f));
+    }
+
+
     private void UseQuantumBlink()
     {
         Vector2 offset = GetInputDirectionOrFallback() * 5f;
@@ -109,4 +124,25 @@ public class CharacterAbility : MonoBehaviour
     }
     private void UseGhostGlide() => controller.TriggerDash(GetInputDirectionOrFallback(), 16f, 0.25f);
     private void UseSoulFlicker() => controller.TriggerDash(GetInputDirectionOrFallback(), 19f, 0.2f);
+    
+    private IEnumerator ApplyDeathMarkAfterDash(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        float radius = 2.5f;
+        LayerMask enemyLayer = LayerMask.GetMask("Enemy");
+
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, radius, enemyLayer);
+
+        foreach (Collider2D hit in hits)
+        {
+            EnemyStatus statusHandler = hit.GetComponent<EnemyStatus>();
+            if (statusHandler != null)
+            {
+                StatusEffect deathMarkEffect = new StatusEffect(StatusEffectType.DeathMark, 5f, 1.5f, 0f);
+                statusHandler.ApplyEffect(deathMarkEffect);
+            }
+        }
+    }
+
 }
