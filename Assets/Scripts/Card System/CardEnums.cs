@@ -92,5 +92,7 @@ public enum CardEffectType
     VoidWarden,
     Doomnut,
     QuickReflexes,
+    Detonabot,
+    PhantomLancer
     // Add more as needed
 }
