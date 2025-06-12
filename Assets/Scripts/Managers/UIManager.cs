@@ -173,7 +173,6 @@ public class UIManager : MonoBehaviour, IGameStateListener
                 break;
             case GameState.Game:
                 ShowPanel(gamePanel);
-                InputManager.Instance.ActivateJoystick();
                 break;
             case GameState.GameOver:
                 ShowPanel(gameoverPanel);

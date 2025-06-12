@@ -104,7 +104,7 @@ namespace SouthsideGames.DailyMissions
         {
             uI.UpdateMission(activeMissions.IndexOf(_mission));
         }
-
+        
         private void OnCompleteMission(Mission _mission)
         {
             alertObject.SetActive(true);
@@ -119,7 +119,7 @@ namespace SouthsideGames.DailyMissions
             {
                 if(Instance.activeMissions[i].IsComplete || Instance.activeMissions[i].IsClaimed)
                     continue;
-
+                    
                 if(Instance.activeMissions[i].Type == _missionType)
                    Instance.activeMissions[i].Amount += _amount;
 
@@ -169,40 +169,10 @@ namespace SouthsideGames.DailyMissions
             claimedStates = new bool[missionDatas.Length];
 
             if(SaveManager.TryLoad(this, amountsKey, out object _amounts))
-            {
-                int[] loadedAmounts = (int[])_amounts;
-                // Ensure the loaded array matches the current mission data length
-                if (loadedAmounts.Length == missionDatas.Length)
-                {
-                    amounts = loadedAmounts;
-                }
-                else
-                {
-                    // If lengths don't match, copy what we can and reset the rest
-                    for (int i = 0; i < Math.Min(loadedAmounts.Length, amounts.Length); i++)
-                    {
-                        amounts[i] = loadedAmounts[i];
-                    }
-                }
-            }
+               amounts = (int[])_amounts;
 
             if(SaveManager.TryLoad(this, claimedStatesKey, out object _claimedStates))
-            {
-                bool[] loadedStates = (bool[])_claimedStates;
-                // Ensure the loaded array matches the current mission data length
-                if (loadedStates.Length == missionDatas.Length)
-                {
-                    claimedStates = loadedStates;
-                }
-                else
-                {
-                    // If lengths don't match, copy what we can and reset the rest
-                    for (int i = 0; i < Math.Min(loadedStates.Length, claimedStates.Length); i++)
-                    {
-                        claimedStates[i] = loadedStates[i];
-                    }
-                }
-            }
+               claimedStates = (bool[])_claimedStates;
 
             if(SaveManager.TryLoad(this, xpkey, out object _xp))
                xp = (int)_xp;
@@ -217,7 +187,7 @@ namespace SouthsideGames.DailyMissions
                 SaveManager.Save(this, alertKey, true);
             }
 
-
+    
         }
 
         private void Save()
@@ -232,7 +202,7 @@ namespace SouthsideGames.DailyMissions
             SaveManager.Save(this, claimedStatesKey, claimedStates);
             SaveManager.Save(this, xpkey, xp);
         }
-
+        
         IEnumerator SaveCoroutine()
         {
             while(true)
@@ -244,7 +214,7 @@ namespace SouthsideGames.DailyMissions
                     shouldSave = false;
                     Save();
                 }
-
+                   
             }
         }
 
@@ -256,3 +226,5 @@ namespace SouthsideGames.DailyMissions
 
     }
 }
+
+

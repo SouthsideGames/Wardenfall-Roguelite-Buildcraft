@@ -29,23 +29,15 @@ public class ShopManager : MonoBehaviour, IGameStateListener
     private void Awake()
     {
         ShopItemContainerUI.onPurchased += ItemPurchasedCallback;
-        InputManager.OnScroll += ScrollCallback;
-    }
-
-    private void Start()
-    {
-        // Subscribe to currency updates only after Start to ensure UI components are initialized
         CurrencyManager.onCurrencyUpdate += CurrencyUpdatedCallback;
+        InputManager.OnScroll += ScrollCallback;
     }
 
     private void OnEnable()
     {
-        // Only subscribe if we're past the Awake phase
-        if (Time.time > 0f)
-        {
-            CurrencyManager.onCurrencyUpdate -= CurrencyUpdatedCallback;
-            CurrencyManager.onCurrencyUpdate += CurrencyUpdatedCallback;
-        }
+        // Ensure we don't double-subscribe
+        CurrencyManager.onCurrencyUpdate -= CurrencyUpdatedCallback;
+        CurrencyManager.onCurrencyUpdate += CurrencyUpdatedCallback;
     }
 
     private void OnDestroy()
@@ -114,20 +106,6 @@ public class ShopManager : MonoBehaviour, IGameStateListener
         if (rerollPriceText == null || rerollButton == null)
         {
             Debug.LogWarning("ShopManager: UI references missing during UpdateRerollVisuals.");
-            return;
-        }
-
-        // Additional safety check for ProgressionManager
-        if (ProgressionManager.Instance == null || ProgressionManager.Instance.progressionEffectManager == null)
-        {
-            Debug.LogWarning("ShopManager: ProgressionManager not ready during UpdateRerollVisuals.");
-            return;
-        }
-
-        // Additional safety check for CurrencyManager
-        if (CurrencyManager.Instance == null)
-        {
-            Debug.LogWarning("ShopManager: CurrencyManager not ready during UpdateRerollVisuals.");
             return;
         }
 
