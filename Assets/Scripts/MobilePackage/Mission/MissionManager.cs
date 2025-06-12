@@ -60,7 +60,27 @@ namespace SouthsideGames.DailyMissions
 
         private void Start() 
         {
+            // Ensure missionDatas is not null or empty
+            if (missionDatas == null || missionDatas.Length == 0)
+            {
+                Debug.LogError("MissionManager: missionDatas array is null or empty!");
+                return;
+            }
+
             Load();
+
+            // Double-check arrays are properly initialized
+            if (amounts == null || amounts.Length != missionDatas.Length)
+            {
+                Debug.LogWarning("MissionManager: amounts array size mismatch, reinitializing...");
+                amounts = new int[missionDatas.Length];
+            }
+
+            if (claimedStates == null || claimedStates.Length != missionDatas.Length)
+            {
+                Debug.LogWarning("MissionManager: claimedStates array size mismatch, reinitializing...");
+                claimedStates = new bool[missionDatas.Length];
+            }
 
             for(int i = 0; i < missionDatas.Length; i++)
                 activeMissions.Add(new Mission(missionDatas[i], amounts[i], claimedStates[i]));
@@ -169,10 +189,40 @@ namespace SouthsideGames.DailyMissions
             claimedStates = new bool[missionDatas.Length];
 
             if(SaveManager.TryLoad(this, amountsKey, out object _amounts))
-               amounts = (int[])_amounts;
+            {
+                int[] loadedAmounts = (int[])_amounts;
+                // Ensure the loaded array matches the current mission data length
+                if (loadedAmounts.Length == missionDatas.Length)
+                {
+                    amounts = loadedAmounts;
+                }
+                else
+                {
+                    // If lengths don't match, copy what we can and keep defaults for the rest
+                    for (int i = 0; i < Mathf.Min(loadedAmounts.Length, amounts.Length); i++)
+                    {
+                        amounts[i] = loadedAmounts[i];
+                    }
+                }
+            }
 
             if(SaveManager.TryLoad(this, claimedStatesKey, out object _claimedStates))
-               claimedStates = (bool[])_claimedStates;
+            {
+                bool[] loadedClaimedStates = (bool[])_claimedStates;
+                // Ensure the loaded array matches the current mission data length
+                if (loadedClaimedStates.Length == missionDatas.Length)
+                {
+                    claimedStates = loadedClaimedStates;
+                }
+                else
+                {
+                    // If lengths don't match, copy what we can and keep defaults for the rest
+                    for (int i = 0; i < Mathf.Min(loadedClaimedStates.Length, claimedStates.Length); i++)
+                    {
+                        claimedStates[i] = loadedClaimedStates[i];
+                    }
+                }
+            }
 
             if(SaveManager.TryLoad(this, xpkey, out object _xp))
                xp = (int)_xp;
@@ -226,5 +276,4 @@ namespace SouthsideGames.DailyMissions
 
     }
 }
-
 

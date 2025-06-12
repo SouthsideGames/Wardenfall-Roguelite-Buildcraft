@@ -46,6 +46,20 @@ public class CharacterHealth : MonoBehaviour, IStats, IDamageable
         Enemy.OnDamageTaken += EnemyDamageCallback;
     }
 
+    private void OnEnable()
+    {
+        CharacterStats stats = GetComponent<CharacterStats>();
+        if (stats != null)
+            stats.RegisterStatReceiver(this);
+    }
+
+    private void OnDisable()
+    {
+        CharacterStats stats = GetComponent<CharacterStats>();
+        if (stats != null)
+            stats.UnregisterStatReceiver(this);
+    }
+
     private void OnDestroy() => Enemy.OnDamageTaken -= EnemyDamageCallback;
 
     private void Update()

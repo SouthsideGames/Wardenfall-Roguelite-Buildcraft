@@ -69,6 +69,7 @@ public class InputManager : MonoBehaviour
         scrollViewAction.performed  -= ScrollCallback;
     }
 
+
     public Vector2 GetMoveVector()
     {
         if (SystemInfo.deviceType == UnityEngine.DeviceType.Desktop && !forceHandheld)
