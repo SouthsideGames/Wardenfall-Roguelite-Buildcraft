@@ -12,6 +12,7 @@ public class InputManager : MonoBehaviour
 
     [Header("ELEMENTS:")]
     [SerializeField] private MobileJoystick joystick;
+    [SerializeField] private GameObject joystickKnob;
     [SerializeField] private GameObject pauseButton;
     [SerializeField] private InputActionAsset actions;
 
@@ -44,29 +45,29 @@ public class InputManager : MonoBehaviour
         {
             Screen.sleepTimeout = SleepTimeout.NeverSleep;
         }
-            
 
 
-        movementAction      = actions.FindAction("Movement");
-        pauseAction         = actions.FindAction("Pause");
-        cancelAction        = actions.FindAction("Cancel");
-        lockAction          = actions.FindAction("Lock");
-        scrollViewAction    = actions.FindAction("ScrollView");
 
-        pauseAction.performed       += PauseCallback;
-        cancelAction.performed      += CancelCallback;
-        lockAction.performed        += LockCallback;
-        scrollViewAction.performed  += ScrollCallback;
+        movementAction = actions.FindAction("Movement");
+        pauseAction = actions.FindAction("Pause");
+        cancelAction = actions.FindAction("Cancel");
+        lockAction = actions.FindAction("Lock");
+        scrollViewAction = actions.FindAction("ScrollView");
+
+        pauseAction.performed += PauseCallback;
+        cancelAction.performed += CancelCallback;
+        lockAction.performed += LockCallback;
+        scrollViewAction.performed += ScrollCallback;
 
         actions.Enable();
     }
 
     private void OnDestroy()
     {
-        pauseAction.performed       -= PauseCallback;
-        cancelAction.performed      -= CancelCallback;
-        lockAction.performed        -= LockCallback;
-        scrollViewAction.performed  -= ScrollCallback;
+        pauseAction.performed -= PauseCallback;
+        cancelAction.performed -= CancelCallback;
+        lockAction.performed -= LockCallback;
+        scrollViewAction.performed -= ScrollCallback;
     }
 
     public Vector2 GetMoveVector()
@@ -89,5 +90,6 @@ public class InputManager : MonoBehaviour
     private void ScrollCallback(InputAction.CallbackContext rightStick) => OnScroll?.Invoke(rightStick.ReadValue<float>());
     private void LockCallback(InputAction.CallbackContext context) => OnLock?.Invoke();
     private void CancelCallback(InputAction.CallbackContext context) => OnCancel?.Invoke(); 
+    public void ActivateJoystick() => joystickKnob.SetActive(true);
 
 }

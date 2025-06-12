@@ -38,8 +38,6 @@ public class ProgressionManager : MonoBehaviour
             Instance = this;
         else
             Destroy(gameObject);
-
-        Load();
     }
 
     void Start()
@@ -49,6 +47,7 @@ public class ProgressionManager : MonoBehaviour
         progressionEffectManager = GetComponent<ProgressionEffectManager>();
         progressionUnlockDatabase = GetComponent<ProgressionUnlockDatabase>();
 
+        Load();
         UpdateUI();
     }
 
@@ -179,7 +178,7 @@ public class ProgressionManager : MonoBehaviour
     {
         if (SaveManager.GameData == null)
         {
-            Debug.LogError("SaveManager.GameData is not initialized.");
+            Debug.LogWarning("SaveManager.GameData is not initialized yet. This will be retried.");
             return;
         }
 
