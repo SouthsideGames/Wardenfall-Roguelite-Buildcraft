@@ -27,6 +27,11 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     [SerializeField] private float minDistanceBetweenSpawns = 2f;
     [SerializeField] private int maxEnemiesOnScreen = 50;
 
+    [Header("EVO SETTINGS:")]
+    [SerializeField] private GameObject evoCrystalPrefab;
+    [SerializeField] [Range(0f, 1f)] private float baseCrystalSpawnChance = 0.05f;
+    [SerializeField] [Range(0f, 1f)] private float performanceBonusMultiplier = 0.10f;
+
     private List<float> localCounters = new List<float>();
     private float currentViewerScore = 0.5f;
     private Wave currentWave;
@@ -91,8 +96,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 
             segment.tStart = segment.spawnPercentage.x / 100 * waveDuration;
             segment.tEnd = segment.spawnPercentage.y / 100 * waveDuration;
-            
-            // Randomly select a prefab from the possible options
+
             if (segment.enemiesToSpawn != null && segment.enemiesToSpawn.Length > 0)
             {
                 segment.selectedPrefab = segment.enemiesToSpawn[UnityEngine.Random.Range(0, segment.enemiesToSpawn.Length)];
@@ -235,7 +239,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         AdjustViewerScore(+0.05f);
         timeSinceLastKill = 0f;
         
-        
+        TrySpawnEvoCrystal();
     }
 
     public void ReportPlayerHit()
@@ -334,7 +338,6 @@ public class WaveManager : MonoBehaviour, IGameStateListener
             ui.SetTimerColor(Color.white);
         }
 
-        // Play beep each second under 10s
         if (remaining <= 10f)
         {
             int currentSecond = Mathf.FloorToInt(remaining);
@@ -379,6 +382,18 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         return spawnPos;
     }
 
+    private void TrySpawnEvoCrystal()
+    {
+        float performanceBoost = Mathf.Clamp01(playerPerformanceScore * performanceBonusMultiplier);
+        float spawnChance = baseCrystalSpawnChance + performanceBoost;
+
+        if (UnityEngine.Random.value < spawnChance)
+        {
+            Vector2 spawnPos = GetSpawnPosition();
+            Instantiate(evoCrystalPrefab, spawnPos, Quaternion.identity);
+        }
+    }
+
 
     private Vector2 GetFormationSpawnPosition(int enemyIndex)
     {
@@ -386,7 +401,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         float radius = UnityEngine.Random.Range(6f, 10f);
         float spacing = 1.5f;
 
-        switch(currentWave.segments.Count % 11)
+        switch (currentWave.segments.Count % 11)
         {
             case 0: //Circle Formation
                 float angle = enemyIndex * 360f / maxEnemiesOnScreen * Mathf.Deg2Rad;
@@ -401,9 +416,9 @@ public class WaveManager : MonoBehaviour, IGameStateListener
                 return basePos + new Vector2((col - 1.5f) * spacing, (row - 1.5f) * spacing) * 2;
             case 3: //X formation
                 float diagOffset = enemyIndex * spacing * 0.7f;
-                return basePos + (enemyIndex % 2 == 0 ? 
-                        new Vector2(diagOffset, diagOffset) : 
-                        new Vector2(diagOffset, - diagOffset));
+                return basePos + (enemyIndex % 2 == 0 ?
+                        new Vector2(diagOffset, diagOffset) :
+                        new Vector2(diagOffset, -diagOffset));
             case 4: //Double circle formation
                 float innerRadius = radius * 0.5f;
                 float angleDouble = enemyIndex * 360f / (maxEnemiesOnScreen / 2) * Mathf.Deg2Rad;
@@ -422,7 +437,8 @@ public class WaveManager : MonoBehaviour, IGameStateListener
             case 8: //Cross formation
                 int arm = enemyIndex % 4;
                 int dist = enemyIndex / 4;
-                Vector2 dir = arm switch {
+                Vector2 dir = arm switch
+                {
                     0 => Vector2.up,
                     1 => Vector2.right,
                     2 => Vector2.down,
@@ -433,7 +449,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
                 float spiralAngle = enemyIndex * 30f * Mathf.Deg2Rad;
                 float spiralRadius = enemyIndex * 0.05f * spacing;
                 return basePos + new Vector2(Mathf.Cos(spiralAngle), Mathf.Sin(spiralAngle)) * spiralRadius;
-            
+
             default: // Random formation with minimum spacing
                 return GetOptimizedSpawnPosition();
         }

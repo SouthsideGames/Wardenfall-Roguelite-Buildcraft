@@ -13,17 +13,13 @@ public class TutorialManager : MonoBehaviour, IGameStateListener
 
     private void Awake()
     {
-        if (Instance == null)
-        {
+        if(Instance == null)
             Instance = this;
-            DontDestroyOnLoad(gameObject);
-            InitializeStateTutorialMap();
-            LoadCompletedTutorials();
-        }
         else
-        {
             Destroy(gameObject);
-        }
+
+        InitializeStateTutorialMap();
+        LoadCompletedTutorials();
     }
 
     private void InitializeStateTutorialMap()

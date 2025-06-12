@@ -56,8 +56,23 @@ public class BulletBase : MonoBehaviour
                 destroyOnHit = true;
                 Release();
             }
+            else if (collision.TryGetComponent<EvoCrystal>(out var crystal))
+            {
+                CancelInvoke();
+                crystal.TakeDamage(damage);
+
+                foreach (var mod in GetComponents<IBulletModifier>())
+                    mod.Apply(this, null); // still apply modifiers if needed
+
+                if (destroyOnHit)
+                    Release();
+
+                destroyOnHit = true;
+                Release();
+            }
         }
     }
+
 
     protected virtual void ApplyDamage(Enemy enemy)
     {

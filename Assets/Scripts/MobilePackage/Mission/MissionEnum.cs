@@ -43,5 +43,10 @@ public enum MissionType
     confuseEnemies = 45,
     paralyzeEnemies = 46,
     fearEnemies = 47,
+    evolveEnemies = 48,
+    evolveEnemies2 = 49,
+    evolveEnemies3 = 50,
+    evolveEnemies4 = 51,
+    evolveEnemies5 = 52,
     
 }

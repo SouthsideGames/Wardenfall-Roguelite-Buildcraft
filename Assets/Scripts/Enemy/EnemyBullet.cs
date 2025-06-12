@@ -16,7 +16,6 @@ public class EnemyBullet : MonoBehaviour
     [SerializeField] private float angularSpeed;
     protected int damage;
 
-    // Added flag to prevent multiple releases
     private bool isReleased = false;
 
     private void Awake()
@@ -25,14 +24,12 @@ public class EnemyBullet : MonoBehaviour
         col = GetComponent<Collider2D>();
     }
 
-    // Configure the bullet and reset release flag
     public void Configure(RangedEnemyAttack _rangedEnemyAttack)
     {
         rangedEnemyAttack = _rangedEnemyAttack;
-        isReleased = false; // Reset the flag when reused
+        isReleased = false; 
     }
 
-    // Shoot logic
     public void Shoot(int _damage, Vector2 _direction)
     {
         damage = _damage;
@@ -44,23 +41,20 @@ public class EnemyBullet : MonoBehaviour
         rb.linearVelocity = _direction * moveSpeed;
         rb.angularVelocity = angularSpeed;
 
-        // Schedule release with LeanTween and check flag
-        LeanTween.cancel(gameObject); // Ensure no lingering tweens
+        LeanTween.cancel(gameObject);
         LeanTween.delayedCall(gameObject, 5, () => ReleaseBullet());
     }
 
-    // Handle collisions
     private void OnTriggerEnter2D(Collider2D collider)
     {
         if (collider.TryGetComponent(out CharacterManager player))
         {
             player.TakeDamage(damage);
             col.enabled = false;
-            ReleaseBullet(); // Use new method to check flag
+            ReleaseBullet();
         }
     }
 
-    // Reset bullet properties when reused
     public void Reload()
     {
         rb.linearVelocity = Vector2.zero;
@@ -69,20 +63,17 @@ public class EnemyBullet : MonoBehaviour
 
         LeanTween.cancel(gameObject);
 
-        // Schedule delayed release with the flag check
         LeanTween.delayedCall(gameObject, 5, () => ReleaseBullet());
 
-        // Reset release flag
         isReleased = false;
     }
 
-    // New method to handle safe release
     protected void ReleaseBullet()
     {
-        if (!isReleased) // Prevent multiple releases
+        if (!isReleased) 
         {
-            isReleased = true; // Mark as released
-            rangedEnemyAttack.ReleaseBullet(this); // Return to pool
+            isReleased = true; 
+            rangedEnemyAttack.ReleaseBullet(this); 
         }
     }
 }

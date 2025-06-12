@@ -47,12 +47,17 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
     [Header("DEBUG:")]
     [SerializeField] private bool showGizmos;
 
+    [Header("EVOLUTION")]
+    [SerializeField] private bool isEvolvable = false;
+    private bool hasEvolved = false;
+
     public EnemyStatus status { get; private set; }
     public EnemyModifierHandler modifierHandler { get; private set; }
     protected Transform playerTransform;
     public int CurrentHealth => health;
     public int MaxHealth => maxHealth;
     public bool IsAlive => health > 0;
+
     private static float multiKillTimeWindow = 0.5f;
     private static float lastKillTime;
     private static int simultaneousKills;
@@ -133,6 +138,13 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
         {
             DieByPlayer();
         }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        LeanTween.scale(gameObject, Vector3.one * 1.2f, 0.1f).setEasePunch();
+        LeanTween.color(gameObject, Color.red, 0.1f).setLoopPingPong(1);
+        TakeDamage(damage, false);
     }
 
     public void ApplyLifeDrain(int damage, float duration, float interval)
@@ -327,13 +339,6 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
 
     public void Heal(int _damage) => health += _damage;
     public Vector2 GetCenter() => (Vector2)transform.position + _collider.offset;
-    public void TakeDamage(int damage)
-    {
-        LeanTween.scale(gameObject, Vector3.one * 1.2f, 0.1f).setEasePunch();
-        LeanTween.color(gameObject, Color.red, 0.1f).setLoopPingPong(1);
-        
-        TakeDamage(damage, false);
-     } 
     public void MoveTo(Transform target) => movement?.SetTarget(target);
     public void AttackTarget() => Attack();
     protected bool CanAttack() => _spriteRenderer.enabled;
@@ -378,5 +383,25 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
 
     #endregion
 
+    #region EVOLUTION METHODS
 
+    public bool CanEvolve() => isEvolvable && !hasEvolved && IsAlive;
+
+    public void Evolve()
+    {
+        if (!CanEvolve()) return;
+
+        hasEvolved = true;
+
+        maxHealth = Mathf.FloorToInt(maxHealth * 1.5f);
+        health = maxHealth;
+        contactDamage = Mathf.FloorToInt(contactDamage * 1.5f);
+        transform.localScale *= 1.25f;
+
+        modifierHandler?.ApplyTraits();
+
+        Debug.Log($"{gameObject.name} has evolved!");
+    }
+
+    #endregion
 }
