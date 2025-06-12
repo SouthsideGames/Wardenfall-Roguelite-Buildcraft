@@ -91,5 +91,5 @@ public class MobileJoystick : MonoBehaviour
             HideJoystick();
     }
 
-    public Vector3 GetMoveVector() => move;
+    public Vector2 GetMoveVector() => new Vector2(move.x, move.y);
 }

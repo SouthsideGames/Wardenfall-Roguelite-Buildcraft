@@ -44,7 +44,7 @@ public class InputManager : MonoBehaviour
         {
             Screen.sleepTimeout = SleepTimeout.NeverSleep;
         }
-            
+
 
 
         movementAction      = actions.FindAction("Movement");
@@ -69,13 +69,22 @@ public class InputManager : MonoBehaviour
         scrollViewAction.performed  -= ScrollCallback;
     }
 
-
     public Vector2 GetMoveVector()
     {
-        if (SystemInfo.deviceType == UnityEngine.DeviceType.Desktop && !forceHandheld)
-            return GetDesktopMoveVector();
+        Vector2 moveVector = Vector2.zero;
+
+        if (Application.isMobilePlatform || forceHandheld)
+        {
+            moveVector = joystick.GetMoveVector();
+            if (moveVector.magnitude > 0)
+                Debug.Log($"Mobile input detected: {moveVector}");
+        }
         else
-            return joystick.GetMoveVector();
+        {
+            moveVector = GetDesktopMoveVector();
+        }
+
+        return moveVector;
     }
 
     private Vector2 GetDesktopMoveVector() => movementAction.ReadValue<Vector2>();

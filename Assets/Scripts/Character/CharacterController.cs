@@ -33,8 +33,15 @@ public class CharacterController : MonoBehaviour, IStats
         }
 
         moveDirection = InputManager.Instance.GetMoveVector();
-        if (moveDirection != Vector2.zero)
-            lastInputDirection = moveDirection.normalized;
+        if (moveDirection.magnitude > 0.1f) // Add dead zone
+        {
+            moveDirection = moveDirection.normalized;
+            lastInputDirection = moveDirection;
+        }
+        else
+        {
+            moveDirection = Vector2.zero;
+        }
 
         if (isDashing)
         {
@@ -51,6 +58,7 @@ public class CharacterController : MonoBehaviour, IStats
             _rb.linearVelocity = moveDirection * moveSpeed * Time.fixedDeltaTime;
         }
     }
+
 
     public void TriggerDash(Vector2 direction, float dashSpeed, float duration)
     {
