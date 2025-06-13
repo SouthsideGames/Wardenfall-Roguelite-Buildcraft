@@ -32,7 +32,6 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
 
     private void Awake()
     {
-        InputManager.OnScroll += ScrollCallback;
         InitializeCharacterFrames();
         Load();
     }
@@ -47,11 +46,6 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
             Initialize();
             CharacterSelectCallback(lastSelectedCharacterIndex);
         }
-    }
-
-    private void OnDestroy()
-    {
-        InputManager.OnScroll -= ScrollCallback;
     }
 
     private void InitializeCharacterFrames()
@@ -201,10 +195,6 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
         SaveManager.Save(this, lastSelectedCharacterKey, lastSelectedCharacterIndex);
     }
 
-    private void ScrollCallback(float _xValue)
-    {
-        characterButtonParent.GetComponent<RectTransform>().anchoredPosition -= _xValue * scrollSpeed * Time.deltaTime * Vector2.right;
-    }
 }
 
 [Serializable]

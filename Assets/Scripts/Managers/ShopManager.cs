@@ -30,7 +30,6 @@ public class ShopManager : MonoBehaviour, IGameStateListener
     {
         ShopItemContainerUI.onPurchased += ItemPurchasedCallback;
         CurrencyManager.onCurrencyUpdate += CurrencyUpdatedCallback;
-        InputManager.OnScroll += ScrollCallback;
     }
 
     private void OnEnable()
@@ -44,7 +43,7 @@ public class ShopManager : MonoBehaviour, IGameStateListener
     {
         ShopItemContainerUI.onPurchased -= ItemPurchasedCallback;
         CurrencyManager.onCurrencyUpdate -= CurrencyUpdatedCallback;
-        InputManager.OnScroll -= ScrollCallback;
+ 
     }
 
     public void GameStateChangedCallback(GameState _gameState)
@@ -163,6 +162,5 @@ public class ShopManager : MonoBehaviour, IGameStateListener
         OnItemPurchased?.Invoke();
     }
 
-    private void ScrollCallback(float _xValue) => containersParent.GetComponent<RectTransform>().anchoredPosition -= _xValue * scrollSpeed * Time.deltaTime * Vector2.right;
 }
  

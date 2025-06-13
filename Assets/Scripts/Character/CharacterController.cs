@@ -1,88 +1,105 @@
 using UnityEngine;
 
+
 [RequireComponent(typeof(Rigidbody2D))]
-public class CharacterController : MonoBehaviour, IStats
+public class CharacterController : MonoBehaviour
 {
     private Rigidbody2D _rb;
+
+    [Header("MOVEMENT SETTINGS:")]
+    [SerializeField] private float moveSpeed = 5f;
+
+    [Header("JOYSTICK PACK:")]
+    [SerializeField] private Joystick joystick; // Drag in your FixedJoystick, FloatingJoystick, etc.
+    [SerializeField] private bool forceMobileInput = true;
+
+    private Vector2 moveDirection;
+    private Vector2 lastInputDirection = Vector2.down;
     private bool isMovementDisabled = false;
 
-    [Header("SETTINGS:")]
-    [SerializeField] private float baseMoveSpeed;
-    private float moveSpeed;
-
-    [Tooltip("Current movement direction.")]
-    private Vector2 moveDirection;
-    public Vector2 MoveDirection => moveDirection;
-
-    private Vector2 lastInputDirection = Vector2.down;
-    public Vector2 LastInputDirection => lastInputDirection;
-
-    // Dash State
+    // Dash fields
     private bool isDashing = false;
-    private float dashTimer;
-    private Vector2 dashVelocity;
+    private float dashTimeRemaining;
+    private float dashSpeed;
+    private Vector2 dashDirection;
 
-    void Start() => _rb = GetComponent<Rigidbody2D>();
+    private void Awake()
+    {
+        _rb = GetComponent<Rigidbody2D>();
+    }
+
+    private void Update()
+    {
+        if (isDashing)
+        {
+            dashTimeRemaining -= Time.deltaTime;
+            if (dashTimeRemaining <= 0f)
+                isDashing = false;
+        }
+    }
 
     private void FixedUpdate()
     {
-        if (!GameManager.Instance.InGameState() || isMovementDisabled)
+        if (isMovementDisabled)
         {
             _rb.linearVelocity = Vector2.zero;
             return;
         }
 
-        moveDirection = InputManager.Instance.GetMoveVector();
-        if (moveDirection.magnitude > 0.1f) // Add dead zone
-        {
-            moveDirection = moveDirection.normalized;
-            lastInputDirection = moveDirection;
-        }
-        else
-        {
-            moveDirection = Vector2.zero;
-        }
-
         if (isDashing)
         {
-            dashTimer -= Time.fixedDeltaTime;
-            _rb.linearVelocity = dashVelocity;
-
-            if (dashTimer <= 0)
-            {
-                isDashing = false;
-            }
+            _rb.linearVelocity = dashDirection * dashSpeed;
         }
         else
         {
-            _rb.linearVelocity = moveDirection * moveSpeed * Time.fixedDeltaTime;
+            Vector2 input = GetMoveInput();
+            moveDirection = input.normalized;
+
+            if (moveDirection != Vector2.zero)
+                lastInputDirection = moveDirection;
+
+            _rb.linearVelocity = moveDirection * moveSpeed;
         }
     }
 
-
-    public void TriggerDash(Vector2 direction, float dashSpeed, float duration)
+    private Vector2 GetMoveInput()
     {
-        isDashing = true;
-        dashTimer = duration;
-        dashVelocity = direction.normalized * dashSpeed;
+        if (Application.isMobilePlatform || forceMobileInput)
+        {
+            return joystick != null ? new Vector2(joystick.Horizontal, joystick.Vertical) : Vector2.zero;
+        }
+        else
+        {
+            return new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        }
     }
 
-    public void UpdateWeaponStats(CharacterStats _statsManager)
+    public void TriggerDash(Vector2 direction, float speed, float duration)
     {
-        float moveSpeedPercent = _statsManager.GetStatValue(Stat.MoveSpeed) / 100;
-        moveSpeed = baseMoveSpeed * (1 + moveSpeedPercent);
+        if (isDashing) return;
+
+        isDashing = true;
+        dashDirection = direction.normalized;
+        dashSpeed = speed;
+        dashTimeRemaining = duration;
     }
 
     public void DisableMovement(float duration)
     {
-        isMovementDisabled = true;
-        _rb.linearVelocity = Vector2.zero;
-        Invoke(nameof(EnableMovement), duration);
+        StartCoroutine(TemporarilyDisableMovement(duration));
     }
 
-    public void EnableMovement() => isMovementDisabled = false;
+    private System.Collections.IEnumerator TemporarilyDisableMovement(float duration)
+    {
+        isMovementDisabled = true;
+        _rb.linearVelocity = Vector2.zero;
+        yield return new WaitForSeconds(duration);
+        isMovementDisabled = false;
+    }
 
-    public void SetMovementMultiplier(float multiplier) => moveSpeed = baseMoveSpeed * multiplier;
-
-    private void OnDisable() => CancelInvoke(nameof(EnableMovement));
+    // Public accessors
+    public Vector2 MoveDirection => moveDirection;
+    public Vector2 LastInputDirection => lastInputDirection;
+    public bool IsDashing => isDashing;
+    public void SetMovementEnabled(bool enabled) => isMovementDisabled = !enabled;
 }

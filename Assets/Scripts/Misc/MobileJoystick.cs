@@ -14,7 +14,7 @@ public class MobileJoystick : MonoBehaviour
 
     private Vector3 clickedPosition;
     private Vector3 move;
-    private bool canControl;
+    private bool canControl = true;
 
     // Start is called before the first frame update
     void Start()
@@ -22,15 +22,12 @@ public class MobileJoystick : MonoBehaviour
         HideJoystick();
     }
 
-    private void OnDisable()
-    {
-        HideJoystick();
-    }
-
     // Update is called once per frame
-    void Update()
+   void Update()
     {
-        if(canControl)
+        Debug.Log($"[Joystick] Update running: canControl = {canControl}");
+
+        if (canControl)
             ControlJoystick();
     }
 
@@ -42,38 +39,29 @@ public class MobileJoystick : MonoBehaviour
         ShowJoystick();
     }
 
-    private void ShowJoystick()
+   private void ShowJoystick()
     {
         joystickOutline.gameObject.SetActive(true);
+        joystickKnob.gameObject.SetActive(true);
+
         canControl = true;
     }
 
     private void HideJoystick()
     {
-        joystickOutline.gameObject.SetActive(false);
-        canControl = false;
+        joystickOutline.gameObject.SetActive(false); // Only hide visuals
+        joystickKnob.gameObject.SetActive(false);    // Also hide knob if needed
 
+        canControl = false;
         move = Vector3.zero;
     }
-
     private void ControlJoystick()
     {
         Vector3 currentPosition = Input.mousePosition;
         Vector3 direction = currentPosition - clickedPosition;
 
         float canvasScale = GetComponentInParent<Canvas>().GetComponent<RectTransform>().localScale.x;
-
-
-
-
-
-
-
         float moveMagnitude = direction.magnitude * moveFactor * canvasScale;
-
-
-
-
         float absoluteWidth = joystickOutline.rect.width / 2;
         float realWidth = absoluteWidth * canvasScale;
 
@@ -89,7 +77,9 @@ public class MobileJoystick : MonoBehaviour
 
         if (Input.GetMouseButtonUp(0))
             HideJoystick();
+
+              Debug.Log($"Joystick knob moved to: {targetPosition}");
     }
 
-    public Vector2 GetMoveVector() => new Vector2(move.x, move.y);
+    public Vector3 GetMoveVector() => move;
 }

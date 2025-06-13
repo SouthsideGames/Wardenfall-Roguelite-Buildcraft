@@ -29,14 +29,6 @@ public class ShopManagerUI : MonoBehaviour
     private Vector2 itemInfoEndPos;
     private Vector2 itemInfoStartPos;
 
-    private void Awake()
-    {
-        InputManager.OnCancel += CancelCallback;
-    
-    }
-
-    private void OnDestroy() => InputManager.OnCancel -= CancelCallback;
-
     private void Start()
     {
 
