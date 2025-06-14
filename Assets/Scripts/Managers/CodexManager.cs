@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using SouthsideGames.SaveManager;
 using Unity.VisualScripting;
+using System.Linq;
 
 public class CodexManager : MonoBehaviour
 {
@@ -31,6 +32,9 @@ public class CodexManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI enemyDetailName;
     [SerializeField] private TextMeshProUGUI enemyDetailDescription;
     [SerializeField] private TextMeshProUGUI enemyDetailTypeText;
+    [SerializeField] private GameObject evolutionHolder;
+    [SerializeField] private Image evolutionPreviewImage;
+    [SerializeField] private Button evolutionButton;
 
     [Header("OBJECT VIEW:")]
     [SerializeField] private GameObject objectDetailContainer;
@@ -53,6 +57,17 @@ public class CodexManager : MonoBehaviour
     [SerializeField] private Button unlockButton;
 
     [SerializeField] private GameObject statPrefab;
+
+    private List<EnemyDataSO> loadedEnemies = new();
+    private int currentEnemyIndex = 0;
+    private List<CharacterDataSO> loadedCharacters = new();
+    private int currentCharacterIndex = 0;
+    private List<WeaponDataSO> loadedWeapons = new();
+    private int currentWeaponIndex = 0;
+    private List<ObjectDataSO> loadedObjects = new();
+    private int currentObjectIndex = 0;
+    private List<CardSO> loadedCards = new();
+    private int currentCardIndex = 0;
 
     private void Awake() => InitializeDropdown();
 
@@ -89,6 +104,9 @@ public class CodexManager : MonoBehaviour
         ClearCards();
         progressText.gameObject.SetActive(true);
         var allCards = cardLibrary.allCards;
+
+        loadedCards = cardLibrary.allCards.ToList();
+        currentCardIndex = 0;
 
         foreach (var card in allCards)
         {
@@ -158,6 +176,8 @@ public class CodexManager : MonoBehaviour
             }
         }
 
+        currentCardIndex = loadedCards.IndexOf(card);
+
         if (cardDetailContainer != null) cardDetailContainer.SetActive(true);
     }
 
@@ -178,6 +198,8 @@ public class CodexManager : MonoBehaviour
     private void LoadAndDisplayWeaponCards()
     {
         ClearCards();
+        loadedWeapons = new List<WeaponDataSO>(Resources.LoadAll<WeaponDataSO>("Data/Weapons"));
+        currentWeaponIndex = 0;
         progressText.gameObject.SetActive(false);
         var weaponItems = Resources.LoadAll<WeaponDataSO>("Data/Weapons");
 
@@ -195,6 +217,9 @@ public class CodexManager : MonoBehaviour
         progressText.gameObject.SetActive(false);
         var objectItems = Resources.LoadAll<ObjectDataSO>("Data/Objects");
 
+        loadedObjects = new List<ObjectDataSO>(Resources.LoadAll<ObjectDataSO>("Data/Objects"));
+        currentObjectIndex = 0;
+
         foreach (var objectData in objectItems)
         {
             GameObject miniCard = Instantiate(cardPrefab, detailParent);
@@ -207,15 +232,17 @@ public class CodexManager : MonoBehaviour
     {
         ClearCards();
         progressText.gameObject.SetActive(false);
-        var enemyItems = Resources.LoadAll<EnemyDataSO>("Data/Enemies");
+        loadedEnemies = new List<EnemyDataSO>(Resources.LoadAll<EnemyDataSO>("Data/Enemies"));
+        currentEnemyIndex = 0;
 
-        foreach (var enemyData in enemyItems)
+        foreach (var enemyData in loadedEnemies)
         {
             GameObject miniCard = Instantiate(cardPrefab, detailParent);
             CodexCardUI cardUI = miniCard.GetComponent<CodexCardUI>();
             cardUI.InitializeEnemyCard(enemyData.Icon, enemyData.Name, enemyData, this);
         }
     }
+
 
     public void OpenDetailView(CharacterDataSO _characterData)
     {
@@ -227,6 +254,7 @@ public class CodexManager : MonoBehaviour
         abilityDescription.text = _characterData.AbilityDescription;
         DisplayCharacterStats(_characterData);
         detailContainer.SetActive(true);
+        currentCharacterIndex = loadedCharacters.IndexOf(_characterData);
     }
 
     public void OpenWeaponDetailView(WeaponDataSO _weaponData)
@@ -237,6 +265,7 @@ public class CodexManager : MonoBehaviour
         statContainersParent.Clear();
         DisplayWeaponStats(_weaponData);
         detailContainer.SetActive(true);
+        currentWeaponIndex = loadedWeapons.IndexOf(_weaponData);
     }
 
     public void OpenObjectDetailView(ObjectDataSO _objectData)
@@ -246,16 +275,37 @@ public class CodexManager : MonoBehaviour
         statContainersParent.Clear();
         DisplayObjectStats(_objectData);
         objectDetailContainer.SetActive(true);
+        currentObjectIndex = loadedObjects.IndexOf(_objectData);
     }
 
     public void OpenEnemyDetailView(EnemyDataSO enemyData)
     {
+        currentEnemyIndex = loadedEnemies.IndexOf(enemyData);
+
         enemyDetailIcon.sprite = enemyData.Icon;
         enemyDetailName.text = enemyData.Name;
         enemyDetailDescription.text = enemyData.Description;
         enemyDetailTypeText.text = $"Type: {enemyData.Type}";
         enemyDetailContainer.SetActive(true);
+
+        if (enemyData.HasEvolution && enemyData.EvolutionData != null)
+        {
+            evolutionHolder.SetActive(true);
+            evolutionPreviewImage.sprite = enemyData.EvolutionData.Icon;
+
+            evolutionButton.onClick.RemoveAllListeners();
+            evolutionButton.onClick.AddListener(() =>
+            {
+                OpenEnemyDetailView(enemyData.EvolutionData);
+            });
+        }
+        else
+        {
+            evolutionHolder.SetActive(false);
+        }
     }
+
+
 
     private void DisplayCharacterStats(CharacterDataSO characterData)
     {
@@ -298,4 +348,79 @@ public class CodexManager : MonoBehaviour
     public void CloseObjectDetailView() => objectDetailContainer.SetActive(false);
     public void CloseCardDetailView() => cardDetailContainer.SetActive(false);
     private void ClearCards() => detailParent.Clear();
+
+    public void ShowNextEnemy()
+    {
+        if (loadedEnemies.Count == 0) return;
+        currentEnemyIndex = (currentEnemyIndex + 1) % loadedEnemies.Count;
+        OpenEnemyDetailView(loadedEnemies[currentEnemyIndex]);
+    }
+
+    public void ShowPreviousEnemy()
+    {
+        if (loadedEnemies.Count == 0) return;
+        currentEnemyIndex = (currentEnemyIndex - 1 + loadedEnemies.Count) % loadedEnemies.Count;
+        OpenEnemyDetailView(loadedEnemies[currentEnemyIndex]);
+    }
+
+    public void ShowNextCharacter()
+    {
+        if (loadedCharacters.Count == 0) return;
+        currentCharacterIndex = (currentCharacterIndex + 1) % loadedCharacters.Count;
+        OpenDetailView(loadedCharacters[currentCharacterIndex]);
+    }
+
+    public void ShowPreviousCharacter()
+    {
+        if (loadedCharacters.Count == 0) return;
+        currentCharacterIndex = (currentCharacterIndex - 1 + loadedCharacters.Count) % loadedCharacters.Count;
+        OpenDetailView(loadedCharacters[currentCharacterIndex]);
+    }
+
+    public void ShowNextWeapon()
+    {
+        if (loadedWeapons == null || loadedWeapons.Count == 0) return;
+
+        currentWeaponIndex = (currentWeaponIndex + 1) % loadedWeapons.Count;
+        OpenWeaponDetailView(loadedWeapons[currentWeaponIndex]);
+    }
+
+    public void ShowPreviousWeapon()
+    {
+        if (loadedWeapons == null || loadedWeapons.Count == 0) return;
+
+        currentWeaponIndex = (currentWeaponIndex - 1 + loadedWeapons.Count) % loadedWeapons.Count;
+        OpenWeaponDetailView(loadedWeapons[currentWeaponIndex]);
+    }
+
+    public void ShowNextObject()
+    {
+        if (loadedObjects == null || loadedObjects.Count == 0) return;
+
+        currentObjectIndex = (currentObjectIndex + 1) % loadedObjects.Count;
+        OpenObjectDetailView(loadedObjects[currentObjectIndex]);
+    }
+
+    public void ShowPreviousObject()
+    {
+        if (loadedObjects == null || loadedObjects.Count == 0) return;
+
+        currentObjectIndex = (currentObjectIndex - 1 + loadedObjects.Count) % loadedObjects.Count;
+        OpenObjectDetailView(loadedObjects[currentObjectIndex]);
+    }
+
+    public void ShowNextCard()
+    {
+        if (loadedCards.Count == 0) return;
+        currentCardIndex = (currentCardIndex + 1) % loadedCards.Count;
+        OpenCardDetail(loadedCards[currentCardIndex]);
+    }
+
+    public void ShowPreviousCard()
+    {
+        if (loadedCards.Count == 0) return;
+        currentCardIndex = (currentCardIndex - 1 + loadedCards.Count) % loadedCards.Count;
+        OpenCardDetail(loadedCards[currentCardIndex]);
+    }
+
 }

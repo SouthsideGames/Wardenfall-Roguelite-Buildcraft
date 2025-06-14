@@ -11,6 +11,8 @@ public class EnemyDataSO : ScriptableObject
     [field: SerializeField] public string Name { get; private set; }
     [field: SerializeField, TextArea] public string Description { get; private set; }
     [field: SerializeField] public EnemyType Type { get; private set; }
+    [field: SerializeField] public bool HasEvolution { get; private set; }
+    [field: SerializeField] public EnemyDataSO EvolutionData { get; private set; }
 
     public int contactDamage;
     public float detectionRadius = 6.0f;
