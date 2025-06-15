@@ -330,7 +330,8 @@ MonoBehaviour:
   numberOfLoops: 2
   deathParticles: {fileID: 4164785758290427616}
   showGizmos: 1
-  attackRate: 1
+  isEvolvable: 0
+  attackRate: 1.2
   shieldHealth: 80
   shield: {fileID: 2512326149274488663}
 --- !u!114 &1905146589038196524
@@ -345,7 +346,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ddebe7d82fbdf44daf06654154cf032, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 2.2
+  moveSpeed: 3
   canMove: 1
   chasePlayer: 1
   wander: 0
@@ -356,9 +357,11 @@ MonoBehaviour:
   supportAnchor: 0
   jitterChase: 0
   teleportMovement: 0
-  patrolPoints: []
+  patrolPoints:
+  - {x: -2.5, y: 0}
+  - {x: 2.5, y: 0}
   patrolWaitTime: 1
-  patrolPointReachedDistance: 0.1
+  patrolPointReachedDistance: 0.2
   wanderRadius: 5
   minWanderWaitTime: 2
   maxWanderWaitTime: 5
