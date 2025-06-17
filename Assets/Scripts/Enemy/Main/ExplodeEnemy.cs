@@ -6,18 +6,18 @@ public class ExplodeEnemy : Enemy
     [Header("EXPLODER SPECIFICS:")]
     [SerializeField] private float explosionRadius = 3f; 
     [SerializeField] private int explosionDamage = 10; 
-    [SerializeField] private ParticleSystem explosionEffect; 
+    [SerializeField] private ParticleSystem explosionEffect;
+
     private bool isExploding = false; 
-    
     private float panicTimer;
-    private Vector3 originalScale;
     private float panicIntensity = 0f;
 
+    private EnemyAnimator animator;
 
     protected override void Start()
     {
         base.Start();
-        originalScale = transform.localScale;
+        animator = GetComponent<EnemyAnimator>();
         StartCoroutine(PanicBehavior());
     }
 
@@ -30,31 +30,45 @@ public class ExplodeEnemy : Enemy
 
         if (IsPlayerTooClose())
         {
-            Explode();
+            StartExplosionSequence();
         }
         else
         {
-
             movement.FollowCurrentTarget();
+            animator?.PlayGroggyMove();
         }
     }
 
-
     private bool IsPlayerTooClose()
     {
-        // Check if the player is within the trigger distance for explosion
         return Vector2.Distance(transform.position, character.transform.position) <= playerDetectionRadius;
     }
 
-    private void Explode()
+    private void StartExplosionSequence()
     {
-       
         if (isExploding) return;
         isExploding = true;
-     
+
+        animator?.ResetVisual();
+
+        GameObject visual = animator?.GetVisual()?.gameObject;
+        if (visual != null)
+        {
+            LeanTween.scale(visual, Vector3.one * 1.5f, 0.12f)
+                .setEaseOutBack()
+                .setOnComplete(DoExplosion);
+        }
+        else
+        {
+            DoExplosion();
+        }
+    }
+
+    private void DoExplosion()
+    {
         if (explosionEffect != null)
         {
-            ParticleSystem effect = Instantiate(explosionEffect, transform.position, Quaternion.identity);
+            var effect = Instantiate(explosionEffect, transform.position, Quaternion.identity);
             effect.Play();
         }
 
@@ -62,19 +76,14 @@ public class ExplodeEnemy : Enemy
 
         foreach (Collider2D hit in hits)
         {
-  
             if (hit.TryGetComponent<Enemy>(out Enemy enemy) && enemy != this)
-            {
                 enemy.TakeDamage(explosionDamage, false);
-            }
-
 
             if (hit.TryGetComponent<CharacterManager>(out CharacterManager player))
-            {
                 player.TakeDamage(explosionDamage);
-            }
         }
 
+        Die();
     }
 
     private IEnumerator PanicBehavior()
@@ -87,15 +96,13 @@ public class ExplodeEnemy : Enemy
             {
                 panicTimer += Time.deltaTime;
                 panicIntensity = Mathf.Min(panicTimer / 2f, 1f); // Builds up over 2 seconds
-
-                transform.localScale = originalScale * (1f + Mathf.Sin(Time.time * (10f + panicIntensity * 5f)) * (0.2f * panicIntensity));
-                transform.position += (Vector3)Random.insideUnitCircle * (0.1f * panicIntensity);
+                animator?.PlayPanicGrow(panicIntensity);
             }
             else
             {
-                panicTimer = Mathf.Max(0f, panicTimer - Time.deltaTime * 2f); // Calms down twice as fast
+                panicTimer = Mathf.Max(0f, panicTimer - Time.deltaTime * 2f); // Calms down faster
                 panicIntensity = panicTimer / 2f;
-                transform.localScale = Vector3.Lerp(transform.localScale, originalScale, Time.deltaTime * 5f);
+                animator?.ResetVisual();
             }
 
             yield return null;

@@ -8,11 +8,13 @@ public class MeleeEnemy : Enemy
     [Header("MELEE SPECIFICS:")]
     [SerializeField] private float attackRate;
     private float attackDelay;
+    private EnemyAnimator enemyAnimator;
 
     // Start is called before the first frame update
     protected override void Start()
     {
         base.Start();
+        enemyAnimator = GetComponent<EnemyAnimator>();
 
         attackDelay = 1f / attackRate;
 
@@ -21,6 +23,8 @@ public class MeleeEnemy : Enemy
     protected override void Update()
     {
         base.Update();  
+
+        enemyAnimator?.PlayMoveAnimation();
         
         if (!CanAttack())
             return;
@@ -44,8 +48,12 @@ public class MeleeEnemy : Enemy
     {
         float distanceToPlayer = Vector2.Distance(transform.position, character.transform.position);
 
-        if(distanceToPlayer <= playerDetectionRadius)
+        if (distanceToPlayer <= playerDetectionRadius)
+        {
+            enemyAnimator?.StopMoveAnimation(); 
+            enemyAnimator?.PlayAttackAnimation();
             Attack();
+        }
     }
 
 

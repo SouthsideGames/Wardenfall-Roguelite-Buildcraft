@@ -56,7 +56,7 @@ Animator:
   m_GameObject: {fileID: 796357530644533229}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d878e5cc3d16f154d8a11cc25b078d09, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -157,6 +157,7 @@ MonoBehaviour:
   numberOfLoops: 3
   deathParticles: {fileID: 3100473461851624964}
   showGizmos: 1
+  isEvolvable: 0
 --- !u!114 &4010048583620110479
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -171,6 +172,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   firePoint: {fileID: 6730267595517030332}
   bulletPrefab: {fileID: 4821930258780714043, guid: db982d72bd54f214d8764a2ed06ff220, type: 3}
+  anim: {fileID: -3255317363019002904}
   bulletDamage: 4
   fireRate: 1.25
   attackDelay: 0.1

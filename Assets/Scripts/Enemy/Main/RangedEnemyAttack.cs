@@ -6,6 +6,7 @@ public class RangedEnemyAttack : MonoBehaviour
     [Header("ELEMENTS:")]
     [SerializeField] private Transform firePoint;
     [SerializeField] private EnemyBullet bulletPrefab;
+    [SerializeField] private Animator anim;
     private CharacterManager player;
 
 
@@ -45,6 +46,7 @@ public class RangedEnemyAttack : MonoBehaviour
     private void Shoot()
     {
         //bullet direction
+        anim.SetTrigger("shoot");
         Vector2 direction = (player.GetColliderCenter() - (Vector2)firePoint.position).normalized;
         InstantShoot(direction);
  

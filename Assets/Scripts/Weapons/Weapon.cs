@@ -65,6 +65,9 @@ public abstract class Weapon : MonoBehaviour, IStats, IWeaponSystem
         {
             Enemy enemyChecked = enemies[i].GetComponent<Enemy>();
 
+            if (enemyChecked == null)
+                continue; // Skip if no Enemy component found
+
             float distanceToEnemy = Vector2.Distance(transform.position, enemyChecked.transform.position);
 
             if (distanceToEnemy < minDistance)

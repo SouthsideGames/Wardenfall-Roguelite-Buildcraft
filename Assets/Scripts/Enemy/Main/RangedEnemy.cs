@@ -1,21 +1,21 @@
 using System;
 using UnityEngine;
 
-//Range Enemies can not do critical damage
+// Range Enemies can not do critical damage
 [RequireComponent(typeof(EnemyMovement))]
 [RequireComponent(typeof(RangedEnemyAttack))]
 public class RangedEnemy : Enemy
 {
-
     [Header("RANGED SPECIFICS:")]
     private RangedEnemyAttack attack;
+    private Animator anim;
 
-    // Start is called before the first frame update
     protected override void Start()
     {
         base.Start();
 
         attack = GetComponent<RangedEnemyAttack>(); 
+        anim = GetComponent<Animator>();  
         attack.StorePlayer(character);
     }
 
@@ -27,7 +27,6 @@ public class RangedEnemy : Enemy
             return;
 
         AttackLogic();
-
     }
 
     private void AttackLogic()
@@ -38,12 +37,8 @@ public class RangedEnemy : Enemy
             TryAttack();
     }
 
-
-    
     protected virtual void TryAttack()
     {
-       attack.AutoAim();
+        attack.AutoAim();
     }
-
-
 }
