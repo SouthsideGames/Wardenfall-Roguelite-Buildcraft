@@ -4,11 +4,13 @@ using UnityEngine;
 public class ExplodeEnemy : Enemy
 {
     [Header("EXPLODER SPECIFICS:")]
-    [SerializeField] private float explosionRadius = 3f; 
-    [SerializeField] private int explosionDamage = 10; 
+    [SerializeField] private float explosionRadius = 3f;
+    [SerializeField] private int explosionDamage = 10;
     [SerializeField] private ParticleSystem explosionEffect;
 
-    private bool isExploding = false; 
+    private bool isExploding = false;
+    private bool isPlayerTooClose = false;
+
     private float panicTimer;
     private float panicIntensity = 0f;
 
@@ -18,6 +20,10 @@ public class ExplodeEnemy : Enemy
     {
         base.Start();
         animator = GetComponent<EnemyAnimator>();
+
+        if (character == null)
+            character = FindObjectOfType<CharacterManager>();
+
         StartCoroutine(PanicBehavior());
     }
 
@@ -25,14 +31,17 @@ public class ExplodeEnemy : Enemy
     {
         base.Update();
 
-        if (!hasSpawned || !CanAttack() || isExploding)
+        if (!hasSpawned || isExploding)
             return;
 
-        if (IsPlayerTooClose())
+        isPlayerTooClose = IsPlayerTooClose();
+
+        if (isPlayerTooClose)
         {
+            movement.StopMoving();
             StartExplosionSequence();
         }
-        else
+        else if (CanAttack())
         {
             movement.FollowCurrentTarget();
             animator?.PlayGroggyMove();
@@ -41,13 +50,18 @@ public class ExplodeEnemy : Enemy
 
     private bool IsPlayerTooClose()
     {
-        return Vector2.Distance(transform.position, character.transform.position) <= playerDetectionRadius;
+        float distance = Vector2.Distance(transform.position, character.transform.position);
+        Debug.Log($"[ExplodeEnemy] Player distance: {distance}, threshold: {playerDetectionRadius}");
+        return distance <= playerDetectionRadius;
     }
+
 
     private void StartExplosionSequence()
     {
         if (isExploding) return;
-        isExploding = true;
+            isExploding = true;
+
+        Debug.Log("[ExplodeEnemy] Explosion sequence started.");
 
         animator?.ResetVisual();
 
@@ -56,16 +70,29 @@ public class ExplodeEnemy : Enemy
         {
             LeanTween.scale(visual, Vector3.one * 1.5f, 0.12f)
                 .setEaseOutBack()
-                .setOnComplete(DoExplosion);
+                .setOnComplete(() =>
+                {
+                    StartCoroutine(DelayedExplosion());
+                });
         }
         else
         {
-            DoExplosion();
+            StartCoroutine(DelayedExplosion());
         }
     }
 
+    private IEnumerator DelayedExplosion()
+    {
+        Debug.Log("[ExplodeEnemy] Starting 0.5s delay before explosion.");
+        yield return new WaitForSeconds(0.5f);
+        DoExplosion();
+    }
+
+
     private void DoExplosion()
     {
+        Debug.Log("[ExplodeEnemy] BOOM - Executing explosion logic.");
+
         if (explosionEffect != null)
         {
             var effect = Instantiate(explosionEffect, transform.position, Quaternion.identity);
@@ -90,17 +117,17 @@ public class ExplodeEnemy : Enemy
     {
         while (true)
         {
-            float distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
+            float distanceToPlayer = Vector2.Distance(transform.position, character.transform.position);
 
             if (distanceToPlayer < 5f)
             {
                 panicTimer += Time.deltaTime;
-                panicIntensity = Mathf.Min(panicTimer / 2f, 1f); // Builds up over 2 seconds
+                panicIntensity = Mathf.Min(panicTimer / 2f, 1f);
                 animator?.PlayPanicGrow(panicIntensity);
             }
             else
             {
-                panicTimer = Mathf.Max(0f, panicTimer - Time.deltaTime * 2f); // Calms down faster
+                panicTimer = Mathf.Max(0f, panicTimer - Time.deltaTime * 2f);
                 panicIntensity = panicTimer / 2f;
                 animator?.ResetVisual();
             }
@@ -113,5 +140,8 @@ public class ExplodeEnemy : Enemy
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, explosionRadius);
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, playerDetectionRadius);
     }
 }

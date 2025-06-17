@@ -27,7 +27,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
 
     [Header("ATTACK:")]
     [HideInInspector] public int contactDamage;
-    [HideInInspector] public float playerDetectionRadius;
+    public float playerDetectionRadius;
     protected float attackTimer;
     private bool attacksEnabled = true;
 

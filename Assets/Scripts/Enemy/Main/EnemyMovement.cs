@@ -545,6 +545,14 @@ public class EnemyMovement : MonoBehaviour
         externalForce += force;
     }
 
+    public void StopMoving()
+    {
+        canMove = false;
+        rb.linearVelocity = Vector2.zero;
+        rb.angularVelocity = 0f;
+    }
+
+
 }
 
 public class HazardAwareness : MonoBehaviour
