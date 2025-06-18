@@ -55,10 +55,17 @@ public class EnemyAnimator : MonoBehaviour
         visualRoot.localScale = Vector3.one * (1f + 0.3f * intensity);
     }
 
+    public void PlayExplosionPulse(float pulseScale = 1.2f, float duration = 0.2f)
+    {
+        LeanTween.cancel(visualRoot.gameObject);
+        LeanTween.scale(visualRoot.gameObject, Vector3.one * pulseScale, duration)
+            .setEaseOutQuad()
+            .setLoopPingPong(2);
+    }
+
     public void ResetVisual()
     {
         LeanTween.cancel(visualRoot.gameObject);
         visualRoot.localScale = Vector3.one;
     }
-
 }

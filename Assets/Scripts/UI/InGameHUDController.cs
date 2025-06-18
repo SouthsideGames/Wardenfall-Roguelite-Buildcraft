@@ -16,6 +16,9 @@ public class InGameHUDController : MonoBehaviour
     [SerializeField] private CanvasGroup sponsorCanvasGroup;
     [SerializeField] private TextMeshProUGUI sponsorText;
     [SerializeField] private float scrollSpeed = 100f;
+    [SerializeField] private float sponsorDelayDuration = 2.5f; // Adjust for "commercial break" feel
+    private float sponsorDelayTimer = 0f;
+    private bool isWaitingForSponsor = false;
     private bool blinkState = true;
 
     private readonly string[] sponsors = new string[]
@@ -112,16 +115,27 @@ public class InGameHUDController : MonoBehaviour
 
     private void ScrollSponsor()
     {
+        if (isWaitingForSponsor)
+        {
+            sponsorDelayTimer -= Time.deltaTime;
+            if (sponsorDelayTimer <= 0f)
+            {
+                sponsorText.text = $"Sponsored by: {GetRandomSponsor()}";
+                float resetX = Screen.width + sponsorBanner.rect.width;
+                sponsorBanner.anchoredPosition = new Vector2(resetX, sponsorBanner.anchoredPosition.y);
+                isWaitingForSponsor = false;
+            }
+            return;
+        }
+
         sponsorBanner.anchoredPosition += Vector2.left * scrollSpeed * Time.deltaTime;
 
-        // Reset once fully offscreen to the left
-        float resetX = Screen.width + sponsorBanner.rect.width;
         if (sponsorBanner.anchoredPosition.x < -sponsorBanner.rect.width)
         {
-            sponsorBanner.anchoredPosition = new Vector2(resetX, sponsorBanner.anchoredPosition.y);
+            isWaitingForSponsor = true;
+            sponsorDelayTimer = sponsorDelayDuration;
         }
     }
-
 
     private void SetSponsorOpacity(float alpha) => sponsorCanvasGroup.alpha = Mathf.Clamp01(alpha);
 

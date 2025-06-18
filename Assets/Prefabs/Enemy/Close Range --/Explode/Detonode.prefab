@@ -127,7 +127,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6970444342829542041}
-  - component: {fileID: 1583400789651010926}
   - component: {fileID: 4309260628199116023}
   - component: {fileID: 7183735690405059409}
   - component: {fileID: 8463660637369256428}
@@ -161,30 +160,9 @@ Transform:
   - {fileID: 426702136284895219}
   - {fileID: 5394682005736224940}
   - {fileID: 3583079839518725238}
+  - {fileID: 3081917086090426747}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &1583400789651010926
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5320726414349726025}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 2e2369dbbf7d4474cb504dd87065bbdd, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!58 &4309260628199116023
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -265,7 +243,7 @@ MonoBehaviour:
   spawnIndicator: {fileID: 5286304804905647726}
   _collider: {fileID: 4309260628199116023}
   contactDamage: 0
-  playerDetectionRadius: 2.5
+  playerDetectionRadius: 4
   maxHealth: 40
   health: 0
   isInvincible: 0
@@ -275,9 +253,11 @@ MonoBehaviour:
   deathParticles: {fileID: 8197827490511927137}
   showGizmos: 1
   isEvolvable: 0
-  explosionRadius: 3.5
+  explosionRadius: 5
   explosionDamage: 30
-  explosionEffect: {fileID: 3177740021066494589, guid: 97cb54007f85083409b9412aac8cbfa0, type: 3}
+  triggerDelay: 1.5
+  explosionPrefab: {fileID: 5327741532653137150, guid: 97cb54007f85083409b9412aac8cbfa0, type: 3}
+  damageAreaVisual: {fileID: 6913347833322355096}
 --- !u!114 &3497553611394572841
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -290,7 +270,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ddebe7d82fbdf44daf06654154cf032, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 4
+  moveSpeed: 3.5
   canMove: 1
   chasePlayer: 1
   wander: 0
@@ -5371,3 +5351,74 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
+--- !u!1001 &2757914840635304100
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 6970444342829542041}
+    m_Modifications:
+    - target: {fileID: 901634365542896095, guid: 6217d66b43f8242889942483d8c14db7, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 901634365542896095, guid: 6217d66b43f8242889942483d8c14db7, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 901634365542896095, guid: 6217d66b43f8242889942483d8c14db7, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 901634365542896095, guid: 6217d66b43f8242889942483d8c14db7, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 901634365542896095, guid: 6217d66b43f8242889942483d8c14db7, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 901634365542896095, guid: 6217d66b43f8242889942483d8c14db7, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 901634365542896095, guid: 6217d66b43f8242889942483d8c14db7, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 901634365542896095, guid: 6217d66b43f8242889942483d8c14db7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 901634365542896095, guid: 6217d66b43f8242889942483d8c14db7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 901634365542896095, guid: 6217d66b43f8242889942483d8c14db7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8770533597359460668, guid: 6217d66b43f8242889942483d8c14db7, type: 3}
+      propertyPath: m_Name
+      value: Indicator Ring
+      objectReference: {fileID: 0}
+    - target: {fileID: 8770533597359460668, guid: 6217d66b43f8242889942483d8c14db7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6217d66b43f8242889942483d8c14db7, type: 3}
+--- !u!4 &3081917086090426747 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 901634365542896095, guid: 6217d66b43f8242889942483d8c14db7, type: 3}
+  m_PrefabInstance: {fileID: 2757914840635304100}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6913347833322355096 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8770533597359460668, guid: 6217d66b43f8242889942483d8c14db7, type: 3}
+  m_PrefabInstance: {fileID: 2757914840635304100}
+  m_PrefabAsset: {fileID: 0}
