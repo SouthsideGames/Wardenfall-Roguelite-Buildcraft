@@ -5026,6 +5026,10 @@ GameObject:
   - component: {fileID: -6903256014510598490}
   - component: {fileID: 5604395167982939854}
   - component: {fileID: 7219391018446419372}
+  - component: {fileID: 4620272293292178158}
+  - component: {fileID: 7017693028309414630}
+  - component: {fileID: 6866386277362419091}
+  - component: {fileID: 3087053047655528656}
   - component: {fileID: 7952075234647270362}
   m_Layer: 6
   m_Name: Gallo
@@ -5129,21 +5133,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d558ad2273ccd541a223b61690d12ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyData: {fileID: 11400000, guid: 08a27b20b31dd1142a91eda8ea4527b1, type: 2}
   movement: {fileID: 0}
   _spriteRenderer: {fileID: 4171277772667265588}
   spawnIndicator: {fileID: 7310978342789289596}
   _collider: {fileID: 3478709589087782155}
   contactDamage: 0
   playerDetectionRadius: 4
+  deathParticles: {fileID: 7797248459001036413}
+  showGizmos: 1
   maxHealth: 100
   health: 0
   isInvincible: 0
-  spawnSize: 1.5
-  spawnTime: 1
-  numberOfLoops: 5
-  deathParticles: {fileID: 7797248459001036413}
-  showGizmos: 1
-  isEvolvable: 0
   chargeTime: 1.2
   growFactor: 1.65
   chargeSpeed: 22
@@ -5257,6 +5258,59 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47492a4f67d7fe343ab3239811b016d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4620272293292178158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4838427843806296356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b92886f09918cc4c8784eba2c2cf195, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnSize: 1.2
+  spawnTime: 0.3
+  numberOfLoops: 4
+  spawnIndicator: {fileID: 4171277772667265588}
+--- !u!114 &7017693028309414630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4838427843806296356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42c7228cfe242ae478c2947811fcff67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6866386277362419091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4838427843806296356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 917834725878b5e44a54143d93840bae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3087053047655528656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4838427843806296356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bae3b1a21178c864c9f2d16687407b1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isEvolvable: 0
 --- !u!96 &7952075234647270362
 TrailRenderer:
   serializedVersion: 3

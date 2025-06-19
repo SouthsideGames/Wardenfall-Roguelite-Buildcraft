@@ -59,7 +59,7 @@ public class HiveTyrantBoss : Boss
 
         transform.localScale = new Vector3(originalScale.x * 1.5f, originalScale.y * 0.7f, originalScale.z);
 
-        Vector2 dashDirection = (playerTransform.position - transform.position).normalized;
+        Vector2 dashDirection = (PlayerTransform.position - transform.position).normalized;
         Vector2 dashTarget = (Vector2)transform.position + dashDirection * dashDistance;
 
         enemyMovement.SetTargetPosition(dashTarget);

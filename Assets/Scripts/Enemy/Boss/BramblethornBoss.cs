@@ -41,7 +41,7 @@ public class BramblethornBoss : Boss
 
         if (!hasSpawned || isAttacking) return;
 
-        float distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
+        float distanceToPlayer = Vector2.Distance(transform.position, PlayerTransform.position);
 
         if (distanceToPlayer <= playerDetectionRadius)
             ExecuteStage();

@@ -28,7 +28,7 @@ public class TwinfangBoss : Boss
 
         attackTimer -= Time.deltaTime;
 
-        if (Vector2.Distance(transform.position, playerTransform.position) <= attackRange && attackTimer <= 0)
+        if (Vector2.Distance(transform.position, PlayerTransform.position) <= attackRange && attackTimer <= 0)
         {
             ExecuteStage();
             attackTimer = attackCooldown;
@@ -45,7 +45,7 @@ public class TwinfangBoss : Boss
 
         isAttacking = true;
         enemyMovement.DisableMovement(0.6f);
-        Vector2 attackDirection = (playerTransform.position - transform.position).normalized;
+        Vector2 attackDirection = (PlayerTransform.position - transform.position).normalized;
 
         transform.localScale = new Vector3(originalScale.x * 1.5f, originalScale.y * 0.7f, originalScale.z);
         yield return new WaitForSeconds(0.2f);

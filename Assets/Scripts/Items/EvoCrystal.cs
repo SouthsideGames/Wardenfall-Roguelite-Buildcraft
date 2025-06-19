@@ -20,12 +20,14 @@ public class EvoCrystal : MonoBehaviour
 
         if (other.TryGetComponent<Enemy>(out var enemy))
         {
-            if (enemy.CanEvolve())
+            var evolutionHandler = enemy.GetComponent<EnemyEvolutionHandler>();
+            if (evolutionHandler != null && evolutionHandler.CanEvolve())
             {
-                enemy.Evolve();
+                evolutionHandler.Evolve();
                 Destroy(gameObject);
             }
         }
+
     }
 
     public void TakeDamage(float amount)

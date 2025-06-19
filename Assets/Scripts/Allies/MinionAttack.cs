@@ -34,7 +34,7 @@ public class MinionAttack : MonoBehaviour
     {
         if (attackTimer <= 0)
         {
-            targetEnemy.TakeDamage(minionManager.GetDamage(), _isCriticalHit: false);
+            targetEnemy.TakeDamage(minionManager.GetDamage());
             attackTimer = attackCooldown;
         }
     }

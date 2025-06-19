@@ -38,7 +38,7 @@ public class TitanBoss : Boss
 
         enemyMovement.FollowCurrentTarget();
 
-        if (Vector2.Distance(transform.position, playerTransform.position) <= detectionRadius)
+        if (Vector2.Distance(transform.position, PlayerTransform.position) <= detectionRadius)
             ExecuteStage();
     }
 
@@ -54,7 +54,7 @@ public class TitanBoss : Boss
 
     private IEnumerator LightningBurstRoutine()
     {
-        Vector2 centerPoint = playerTransform.position;
+        Vector2 centerPoint = PlayerTransform.position;
         float angle = 0f;
 
         while (currentBurstCount < lightningBurstCount)
@@ -79,7 +79,7 @@ public class TitanBoss : Boss
         for (int i = 0; i < 3; i++)
         {
             Vector2 randomOffset = Random.insideUnitCircle * 2f;
-            Vector2 spawnPos = (Vector2)playerTransform.position + randomOffset;
+            Vector2 spawnPos = (Vector2)PlayerTransform.position + randomOffset;
             Instantiate(lightningBoltPrefab, spawnPos, Quaternion.identity);
         }
     }
