@@ -11,15 +11,20 @@ public class CorruptingEnemy : Enemy
 
     private float corruptionTimer;
     private EnemyAnimator animator;
+    private int tier;
 
     protected override void Start()
     {
         base.Start();
+
         animator = GetComponent<EnemyAnimator>();
         corruptionTimer = corruptionInterval;
+        tier = enemyData != null ? enemyData.tier : 1;
 
-        // Optional: start idle pulse animation
-        animator?.PlayIdlePulseAnimation();
+        if (animator != null)
+        {
+            animator.PlayIdlePulseAnimation();
+        }
     }
 
     private void Update()
@@ -36,21 +41,18 @@ public class CorruptingEnemy : Enemy
 
     private IEnumerator CorruptionPulse()
     {
-        // Telegraph: small shake and glow before pulse
         animator?.PlayPrePulseShake();
 
-        yield return new WaitForSeconds(0.4f); // Delay before actual pulse
+        yield return new WaitForSeconds(0.4f);
 
-        ApplyRandomStatusEffects();
+        ApplyWeightedStatusEffects();
+
         animator?.PlayCorruptionPulseAnimation();
-
         if (corruptionPulseEffect != null)
-        {
             corruptionPulseEffect.Play();
-        }
     }
 
-    private void ApplyRandomStatusEffects()
+    private void ApplyWeightedStatusEffects()
     {
         Collider2D[] targets = Physics2D.OverlapCircleAll(transform.position, corruptionRadius, targetLayer);
 
@@ -58,20 +60,50 @@ public class CorruptingEnemy : Enemy
         {
             if (target.TryGetComponent(out IStatusReceiver receiver))
             {
-                int roll = Random.Range(0, 3);
-                switch (roll)
-                {
-                    case 0: receiver.ApplyStatus(StatusType.Burn, 3f); break;
-                    case 1: receiver.ApplyStatus(StatusType.Freeze, 2f); break;
-                    case 2: receiver.ApplyStatus(StatusType.Drain, 4f); break;
-                }
+                StatusEffectType status = GetWeightedStatus();
+                float duration = GetStatusDuration(status);
+
+                receiver.ApplyStatus(status, duration);
+
+                // Show floating icon at target
+                StatusEffectUIManager.Show(status, target.transform.position + Vector3.up * 1f);
             }
         }
     }
 
+    private StatusEffectType GetWeightedStatus()
+    {
+        int roll = Random.Range(0, 100);
+
+        // Weighted by enemy tier
+        return tier switch
+        {
+            1 => roll < 60 ? StatusEffectType.Burn : (roll < 90 ? StatusEffectType.Freeze : StatusEffectType.Drain),
+            2 => roll < 40 ? StatusEffectType.Burn : (roll < 75 ? StatusEffectType.Freeze : StatusEffectType.Drain),
+            _ => roll < 30 ? StatusEffectType.Burn : (roll < 60 ? StatusEffectType.Freeze : StatusEffectType.Drain),
+        };
+    }
+
+    private float GetStatusDuration(StatusEffectType status)
+    {
+        return status switch
+        {
+            StatusEffectType.Burn => 3f,
+            StatusEffectType.Freeze => 2f,
+            StatusEffectType.Drain => 4f,
+            _ => 3f,
+        };
+    }
+
+    protected override void OnDeath()
+    {
+        base.OnDeath();
+        StartCoroutine(CorruptionPulse()); // Final burst on death
+    }
+
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.magenta;
+        Gizmos.color = new Color(0.7f, 0f, 0.9f, 0.6f);
         Gizmos.DrawWireSphere(transform.position, corruptionRadius);
     }
 }
