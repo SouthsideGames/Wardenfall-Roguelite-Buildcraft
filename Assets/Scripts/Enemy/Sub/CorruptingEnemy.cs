@@ -1,101 +1,72 @@
-using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
+using UnityEngine;
 
 public class CorruptingEnemy : Enemy
 {
-    [Header("Corruption Settings")]
-    [SerializeField] private float corruptionRadius = 6f;
-    [SerializeField] private float corruptionDuration = 8f;
-    [SerializeField] private float corruptInterval = 3f;
-    [SerializeField] private float damageMultiplier = 1.5f;
-    [SerializeField] private float speedMultiplier = 1.3f;
-    [SerializeField] private LayerMask enemyLayer;
-    [SerializeField] private ParticleSystem corruptionEffect;
-    
-    private float corruptTimer;
-    private readonly List<Enemy> corruptedEnemies = new();
+    [Header("CORRUPTION SETTINGS")]
+    [SerializeField] private float corruptionInterval = 5f;
+    [SerializeField] private float corruptionRadius = 4f;
+    [SerializeField] private LayerMask targetLayer;
+    [SerializeField] private ParticleSystem corruptionPulseEffect;
+
+    private float corruptionTimer;
+    private EnemyAnimator animator;
 
     protected override void Start()
     {
         base.Start();
-        corruptTimer = corruptInterval;
+        animator = GetComponent<EnemyAnimator>();
+        corruptionTimer = corruptionInterval;
+
+        // Optional: start idle pulse animation
+        animator?.PlayIdlePulseAnimation();
     }
 
-    protected override void Update()
+    private void Update()
     {
-        base.Update();
-        
         if (!hasSpawned) return;
 
-        corruptTimer -= Time.deltaTime;
-        if (corruptTimer <= 0)
+        corruptionTimer -= Time.deltaTime;
+        if (corruptionTimer <= 0f)
         {
-            CorruptNearbyEnemies();
-            corruptTimer = corruptInterval;
+            StartCoroutine(CorruptionPulse());
+            corruptionTimer = corruptionInterval;
         }
     }
 
-    private void CorruptNearbyEnemies()
+    private IEnumerator CorruptionPulse()
     {
-        Collider2D[] nearbyEnemies = Physics2D.OverlapCircleAll(transform.position, corruptionRadius, enemyLayer);
-        
-        foreach (Collider2D col in nearbyEnemies)
+        // Telegraph: small shake and glow before pulse
+        animator?.PlayPrePulseShake();
+
+        yield return new WaitForSeconds(0.4f); // Delay before actual pulse
+
+        ApplyRandomStatusEffects();
+        animator?.PlayCorruptionPulseAnimation();
+
+        if (corruptionPulseEffect != null)
         {
-            Enemy enemy = col.GetComponent<Enemy>();
-            if (enemy != null && enemy != this && !corruptedEnemies.Contains(enemy))
-            {
-                StartCoroutine(CorruptEnemy(enemy));
-            }
+            corruptionPulseEffect.Play();
         }
     }
 
-    private IEnumerator CorruptEnemy(Enemy enemy)
+    private void ApplyRandomStatusEffects()
     {
-        if (enemy == null) yield break;
+        Collider2D[] targets = Physics2D.OverlapCircleAll(transform.position, corruptionRadius, targetLayer);
 
-        // Add to corrupted list
-        corruptedEnemies.Add(enemy);
-        
-        EnemyModifierHandler modHandler = enemy.modifierHandler;
-        if (modHandler != null)
+        foreach (var target in targets)
         {
-            modHandler.ModifyDamage(damageMultiplier - 1f);
-            modHandler.ModifySpeed(speedMultiplier - 1f);
-            
-            if (corruptionEffect != null)
+            if (target.TryGetComponent(out IStatusReceiver receiver))
             {
-                ParticleSystem effect = Instantiate(corruptionEffect, enemy.transform);
-                effect.Play();
+                int roll = Random.Range(0, 3);
+                switch (roll)
+                {
+                    case 0: receiver.ApplyStatus(StatusType.Burn, 3f); break;
+                    case 1: receiver.ApplyStatus(StatusType.Freeze, 2f); break;
+                    case 2: receiver.ApplyStatus(StatusType.Drain, 4f); break;
+                }
             }
         }
-
-        // Wait for duration
-        yield return new WaitForSeconds(corruptionDuration);
-
-        // Remove corruption if enemy still exists
-        if (enemy != null && modHandler != null)
-        {
-            modHandler.ModifyDamage(-(damageMultiplier - 1f));
-            modHandler.ModifySpeed(-(speedMultiplier - 1f));
-            corruptedEnemies.Remove(enemy);
-        }
-    }
-
-    public override void Die()
-    {
-        // Remove all corruptions when killed
-        foreach (Enemy enemy in corruptedEnemies.ToArray())
-        {
-            if (enemy != null && enemy.modifierHandler != null)
-            {
-                enemy.modifierHandler.ModifyDamage(-(damageMultiplier - 1f));
-                enemy.modifierHandler.ModifySpeed(-(speedMultiplier - 1f));
-            }
-        }
-        corruptedEnemies.Clear();
-        
-        base.Die();
     }
 
     private void OnDrawGizmosSelected()
