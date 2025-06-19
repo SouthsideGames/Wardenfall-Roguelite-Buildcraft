@@ -123,4 +123,32 @@ public class EnemyAnimator : MonoBehaviour
             LeanTween.scale(visualRoot.gameObject, Vector3.one, 0.1f).setEaseInSine();
         });
     }
+
+    public void PlayCorruptionPulseAnimation()
+    {
+        LeanTween.scale(visualRoot.gameObject, new Vector3(1.25f, 1.25f, 1f), 0.2f)
+            .setEaseOutBack()
+            .setLoopPingPong(1)
+            .setOnComplete(() => visualRoot.localScale = Vector3.one);
+    }
+    
+    public void PlayPrePulseShake()
+    {
+        Vector3 originalPos = visualRoot.localPosition;
+        LeanTween.moveLocalX(visualRoot.gameObject, originalPos.x + 0.1f, 0.05f).setLoopPingPong(4).setOnComplete(() =>
+        {
+            visualRoot.localPosition = originalPos;
+        });
+    }
+    
+    public void PlayIdlePulseAnimation()
+    {
+        if (isIdlePulsing) return;
+        isIdlePulsing = true;
+    
+        LeanTween.scale(visualRoot.gameObject, new Vector3(1.05f, 0.95f, 1f), 1f)
+            .setEaseInOutSine()
+            .setLoopPingPong()
+            .setOnComplete(() => isIdlePulsing = false);
+    }
 }
