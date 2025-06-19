@@ -6,9 +6,9 @@ using UnityEngine;
 public class ChargeEnemy : Enemy
 {
     [Header("CHARGE SPECIFICS:")]
-    [SerializeField] private float chargeTime = 2f; 
+    [SerializeField] private float chargeTime = 2f;
     [SerializeField] private float growFactor = 1.5f;
-    [SerializeField] private float chargeSpeed = 20f; 
+    [SerializeField] private float chargeSpeed = 20f;
     [SerializeField] private float chargeDistance = 10f;
     [SerializeField] private float cooldownTime = 3f;
     [SerializeField] private bool multiCharge = false;
@@ -16,13 +16,16 @@ public class ChargeEnemy : Enemy
     [SerializeField] private float interChargeDelay = 0.4f;
 
     [Header("EFFECTS:")]
-    private bool attackPerformed = false; 
-    private Vector3 originalScale; 
+    [SerializeField] private GameObject ChargeParticles;
+    [SerializeField] private GameObject CooldownPuff;
+    [SerializeField] private float knockbackForce = 6f;
+
+    private Vector3 originalScale;
     private Vector2 chargeDirection;
-    private bool isCharging = true; 
+    private bool isCharging = true;
 
     private void Awake() => OnSpawnCompleted += SpawnCompletedActions;
-    private void OnDestroy() => OnSpawnCompleted -= SpawnCompletedActions; 
+    private void OnDestroy() => OnSpawnCompleted -= SpawnCompletedActions;
 
     protected override void Start()
     {
@@ -45,12 +48,16 @@ public class ChargeEnemy : Enemy
 
         for (int i = 0; i < charges; i++)
         {
-            attackPerformed = false;
+            EnableAttacks(); 
+            isInvincible = true;
 
             yield return Grow();
             LocatePlayer();
             yield return DashTowardsPlayer();
             yield return Shrink();
+
+            isInvincible = false;
+            ChangeDirections();
 
             if (i < charges - 1)
                 yield return new WaitForSeconds(interChargeDelay);
@@ -69,20 +76,24 @@ public class ChargeEnemy : Enemy
         LeanTween.scale(gameObject, squashScale, 0.15f).setEaseOutSine();
         yield return new WaitForSeconds(0.15f);
 
-        Color baseColor = _spriteRenderer.color;
-        LeanTween.value(gameObject, 1f, 0.5f, chargeTime)
-            .setLoopPingPong()
-            .setEaseInOutSine()
-            .setOnUpdate((float val) =>
-            {
-                if (_spriteRenderer != null)
-                    _spriteRenderer.color = new Color(baseColor.r, baseColor.g, baseColor.b, val);
-            });
-
-        GameObject particles = Instantiate(Resources.Load<GameObject>("VFX/ChargeParticles"), transform.position, Quaternion.identity, transform);
-
+        Instantiate(ChargeParticles, transform.position, Quaternion.identity, transform);
         LeanTween.moveLocalX(gameObject, transform.localPosition.x + 0.1f, 0.05f).setLoopPingPong(6);
 
+        // Flash wind-up
+        Color baseColor = _spriteRenderer.color;
+        float flashTime = 0.2f;
+        int flashCount = Mathf.FloorToInt(chargeTime / (flashTime * 2));
+
+        for (int i = 0; i < flashCount; i++)
+        {
+            _spriteRenderer.color = Color.white;
+            yield return new WaitForSeconds(flashTime);
+            _spriteRenderer.color = baseColor;
+            yield return new WaitForSeconds(flashTime);
+        }
+
+        // Finish growth smoothly
+        elapsed = 0f;
         while (elapsed < chargeTime)
         {
             transform.localScale = Vector3.Lerp(squashScale, stretchScale, elapsed / chargeTime);
@@ -92,17 +103,15 @@ public class ChargeEnemy : Enemy
 
         transform.localScale = stretchScale;
         LeanTween.cancel(gameObject);
+        _spriteRenderer.color = baseColor;
     }
 
     private void LocatePlayer()
     {
-        if (this == null || gameObject == null || character == null || character.transform == null) 
-        {
+        if (character != null && character.transform != null)
+            chargeDirection = (character.transform.position - transform.position).normalized;
+        else
             chargeDirection = Vector2.right;
-            return;
-        }
-
-        chargeDirection = (character.transform.position - transform.position).normalized;
     }
 
     private IEnumerator DashTowardsPlayer()
@@ -113,81 +122,78 @@ public class ChargeEnemy : Enemy
         TrailRenderer trail = GetComponent<TrailRenderer>();
         if (trail != null) trail.emitting = true;
 
-        Instantiate(Resources.Load<GameObject>("VFX/DashBurst"), transform.position, Quaternion.identity);
-
-        SpriteRenderer ghost = Instantiate(_spriteRenderer, transform.position, Quaternion.identity);
-        ghost.color = new Color(ghost.color.r, ghost.color.g, ghost.color.b, 0.4f);
-        Destroy(ghost.gameObject, 0.3f);
-
         Vector2 startPosition = transform.position;
         Vector2 targetPosition = startPosition + chargeDirection * chargeDistance;
-        float distanceTraveled = 0f;
+        float dashDuration = chargeDistance / chargeSpeed;
 
-        while (distanceTraveled < chargeDistance)
-        {
-            float step = chargeSpeed * Time.deltaTime;
-            transform.position = Vector2.MoveTowards(transform.position, targetPosition, step);
-            distanceTraveled += step;
-            TryAttack();
-            yield return null;
-        }
+        LeanTween.move(gameObject, targetPosition, dashDuration)
+            .setEaseOutSine()
+            .setOnComplete(() =>
+            {
+                if (trail != null) trail.emitting = false;
+            });
 
-        if (trail != null) trail.emitting = false;
+        yield return new WaitForSeconds(dashDuration);
+        transform.position = targetPosition;
+
+        DisableAttacks();
     }
 
     private IEnumerator Shrink()
     {
+        float halfTime = chargeTime / 2f;
         float elapsed = 0f;
         Vector3 undershootScale = originalScale * 0.85f;
 
-        while (elapsed < chargeTime / 2f)
+        while (elapsed < halfTime)
         {
-            transform.localScale = Vector3.Lerp(transform.localScale, undershootScale, elapsed / (chargeTime / 2f));
+            transform.localScale = Vector3.Lerp(transform.localScale, undershootScale, elapsed / halfTime);
             elapsed += Time.deltaTime;
             yield return null;
         }
 
-        Instantiate(Resources.Load<GameObject>("VFX/CooldownPuff"), transform.position, Quaternion.identity);
+        Instantiate(CooldownPuff, transform.position, Quaternion.identity);
 
         elapsed = 0f;
-        while (elapsed < chargeTime / 2f)
+        while (elapsed < halfTime)
         {
-            transform.localScale = Vector3.Lerp(undershootScale, originalScale, elapsed / (chargeTime / 2f));
+            transform.localScale = Vector3.Lerp(undershootScale, originalScale, elapsed / halfTime);
             elapsed += Time.deltaTime;
             yield return null;
         }
 
         transform.localScale = originalScale;
-
         LeanTween.cancel(gameObject);
         _spriteRenderer.color = Color.white;
-    }
-
-    private void TryAttack()
-    {
-        float distanceToPlayer = Vector2.Distance(transform.position, character.transform.position);
-        if (distanceToPlayer <= playerDetectionRadius && !attackPerformed)
-            Attack();
     }
 
     protected override void Attack()
     {
         base.Attack();
-        attackPerformed = true; 
+        DisableAttacks();
     }
 
     protected override void ChangeDirections()
     {
-        if (playerTransform != null)
-        {
-            if (playerTransform.position.x > transform.position.x && !attackPerformed)
-                _spriteRenderer.flipX = true;
-            else
-                _spriteRenderer.flipX = false;
-        }
+        if (attacksEnabled && playerTransform != null)
+            _spriteRenderer.flipX = playerTransform.position.x > transform.position.x;
     }
 
     private void SpawnCompletedActions() => isCharging = false;
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (attacksEnabled && isCharging && other.TryGetComponent<CharacterManager>(out var player))
+        {
+            Attack();
+
+            // Knockback logic
+            Vector2 dir = (player.transform.position - transform.position).normalized;
+            Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
+            if (rb != null)
+                rb.AddForce(dir * knockbackForce, ForceMode2D.Impulse);
+        }
+    }
 
     private void OnDrawGizmosSelected()
     {

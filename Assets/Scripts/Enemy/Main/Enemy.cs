@@ -29,7 +29,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
     [HideInInspector] public int contactDamage;
     public float playerDetectionRadius;
     protected float attackTimer;
-    private bool attacksEnabled = true;
+    protected bool attacksEnabled = true;
 
     [Header("HEALTH:")]
     [HideInInspector] public int maxHealth;
@@ -127,7 +127,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
 
     public virtual void TakeDamage(int _damage, bool _isCriticalHit)
     {
-        if (isInvincible || this == null || gameObject == null) return;
+        if (isInvincible || this == null || gameObject == null || !hasSpawned) return;
 
         int realDamage = Mathf.Min(_damage, health);
         health -= realDamage;
@@ -135,9 +135,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
         OnDamageTaken?.Invoke(_damage, transform.position, _isCriticalHit);
 
         if (CurrentHealth <= 0)
-        {
             DieByPlayer();
-        }
     }
 
     public void TakeDamage(int damage)
