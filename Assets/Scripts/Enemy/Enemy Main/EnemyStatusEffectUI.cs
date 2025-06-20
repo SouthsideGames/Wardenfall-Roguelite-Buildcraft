@@ -64,9 +64,13 @@ public class EnemyStatusEffectUI : MonoBehaviour
     /// </summary>
     public void ShowFloatingStatus(StatusEffectType type)
     {
-        if (StatusEffectUIManager.Instance != null)
-        {
-            StatusEffectUIManager.Show(type, transform.position + Vector3.up * 1f);
-        }
+        if (iconPrefab == null) return;
+
+        // Instantiate the floating icon at the anchor or enemy position
+        Vector3 spawnPos = iconAnchor != null ? iconAnchor.position : transform.position;
+        var icon = Instantiate(iconPrefab, spawnPos, Quaternion.identity);
+
+        // Use temporary visual logic
+        icon.SetupTemporary(type);
     }
 }

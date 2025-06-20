@@ -8,6 +8,7 @@ using UnityEngine;
 [RequireComponent(typeof(EnemyMissionTracker))]
 [RequireComponent(typeof(EnemyTargetController))]
 [RequireComponent(typeof(EnemyEvolutionHandler))]
+[RequireComponent(typeof(EnemyMovement))]
 public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
 {
     [Header("DATA:")]
@@ -24,7 +25,6 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
 
     [Header("ELEMENTS:")]
     protected CharacterManager character;
-    [HideInInspector] public EnemyMovement movement;
     [SerializeField] protected SpriteRenderer _spriteRenderer;
     [SerializeField] protected SpriteRenderer spawnIndicator;
     [SerializeField] private Collider2D _collider;
@@ -51,6 +51,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
 
     public EnemyStatus status { get; private set; }
     public EnemyModifierHandler modifierHandler { get; private set; }
+    public EnemyMovement movement { get; private set; }
     public CharacterManager Character => character;
     public Collider2D Collider => _collider;
     public SpriteRenderer SpriteRenderer => _spriteRenderer;
