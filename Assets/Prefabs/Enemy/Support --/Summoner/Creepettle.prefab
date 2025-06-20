@@ -10010,11 +10010,12 @@ GameObject:
   - component: {fileID: 2789950900881401301}
   - component: {fileID: 8796130721030009854}
   - component: {fileID: 2932258198608904659}
-  - component: {fileID: 3148033129539421704}
   - component: {fileID: 9095016630418557242}
-  - component: {fileID: 2094317789511500324}
   - component: {fileID: 5686946949003568304}
-  - component: {fileID: 6091538763583011988}
+  - component: {fileID: 8895553348799646336}
+  - component: {fileID: 2377202544475007060}
+  - component: {fileID: 6445022863739764950}
+  - component: {fileID: 8248065088456482592}
   m_Layer: 6
   m_Name: Creepettle
   m_TagString: Enemy
@@ -10140,20 +10141,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d838fe1bebb14966940ffed56ecb3a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyData: {fileID: 0}
   movement: {fileID: 0}
   _spriteRenderer: {fileID: 262906454086925378}
   spawnIndicator: {fileID: 1434686942595017463}
   _collider: {fileID: 2789950900881401301}
   contactDamage: 0
   playerDetectionRadius: 0
+  deathParticles: {fileID: 4460384734506630581}
+  showGizmos: 0
   maxHealth: 300
   health: 0
   isInvincible: 0
-  spawnSize: 1.2
-  spawnTime: 2
-  numberOfLoops: 1
-  deathParticles: {fileID: 4460384734506630581}
-  showGizmos: 0
   summonableEnemies:
   - {fileID: 4838427843806296356, guid: 94b041bc43b99ea4e9837b8cba7bf53d, type: 3}
   - {fileID: 4838427843806296356, guid: 18040fa9258af2f418580e5a8d180f96, type: 3}
@@ -10184,56 +10183,6 @@ MonoBehaviour:
   summonCooldown: 5
   maxSummonedEnemies: 6
   summonEffect: {fileID: 4121135241829789687}
---- !u!114 &3148033129539421704
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5703549388772972490}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ddebe7d82fbdf44daf06654154cf032, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 0
-  canMove: 0
-  chasePlayer: 0
-  wander: 0
-  patrol: 0
-  multiCharge: 0
-  advanceThenStop: 0
-  strafeAroundPlayer: 0
-  supportAnchor: 0
-  jitterChase: 0
-  teleportMovement: 0
-  patrolPoints: []
-  patrolWaitTime: 1
-  patrolPointReachedDistance: 0.1
-  wanderRadius: 5
-  minWanderWaitTime: 2
-  maxWanderWaitTime: 5
-  wanderPointReachedDistance: 0.1
-  maxDistanceFromStart: 10
-  stopDistance: 6
-  strafeRadius: 6
-  strafeSpeed: 2
-  strafeOrbitSpeed: 120
-  jitterFrequency: 0.3
-  jitterStrength: 1.2
-  teleportCooldown: 4.5
-  teleportDelay: 0.4
-  teleportDistanceMin: 3.5
-  teleportDistanceMax: 7
-  teleportObstacleMask:
-    serializedVersion: 2
-    m_Bits: 0
-  teleportVFX: {fileID: 0}
-  teleportSFX: {fileID: 0}
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  detectionRange: 5
 --- !u!114 &9095016630418557242
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10243,24 +10192,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 5703549388772972490}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bac90ab437da2d343a676dcf53fb750f, type: 3}
+  m_Script: {fileID: 11500000, guid: 98644273b1c53c247a1f10952a8191bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  immunities: 02000000
---- !u!114 &2094317789511500324
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5703549388772972490}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c3165d87863467546938ec1ce28b0bc8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  iconAnchor: {fileID: 389141445184908414}
-  iconPrefab: {fileID: 1392284909096632975, guid: f467db2eb45e6534a851dea04057a0f5, type: 3}
+  immunities: 
 --- !u!114 &5686946949003568304
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10270,11 +10205,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 5703549388772972490}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9d3c57c0cf82a1642819f8f9d90d26cd, type: 3}
+  m_Script: {fileID: 11500000, guid: 7ba776042d7495a4db51037c69de3852, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   canPerformCriticalHit: 0
---- !u!114 &6091538763583011988
+--- !u!114 &8895553348799646336
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -10283,9 +10218,49 @@ MonoBehaviour:
   m_GameObject: {fileID: 5703549388772972490}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47492a4f67d7fe343ab3239811b016d7, type: 3}
+  m_Script: {fileID: 11500000, guid: f46254ac4da2e5d42858deee1b8820bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnSize: 1.2
+  spawnTime: 0.3
+  numberOfLoops: 4
+--- !u!114 &2377202544475007060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5703549388772972490}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 930e7e4276eb78243b85f02e4cb39093, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6445022863739764950
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5703549388772972490}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6222ee4a565fa749b8df6f37b053b7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8248065088456482592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5703549388772972490}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7f1ba9118abc344ea20f2350ac963d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isEvolvable: 0
 --- !u!1 &7125406304466509617
 GameObject:
   m_ObjectHideFlags: 0

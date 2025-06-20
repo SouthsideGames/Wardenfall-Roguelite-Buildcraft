@@ -376,8 +376,11 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         float minY = -Constants.arenaSize.y/2 + padding;
         float maxY = Constants.arenaSize.y/2 - padding;
 
-        spawnPos.x = Mathf.Clamp(spawnPos.x, minX, maxX);
-        spawnPos.y = Mathf.Clamp(spawnPos.y, minY, maxY);
+        if (!GameManager.Instance.UseInfiniteMap)
+        {
+            spawnPos.x = Mathf.Clamp(spawnPos.x, minX, maxX);
+            spawnPos.y = Mathf.Clamp(spawnPos.y, minY, maxY);
+        }
 
         return spawnPos;
     }

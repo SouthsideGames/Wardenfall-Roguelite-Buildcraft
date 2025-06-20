@@ -5078,11 +5078,13 @@ GameObject:
   - component: {fileID: 3214928353315959966}
   - component: {fileID: 6462220377959834378}
   - component: {fileID: 5298675749711969902}
-  - component: {fileID: 8922748611002112661}
-  - component: {fileID: 5623997343555095016}
-  - component: {fileID: 875065280214489247}
-  - component: {fileID: 4884713050403579387}
-  - component: {fileID: 4454888085623993497}
+  - component: {fileID: 9152955263588134470}
+  - component: {fileID: 2774574311197264778}
+  - component: {fileID: 2458364791201649908}
+  - component: {fileID: 1605258710447330535}
+  - component: {fileID: 2347491868395694633}
+  - component: {fileID: 743082226258409189}
+  - component: {fileID: 9172535005206618795}
   m_Layer: 6
   m_Name: Chiplet
   m_TagString: Enemy
@@ -5207,25 +5209,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2180b1eee45ed5445b126a4f1e4d6f53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyData: {fileID: 0}
   movement: {fileID: 0}
   _spriteRenderer: {fileID: 7845777494305387174}
   spawnIndicator: {fileID: 1232405259790773056}
   _collider: {fileID: 3214928353315959966}
   contactDamage: 0
   playerDetectionRadius: 6.5
+  deathParticles: {fileID: 7231552869323501147}
+  showGizmos: 1
   maxHealth: 45
   health: 0
   isInvincible: 0
-  spawnSize: 1.2
-  spawnTime: 0.7
-  numberOfLoops: 2
-  deathParticles: {fileID: 7231552869323501147}
-  showGizmos: 1
-  isEvolvable: 1
   attackRate: 1.4
   shieldHealth: 20
   shield: {fileID: 1563496854103692737}
---- !u!114 &8922748611002112661
+--- !u!114 &9152955263588134470
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5234,25 +5233,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 5183320944900912866}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ddebe7d82fbdf44daf06654154cf032, type: 3}
+  m_Script: {fileID: 11500000, guid: efee9995ad62a9641911bdadc299bfef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 2.2
+  moveSpeed: 3
   canMove: 1
-  chasePlayer: 0
+  chasePlayer: 1
   wander: 0
-  patrol: 1
+  patrol: 0
   multiCharge: 0
   advanceThenStop: 0
   strafeAroundPlayer: 0
   supportAnchor: 0
   jitterChase: 0
   teleportMovement: 0
-  patrolPoints:
-  - {x: -2.5, y: 0}
-  - {x: 2.5, y: 0}
-  patrolWaitTime: 1.2
-  patrolPointReachedDistance: 0.25
+  patrolPoints: []
+  patrolWaitTime: 1
+  patrolPointReachedDistance: 0.1
   wanderRadius: 5
   minWanderWaitTime: 2
   maxWanderWaitTime: 5
@@ -5277,7 +5274,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   detectionRange: 5
---- !u!114 &5623997343555095016
+--- !u!114 &2774574311197264778
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5286,11 +5283,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 5183320944900912866}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bac90ab437da2d343a676dcf53fb750f, type: 3}
+  m_Script: {fileID: 11500000, guid: 98644273b1c53c247a1f10952a8191bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   immunities: 
---- !u!114 &875065280214489247
+--- !u!114 &2458364791201649908
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5299,25 +5296,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 5183320944900912866}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c3165d87863467546938ec1ce28b0bc8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  iconAnchor: {fileID: 8752951692773195962}
-  iconPrefab: {fileID: 1392284909096632975, guid: f467db2eb45e6534a851dea04057a0f5, type: 3}
---- !u!114 &4884713050403579387
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5183320944900912866}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9d3c57c0cf82a1642819f8f9d90d26cd, type: 3}
+  m_Script: {fileID: 11500000, guid: 7ba776042d7495a4db51037c69de3852, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   canPerformCriticalHit: 0
---- !u!114 &4454888085623993497
+--- !u!114 &1605258710447330535
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5326,9 +5309,49 @@ MonoBehaviour:
   m_GameObject: {fileID: 5183320944900912866}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47492a4f67d7fe343ab3239811b016d7, type: 3}
+  m_Script: {fileID: 11500000, guid: f46254ac4da2e5d42858deee1b8820bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnSize: 1.2
+  spawnTime: 0.3
+  numberOfLoops: 4
+--- !u!114 &2347491868395694633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5183320944900912866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 930e7e4276eb78243b85f02e4cb39093, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &743082226258409189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5183320944900912866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6222ee4a565fa749b8df6f37b053b7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &9172535005206618795
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5183320944900912866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7f1ba9118abc344ea20f2350ac963d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isEvolvable: 0
 --- !u!1 &7898241627327097436
 GameObject:
   m_ObjectHideFlags: 0

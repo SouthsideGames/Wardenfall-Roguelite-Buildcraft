@@ -11,23 +11,17 @@ public class CorruptingEnemy : Enemy
 
     private float corruptionTimer;
     private EnemyAnimator animator;
-    private int tier;
 
     protected override void Start()
     {
         base.Start();
-
         animator = GetComponent<EnemyAnimator>();
         corruptionTimer = corruptionInterval;
-        tier = enemyData != null ? enemyData.tier : 1;
 
-        if (animator != null)
-        {
-            animator.PlayIdlePulseAnimation();
-        }
+        animator?.PlayIdlePulseAnimation();
     }
 
-    private void Update()
+    protected override void Update()
     {
         if (!hasSpawned) return;
 
@@ -42,7 +36,6 @@ public class CorruptingEnemy : Enemy
     private IEnumerator CorruptionPulse()
     {
         animator?.PlayPrePulseShake();
-
         yield return new WaitForSeconds(0.4f);
 
         ApplyWeightedStatusEffects();
@@ -58,35 +51,35 @@ public class CorruptingEnemy : Enemy
 
         foreach (var target in targets)
         {
-            if (target.TryGetComponent(out IStatusReceiver receiver))
+            if (target.TryGetComponent(out EnemyStatus enemyStatus))
             {
-                StatusEffectType status = GetWeightedStatus();
-                float duration = GetStatusDuration(status);
+                StatusEffectType statusType = GetWeightedStatus();
+                float duration = GetStatusDuration(statusType);
+                float value = GetStatusValue(statusType);
+                float interval = statusType is StatusEffectType.Burn or StatusEffectType.Drain or StatusEffectType.Poison ? 1f : 0f;
 
-                receiver.ApplyStatus(status, duration);
+                StatusEffect effect = new StatusEffect(statusType, duration, value, interval, 1, StackBehavior.Extend);
 
-                // Show floating icon at target
-                StatusEffectUIManager.Show(status, target.transform.position + Vector3.up * 1f);
+                enemyStatus.ApplyEffect(effect);
+
+                // ✅ Correctly route to the UI component
+                enemyStatus.GetComponent<EnemyStatusEffectUI>()?.ShowFloatingStatus(statusType);
             }
         }
     }
 
+
     private StatusEffectType GetWeightedStatus()
     {
         int roll = Random.Range(0, 100);
-
-        // Weighted by enemy tier
-        return tier switch
-        {
-            1 => roll < 60 ? StatusEffectType.Burn : (roll < 90 ? StatusEffectType.Freeze : StatusEffectType.Drain),
-            2 => roll < 40 ? StatusEffectType.Burn : (roll < 75 ? StatusEffectType.Freeze : StatusEffectType.Drain),
-            _ => roll < 30 ? StatusEffectType.Burn : (roll < 60 ? StatusEffectType.Freeze : StatusEffectType.Drain),
-        };
+        if (roll < 50) return StatusEffectType.Burn;
+        if (roll < 85) return StatusEffectType.Freeze;
+        return StatusEffectType.Drain;
     }
 
-    private float GetStatusDuration(StatusEffectType status)
+    private float GetStatusDuration(StatusEffectType type)
     {
-        return status switch
+        return type switch
         {
             StatusEffectType.Burn => 3f,
             StatusEffectType.Freeze => 2f,
@@ -95,10 +88,20 @@ public class CorruptingEnemy : Enemy
         };
     }
 
-    protected override void OnDeath()
+    private float GetStatusValue(StatusEffectType type)
     {
-        base.OnDeath();
-        StartCoroutine(CorruptionPulse()); // Final burst on death
+        return type switch
+        {
+            StatusEffectType.Burn => 2f,
+            StatusEffectType.Drain => 1.5f,
+            _ => 0f,
+        };
+    }
+
+    public override void Die()
+    {
+        base.Die();
+        StartCoroutine(CorruptionPulse());
     }
 
     private void OnDrawGizmosSelected()

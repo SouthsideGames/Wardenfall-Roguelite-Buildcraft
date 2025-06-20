@@ -332,8 +332,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 05 / 10
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1eee363a74a0bba409f7f0a10da2261e, type: 2}
-  m_sharedMaterial: {fileID: -6932200566149645828, guid: 1eee363a74a0bba409f7f0a10da2261e, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -357,7 +357,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 33.3
+  m_fontSize: 35.8
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -5512,13 +5512,15 @@ GameObject:
   - component: {fileID: 8858043016917162638}
   - component: {fileID: 2381863326413107165}
   - component: {fileID: 5807218516330916691}
-  - component: {fileID: 7548010156796490444}
-  - component: {fileID: 5555774871141990774}
   - component: {fileID: 2991572763711510330}
   - component: {fileID: 9059604833335127078}
+  - component: {fileID: 8999715163655803898}
+  - component: {fileID: 1330518105709291515}
   - component: {fileID: 796357865922558699}
-  - component: {fileID: -4715727294787522322}
-  - component: {fileID: -8477700187014978995}
+  - component: {fileID: 6389791597701627608}
+  - component: {fileID: 7237132032986764806}
+  - component: {fileID: 4478947262612064436}
+  - component: {fileID: 2275040638771039687}
   m_Layer: 6
   m_Name: Bramblethorn
   m_TagString: Enemy
@@ -5632,7 +5634,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &7548010156796490444
+--- !u!114 &2991572763711510330
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5641,11 +5643,35 @@ MonoBehaviour:
   m_GameObject: {fileID: 5424207264188696762}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bac90ab437da2d343a676dcf53fb750f, type: 3}
+  m_Script: {fileID: 11500000, guid: 39d04496247a0684aacde2f75dd6a606, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  immunities: 
---- !u!114 &5555774871141990774
+  enemyData: {fileID: 0}
+  movement: {fileID: 0}
+  _spriteRenderer: {fileID: 5408568778565169610}
+  spawnIndicator: {fileID: 4244178238556343161}
+  _collider: {fileID: 2381863326413107165}
+  contactDamage: 10
+  playerDetectionRadius: 4
+  deathParticles: {fileID: 8577170979389446817}
+  showGizmos: 1
+  maxHealth: 1500
+  health: 0
+  isInvincible: 0
+  healthBar: {fileID: 6747968437771620526}
+  healthText: {fileID: 2171386370760092137}
+  maxIdleDuration: 1
+  attackCooldown: 3
+  numberOfStages: 3
+  spikePrefab: {fileID: 5579916199222765347, guid: cd5875aac4c19464e980be5f10aba71c, type: 3}
+  rootSlamRadius: 2.5
+  rootSlamDamage: 15
+  thornBarrageCount: 5
+  thornBarrageDelay: 0.2
+  chargeDuration: 1.5
+  chargeSpeedMultiplier: 3
+  chargeDamage: 20
+--- !u!114 &9059604833335127078
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5654,10 +5680,29 @@ MonoBehaviour:
   m_GameObject: {fileID: 5424207264188696762}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ddebe7d82fbdf44daf06654154cf032, type: 3}
+  m_Script: {fileID: 11500000, guid: 7d418cfad4450c5479bc4b82436a299c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
+  firePoint: {fileID: 4207549141387205654}
+  bulletPrefab: {fileID: 4821930258780714043, guid: b2b3517c93645a14e8388135ead3d88c, type: 3}
+  anim: {fileID: 0}
+  bulletDamage: 50
+  fireRate: 0.2
+  attackDelay: 0.5
+  bulletSpeed: 10
+--- !u!114 &8999715163655803898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5424207264188696762}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efee9995ad62a9641911bdadc299bfef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 3
   canMove: 1
   chasePlayer: 1
   wander: 0
@@ -5695,7 +5740,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   detectionRange: 5
---- !u!114 &2991572763711510330
+--- !u!114 &1330518105709291515
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5704,54 +5749,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 5424207264188696762}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39d04496247a0684aacde2f75dd6a606, type: 3}
+  m_Script: {fileID: 11500000, guid: 98644273b1c53c247a1f10952a8191bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movement: {fileID: 0}
-  _spriteRenderer: {fileID: 5408568778565169610}
-  spawnIndicator: {fileID: 4244178238556343161}
-  _collider: {fileID: 2381863326413107165}
-  contactDamage: 10
-  playerDetectionRadius: 4
-  maxHealth: 1500
-  health: 0
-  isInvincible: 0
-  spawnSize: 1.2
-  spawnTime: 0.3
-  numberOfLoops: 4
-  deathParticles: {fileID: 8577170979389446817}
-  showGizmos: 1
-  healthBar: {fileID: 6747968437771620526}
-  healthText: {fileID: 2171386370760092137}
-  maxIdleDuration: 1
-  attackCooldown: 3
-  numberOfStages: 3
-  spikePrefab: {fileID: 5579916199222765347, guid: cd5875aac4c19464e980be5f10aba71c, type: 3}
-  rootSlamRadius: 2.5
-  rootSlamDamage: 15
-  thornBarrageCount: 5
-  thornBarrageDelay: 0.2
-  chargeDuration: 1.5
-  chargeSpeedMultiplier: 3
-  chargeDamage: 20
---- !u!114 &9059604833335127078
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5424207264188696762}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d418cfad4450c5479bc4b82436a299c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  firePoint: {fileID: 4207549141387205654}
-  bulletPrefab: {fileID: 4821930258780714043, guid: b2b3517c93645a14e8388135ead3d88c, type: 3}
-  bulletDamage: 50
-  fireRate: 0.2
-  attackDelay: 0.5
-  bulletSpeed: 10
+  immunities: 
 --- !u!114 &796357865922558699
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5761,11 +5762,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 5424207264188696762}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9d3c57c0cf82a1642819f8f9d90d26cd, type: 3}
+  m_Script: {fileID: 11500000, guid: 7ba776042d7495a4db51037c69de3852, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   canPerformCriticalHit: 0
---- !u!114 &-4715727294787522322
+--- !u!114 &6389791597701627608
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5774,10 +5775,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 5424207264188696762}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47492a4f67d7fe343ab3239811b016d7, type: 3}
+  m_Script: {fileID: 11500000, guid: f46254ac4da2e5d42858deee1b8820bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &-8477700187014978995
+  spawnSize: 1.2
+  spawnTime: 0.3
+  numberOfLoops: 4
+--- !u!114 &7237132032986764806
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5786,11 +5790,34 @@ MonoBehaviour:
   m_GameObject: {fileID: 5424207264188696762}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c3165d87863467546938ec1ce28b0bc8, type: 3}
+  m_Script: {fileID: 11500000, guid: 930e7e4276eb78243b85f02e4cb39093, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  iconAnchor: {fileID: 9139475849625513464}
-  iconPrefab: {fileID: 1392284909096632975, guid: f467db2eb45e6534a851dea04057a0f5, type: 3}
+--- !u!114 &4478947262612064436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5424207264188696762}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6222ee4a565fa749b8df6f37b053b7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2275040638771039687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5424207264188696762}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7f1ba9118abc344ea20f2350ac963d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isEvolvable: 0
 --- !u!1 &6914064363149740525
 GameObject:
   m_ObjectHideFlags: 0

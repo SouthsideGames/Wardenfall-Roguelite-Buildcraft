@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(EnemyMovement))]
 public class MeleeEnemy : Enemy
 {
 

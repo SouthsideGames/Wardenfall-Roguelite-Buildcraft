@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
     public static Action OnGameResumed; 
     public static Action OnWaveCompleted;
 
+    [field: SerializeField] public bool UseInfiniteMap { get; private set; }
+
     [HideInInspector] public float runStartTime;
 
     public GameState gameState { get; private set; }
