@@ -95,6 +95,9 @@ public class EnemyMovement : MonoBehaviour
 
     private Vector2 startPosition;
 
+    private bool hasAnticipated = false;
+
+
     private void Awake()
     {
         LeanTween.init(1200);
@@ -189,6 +192,14 @@ public class EnemyMovement : MonoBehaviour
     {
         targetPosition = newPosition;
         isTargetPositionSet = true; 
+    }
+
+    private void PlayAnticipationAnimation()
+    {
+        if (TryGetComponent<EnemyAnimator>(out var animator))
+        {
+            animator.PlayGroggyMove(); // or PlayIdlePulse() or your custom one
+        }
     }
 
     public void FollowCurrentTarget()
@@ -290,6 +301,30 @@ public class EnemyMovement : MonoBehaviour
 
         isTeleporting = false;
     }
+
+    public void FollowCurrentTargetUntilRange(float stopDistance)
+    {
+        if (!canMove || rb == null || currentTarget == null) return;
+
+        float distance = Vector2.Distance(transform.position, currentTarget.position);
+        if (distance > stopDistance)
+        {
+            Vector2 direction = (currentTarget.position - transform.position).normalized;
+            Vector2 newPos = (Vector2)transform.position + direction * moveSpeed * Time.fixedDeltaTime;
+            rb.MovePosition(newPos);
+        }
+        else
+        {
+            // Play anticipation animation once when in range
+            if (!hasAnticipated)
+            {
+                hasAnticipated = true;
+                PlayAnticipationAnimation();
+            }
+        }
+    }
+
+
 
 
     private void ChaseTarget()

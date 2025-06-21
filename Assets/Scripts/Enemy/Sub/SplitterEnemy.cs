@@ -61,7 +61,8 @@ public class SplitterEnemy : Enemy
         else
             enemyAnimator?.PlayMoveAnimation(); // Only play if not attacking
 
-        movement.FollowCurrentTarget();
+        movement.FollowCurrentTargetUntilRange(1.5f); // or whatever stop distance works visually
+
     }
 
     private void TryAttack()
