@@ -12,7 +12,7 @@ using UnityEngine;
 public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
 {
     [Header("DATA:")]
-    [SerializeField] private EnemyDataSO enemyData;
+    public EnemyDataSO enemyData;
 
     [Header("ACTIONS:")]
     public static Action<int, Vector2, bool> OnDamageTaken;
@@ -32,7 +32,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
 
     [Header("ATTACK:")]
     [HideInInspector] public int contactDamage;
-    public float playerDetectionRadius;
+    [HideInInspector] public float playerDetectionRadius;
     protected float attackTimer;
     protected bool attacksEnabled = true;
 
@@ -64,10 +64,14 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
     private EnemyTargetController targetController;
     private EnemyEvolutionHandler evolutionHandler;
 
-    protected virtual void Start()
+    private void Awake()
     {
         if (enemyData != null)
             Initialize(enemyData);
+    }
+
+    protected virtual void Start()
+    {
 
         health = maxHealth;
 
@@ -98,6 +102,9 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
         health = maxHealth;
         contactDamage = data.contactDamage;
         playerDetectionRadius = data.detectionRadius;
+
+        spawnHandler.SetSpawnValues(data.spawnSize, data.spawnTime, data.numberOfLoops);
+
     }
 
     protected virtual void Update()

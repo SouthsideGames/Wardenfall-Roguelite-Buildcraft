@@ -5096,13 +5096,15 @@ GameObject:
   - component: {fileID: 6438963158470493440}
   - component: {fileID: 7912901263690595757}
   - component: {fileID: -6785672672013279812}
-  - component: {fileID: 7066067720450072675}
-  - component: {fileID: 1969873319376816778}
   - component: {fileID: 4778504599208135756}
   - component: {fileID: 6054851436047455091}
+  - component: {fileID: 8499094237022503783}
+  - component: {fileID: 1707032367076131722}
   - component: {fileID: 6762480714370216367}
-  - component: {fileID: -5172488092489433052}
-  - component: {fileID: 7638422329266611649}
+  - component: {fileID: 5492048027070081344}
+  - component: {fileID: 8306961691787919861}
+  - component: {fileID: 2231193106649561926}
+  - component: {fileID: 1943522716694066584}
   m_Layer: 6
   m_Name: Shellshock
   m_TagString: Enemy
@@ -5216,69 +5218,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &7066067720450072675
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2340492655594630733}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bac90ab437da2d343a676dcf53fb750f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  immunities: 
---- !u!114 &1969873319376816778
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2340492655594630733}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ddebe7d82fbdf44daf06654154cf032, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 5
-  canMove: 1
-  chasePlayer: 1
-  wander: 0
-  patrol: 0
-  multiCharge: 0
-  advanceThenStop: 0
-  strafeAroundPlayer: 0
-  supportAnchor: 0
-  jitterChase: 0
-  teleportMovement: 0
-  patrolPoints: []
-  patrolWaitTime: 1
-  patrolPointReachedDistance: 0.1
-  wanderRadius: 5
-  minWanderWaitTime: 2
-  maxWanderWaitTime: 5
-  wanderPointReachedDistance: 0.1
-  maxDistanceFromStart: 10
-  stopDistance: 6
-  strafeRadius: 6
-  strafeSpeed: 2
-  strafeOrbitSpeed: 120
-  jitterFrequency: 0.3
-  jitterStrength: 1.2
-  teleportCooldown: 4.5
-  teleportDelay: 0.4
-  teleportDistanceMin: 3.5
-  teleportDistanceMax: 7
-  teleportObstacleMask:
-    serializedVersion: 2
-    m_Bits: 0
-  teleportVFX: {fileID: 0}
-  teleportSFX: {fileID: 0}
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  detectionRange: 5
 --- !u!114 &4778504599208135756
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5291,20 +5230,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7b303ac193cbbc4a9bb078a558bf24e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movement: {fileID: 0}
+  enemyData: {fileID: 0}
   _spriteRenderer: {fileID: 8752888432016882076}
   spawnIndicator: {fileID: 7134393198149721410}
   _collider: {fileID: 7912901263690595757}
   contactDamage: 0
   playerDetectionRadius: 0
+  deathParticles: {fileID: 8848179219323530943}
+  showGizmos: 0
   maxHealth: 1000
   health: 0
   isInvincible: 0
-  spawnSize: 1.2
-  spawnTime: 0.3
-  numberOfLoops: 4
-  deathParticles: {fileID: 8848179219323530943}
-  showGizmos: 0
   healthBar: {fileID: 8991612786343962157}
   healthText: {fileID: 2094369329037036263}
   maxIdleDuration: 1
@@ -5330,6 +5266,65 @@ MonoBehaviour:
   fireRate: 0
   attackDelay: 0
   bulletSpeed: 0
+--- !u!114 &8499094237022503783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2340492655594630733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efee9995ad62a9641911bdadc299bfef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 3
+  canMove: 1
+  chasePlayer: 1
+  wander: 0
+  patrol: 0
+  multiCharge: 0
+  advanceThenStop: 0
+  strafeAroundPlayer: 0
+  supportAnchor: 0
+  jitterChase: 0
+  teleportMovement: 0
+  patrolPoints: []
+  patrolWaitTime: 1
+  patrolPointReachedDistance: 0.1
+  wanderRadius: 5
+  minWanderWaitTime: 2
+  maxWanderWaitTime: 5
+  wanderPointReachedDistance: 0.1
+  maxDistanceFromStart: 10
+  stopDistance: 6
+  strafeRadius: 6
+  strafeOrbitSpeed: 120
+  jitterFrequency: 0.3
+  jitterStrength: 1.2
+  teleportCooldown: 4.5
+  teleportDelay: 0.4
+  teleportDistanceMin: 3.5
+  teleportDistanceMax: 7
+  teleportVFX: {fileID: 0}
+  teleportSFX: {fileID: 0}
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  detectionRange: 5
+--- !u!114 &1707032367076131722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2340492655594630733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98644273b1c53c247a1f10952a8191bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  immunities: 
 --- !u!114 &6762480714370216367
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5339,11 +5334,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2340492655594630733}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9d3c57c0cf82a1642819f8f9d90d26cd, type: 3}
+  m_Script: {fileID: 11500000, guid: 7ba776042d7495a4db51037c69de3852, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   canPerformCriticalHit: 0
---- !u!114 &-5172488092489433052
+--- !u!114 &5492048027070081344
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5352,10 +5347,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2340492655594630733}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47492a4f67d7fe343ab3239811b016d7, type: 3}
+  m_Script: {fileID: 11500000, guid: f46254ac4da2e5d42858deee1b8820bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &7638422329266611649
+--- !u!114 &8306961691787919861
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5364,11 +5359,34 @@ MonoBehaviour:
   m_GameObject: {fileID: 2340492655594630733}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c3165d87863467546938ec1ce28b0bc8, type: 3}
+  m_Script: {fileID: 11500000, guid: 930e7e4276eb78243b85f02e4cb39093, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  iconAnchor: {fileID: 0}
-  iconPrefab: {fileID: 1392284909096632975, guid: f467db2eb45e6534a851dea04057a0f5, type: 3}
+--- !u!114 &2231193106649561926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2340492655594630733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6222ee4a565fa749b8df6f37b053b7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1943522716694066584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2340492655594630733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7f1ba9118abc344ea20f2350ac963d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isEvolvable: 0
 --- !u!1 &2381212996664272875
 GameObject:
   m_ObjectHideFlags: 0
@@ -5948,8 +5966,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 05 / 10
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1eee363a74a0bba409f7f0a10da2261e, type: 2}
-  m_sharedMaterial: {fileID: -6932200566149645828, guid: 1eee363a74a0bba409f7f0a10da2261e, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -5973,7 +5991,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 33.3
+  m_fontSize: 35.8
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

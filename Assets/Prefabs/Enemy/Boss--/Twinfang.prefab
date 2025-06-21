@@ -4990,12 +4990,14 @@ GameObject:
   - component: {fileID: 4095680473163572165}
   - component: {fileID: 946060674146339578}
   - component: {fileID: 8391245360392804100}
-  - component: {fileID: 4364041103804487967}
-  - component: {fileID: 2627173455900570744}
   - component: {fileID: 533352588141516808}
+  - component: {fileID: 6600646235787602630}
   - component: {fileID: 6522867536023866466}
-  - component: {fileID: 8479523603095527459}
-  - component: {fileID: -8324534963128187309}
+  - component: {fileID: 9064237272494680440}
+  - component: {fileID: 2204851310513078971}
+  - component: {fileID: 3687484046595876864}
+  - component: {fileID: 4350424250140260841}
+  - component: {fileID: 4579686198752489639}
   m_Layer: 6
   m_Name: Twinfang
   m_TagString: Enemy
@@ -5108,7 +5110,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &4364041103804487967
+--- !u!114 &533352588141516808
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5117,11 +5119,40 @@ MonoBehaviour:
   m_GameObject: {fileID: 1843299529425934941}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bac90ab437da2d343a676dcf53fb750f, type: 3}
+  m_Script: {fileID: 11500000, guid: 88dc17b354efe864ea675b890811442c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyData: {fileID: 0}
+  _spriteRenderer: {fileID: 6655269807245360118}
+  spawnIndicator: {fileID: 1305640059607140628}
+  _collider: {fileID: 946060674146339578}
+  contactDamage: 0
+  playerDetectionRadius: 0
+  deathParticles: {fileID: 2805764775715163280}
+  showGizmos: 0
+  maxHealth: 1000
+  health: 0
+  isInvincible: 0
+  healthBar: {fileID: 7350744053500513075}
+  healthText: {fileID: 5738244310588519937}
+  maxIdleDuration: 1
+  attackCooldown: 2
+  numberOfStages: 3
+  attackRange: 3
+--- !u!114 &6600646235787602630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1843299529425934941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98644273b1c53c247a1f10952a8191bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   immunities: 
---- !u!114 &2627173455900570744
+--- !u!114 &6522867536023866466
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5130,10 +5161,72 @@ MonoBehaviour:
   m_GameObject: {fileID: 1843299529425934941}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ddebe7d82fbdf44daf06654154cf032, type: 3}
+  m_Script: {fileID: 11500000, guid: 7ba776042d7495a4db51037c69de3852, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
+  canPerformCriticalHit: 0
+--- !u!114 &9064237272494680440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1843299529425934941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f46254ac4da2e5d42858deee1b8820bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2204851310513078971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1843299529425934941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 930e7e4276eb78243b85f02e4cb39093, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3687484046595876864
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1843299529425934941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6222ee4a565fa749b8df6f37b053b7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4350424250140260841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1843299529425934941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7f1ba9118abc344ea20f2350ac963d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isEvolvable: 0
+--- !u!114 &4579686198752489639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1843299529425934941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efee9995ad62a9641911bdadc299bfef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 3
   canMove: 1
   chasePlayer: 1
   wander: 0
@@ -5154,7 +5247,6 @@ MonoBehaviour:
   maxDistanceFromStart: 10
   stopDistance: 6
   strafeRadius: 6
-  strafeSpeed: 2
   strafeOrbitSpeed: 120
   jitterFrequency: 0.3
   jitterStrength: 1.2
@@ -5162,86 +5254,12 @@ MonoBehaviour:
   teleportDelay: 0.4
   teleportDistanceMin: 3.5
   teleportDistanceMax: 7
-  teleportObstacleMask:
-    serializedVersion: 2
-    m_Bits: 0
   teleportVFX: {fileID: 0}
   teleportSFX: {fileID: 0}
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 0
   detectionRange: 5
---- !u!114 &533352588141516808
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1843299529425934941}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 88dc17b354efe864ea675b890811442c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  movement: {fileID: 0}
-  _spriteRenderer: {fileID: 6655269807245360118}
-  spawnIndicator: {fileID: 1305640059607140628}
-  _collider: {fileID: 946060674146339578}
-  contactDamage: 0
-  playerDetectionRadius: 0
-  maxHealth: 1000
-  health: 0
-  isInvincible: 0
-  spawnSize: 1.2
-  spawnTime: 0.3
-  numberOfLoops: 4
-  deathParticles: {fileID: 2805764775715163280}
-  showGizmos: 0
-  healthBar: {fileID: 7350744053500513075}
-  healthText: {fileID: 5738244310588519937}
-  maxIdleDuration: 1
-  attackCooldown: 2
-  numberOfStages: 3
-  attackRange: 3
---- !u!114 &6522867536023866466
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1843299529425934941}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9d3c57c0cf82a1642819f8f9d90d26cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  canPerformCriticalHit: 0
---- !u!114 &8479523603095527459
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1843299529425934941}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47492a4f67d7fe343ab3239811b016d7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &-8324534963128187309
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1843299529425934941}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c3165d87863467546938ec1ce28b0bc8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  iconAnchor: {fileID: 1292921549521502576}
-  iconPrefab: {fileID: 1392284909096632975, guid: f467db2eb45e6534a851dea04057a0f5, type: 3}
 --- !u!1 &3446546725721262649
 GameObject:
   m_ObjectHideFlags: 0
@@ -5809,8 +5827,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 05 / 10
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1eee363a74a0bba409f7f0a10da2261e, type: 2}
-  m_sharedMaterial: {fileID: -6932200566149645828, guid: 1eee363a74a0bba409f7f0a10da2261e, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -5834,7 +5852,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 33.3
+  m_fontSize: 35.8
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

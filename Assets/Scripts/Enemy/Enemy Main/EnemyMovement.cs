@@ -4,11 +4,10 @@ using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour
 {
-    [Header("ELEMENTS:")]
+       [Header("ELEMENTS:")]
     private Transform currentTarget;
     private Vector2 targetPosition;
     private bool isTargetPositionSet = false;
-    
 
     [Header("SETTINGS:")]
     public float moveSpeed = 3f;
@@ -21,9 +20,10 @@ public class EnemyMovement : MonoBehaviour
     private float avoidanceRadius = 1f;
     private float pathUpdateTimer;
     private Vector2 currentDirection;
-    private Rigidbody2D rb; 
+    private Rigidbody2D rb;
 
     [Header("MOVEMENT PATTERNS:")]
+    [Tooltip("Toggles that control how this enemy moves (e.g., chase, patrol, strafe). Each one enables a different behavior handled in FixedUpdate or helper methods.")]
     public bool chasePlayer = true;
     public bool wander = false;
     public bool patrol = false;
@@ -35,7 +35,8 @@ public class EnemyMovement : MonoBehaviour
     public bool teleportMovement = false;
 
     [Space(10)]
-    [Header("PATROL SETTINGS:")]
+    [Header("PATROL SETTINGS")]
+    [Tooltip("Settings for enemies that follow a loop of patrol points when 'patrol' is enabled.")]
     [SerializeField] private Vector2[] patrolPoints;
     private int currentPatrolIndex = 0;
     private float patrolTimer = 0f;
@@ -43,7 +44,8 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] private float patrolPointReachedDistance = 0.1f;
 
     [Space(10)]
-    [Header("WANDERING SETTINGS:")]
+    [Header("WANDERING SETTINGS")]
+    [Tooltip("Settings for enemies that roam randomly until detecting the player.")]
     [SerializeField] private float wanderRadius = 5f;
     private Vector2 wanderPoint;
     private float wanderTimer = 0f;
@@ -53,39 +55,41 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] private float maxDistanceFromStart = 10f;
 
     [Space(10)]
-    [Header("ADVANCE-THEN-STOP SETTINGS:")]
+    [Header("ADVANCE-THEN-STOP SETTINGS")]
+    [Tooltip("Settings for enemies that stop after getting close enough to the player.")]
     [SerializeField] private float stopDistance = 6f;
 
     [Space(10)]
-    [Header("STRAFE SETTINGS:")]
-    [SerializeField] private float strafeRadius = 6f; 
-    [SerializeField] private float strafeSpeed = 2f; 
+    [Header("STRAFE SETTINGS")]
+    [Tooltip("Settings for enemies that orbit around the player at a set distance.")]
+    [SerializeField] private float strafeRadius = 6f;
     [SerializeField] private float strafeOrbitSpeed = 120f;
     private float strafeAngleOffset = 0f;
 
     [Space(10)]
-    [Header("JITTER CHASE SETTINGS:")]
+    [Header("JITTER CHASE SETTINGS")]
+    [Tooltip("Settings for enemies that move toward the player with random direction jitter for unpredictability.")]
     [SerializeField] private float jitterFrequency = 0.3f;
-    [SerializeField] private float jitterStrength = 1.2f;  
+    [SerializeField] private float jitterStrength = 1.2f;
     private float jitterTimer = 0f;
-    
+
     [Space(10)]
-    [Header("TELEPORT SETTINGS:")]
+    [Header("TELEPORT SETTINGS")]
+    [Tooltip("Settings for enemies that teleport to new positions rather than moving directly.")]
     [SerializeField] private float teleportCooldown = 4.5f;
     [SerializeField] private float teleportDelay = 0.4f;
     [SerializeField] private float teleportDistanceMin = 3.5f;
     [SerializeField] private float teleportDistanceMax = 7f;
-    [SerializeField] private LayerMask teleportObstacleMask;
     [SerializeField] private GameObject teleportVFX;
     [SerializeField] private AudioClip teleportSFX;
     private bool teleportTriggeredThisFrame = false;
-
     private float teleportTimer = 0f;
     private bool isTeleporting = false;
 
     [Space(10)]
-    [Header("ADDITIONAL SETTINGS:")]
-    [SerializeField] private LayerMask obstacleLayer; 
+    [Header("ADDITIONAL SETTINGS")]
+    [Tooltip("Settings that apply to all movement modes, such as obstacle avoidance or knockback.")]
+    [SerializeField] private LayerMask obstacleLayer;
     private Vector2 externalForce;
     [SerializeField] private float detectionRange = 5f;
 
@@ -253,7 +257,6 @@ public class EnemyMovement : MonoBehaviour
     {
          isTeleporting = true;
 
-        // Play pre-teleport effects
         if (teleportVFX != null)
             Instantiate(teleportVFX, transform.position, Quaternion.identity);
 
@@ -265,7 +268,7 @@ public class EnemyMovement : MonoBehaviour
         Vector2 playerPos = currentTarget.position;
         Vector2 teleportOffset;
 
-        for (int i = 0; i < 20; i++) // Try up to 20 times to find a valid location
+        for (int i = 0; i < 20; i++) 
         {
             float angle = Random.Range(0f, 360f);
             float distance = Random.Range(teleportDistanceMin, teleportDistanceMax);
@@ -273,7 +276,7 @@ public class EnemyMovement : MonoBehaviour
 
             Vector2 targetPos = playerPos + teleportOffset;
 
-            if (!Physics2D.OverlapCircle(targetPos, 0.5f, teleportObstacleMask))
+            if (!Physics2D.OverlapCircle(targetPos, 0.5f))
             {
                 transform.position = targetPos;
 
@@ -391,7 +394,7 @@ public class EnemyMovement : MonoBehaviour
         Vector2 targetPosition = (Vector2)playerPos + offset;
 
         Vector2 direction = (targetPosition - (Vector2)transform.position).normalized;
-        Vector2 newPos = (Vector2)transform.position + direction * strafeSpeed * Time.fixedDeltaTime;
+        Vector2 newPos = (Vector2)transform.position + direction * moveSpeed * Time.fixedDeltaTime;
 
         rb.MovePosition(newPos);
     }

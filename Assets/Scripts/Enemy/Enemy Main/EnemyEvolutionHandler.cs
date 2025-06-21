@@ -17,15 +17,33 @@ public class EnemyEvolutionHandler : MonoBehaviour
     public void Evolve()
     {
         if (!CanEvolve()) return;
-
         hasEvolved = true;
 
-        enemy.maxHealth = Mathf.FloorToInt(enemy.maxHealth * 1.5f);
-        enemy.health = enemy.maxHealth;
-        enemy.contactDamage = Mathf.FloorToInt(enemy.contactDamage * 1.5f);
-        enemy.transform.localScale *= 1.25f;
+        var evoData = enemy.enemyData.EvolutionData;
+        if (evoData == null || evoData.EvolutionPrefab == null)
+        {
+            Debug.LogWarning("Evolve failed: Missing EvolutionData or EvolutionPrefab.");
+            return;
+        }
 
-        enemy.modifierHandler?.ApplyTraits();
-        Debug.Log($"{gameObject.name} has evolved!");
+        Vector3 spawnPosition = transform.position;
+        Quaternion rotation = transform.rotation;
+
+        // Destroy current enemy
+        Destroy(enemy.gameObject);
+
+        // Instantiate evolved enemy
+        GameObject evolved = Instantiate(evoData.EvolutionPrefab, spawnPosition, rotation);
+        Enemy evolvedEnemy = evolved.GetComponent<Enemy>();
+        
+        if (evolvedEnemy != null && evolvedEnemy.enemyData != null)
+        {
+            Debug.Log($"[Evolve] Spawned evolved enemy: {evolvedEnemy.enemyData.ID} - {evolvedEnemy.enemyData.Name}");
+        }
+        else
+        {
+            Debug.LogWarning("Evolved enemy prefab missing Enemy or EnemyDataSO.");
+        }
     }
+
 }

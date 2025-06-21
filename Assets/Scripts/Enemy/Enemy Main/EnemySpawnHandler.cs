@@ -6,14 +6,23 @@ public class EnemySpawnHandler : MonoBehaviour
 {
     private Enemy enemy;
     private EnemyMovement movement;
-    [SerializeField] private float spawnSize = 1.2f;
-    [SerializeField] private float spawnTime = 0.3f;
-    [SerializeField] private int numberOfLoops = 4;
+    private float spawnSize = 1.2f;
+    private float spawnTime = 0.3f;
+    private int numberOfLoops = 4;
 
     private void Awake()
     {
         enemy = GetComponent<Enemy>();
         movement = GetComponent<EnemyMovement>();
+
+
+    }
+
+    public void SetSpawnValues(float size, float time, int loops)
+    {
+        spawnSize = size;
+        spawnTime = time;
+        numberOfLoops = loops;
     }
 
     public void BeginSpawn()

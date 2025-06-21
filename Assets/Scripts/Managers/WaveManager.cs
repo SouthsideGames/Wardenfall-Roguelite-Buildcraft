@@ -365,22 +365,17 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 
     private Vector2 GetSpawnPosition()
     {
-        Vector2 characterPos = (Vector2)character.transform.position;
-        Vector2 direction = UnityEngine.Random.insideUnitCircle.normalized;
-        Vector2 offset = direction * UnityEngine.Random.Range(6, 10);
-        Vector2 spawnPos = characterPos + offset;
+        Vector2 playerPos = character.transform.position;
 
-        float padding = 1f; 
-        float minX = -Constants.arenaSize.x/2 + padding;
-        float maxX = Constants.arenaSize.x/2 - padding;
-        float minY = -Constants.arenaSize.y/2 + padding;
-        float maxY = Constants.arenaSize.y/2 - padding;
+        float angle = UnityEngine.Random.Range(0f, Mathf.PI * 2f);
+        float radius = UnityEngine.Random.Range(12f, 16f); // Distance off-screen
 
-        spawnPos.x = Mathf.Clamp(spawnPos.x, minX, maxX);
-        spawnPos.y = Mathf.Clamp(spawnPos.y, minY, maxY);
-
-        return spawnPos;
+        return new Vector2(
+            playerPos.x + Mathf.Cos(angle) * radius,
+            playerPos.y + Mathf.Sin(angle) * radius
+        );
     }
+
 
     private void TrySpawnEvoCrystal()
     {

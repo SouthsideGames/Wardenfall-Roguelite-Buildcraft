@@ -13,6 +13,8 @@ public class EnemyDataSO : ScriptableObject
     [field: SerializeField] public EnemyType Type { get; private set; }
     [field: SerializeField] public bool HasEvolution { get; private set; }
     [field: SerializeField] public EnemyDataSO EvolutionData { get; private set; }
+    [field: SerializeField] public GameObject EvolutionPrefab { get; private set; }
+
 
     [Header("BASE VALUES:")]
     public int contactDamage;

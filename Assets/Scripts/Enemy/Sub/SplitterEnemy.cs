@@ -2,22 +2,31 @@ using UnityEngine;
 
 public class SplitterEnemy : Enemy
 {
-    [Header("SPLITTER SPECIFIC:")]
-    [SerializeField, Tooltip("Maximum number of times the enemy can split")] private int maxSplits = 3; 
-    [SerializeField, Tooltip("Prefab for the smaller version of the enemy")] private GameObject smallerVersionPrefab; 
-    [SerializeField, Tooltip("Scale reduction factor for each split")] private float splitScaleFactor = 0.5f; 
-    [SerializeField, Tooltip("Health reduction factor for each split")] private int splitHealthFactor = 2; 
+    [Header("SPLITTER SETTINGS")]
+    [SerializeField] private int maxSplits = 3;
+    [SerializeField] private GameObject smallerVersionPrefab;
+    [SerializeField] private float splitScaleFactor = 0.6f;
+    [SerializeField] private GameObject splitEffectPrefab;
 
-    private float attackDelay;
-    private int splitCount = 0; 
+    private int splitCount = 0;
+    private EnemyAnimator enemyAnimator;
 
+    protected override void Start()
+    {
+        base.Start();
+        enemyAnimator = GetComponent<EnemyAnimator>();
+    }
 
     public override void Die()
     {
         if (splitCount < maxSplits)
+        {
             Split();
+        }
         else
-            base.Die(); 
+        {
+            base.Die();
+        }
     }
 
     private void Split()
@@ -26,49 +35,43 @@ public class SplitterEnemy : Enemy
 
         for (int i = 0; i < 2; i++)
         {
-            GameObject smallerEnemy = Instantiate(smallerVersionPrefab, transform.position, Quaternion.identity);
+            Instantiate(smallerVersionPrefab, transform.position, Quaternion.identity);
 
-            SplitterEnemy smallerEnemyScript = smallerEnemy.GetComponent<SplitterEnemy>();
+        }
 
-            if (smallerEnemyScript != null)
-            {
-                smallerEnemy.transform.localScale = transform.localScale * splitScaleFactor;
-
-                smallerEnemyScript.maxHealth = maxHealth / splitHealthFactor;
-                smallerEnemyScript.health = smallerEnemyScript.maxHealth;
-
-                smallerEnemyScript.splitCount = splitCount;
-            }
+        if (splitEffectPrefab != null)
+        {
+            GameObject effect = Instantiate(splitEffectPrefab, transform.position, Quaternion.identity);
+            Destroy(effect, 2f);
         }
 
         Destroy(gameObject);
     }
 
+    public void SetSplitCount(int value) => splitCount = value;
+
     protected override void Update()
     {
-        base.Update();  
+        base.Update();
 
-        if (!CanAttack())
-            return;
+        if (!CanAttack()) return;
 
-        if(attackTimer >= attackDelay)    
+        if (attackTimer >= 1f)
             TryAttack();
         else
-            Wait();
+            attackTimer += Time.deltaTime;
 
         movement.FollowCurrentTarget();
-    }
-    private void Wait()
-    {
-        attackTimer += Time.deltaTime;
+        enemyAnimator?.PlayMoveAnimation(); 
     }
 
     private void TryAttack()
     {
         float distanceToPlayer = Vector2.Distance(transform.position, character.transform.position);
-
-        if(distanceToPlayer <= playerDetectionRadius)
+        if (distanceToPlayer <= playerDetectionRadius)
+        {
+            enemyAnimator?.PlayAttackAnimation();
             Attack();
+        }
     }
-   
 }
