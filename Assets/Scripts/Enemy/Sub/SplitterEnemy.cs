@@ -5,7 +5,6 @@ public class SplitterEnemy : Enemy
     [Header("SPLITTER SETTINGS")]
     [SerializeField] private int maxSplits = 3;
     [SerializeField] private GameObject smallerVersionPrefab;
-    [SerializeField] private float splitScaleFactor = 0.6f;
     [SerializeField] private GameObject splitEffectPrefab;
 
     private int splitCount = 0;
@@ -36,7 +35,6 @@ public class SplitterEnemy : Enemy
         for (int i = 0; i < 2; i++)
         {
             Instantiate(smallerVersionPrefab, transform.position, Quaternion.identity);
-
         }
 
         if (splitEffectPrefab != null)
@@ -56,13 +54,14 @@ public class SplitterEnemy : Enemy
 
         if (!CanAttack()) return;
 
+        attackTimer += Time.deltaTime;
+
         if (attackTimer >= 1f)
             TryAttack();
         else
-            attackTimer += Time.deltaTime;
+            enemyAnimator?.PlayMoveAnimation(); // Only play if not attacking
 
         movement.FollowCurrentTarget();
-        enemyAnimator?.PlayMoveAnimation(); 
     }
 
     private void TryAttack()

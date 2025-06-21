@@ -64,17 +64,8 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
     private EnemyTargetController targetController;
     private EnemyEvolutionHandler evolutionHandler;
 
-    private void Awake()
+   protected virtual void Start()
     {
-        if (enemyData != null)
-            Initialize(enemyData);
-    }
-
-    protected virtual void Start()
-    {
-
-        health = maxHealth;
-
         character = FindFirstObjectByType<CharacterManager>();
         movement = GetComponent<EnemyMovement>();
         status = GetComponent<EnemyStatus>();
@@ -93,19 +84,37 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
 
         PlayerTransform = character.transform;
 
+        if (enemyData != null)
+            Initialize(enemyData);  // ✅ NOW SAFE
+
+        health = maxHealth;
+
         spawnHandler.BeginSpawn();
     }
 
-    public virtual void Initialize(EnemyDataSO data)
+
+  public virtual void Initialize(EnemyDataSO data)
     {
+        if (data == null)
+        {
+            Debug.LogError($"[Enemy] Tried to initialize with null data on {gameObject.name}");
+            return;
+        }
+
+        if (spawnHandler == null)
+        {
+            Debug.LogError($"[Enemy] SpawnHandler is null on {gameObject.name}");
+            return;
+        }
+
         maxHealth = data.maxHealth;
         health = maxHealth;
         contactDamage = data.contactDamage;
         playerDetectionRadius = data.detectionRadius;
 
         spawnHandler.SetSpawnValues(data.spawnSize, data.spawnTime, data.numberOfLoops);
-
     }
+
 
     protected virtual void Update()
     {
