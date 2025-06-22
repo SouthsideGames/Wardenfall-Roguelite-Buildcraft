@@ -306,9 +306,13 @@ MonoBehaviour:
   maxHealth: 30
   health: 0
   isInvincible: 0
-  attackRate: 0.9
   shieldHealth: 100
   shield: {fileID: 2512326149274488663}
+  hitScaleFactor: 1.2
+  hitAnimDuration: 0.1
+  breakAnimDuration: 0.2
+  pulseScaleFactor: 1.05
+  pulseSpeed: 0.8
 --- !u!114 &1122862972469765393
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -347,9 +351,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f46254ac4da2e5d42858deee1b8820bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnSize: 1.2
-  spawnTime: 0.3
-  numberOfLoops: 4
 --- !u!114 &5052823022450224333
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -423,7 +424,6 @@ MonoBehaviour:
   maxDistanceFromStart: 10
   stopDistance: 6
   strafeRadius: 6
-  strafeSpeed: 2
   strafeOrbitSpeed: 120
   jitterFrequency: 0.3
   jitterStrength: 1.2
@@ -431,14 +431,11 @@ MonoBehaviour:
   teleportDelay: 0.4
   teleportDistanceMin: 3.5
   teleportDistanceMax: 7
-  teleportObstacleMask:
-    serializedVersion: 2
-    m_Bits: 0
   teleportVFX: {fileID: 0}
   teleportSFX: {fileID: 0}
   obstacleLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   detectionRange: 5
 --- !u!1 &2512326149274488663
 GameObject:

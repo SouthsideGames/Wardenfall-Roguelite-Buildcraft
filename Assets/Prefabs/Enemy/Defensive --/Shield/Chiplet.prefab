@@ -87,6 +87,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
+--- !u!1 &2202464975196392262
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6564400603254335516}
+  m_Layer: 6
+  m_Name: P2
+  m_TagString: Untagged
+  m_Icon: {fileID: -5938655980376293919, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6564400603254335516
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2202464975196392262}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.5, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4615422936615754717}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3087175650993626110
 GameObject:
   m_ObjectHideFlags: 0
@@ -5065,6 +5096,39 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
+--- !u!1 &4495573448083723380
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4615422936615754717}
+  m_Layer: 6
+  m_Name: Patrol Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4615422936615754717
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4495573448083723380}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2013151786420475502}
+  - {fileID: 6564400603254335516}
+  m_Father: {fileID: 6825320158211254047}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5183320944900912866
 GameObject:
   m_ObjectHideFlags: 0
@@ -5100,7 +5164,7 @@ Transform:
   m_GameObject: {fileID: 5183320944900912866}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.07, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5109,6 +5173,7 @@ Transform:
   - {fileID: 1898896257833233274}
   - {fileID: 2809621023989122075}
   - {fileID: 3379772019731604706}
+  - {fileID: 4615422936615754717}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!58 &3214928353315959966
@@ -5197,9 +5262,13 @@ MonoBehaviour:
   maxHealth: 45
   health: 0
   isInvincible: 0
-  attackRate: 1.4
   shieldHealth: 20
   shield: {fileID: 1563496854103692737}
+  hitScaleFactor: 1.2
+  hitAnimDuration: 0.1
+  breakAnimDuration: 0.2
+  pulseScaleFactor: -0.3
+  pulseSpeed: 0.8
 --- !u!114 &2774574311197264778
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5238,9 +5307,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f46254ac4da2e5d42858deee1b8820bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnSize: 1.2
-  spawnTime: 0.3
-  numberOfLoops: 4
 --- !u!114 &2347491868395694633
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5301,6 +5367,7 @@ MonoBehaviour:
   supportAnchor: 0
   jitterChase: 0
   teleportMovement: 0
+  patrolPointContainer: {fileID: 4615422936615754717}
   patrolPoints:
   - {x: -1.5, y: 0}
   - {x: 1.5, y: 0}
@@ -5313,7 +5380,6 @@ MonoBehaviour:
   maxDistanceFromStart: 10
   stopDistance: 6
   strafeRadius: 6
-  strafeSpeed: 2
   strafeOrbitSpeed: 120
   jitterFrequency: 0.3
   jitterStrength: 1.2
@@ -5445,3 +5511,34 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
+--- !u!1 &8537528502200004536
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2013151786420475502}
+  m_Layer: 6
+  m_Name: P1
+  m_TagString: Untagged
+  m_Icon: {fileID: -5938655980376293919, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2013151786420475502
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8537528502200004536}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.5, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4615422936615754717}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
