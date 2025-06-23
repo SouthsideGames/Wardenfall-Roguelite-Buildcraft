@@ -5116,6 +5116,7 @@ GameObject:
   - component: {fileID: 6323300598247157970}
   - component: {fileID: 2926060231890478113}
   - component: {fileID: 3823545190326162280}
+  - component: {fileID: 2947859775404500988}
   m_Layer: 6
   m_Name: Goreboar
   m_TagString: Enemy
@@ -5384,9 +5385,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f46254ac4da2e5d42858deee1b8820bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnSize: 1.2
-  spawnTime: 0.3
-  numberOfLoops: 4
 --- !u!114 &602801222649349821
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5457,7 +5455,6 @@ MonoBehaviour:
   maxDistanceFromStart: 10
   stopDistance: 6
   strafeRadius: 6
-  strafeSpeed: 2
   strafeOrbitSpeed: 120
   jitterFrequency: 0.3
   jitterStrength: 1.2
@@ -5465,12 +5462,22 @@ MonoBehaviour:
   teleportDelay: 0.4
   teleportDistanceMin: 3.5
   teleportDistanceMax: 7
-  teleportObstacleMask:
-    serializedVersion: 2
-    m_Bits: 0
   teleportVFX: {fileID: 0}
   teleportSFX: {fileID: 0}
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 0
   detectionRange: 5
+--- !u!114 &2947859775404500988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9200914030672103398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e13c78578d54a6a44bf221d195c81589, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  visualRoot: {fileID: 8788456622449473820}

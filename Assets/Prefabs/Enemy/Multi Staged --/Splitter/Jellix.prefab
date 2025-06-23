@@ -4997,6 +4997,7 @@ GameObject:
   - component: {fileID: 6756436422186522805}
   - component: {fileID: 2721095665676782195}
   - component: {fileID: 7758381142176576945}
+  - component: {fileID: 7373130988770073722}
   m_Layer: 6
   m_Name: Jellix
   m_TagString: Enemy
@@ -5111,7 +5112,6 @@ MonoBehaviour:
   isInvincible: 0
   maxSplits: 2
   smallerVersionPrefab: {fileID: 7989277444111341517, guid: 7c5c1f53a77448d469cd8264e3c231ec, type: 3}
-  splitScaleFactor: 0.65
   splitEffectPrefab: {fileID: 8208446473332612282, guid: a1f8fe32cde8d114a93e6501d0ad1d20, type: 3}
 --- !u!114 &4443748951534977508
 MonoBehaviour:
@@ -5234,6 +5234,19 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   detectionRange: 5
+--- !u!114 &7373130988770073722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7989277444111341517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e13c78578d54a6a44bf221d195c81589, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  visualRoot: {fileID: 5601617645843600240}
 --- !u!1 &8475417612373356584
 GameObject:
   m_ObjectHideFlags: 0

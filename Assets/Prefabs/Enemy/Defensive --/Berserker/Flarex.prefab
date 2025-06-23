@@ -4910,6 +4910,7 @@ GameObject:
   - component: {fileID: 1344358861159301516}
   - component: {fileID: 2759373919411232227}
   - component: {fileID: 3143273276667143319}
+  - component: {fileID: 1867713185550873131}
   m_Layer: 6
   m_Name: Flarex
   m_TagString: Enemy
@@ -5066,9 +5067,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f46254ac4da2e5d42858deee1b8820bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnSize: 1.2
-  spawnTime: 0.3
-  numberOfLoops: 4
 --- !u!114 &872389496727671225
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5139,7 +5137,6 @@ MonoBehaviour:
   maxDistanceFromStart: 10
   stopDistance: 6
   strafeRadius: 6
-  strafeSpeed: 2
   strafeOrbitSpeed: 120
   jitterFrequency: 0.3
   jitterStrength: 1.2
@@ -5153,6 +5150,19 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   detectionRange: 5
+--- !u!114 &1867713185550873131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 831428353397795802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e13c78578d54a6a44bf221d195c81589, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  visualRoot: {fileID: 6980653255187297023}
 --- !u!1 &3144578653033657039
 GameObject:
   m_ObjectHideFlags: 0

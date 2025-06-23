@@ -131,7 +131,7 @@ public class EnemyAnimator : MonoBehaviour
             .setLoopPingPong(1)
             .setOnComplete(() => visualRoot.localScale = Vector3.one);
     }
-    
+
     public void PlayPrePulseShake()
     {
         Vector3 originalPos = visualRoot.localPosition;
@@ -140,15 +140,30 @@ public class EnemyAnimator : MonoBehaviour
             visualRoot.localPosition = originalPos;
         });
     }
-    
+
     public void PlayIdlePulseAnimation()
     {
         if (isIdlePulsing) return;
         isIdlePulsing = true;
-    
+
         LeanTween.scale(visualRoot.gameObject, new Vector3(1.05f, 0.95f, 1f), 1f)
             .setEaseInOutSine()
             .setLoopPingPong()
             .setOnComplete(() => isIdlePulsing = false);
+    }
+    
+    public void PlaySummonAnimation()
+    {
+        if (visualRoot == null) return;
+
+        LeanTween.cancel(visualRoot.gameObject);
+        visualRoot.localScale = Vector3.one;
+
+        LeanTween.scale(visualRoot.gameObject, new Vector3(0.9f, 1.2f, 1f), 0.12f)
+            .setEaseOutQuad()
+            .setOnComplete(() =>
+            {
+                LeanTween.scale(visualRoot.gameObject, Vector3.one, 0.12f).setEaseInQuad();
+            });
     }
 }

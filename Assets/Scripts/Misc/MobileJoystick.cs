@@ -4,17 +4,15 @@ using UnityEngine;
 
 public class MobileJoystick : MonoBehaviour
 {
-    [Header("ELEMENTS:")]
+    [Header(" Elements ")]
     [SerializeField] private RectTransform joystickOutline;
     [SerializeField] private RectTransform joystickKnob;
 
-    [Header("SETTINGS:")]
+    [Header(" Settings ")]
     [SerializeField] private float moveFactor;
-
-
     private Vector3 clickedPosition;
     private Vector3 move;
-    private bool canControl = true;
+    private bool canControl;
 
     // Start is called before the first frame update
     void Start()
@@ -22,12 +20,15 @@ public class MobileJoystick : MonoBehaviour
         HideJoystick();
     }
 
-    // Update is called once per frame
-   void Update()
+    private void OnDisable()
     {
-        Debug.Log($"[Joystick] Update running: canControl = {canControl}");
+        HideJoystick();
+    }
 
-        if (canControl)
+    // Update is called once per frame
+    void Update()
+    {
+        if(canControl)
             ControlJoystick();
     }
 
@@ -39,47 +40,47 @@ public class MobileJoystick : MonoBehaviour
         ShowJoystick();
     }
 
-   private void ShowJoystick()
+    private void ShowJoystick()
     {
         joystickOutline.gameObject.SetActive(true);
-        joystickKnob.gameObject.SetActive(true);
-
         canControl = true;
     }
 
     private void HideJoystick()
     {
-        joystickOutline.gameObject.SetActive(false); // Only hide visuals
-        joystickKnob.gameObject.SetActive(false);    // Also hide knob if needed
-
+        joystickOutline.gameObject.SetActive(false);
         canControl = false;
+
         move = Vector3.zero;
     }
+
     private void ControlJoystick()
     {
         Vector3 currentPosition = Input.mousePosition;
         Vector3 direction = currentPosition - clickedPosition;
 
         float canvasScale = GetComponentInParent<Canvas>().GetComponent<RectTransform>().localScale.x;
+
         float moveMagnitude = direction.magnitude * moveFactor * canvasScale;
+
         float absoluteWidth = joystickOutline.rect.width / 2;
         float realWidth = absoluteWidth * canvasScale;
 
         moveMagnitude = Mathf.Min(moveMagnitude, realWidth);
 
-        move = direction.normalized;
-
-        Vector3 knobMove = move * moveMagnitude;
-
-        Vector3 targetPosition = clickedPosition + knobMove;
+        move = direction.normalized * moveMagnitude;
+        
+        Vector3 targetPosition = clickedPosition + move;
 
         joystickKnob.position = targetPosition;
 
         if (Input.GetMouseButtonUp(0))
             HideJoystick();
-
-              Debug.Log($"Joystick knob moved to: {targetPosition}");
     }
 
-    public Vector3 GetMoveVector() => move;
+    public Vector3 GetMoveVector()
+    {
+        float canvasScale = GetComponentInParent<Canvas>().GetComponent<RectTransform>().localScale.x;
+        return move / canvasScale;
+    }
 }

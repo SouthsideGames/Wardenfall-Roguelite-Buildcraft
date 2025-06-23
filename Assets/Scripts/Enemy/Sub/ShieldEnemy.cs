@@ -14,15 +14,13 @@ public class ShieldEnemy : Enemy
     [Header("SHIELD BREAK ANIMATION")]
     [SerializeField] private float breakAnimDuration = 0.2f;
 
-    [Header("SHIELD PULSE")]
-    [SerializeField] private float pulseScaleFactor = 1.05f;
-    [SerializeField] private float pulseSpeed = 0.8f;
-
-    private LTDescr pulseTween;
+    private EnemyAnimator enemyAnimator;
 
     protected override void Start()
     {
         base.Start();
+
+        enemyAnimator = GetComponent<EnemyAnimator>();
 
         if (movement != null)
         {
@@ -40,7 +38,6 @@ public class ShieldEnemy : Enemy
 
         shield.SetActive(true);
         shield.transform.localScale = Vector3.one;
-        StartShieldPulse();
     }
 
     public override void TakeDamage(int _damage, bool _isCriticalHit)
@@ -83,19 +80,12 @@ public class ShieldEnemy : Enemy
             .setOnComplete(() => shield.SetActive(false));
     }
 
-    private void StartShieldPulse()
-    {
-        if (shield == null) return;
-
-        LeanTween.cancel(shield);
-        pulseTween = LeanTween.scale(shield, Vector3.one * pulseScaleFactor, pulseSpeed)
-            .setEaseInOutSine()
-            .setLoopPingPong();
-    }
-
     protected override void Update()
     {
         base.Update();
         movement?.FollowCurrentTarget();
+
+        if (movement != null && movement.patrol && enemyAnimator != null)
+            enemyAnimator.PlayMoveAnimation();
     }
 }

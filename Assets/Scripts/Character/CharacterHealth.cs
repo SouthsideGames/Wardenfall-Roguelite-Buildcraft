@@ -98,7 +98,14 @@ public class CharacterHealth : MonoBehaviour, IStats, IDamageable
 
     }
 
-    public void Heal(int _damage) => health += _damage; 
+    public void Heal(int _damage)
+    {
+        if (ChallengeManager.IsActive(ChallengeMode.Hardcore))
+            return;
+
+        health = Mathf.Min(health + _damage, maxHealth);
+        UpdateHealthUI();
+    }
 
     private void EnemyDamageCallback(int _damage, Vector2 _enemyPos, bool _isCriticalHit)
     {
@@ -144,9 +151,12 @@ public class CharacterHealth : MonoBehaviour, IStats, IDamageable
 
     private void RecoverHealth()
     {
+        if (ChallengeManager.IsActive(ChallengeMode.Hardcore))
+            return;
+
         healthRecoveryTimer += Time.deltaTime;
 
-        if(healthRecoveryTimer >= healthRecoveryDuration)
+        if (healthRecoveryTimer >= healthRecoveryDuration)
         {
             healthRecoveryTimer = 0;
 

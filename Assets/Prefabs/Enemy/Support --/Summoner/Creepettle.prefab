@@ -10016,6 +10016,7 @@ GameObject:
   - component: {fileID: 6445022863739764950}
   - component: {fileID: 8248065088456482592}
   - component: {fileID: 2651955578426036209}
+  - component: {fileID: 5007185423772145350}
   m_Layer: 6
   m_Name: Creepettle
   m_TagString: Enemy
@@ -10144,8 +10145,8 @@ MonoBehaviour:
   - {fileID: 796357530644533229, guid: 3c2e3637eec3daa4cb2c15a930ea5d98, type: 3}
   - {fileID: 796357530644533229, guid: 16e7dd87e890c904995eb253c7c2f573, type: 3}
   - {fileID: 796357530644533229, guid: 0908c98750083364ea9748500e33ccf2, type: 3}
-  - {fileID: 2145636691612748121, guid: eb4f69463d9ca014981ee3f5e78df190, type: 3}
-  - {fileID: 2145636691612748121, guid: 3010970ac94bafc4ba97f606cd3d291b, type: 3}
+  - {fileID: 2506094422879967815, guid: 5334f229dfa804a6c9c810a09e8f2916, type: 3}
+  - {fileID: 7569433426266676430, guid: 3010970ac94bafc4ba97f606cd3d291b, type: 3}
   - {fileID: 831428353397795802, guid: 6573ae08ce3df9342a2791976275f8f2, type: 3}
   - {fileID: 831428353397795802, guid: 9a1e14b3966de4245959d846d609c14f, type: 3}
   - {fileID: 831428353397795802, guid: 6573ae08ce3df9342a2791976275f8f2, type: 3}
@@ -10198,9 +10199,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f46254ac4da2e5d42858deee1b8820bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnSize: 1.2
-  spawnTime: 0.3
-  numberOfLoops: 4
 --- !u!114 &2377202544475007060
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10271,7 +10269,6 @@ MonoBehaviour:
   maxDistanceFromStart: 10
   stopDistance: 6
   strafeRadius: 6
-  strafeSpeed: 2
   strafeOrbitSpeed: 120
   jitterFrequency: 0.3
   jitterStrength: 1.2
@@ -10285,6 +10282,19 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   detectionRange: 5
+--- !u!114 &5007185423772145350
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5703549388772972490}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e13c78578d54a6a44bf221d195c81589, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  visualRoot: {fileID: 963860359085590661}
 --- !u!1 &7125406304466509617
 GameObject:
   m_ObjectHideFlags: 0
@@ -10361,7 +10371,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: -1
-  m_Sprite: {fileID: 21300000, guid: b8e8e3f5289b61440b0df71eeecea4ae, type: 3}
+  m_Sprite: {fileID: 21300000, guid: edb1fc13dc1ee7a44beeb4eb3a7e80c4, type: 3}
   m_Color: {r: 0.93333334, g: 0.88235295, b: 0.72156864, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -10369,7 +10379,7 @@ SpriteRenderer:
   m_Size: {x: 2.56, y: 2.56}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &8083843466290856055

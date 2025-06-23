@@ -165,6 +165,13 @@ public enum CrowdReactionType
     Ouch,
 }
 
+public enum ChallengeMode
+{
+    None,
+    Hardcore,
+    TraitChaos
+}
+
 public static class Enums
 {
     public static string FormatStatName(Stat _stat)

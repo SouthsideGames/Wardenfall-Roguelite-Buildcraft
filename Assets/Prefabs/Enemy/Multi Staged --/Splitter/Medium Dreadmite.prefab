@@ -5115,6 +5115,7 @@ GameObject:
   - component: {fileID: 7115308681461152701}
   - component: {fileID: 6871373917384267634}
   - component: {fileID: 484013390144959365}
+  - component: {fileID: 12610057762006335}
   m_Layer: 6
   m_Name: Medium Dreadmite
   m_TagString: Enemy
@@ -5229,7 +5230,6 @@ MonoBehaviour:
   isInvincible: 0
   maxSplits: 1
   smallerVersionPrefab: {fileID: 265428968535547866, guid: 9d31c5f063591d340bd53ed5a2ad4d73, type: 3}
-  splitScaleFactor: 0.55
   splitEffectPrefab: {fileID: 8208446473332612282, guid: a1f8fe32cde8d114a93e6501d0ad1d20, type: 3}
 --- !u!114 &5332475151802439773
 MonoBehaviour:
@@ -5352,3 +5352,16 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   detectionRange: 5
+--- !u!114 &12610057762006335
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7393079886918866764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e13c78578d54a6a44bf221d195c81589, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  visualRoot: {fileID: 765621547942790867}

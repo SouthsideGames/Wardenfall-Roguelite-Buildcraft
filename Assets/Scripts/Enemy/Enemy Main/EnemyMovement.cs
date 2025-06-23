@@ -37,7 +37,7 @@ public class EnemyMovement : MonoBehaviour
     [Space(10)]
     [Header("PATROL SETTINGS")]
     [Tooltip("Settings for enemies that follow a loop of patrol points when 'patrol' is enabled.")]
-    [SerializeField] private Vector2[] patrolPoints;
+    [SerializeField] private List<Transform> patrolPoints = new();
     private int currentPatrolIndex = 0;
     private float patrolTimer = 0f;
     [SerializeField] private float patrolWaitTime = 1f;
@@ -178,6 +178,12 @@ public class EnemyMovement : MonoBehaviour
             rb.MovePosition(newPos);
             externalForce = Vector2.Lerp(externalForce, Vector2.zero, Time.deltaTime * 5f);
         }
+
+        if (patrol)
+        {
+            HandlePatrol();
+            return;
+        }
     }
 
     public void StorePlayer(CharacterManager _player) => currentTarget = _player.transform;
@@ -202,7 +208,7 @@ public class EnemyMovement : MonoBehaviour
         }
     }
 
-    public void FollowCurrentTarget()
+   public void FollowCurrentTarget()
     {
         if (!canMove || rb == null) return;
 
@@ -214,9 +220,48 @@ public class EnemyMovement : MonoBehaviour
         {
             HandleWandering();
         }
-        else if (patrol && patrolPoints != null && patrolPoints.Length > 0)
+        else if (patrol && patrolPoints != null && patrolPoints.Count > 0)
         {
             HandlePatrol();
+        }
+    }
+
+
+  private void HandlePatrol()
+    {
+        if (currentTarget == null || patrolPoints == null || patrolPoints.Count == 0)
+            return;
+
+        float distanceToPlayer = Vector2.Distance(transform.position, currentTarget.position);
+
+        if (distanceToPlayer <= detectionRange)
+        {
+            // Chase player
+            Vector2 direction = ((Vector2)currentTarget.position - (Vector2)transform.position).normalized;
+            Vector2 newPos = rb.position + direction * moveSpeed * Time.fixedDeltaTime;
+            rb.MovePosition(newPos);
+            return;
+        }
+
+        // Otherwise, patrol
+        if (patrolTimer > 0)
+        {
+            patrolTimer -= Time.deltaTime;
+            rb.linearVelocity = Vector2.zero;
+            return;
+        }
+
+        Transform targetPoint = patrolPoints[currentPatrolIndex];
+        if (targetPoint == null) return;
+
+        Vector2 dirToPoint = (targetPoint.position - transform.position).normalized;
+        rb.linearVelocity = dirToPoint * moveSpeed + externalForce;
+        externalForce = Vector2.Lerp(externalForce, Vector2.zero, Time.deltaTime * 5f);
+
+        if (Vector2.Distance(transform.position, targetPoint.position) < patrolPointReachedDistance)
+        {
+            currentPatrolIndex = (currentPatrolIndex + 1) % patrolPoints.Count;
+            patrolTimer = patrolWaitTime;
         }
     }
 
@@ -380,40 +425,6 @@ public class EnemyMovement : MonoBehaviour
         }
 
         wanderPoint = startPosition;
-    }
-
-    private void HandlePatrol()
-    {
-        if (patrolPoints == null || patrolPoints.Length == 0)
-        {
-            Debug.LogWarning("No patrol points assigned to enemy!");
-            return;
-        }
-
-        if (patrolTimer > 0)
-        {
-            patrolTimer -= Time.deltaTime;
-            rb.linearVelocity = Vector2.zero;
-            return;
-        }
-
-        Vector2 targetPoint = patrolPoints[currentPatrolIndex];
-        Vector2 direction = (targetPoint - (Vector2)transform.position).normalized;
-
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, 1f, obstacleLayer);
-        if (hit.collider != null)
-        {
-            direction = FindAlternativePath(targetPoint);
-        }
-
-        rb.linearVelocity = direction * moveSpeed + externalForce;
-        externalForce = Vector2.Lerp(externalForce, Vector2.zero, Time.deltaTime * 5f);
-
-        if (Vector2.Distance(transform.position, targetPoint) < patrolPointReachedDistance)
-        {
-            currentPatrolIndex = (currentPatrolIndex + 1) % patrolPoints.Length;
-            patrolTimer = patrolWaitTime;
-        }
     }
 
     private void HandleStrafeAroundPlayer()

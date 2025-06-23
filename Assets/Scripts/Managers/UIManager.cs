@@ -36,11 +36,13 @@ public class UIManager : MonoBehaviour, IGameStateListener
     [SerializeField] private GameObject missionPanel;
     [SerializeField] private GameObject equipmentPanel;
     [SerializeField] private GameObject progressionTreePanel;
+    [SerializeField] private GameObject challengePanel;
 
     [Header("ADD. OBJECTS:")]
     [SerializeField] private List<CanvasGroup> blockers = new();
     [SerializeField] private AudioClip introMusic;
     public ViewerRatingUI viewerRatingSlider;
+    [SerializeField] private TextMeshProUGUI challengeStatusText;
 
     [Header("COUNTER TEXT:")]
     [SerializeField] private TextMeshProUGUI killCounterText;
@@ -71,7 +73,8 @@ public class UIManager : MonoBehaviour, IGameStateListener
             waveTransitionPanel,
             traitSelectTransitionPanel,
             progressionPanel,
-            shopPanel
+            shopPanel,
+            challengePanel,
         });
 
         GameManager.OnGamePaused += PauseGameCallback;
@@ -124,7 +127,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
         }
     }
 
-    
+
 
     private void CheckPanelTutorial(GameObject panel)
     {
@@ -135,7 +138,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
     }
 
     private void UpdateCounterText() => killCounterText.text = StatisticsManager.Instance.CurrentRunKills.ToString();
-   
+
 
     private void TriggerPanelAction(GameObject _panelObject)
     {
@@ -167,6 +170,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
                 break;
             case GameState.Menu:
                 ShowPanel(menuPanel);
+                UpdateChallengeStatusUI();
                 break;
             case GameState.WeaponSelect:
                 ShowPanel(weaponSelectPanel);
@@ -209,7 +213,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
         pausePanel.SetActive(false);
     }
 
-#endregion
+    #endregion
 
     #region Show/Hide Panels
 
@@ -324,9 +328,26 @@ public class UIManager : MonoBehaviour, IGameStateListener
         progressionPanel.SetActive(false);
     }
 
+    public void ShowChallengePanel()
+    {
+        challengePanel.SetActive(true);
+        TriggerPanelAction(challengePanel);
+        menuPanel.SetActive(false);
+    }
+
+    public void HideChallengePanel()
+    {
+        challengePanel.SetActive(false);
+        menuPanel.SetActive(true);
+        TriggerPanelAction(menuPanel);
+        UpdateChallengeStatusUI();
+    }
+
+
+
     #endregion
 
-    #region Traits
+        #region Traits
 
     public void ShowBlockersUpTo(int blockerIndex)
     {
@@ -477,12 +498,32 @@ public class UIManager : MonoBehaviour, IGameStateListener
 
         currentTutorialStep++;
     }
-    
+
     public void SkipIntroAndGoTo(GameObject targetPanel)
     {
         SaveManager.Save(this, "IntroPlayed", true);
         TransitionPanel(introPanel, targetPanel);
     }
+    
+   private void UpdateChallengeStatusUI()
+    {
+        if (challengeStatusText == null) return;
+
+        var mode = ChallengeManager.Instance?.GetCurrentChallenge() ?? ChallengeMode.None;
+
+        if (mode == ChallengeMode.None)
+            challengeStatusText.text = "No Challenge Active";
+        else
+            challengeStatusText.text = $"Challenge Active: {mode}";
+
+        // Fade in using LeanTween
+        challengeStatusText.alpha = 0;
+        LeanTween.value(challengeStatusText.gameObject, 0, 1, 0.5f)
+            .setOnUpdate((float val) => challengeStatusText.alpha = val)
+            .setIgnoreTimeScale(true);
+    }
+
+
 
 
     #endregion

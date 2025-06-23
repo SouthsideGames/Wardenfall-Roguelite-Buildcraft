@@ -115,7 +115,7 @@ SpriteRenderer:
   m_Size: {x: 0.66, y: 0.66}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &2945752355875451433
@@ -137,6 +137,7 @@ GameObject:
   - component: {fileID: 5392397260938266947}
   - component: {fileID: 336982259560261180}
   - component: {fileID: 6188179955105193577}
+  - component: {fileID: 6615901310113507799}
   m_Layer: 6
   m_Name: Tremorok
   m_TagString: Enemy
@@ -288,9 +289,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f46254ac4da2e5d42858deee1b8820bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnSize: 1.2
-  spawnTime: 0.3
-  numberOfLoops: 4
 --- !u!114 &3066415996364243639
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -361,7 +359,6 @@ MonoBehaviour:
   maxDistanceFromStart: 10
   stopDistance: 6
   strafeRadius: 6
-  strafeSpeed: 2
   strafeOrbitSpeed: 120
   jitterFrequency: 0.3
   jitterStrength: 1.2
@@ -369,15 +366,25 @@ MonoBehaviour:
   teleportDelay: 0.4
   teleportDistanceMin: 3.5
   teleportDistanceMax: 7
-  teleportObstacleMask:
-    serializedVersion: 2
-    m_Bits: 0
   teleportVFX: {fileID: 0}
   teleportSFX: {fileID: 0}
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 0
   detectionRange: 5
+--- !u!114 &6615901310113507799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2945752355875451433}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e13c78578d54a6a44bf221d195c81589, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  visualRoot: {fileID: 2764941401657606607}
 --- !u!1 &7668338953052596735
 GameObject:
   m_ObjectHideFlags: 0

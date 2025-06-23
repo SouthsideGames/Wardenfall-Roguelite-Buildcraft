@@ -4912,6 +4912,7 @@ GameObject:
   - component: {fileID: 3842545132311996179}
   - component: {fileID: 4315360701047858615}
   - component: {fileID: 8814841137231613590}
+  - component: {fileID: 7315387530865728973}
   m_Layer: 6
   m_Name: Blinku
   m_TagString: Enemy
@@ -5099,7 +5100,6 @@ MonoBehaviour:
   maxDistanceFromStart: 10
   stopDistance: 6
   strafeRadius: 6
-  strafeSpeed: 2
   strafeOrbitSpeed: 120
   jitterFrequency: 0.3
   jitterStrength: 1.2
@@ -5151,9 +5151,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f46254ac4da2e5d42858deee1b8820bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnSize: 1.2
-  spawnTime: 0.3
-  numberOfLoops: 4
 --- !u!114 &3842545132311996179
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5191,6 +5188,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isEvolvable: 1
+--- !u!114 &7315387530865728973
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2533266184513460296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e13c78578d54a6a44bf221d195c81589, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  visualRoot: {fileID: 5864121586460473305}
 --- !u!1 &3146728229942722955
 GameObject:
   m_ObjectHideFlags: 0

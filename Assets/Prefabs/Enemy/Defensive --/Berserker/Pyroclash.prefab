@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 3280662155935654191}
   - component: {fileID: 3509811666899936471}
   - component: {fileID: 1161299841705172923}
+  - component: {fileID: 5189394158941382434}
   m_Layer: 6
   m_Name: Pyroclash
   m_TagString: Enemy
@@ -175,9 +176,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f46254ac4da2e5d42858deee1b8820bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnSize: 1.2
-  spawnTime: 0.3
-  numberOfLoops: 4
 --- !u!114 &8161544191590016222
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -248,7 +246,6 @@ MonoBehaviour:
   maxDistanceFromStart: 10
   stopDistance: 6
   strafeRadius: 6
-  strafeSpeed: 2
   strafeOrbitSpeed: 120
   jitterFrequency: 0.3
   jitterStrength: 1.2
@@ -256,15 +253,25 @@ MonoBehaviour:
   teleportDelay: 0.4
   teleportDistanceMin: 3.5
   teleportDistanceMax: 7
-  teleportObstacleMask:
-    serializedVersion: 2
-    m_Bits: 0
   teleportVFX: {fileID: 0}
   teleportSFX: {fileID: 0}
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 0
   detectionRange: 5
+--- !u!114 &5189394158941382434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2658514982532525610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e13c78578d54a6a44bf221d195c81589, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  visualRoot: {fileID: 8343714884909970350}
 --- !u!1 &5361923132897432974
 GameObject:
   m_ObjectHideFlags: 0
