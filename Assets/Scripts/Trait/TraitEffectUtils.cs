@@ -8,7 +8,7 @@ public static class TraitEffectUtils
         switch (tier.SpecialEffectID)
         {
             case "ArmoredShield":
-                ApplyTimedInvincibility(enemy, tier.InvincibilityDuration);
+                ApplyTimedInvincibility(enemy, 3f); // or whatever duration you decide
                 break;
             case "BerserkerT1":
                 enemy.maxHealth = Mathf.FloorToInt(enemy.maxHealth * 0.95f);
@@ -102,7 +102,7 @@ public static class TraitEffectUtils
                 CardDraftManager.Instance.ModifyTacticalOverflow(+2, 2);
                 break;
             case "TacticalOverflowT3":
-                CardDraftManager.Instance.ModifyTacticalOverflow(+3, 99); // disables reroll
+                CardDraftManager.Instance.ModifyTacticalOverflow(+3, 99); 
                 break;
 
             case "TimeWarpedT1":
@@ -113,6 +113,16 @@ public static class TraitEffectUtils
                 break;
             case "TimeWarpedT3":
                 ApplyTimeWarpedEffect(0.30f);
+                break;
+
+            case "CritOnlyT1":
+                CharacterManager.Instance.stats.EnableCritOnlyMode(2.5f); 
+                break;
+            case "CritOnlyT2":
+                CharacterManager.Instance.stats.EnableCritOnlyMode(3.0f); 
+                break;
+            case "CritOnlyT3":
+                CharacterManager.Instance.stats.EnableCritOnlyMode(3.5f); 
                 break;
 
             default:
@@ -126,7 +136,7 @@ public static class TraitEffectUtils
     {
         while (enemy != null)
         {
-            yield return new WaitForSeconds(5f); // Every 5 seconds
+            yield return new WaitForSeconds(5f); 
             if (enemy != null)
             {
                 enemy.isInvincible = true;
@@ -154,9 +164,7 @@ public static class TraitEffectUtils
 
             EnemyMovement movement = enemy.GetComponent<EnemyMovement>();
             if (movement != null)
-            {
-                movement.moveSpeed *= 1f + tier.SpeedModifier;
-            }
+                movement.moveSpeed *= 0.85f;
 
         }
     }

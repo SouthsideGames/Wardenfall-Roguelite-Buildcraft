@@ -31,11 +31,8 @@ public class EnemyModifierHandler : MonoBehaviour
         }
     }
 
-    private void ApplyTierEffects(TraitTier tier, int stack)
+    private void ApplyTierEffects(TraitTier tier, int stack) 
     {
-        if (movement != null)
-            movement.moveSpeed *= 1f + tier.SpeedModifier;
-
         if (!string.IsNullOrEmpty(tier.SpecialEffectID))
             TraitEffectUtils.ApplySpecialEffect(enemy, tier, stack);
     }

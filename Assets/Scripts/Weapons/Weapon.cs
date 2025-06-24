@@ -80,24 +80,44 @@ public abstract class Weapon : MonoBehaviour, IStats, IWeaponSystem
         return closestEnemy;
     }
 
-   protected int GetDamage(out bool isCriticalHit)
+    protected int GetDamage(out bool isCriticalHit)
     {
         isCriticalHit = false;
         int finalDamage = damage;
 
-        if (UnityEngine.Random.Range(0, 101) <= criticalHitChance)
+        CharacterStats stats = CharacterManager.Instance.stats;
+
+        if (stats.IsCritOnlyMode())
         {
-            isCriticalHit = true;
-            MissionManager.Increment(MissionType.criticalHitMastery, 1);
-            finalDamage = Mathf.RoundToInt(damage * criticalHitDamageAmount);
-            AudioManager.Instance.PlayCrowdReaction(CrowdReactionType.Gasp);
-            WaveManager.Instance?.AdjustViewerScore(0.03f);
-            OnCriticalHit?.Invoke();
+            if (UnityEngine.Random.Range(0, 101) <= criticalHitChance)
+            {
+                isCriticalHit = true;
+                MissionManager.Increment(MissionType.criticalHitMastery, 1);
+                finalDamage = Mathf.RoundToInt(damage * stats.GetCritOnlyMultiplier());
+                AudioManager.Instance.PlayCrowdReaction(CrowdReactionType.Gasp);
+                WaveManager.Instance?.AdjustViewerScore(0.03f);
+                OnCriticalHit?.Invoke();
+            }
+            else
+                finalDamage = 0; 
+        }
+        else
+        {
+            if (UnityEngine.Random.Range(0, 101) <= criticalHitChance)
+            {
+                isCriticalHit = true;
+                MissionManager.Increment(MissionType.criticalHitMastery, 1);
+                finalDamage = Mathf.RoundToInt(damage * criticalHitDamageAmount);
+                AudioManager.Instance.PlayCrowdReaction(CrowdReactionType.Gasp);
+                WaveManager.Instance?.AdjustViewerScore(0.03f);
+                OnCriticalHit?.Invoke();
+            }
         }
 
         StatisticsManager.Instance.RecordWeaponUsage(WeaponData.ID, finalDamage);
         return finalDamage;
     }
+
 
     protected virtual void AutoAimLogic()
     {

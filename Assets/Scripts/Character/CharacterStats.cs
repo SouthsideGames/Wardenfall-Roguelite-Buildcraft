@@ -18,6 +18,9 @@ public class CharacterStats : MonoBehaviour
     private Dictionary<Stat, float> objectAddends = new();
     private Dictionary<Stat, float> boostedStats = new();
     private readonly List<IStats> statReceivers = new();
+    
+    private bool critOnlyMode = false;
+    private float critOnlyMultiplier = 3f;
 
     private void Awake()
     {
@@ -84,7 +87,7 @@ public class CharacterStats : MonoBehaviour
 
         UpdateStats();
 
-    
+
         if (ChallengeManager.IsActive(ChallengeMode.RogueRoulette))
         {
             ChallengeManager.Instance.ApplyWaveRouletteEffect(this);
@@ -138,7 +141,7 @@ public class CharacterStats : MonoBehaviour
             receiver.UpdateWeaponStats(this);
         }
     }
-    
+
     public void ApplyTemporaryModifier(Stat stat, float multiplier, float duration)
     {
         StartCoroutine(ApplyModifierRoutine(stat, multiplier, duration));
@@ -160,6 +163,15 @@ public class CharacterStats : MonoBehaviour
         // Remove boost
         RevertBoost(stat);
     }
+    
+    
+    public bool IsCritOnlyMode() => critOnlyMode;
+    public float GetCritOnlyMultiplier() => critOnlyMultiplier;
 
+    public void EnableCritOnlyMode(float multiplier)
+    {
+        critOnlyMode = true;
+        critOnlyMultiplier = multiplier;
+    }
 
 }
