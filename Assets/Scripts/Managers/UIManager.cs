@@ -37,12 +37,14 @@ public class UIManager : MonoBehaviour, IGameStateListener
     [SerializeField] private GameObject equipmentPanel;
     [SerializeField] private GameObject progressionTreePanel;
     [SerializeField] private GameObject challengePanel;
+    [SerializeField] private GameObject challengeInfoPanel;
 
     [Header("ADD. OBJECTS:")]
     [SerializeField] private List<CanvasGroup> blockers = new();
     [SerializeField] private AudioClip introMusic;
     public ViewerRatingUI viewerRatingSlider;
     [SerializeField] private TextMeshProUGUI challengeStatusText;
+    public GameObject toastPrefab;
 
     [Header("COUNTER TEXT:")]
     [SerializeField] private TextMeshProUGUI killCounterText;
@@ -192,7 +194,8 @@ public class UIManager : MonoBehaviour, IGameStateListener
                 ShowPanel(waveTransitionPanel);
                 break;
             case GameState.TraitSelection:
-                ShowPanel(traitSelectTransitionPanel);
+                if (!ChallengeManager.IsActive(ChallengeMode.TraitChaos))
+                    ShowPanel(traitSelectTransitionPanel);
                 break;
             case GameState.Shop:
                 ShowPanel(shopPanel);
@@ -343,11 +346,23 @@ public class UIManager : MonoBehaviour, IGameStateListener
         UpdateChallengeStatusUI();
     }
 
+    public void ShowChallengeInfoPanel()
+    {
+        challengeInfoPanel.SetActive(true);
+        TriggerPanelAction(challengeInfoPanel);
+        ShowPanelInteractability(challengeInfoPanel, false);
+    }
 
+    public void HideChallengeInfoPanel()
+    {
+        challengeInfoPanel.SetActive(false);
+        TriggerPanelAction(challengeInfoPanel);
+        ShowPanelInteractability(challengeInfoPanel, true);
+    }
 
     #endregion
 
-        #region Traits
+    #region Traits
 
     public void ShowBlockersUpTo(int blockerIndex)
     {
@@ -504,15 +519,15 @@ public class UIManager : MonoBehaviour, IGameStateListener
         SaveManager.Save(this, "IntroPlayed", true);
         TransitionPanel(introPanel, targetPanel);
     }
-    
-   private void UpdateChallengeStatusUI()
+
+    private void UpdateChallengeStatusUI()
     {
         if (challengeStatusText == null) return;
 
         var mode = ChallengeManager.Instance?.GetCurrentChallenge() ?? ChallengeMode.None;
 
         if (mode == ChallengeMode.None)
-            challengeStatusText.text = "No Challenge Active";
+            challengeStatusText.text = "";
         else
             challengeStatusText.text = $"Challenge Active: {mode}";
 
@@ -521,6 +536,19 @@ public class UIManager : MonoBehaviour, IGameStateListener
         LeanTween.value(challengeStatusText.gameObject, 0, 1, 0.5f)
             .setOnUpdate((float val) => challengeStatusText.alpha = val)
             .setIgnoreTimeScale(true);
+    }
+    
+    public void ShowToast(string message)
+    {
+        GameObject toast = Instantiate(toastPrefab, mainCanvas);
+        var text = toast.GetComponentInChildren<TextMeshProUGUI>();
+        text.text = message;
+
+        CanvasGroup cg = toast.GetComponent<CanvasGroup>();
+        cg.alpha = 0;
+        LeanTween.alphaCanvas(cg, 1f, 0.4f).setEaseOutExpo();
+        LeanTween.alphaCanvas(cg, 0f, 0.4f).setDelay(2.5f).setEaseInExpo()
+            .setOnComplete(() => Destroy(toast));
     }
 
 

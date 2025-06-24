@@ -32,7 +32,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
 
     [Header("ATTACK:")]
     [HideInInspector] public int contactDamage;
-    [HideInInspector] public float playerDetectionRadius;
+    public float playerDetectionRadius;
     protected float attackTimer;
     protected bool attacksEnabled = true;
 
@@ -277,6 +277,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
     {
         if (!showGizmos) return;
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, playerDetectionRadius);
+        Vector3 offsetPosition = transform.position + Vector3.up * 0.5f;
+        Gizmos.DrawWireSphere(offsetPosition, playerDetectionRadius);
     }
 }

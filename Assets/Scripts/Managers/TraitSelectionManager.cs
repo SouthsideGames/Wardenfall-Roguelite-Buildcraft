@@ -55,10 +55,23 @@ public class TraitSelectionManager : MonoBehaviour, IGameStateListener
     public void GameStateChangedCallback(GameState state)
     {
         if (state == GameState.TraitSelection)
-            OpenTraitSelection();
+        {
+            if (ChallengeManager.IsActive(ChallengeMode.TraitChaos))
+            {
+                TraitManager.Instance.AddRandomTrait(); 
+                GameManager.Instance.StartCardDraft(); 
+            }
+            else
+            {
+                OpenTraitSelection(); // Default behavior
+            }
+        }
         else
+        {
             CloseTraitSelection();
+        }
     }
+
 
     private void OnTraitSelected(string traitID)
     {

@@ -169,7 +169,9 @@ public enum ChallengeMode
 {
     None,
     Hardcore,
-    TraitChaos
+    TraitChaos,
+    RogueRoulette,
+    SingleSlot
 }
 
 public static class Enums

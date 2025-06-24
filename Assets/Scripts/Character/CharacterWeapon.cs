@@ -12,18 +12,27 @@ public class CharacterWeapon : MonoBehaviour
 
     public bool AddWeapon(WeaponDataSO _selectedWeapon, int _weaponLevel)
     {
-        for (int i = 0; i < weaponPositions.Length; i++)
+        int weaponSlotLimit = ChallengeManager.IsActive(ChallengeMode.SingleSlot) ? 1 : weaponPositions.Length;
+
+        for (int i = 0; i < weaponSlotLimit; i++)
         {
-            if(weaponPositions[i].Weapon != null)
-               continue;
+            if (weaponPositions[i].Weapon != null)
+                continue;
 
             weaponPositions[i].AssignWeapon(_selectedWeapon.Prefab, _weaponLevel);
             TrackWeaponUsage(_selectedWeapon.ID);
-            return true;    
+            return true;
+        }
+
+        // Optional: log if full during One Weapon Mode
+        if (ChallengeManager.IsActive(ChallengeMode.SingleSlot))
+        {
+            Debug.Log("[OneWeapon] Weapon slot is already filled. Cannot add another.");
         }
 
         return false;
     }
+
 
     private void TrackWeaponUsage(string weaponId)
     {

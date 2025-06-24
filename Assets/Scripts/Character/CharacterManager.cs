@@ -20,7 +20,7 @@ public class CharacterManager : MonoBehaviour
 
     [Header("COMPONENTS:")]
     private CharacterLevel level;
-    private CharacterAnimator anim;
+    public CharacterAnimator anim { get; private set; }
     public CharacterWeapon weapon { get; private set; }
     public CharacterHealth health { get; private set; }
     public CharacterStats stats { get; private set; }

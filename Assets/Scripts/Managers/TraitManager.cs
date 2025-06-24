@@ -6,7 +6,7 @@ public class TraitManager : MonoBehaviour
 {
     public static TraitManager Instance;
 
-    private Dictionary<string, int> traitStacks = new(); 
+    private Dictionary<string, int> traitStacks = new();
     [SerializeField] private List<TraitDataSO> allTraits;
     public List<TraitDataSO> AllTraits => allTraits;
 
@@ -14,13 +14,13 @@ public class TraitManager : MonoBehaviour
 
     private void Awake()
     {
-        if(Instance == null)
+        if (Instance == null)
             Instance = this;
         else
             Destroy(gameObject);
     }
 
-    public void AddTrait(string traitID) 
+    public void AddTrait(string traitID)
     {
         if (traitStacks.ContainsKey(traitID))
             traitStacks[traitID]++;
@@ -30,7 +30,7 @@ public class TraitManager : MonoBehaviour
 
     public bool HasTrait(string traitID) => traitStacks.ContainsKey(traitID);
 
-    public TraitTier GetActiveTier(string traitID) 
+    public TraitTier GetActiveTier(string traitID)
     {
         var trait = AllTraits.Find(t => t.TraitID == traitID);
         if (trait == null || !traitStacks.ContainsKey(traitID)) return null;
@@ -70,4 +70,20 @@ public class TraitManager : MonoBehaviour
     {
         return traitStacks.Count;
     }
+    
+    public void AddRandomTrait()
+    {
+        if (allTraits == null || allTraits.Count == 0)
+            return;
+
+        // Pick a random trait not already stacked
+        var available = allTraits.Where(t => !traitStacks.ContainsKey(t.TraitID)).ToList();
+        if (available.Count == 0)
+            return; // All traits already active
+
+        TraitDataSO randomTrait = available[Random.Range(0, available.Count)];
+        AddTrait(randomTrait.TraitID);
+        Debug.Log($"[TraitChaos] Added Trait: {randomTrait.TraitID}");
+    }
+
 } 

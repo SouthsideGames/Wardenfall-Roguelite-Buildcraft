@@ -82,6 +82,17 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         FindAnyObjectByType<CardInGameUIManager>()?.ResetAllCooldowns();
 
         UpdateUIForWaveStart();
+
+        if (ChallengeManager.IsActive(ChallengeMode.RogueRoulette))
+        {
+            if (ChallengeManager.Instance.TryGetLastRouletteEffect(out Stat stat, out float mult))
+            {
+                string change = mult > 1f ? "Boosted" : "Reduced";
+                string display = $"Rogue Roulette: {stat} {change} (x{mult})";
+                UIManager.Instance?.ShowToast(display); // assumes you have or will add this
+            }
+        }
+
     }
 
     private void InitializeWave(int waveIndex)
@@ -251,9 +262,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     private void ViewerScoreAdjustments()
     {
         if (character.controller.MoveDirection.sqrMagnitude > 0.01f)
-        {
             AdjustViewerScore(0.01f * Time.deltaTime);
-        }
 
         timeSinceLastKill += Time.deltaTime;
 
@@ -274,16 +283,15 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     #endregion
 
 
-    private void WaveWrapUp()
+   private void WaveWrapUp()
     {
         OnWaveCompleted?.Invoke();
 
         float currentHealth = CharacterManager.Instance.health.CurrentHealth;
         float maxHealth = character.stats.GetStatValue(Stat.MaxHealth);
+
         if (maxHealth > 0 && (currentHealth / maxHealth) < 0.10f)
-        {
             AudioManager.Instance?.PlayCrowdReaction(CrowdReactionType.Gasp);
-        }
 
         int baseXP = 100;
         float bonusMultiplier = Mathf.Lerp(0.5f, 2f, currentViewerScore);
@@ -291,16 +299,33 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         ProgressionManager.Instance.AddXP(xpEarned);
 
         AudioManager.Instance?.StopAmbientLoop();
+
         MissionIncrement();
         DefeatAllEnemies();
         hasWaveStarted = false;
 
+        // Check if run is over
         if (currentWaveIndex + 1 >= wave.Length)
         {
             EndGame();
             return;
         }
 
+        // 🌀 Rogue Roulette: Apply random stat effect after the wave ends
+        if (ChallengeManager.IsActive(ChallengeMode.RogueRoulette))
+        {
+            CharacterStats stats = character.stats;
+            Array statTypes = Enum.GetValues(typeof(Stat));
+            Stat randomStat = (Stat)statTypes.GetValue(UnityEngine.Random.Range(0, statTypes.Length));
+            float multiplier = UnityEngine.Random.value > 0.5f ? 1.5f : 0.5f;
+
+            stats.ApplyTemporaryModifier(randomStat, multiplier, 30f);
+
+            // Store effect for UI in next wave
+            ChallengeManager.Instance.SetLastRouletteEffect(randomStat, multiplier);
+        }
+
+        // Advance to next wave
         currentWaveIndex++;
         GameManager.Instance.SetGameState(GameState.Progression);
     }
@@ -330,13 +355,9 @@ public class WaveManager : MonoBehaviour, IGameStateListener
             ui.FlashTimerUI();
         }
         else if (remaining <= 15f)
-        {
             ui.SetTimerColor(Color.yellow);
-        }
         else
-        {
             ui.SetTimerColor(Color.white);
-        }
 
         if (remaining <= 10f)
         {
@@ -471,6 +492,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
                 break;
         }
     }
+    
 
 
     private void CharacterDeathCallback() => GameManager.Instance.SetGameState(GameState.GameOver);

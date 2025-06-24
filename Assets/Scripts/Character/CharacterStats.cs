@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System;
+using System.Collections;
 
 public class CharacterStats : MonoBehaviour
 {
@@ -82,7 +83,14 @@ public class CharacterStats : MonoBehaviour
             ApplyProgressionBoosters(equipment.equippedBoosters);
 
         UpdateStats();
+
+    
+        if (ChallengeManager.IsActive(ChallengeMode.RogueRoulette))
+        {
+            ChallengeManager.Instance.ApplyWaveRouletteEffect(this);
+        }
     }
+
 
     public void BoostStat(Stat stat, float value)
     {
@@ -110,7 +118,7 @@ public class CharacterStats : MonoBehaviour
                 BoostStat(equipped.chosenStat, equipped.booster.bonusValue);
         }
     }
-    
+
     public void RegisterStatReceiver(IStats receiver)
     {
         if (!statReceivers.Contains(receiver))
@@ -130,5 +138,28 @@ public class CharacterStats : MonoBehaviour
             receiver.UpdateWeaponStats(this);
         }
     }
+    
+    public void ApplyTemporaryModifier(Stat stat, float multiplier, float duration)
+    {
+        StartCoroutine(ApplyModifierRoutine(stat, multiplier, duration));
+    }
+
+    private IEnumerator ApplyModifierRoutine(Stat stat, float multiplier, float duration)
+    {
+        float current = GetStatValue(stat);
+        float target = current * multiplier;
+        float delta = target - current;
+
+        // Apply boost
+        BoostStat(stat, delta);
+
+        Debug.Log($"[RogueRoulette] {stat} modified by x{multiplier}");
+
+        yield return new WaitForSeconds(duration);
+
+        // Remove boost
+        RevertBoost(stat);
+    }
+
 
 }
