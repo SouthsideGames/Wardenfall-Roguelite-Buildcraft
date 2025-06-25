@@ -125,6 +125,11 @@ public static class TraitEffectUtils
                 CharacterManager.Instance.stats.EnableCritOnlyMode(3.5f); 
                 break;
 
+            case "HyperModeT1":
+            case "HyperModeT2":
+            case "HyperModeT3":
+                break;
+
             default:
                 Debug.LogWarning($"Unknown special effect ID: {tier.SpecialEffectID}");
                 break;

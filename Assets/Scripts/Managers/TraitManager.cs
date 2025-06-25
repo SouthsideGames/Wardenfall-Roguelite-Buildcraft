@@ -30,6 +30,19 @@ public class TraitManager : MonoBehaviour
 
     public bool HasTrait(string traitID) => traitStacks.ContainsKey(traitID);
 
+    public bool HasTrait(string traitID, out int stack)
+    {
+        return traitStacks.TryGetValue(traitID, out stack);
+    }
+
+    public TraitTier GetTraitTier(string traitID, int stack)
+    {
+        var trait = allTraits.Find(t => t.TraitID == traitID);
+        if (trait == null) return null;
+        return trait.GetTier(stack);
+    }
+
+
     public TraitTier GetActiveTier(string traitID)
     {
         var trait = AllTraits.Find(t => t.TraitID == traitID);

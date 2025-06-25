@@ -72,7 +72,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 
     }
 
-    private void StartWave(int waveIndex)
+   private void StartWave(int waveIndex)
     {
         InitializeWave(waveIndex);
         AudioManager.Instance.PlayCrowdAmbience();
@@ -83,17 +83,22 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 
         UpdateUIForWaveStart();
 
+        // 🌀 Apply Hyper Mode Trait Effects (supports all tiers)
+        ApplyHyperModeEffects();
+
+        // 🧪 Challenge Mode Visual
         if (ChallengeManager.IsActive(ChallengeMode.RogueRoulette))
         {
             if (ChallengeManager.Instance.TryGetLastRouletteEffect(out Stat stat, out float mult))
             {
                 string change = mult > 1f ? "Boosted" : "Reduced";
                 string display = $"Rogue Roulette: {stat} {change} (x{mult})";
-                UIManager.Instance?.ShowToast(display); // assumes you have or will add this
+                UIManager.Instance?.ShowToast(display);
             }
         }
-
     }
+
+
 
     private void InitializeWave(int waveIndex)
     {
@@ -321,12 +326,11 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 
             stats.ApplyTemporaryModifier(randomStat, multiplier, 30f);
 
-            // Store effect for UI in next wave
             ChallengeManager.Instance.SetLastRouletteEffect(randomStat, multiplier);
         }
 
-        // Advance to next wave
         currentWaveIndex++;
+        Time.timeScale = 1f;
         GameManager.Instance.SetGameState(GameState.Progression);
     }
 
@@ -493,6 +497,43 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         }
     }
     
+
+    private void ApplyHyperModeEffects()
+    {
+        string[] hyperModeIDs = { "HyperModeT3", "HyperModeT2", "HyperModeT1" };
+
+        foreach (string id in hyperModeIDs)
+        {
+            if (TraitManager.Instance.HasTrait(id, out int stack))
+            {
+                TraitTier tier = TraitManager.Instance.GetTraitTier(id, stack);
+                if (tier != null)
+                {
+                    switch (id)
+                    {
+                        case "HyperModeT1":
+                            waveDuration *= 0.85f; // 15% reduction
+                            Time.timeScale = 1.5f;
+                            break;
+                        case "HyperModeT2":
+                            waveDuration *= 0.75f; // 25% reduction
+                            Time.timeScale = 2.0f;
+                            break;
+                        case "HyperModeT3":
+                            waveDuration *= 0.65f; // 35% reduction
+                            Time.timeScale = 2.5f;
+                            break;
+                    }
+
+                    Debug.Log($"[HyperMode] Applied {id} → Wave Duration: {waveDuration:F2}s | TimeScale: {Time.timeScale}");
+                    return;
+                }
+            }
+        }
+
+        // If no trait is found, ensure normal time scale
+        Time.timeScale = 1f;
+    }
 
 
     private void CharacterDeathCallback() => GameManager.Instance.SetGameState(GameState.GameOver);
