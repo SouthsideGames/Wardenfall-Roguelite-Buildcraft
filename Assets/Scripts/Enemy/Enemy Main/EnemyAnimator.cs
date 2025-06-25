@@ -166,4 +166,15 @@ public class EnemyAnimator : MonoBehaviour
                 LeanTween.scale(visualRoot.gameObject, Vector3.one, 0.12f).setEaseInQuad();
             });
     }
+
+    public void PlayTeleportFlash()
+    {
+        if (visualRoot == null) return;
+    
+        visualRoot.localScale = Vector3.one;
+        LeanTween.scale(visualRoot.gameObject, Vector3.one * 1.2f, 0.1f)
+            .setEaseOutSine()
+            .setLoopPingPong(1)
+            .setOnComplete(() => visualRoot.localScale = Vector3.one);
+    }
 }
