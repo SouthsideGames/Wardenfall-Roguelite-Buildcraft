@@ -102,7 +102,7 @@ public static class TraitEffectUtils
                 CardDraftManager.Instance.ModifyTacticalOverflow(+2, 2);
                 break;
             case "TacticalOverflowT3":
-                CardDraftManager.Instance.ModifyTacticalOverflow(+3, 99); 
+                CardDraftManager.Instance.ModifyTacticalOverflow(+3, 99);
                 break;
 
             case "TimeWarpedT1":
@@ -116,18 +116,28 @@ public static class TraitEffectUtils
                 break;
 
             case "CritOnlyT1":
-                CharacterManager.Instance.stats.EnableCritOnlyMode(2.5f); 
+                CharacterManager.Instance.stats.EnableCritOnlyMode(2.5f);
                 break;
             case "CritOnlyT2":
-                CharacterManager.Instance.stats.EnableCritOnlyMode(3.0f); 
+                CharacterManager.Instance.stats.EnableCritOnlyMode(3.0f);
                 break;
             case "CritOnlyT3":
-                CharacterManager.Instance.stats.EnableCritOnlyMode(3.5f); 
+                CharacterManager.Instance.stats.EnableCritOnlyMode(3.5f);
                 break;
 
             case "HyperModeT1":
             case "HyperModeT2":
             case "HyperModeT3":
+                break;
+
+           case "TemporalFluxT1":
+                ApplyTemporalFlux(0.05f, 5f, 10f, 0.5f);
+                break;
+            case "TemporalFluxT2":
+                ApplyTemporalFlux(0.10f, 4f, 8f, 0.75f);
+                break;
+            case "TemporalFluxT3":
+                ApplyTemporalFlux(0.15f, 3f, 6f, 1f);
                 break;
 
             default:
@@ -141,7 +151,7 @@ public static class TraitEffectUtils
     {
         while (enemy != null)
         {
-            yield return new WaitForSeconds(5f); 
+            yield return new WaitForSeconds(5f);
             if (enemy != null)
             {
                 enemy.isInvincible = true;
@@ -206,7 +216,7 @@ public static class TraitEffectUtils
             handler.ModifyDamage(gainPerTick);
         }
     }
-    
+
     private static void ApplyTimeWarpedEffect(float percent)
     {
         if (CharacterManager.Instance == null) return;
@@ -224,6 +234,48 @@ public static class TraitEffectUtils
         if (cardEffectManager != null)
             cardEffectManager.SetGlobalCooldownMultiplier(cooldownScale);
     }
+    
+    private static IEnumerator ApplyTemporalFlux(float enemyChance, float enemyInterval, float playerInterval, float playerFreezeDuration)
+    {
+        float enemyTimer = 0f;
+        float playerTimer = 0f;
+
+        while (true)
+        {
+            enemyTimer += Time.deltaTime;
+            playerTimer += Time.deltaTime;
+
+            if (enemyTimer >= enemyInterval)
+            {
+                enemyTimer = 0f;
+                foreach (Enemy enemy in Object.FindObjectsByType<Enemy>(FindObjectsSortMode.None))
+                {
+                    if (enemy != null && Random.value < enemyChance)
+                    {
+                        EnemyStatus status = enemy.GetComponent<EnemyStatus>();
+                        if (status != null)
+                        {
+                            StatusEffect pause = new StatusEffect(StatusEffectType.Stun, playerFreezeDuration); // reuse stun effect
+                            status.ApplyEffect(pause);
+                        }
+                    }
+                }
+            }
+
+            if (playerTimer >= playerInterval)
+            {
+                playerTimer = 0f;
+                if (CharacterManager.Instance?.controller != null)
+                {
+                    CharacterManager.Instance.controller.FreezePlayerFor(playerFreezeDuration);
+                }
+            }
+
+            yield return null;
+        }
+    }
+
+
 
 
 }

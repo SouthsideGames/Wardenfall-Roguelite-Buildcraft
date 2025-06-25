@@ -1,5 +1,5 @@
+using System.Collections;
 using UnityEngine;
-
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class CharacterController : MonoBehaviour
@@ -22,6 +22,7 @@ public class CharacterController : MonoBehaviour
     private float dashTimeRemaining;
     private float dashSpeed;
     private Vector2 dashDirection;
+    private bool isFrozen = false;
 
     private void Awake()
     {
@@ -65,13 +66,9 @@ public class CharacterController : MonoBehaviour
     private Vector2 GetMoveInput()
     {
         if (Application.isMobilePlatform || forceMobileInput)
-        {
             return joystick != null ? new Vector2(joystick.Horizontal, joystick.Vertical) : Vector2.zero;
-        }
         else
-        {
             return new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-        }
     }
 
     public void TriggerDash(Vector2 direction, float speed, float duration)
@@ -89,12 +86,30 @@ public class CharacterController : MonoBehaviour
         StartCoroutine(TemporarilyDisableMovement(duration));
     }
 
-    private System.Collections.IEnumerator TemporarilyDisableMovement(float duration)
+    private IEnumerator TemporarilyDisableMovement(float duration)
     {
         isMovementDisabled = true;
         _rb.linearVelocity = Vector2.zero;
         yield return new WaitForSeconds(duration);
         isMovementDisabled = false;
+    }
+
+    public void FreezePlayerFor(float duration)
+    {
+        if (!isFrozen)
+            StartCoroutine(FreezeCoroutine(duration));
+    }
+
+    private IEnumerator FreezeCoroutine(float duration)
+    {
+        isFrozen = true;
+        Vector2 backup = MoveDirection;
+        moveDirection = Vector2.zero;
+
+        yield return new WaitForSeconds(duration);
+
+        isFrozen = false;
+        moveDirection = backup;
     }
 
     // Public accessors
