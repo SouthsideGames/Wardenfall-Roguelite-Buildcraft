@@ -3,10 +3,13 @@ using UnityEngine;
 // Optional wrapper for enemies that want to react to teleports
 public class TeleportEnemy : RangedEnemy
 {
+    private EnemyAnimator enemyAnimator;
 
     protected override void Start()
     {
         base.Start();
+        enemyAnimator = GetComponent<EnemyAnimator>();
+        enemyAnimator?.PlayIdlePulseAnimation(); // Visual idle animation
     }
 
     protected override void Update()
@@ -43,8 +46,6 @@ public class TeleportEnemy : RangedEnemy
             movement.FollowCurrentTarget();
     }
 
-    private void OnTeleportEffect()
-    {
-        Debug.Log($"{name} teleported — trigger visual or trait effects here.");
-    }
+    private void OnTeleportEffect() => enemyAnimator?.PlayTeleportFlash();
+
 }
