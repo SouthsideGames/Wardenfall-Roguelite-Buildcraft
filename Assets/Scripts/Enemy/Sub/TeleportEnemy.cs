@@ -3,13 +3,11 @@ using UnityEngine;
 // Optional wrapper for enemies that want to react to teleports
 public class TeleportEnemy : RangedEnemy
 {
-    private EnemyAnimator enemyAnimator;
 
     protected override void Start()
     {
         base.Start();
-        enemyAnimator = GetComponent<EnemyAnimator>();
-        enemyAnimator?.PlayIdlePulseAnimation(); // Visual idle animation
+        enemyAnimator?.PlayIdlePulseAnimation();
     }
 
     protected override void Update()
@@ -21,7 +19,6 @@ public class TeleportEnemy : RangedEnemy
 
         AttackLogic();
 
-        // Optional: Flip sprite based on player position
         if (character != null)
         {
             transform.localScale = character.transform.position.x > transform.position.x
@@ -29,11 +26,8 @@ public class TeleportEnemy : RangedEnemy
                 : Vector3.one.With(x: -1);
         }
 
-        // OPTIONAL: Do something immediately after a teleport
         if (movement.teleportMovement && movement.TeleportJustHappened())
-        {
             OnTeleportEffect();
-        }
     }
 
     private void AttackLogic()

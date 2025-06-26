@@ -9,7 +9,7 @@ public class MeleeEnemy : Enemy
     private float attackDelay;
     private EnemyAnimator enemyAnimator;
 
-    // Start is called before the first frame update
+
     protected override void Start()
     {
         base.Start();

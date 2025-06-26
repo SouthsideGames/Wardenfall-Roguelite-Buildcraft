@@ -13,13 +13,17 @@ MonoBehaviour:
   m_Name: E-030
   m_EditorClassIdentifier: 
   <ID>k__BackingField: E-030
-  <Icon>k__BackingField: {fileID: 21300000, guid: d8f35dff32853e1428fa48542f2371ed, type: 3}
-  <Name>k__BackingField: Noctulisk
-  <Description>k__BackingField: A ghostly artillery stalker that teleports often
-    and fires deadly projectiles with precision.
+  <Icon>k__BackingField: {fileID: 21300000, guid: d78f431ee1047a04cbdb311d50c12425, type: 3}
+  <Name>k__BackingField: Mawworm
+  <Description>k__BackingField: A chaotic worm-like enemy that teleports erratically
+    and launches high-damage projectiles at the player.
   <Type>k__BackingField: 9
   <HasEvolution>k__BackingField: 0
   <EvolutionData>k__BackingField: {fileID: 0}
-  contactDamage: 8
-  detectionRadius: 6.5
-  maxHealth: 45
+  <EvolutionPrefab>k__BackingField: {fileID: 0}
+  contactDamage: 10
+  detectionRadius: 6
+  maxHealth: 60
+  spawnSize: 1.2
+  spawnTime: 0.3
+  numberOfLoops: 4

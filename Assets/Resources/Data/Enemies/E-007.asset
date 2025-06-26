@@ -13,11 +13,18 @@ MonoBehaviour:
   m_Name: E-007
   m_EditorClassIdentifier: 
   <ID>k__BackingField: E-007
-  <Icon>k__BackingField: {fileID: 21300000, guid: 6b893fd2a6554a94c962a8f0005bc5e9, type: 3}
-  <Name>k__BackingField: Shellunk
-  <Description>k__BackingField: A sluggish but heavily armored foe. Its thick shell
-    absorbs damage, forcing players to crack its defenses before dealing real damage
-  <Type>k__BackingField: 3
-  contactDamage: 6
-  detectionRadius: 6
-  maxHealth: 45
+  <Icon>k__BackingField: {fileID: 21300000, guid: ff3dc2bdaf8ef2a409af73f83d4ecb3a, type: 3}
+  <Name>k__BackingField: Burstorb
+  <Description>k__BackingField: A volatile enemy that rolls toward its target, detonating
+    itself in a powerful explosion. Its destructive force can wipe out nearby enemies
+    and severely injure players caught in its blast radius.
+  <Type>k__BackingField: 1
+  <HasEvolution>k__BackingField: 1
+  <EvolutionData>k__BackingField: {fileID: 11400000, guid: 6fb8855117a0d4f09b8b9bca5ff27b20, type: 2}
+  <EvolutionPrefab>k__BackingField: {fileID: 5320726414349726025, guid: b7022dfb92e344066ac445c62f27df18, type: 3}
+  contactDamage: 20
+  detectionRadius: 3
+  maxHealth: 25
+  spawnSize: 1.2
+  spawnTime: 0.3
+  numberOfLoops: 4

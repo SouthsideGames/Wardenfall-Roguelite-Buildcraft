@@ -13,11 +13,18 @@ MonoBehaviour:
   m_Name: E-013
   m_EditorClassIdentifier: 
   <ID>k__BackingField: E-013
-  <Icon>k__BackingField: {fileID: 21300000, guid: 818dd1ceda0c1754e808a730d6987295, type: 3}
-  <Name>k__BackingField: Buzzbolt
-  <Description>k__BackingField: A buzzing menace that hovers around the battlefield,
-    firing electric bursts from its stinger to shock distant foes.
-  <Type>k__BackingField: 5
-  contactDamage: 5
-  detectionRadius: 6
-  maxHealth: 30
+  <Icon>k__BackingField: {fileID: 21300000, guid: 10e4f03bcb6fb4b6b88fca448755b0da, type: 3}
+  <Name>k__BackingField: Chiplet
+  <Description>k__BackingField: "It slowly patrols tight areas, attempting to shield
+    itself \u2014 but its cracked shell and sluggish responses make it a stepping
+    stone at best."
+  <Type>k__BackingField: 3
+  <HasEvolution>k__BackingField: 1
+  <EvolutionData>k__BackingField: {fileID: 11400000, guid: ed47d41813c6a5c4f829c5454d82b825, type: 2}
+  <EvolutionPrefab>k__BackingField: {fileID: 2145636691612748121, guid: eb4f69463d9ca014981ee3f5e78df190, type: 3}
+  contactDamage: 2
+  detectionRadius: 6.5
+  maxHealth: 15
+  spawnSize: 1.2
+  spawnTime: 0.3
+  numberOfLoops: 4

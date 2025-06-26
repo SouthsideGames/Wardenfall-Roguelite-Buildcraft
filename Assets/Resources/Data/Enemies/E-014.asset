@@ -13,11 +13,18 @@ MonoBehaviour:
   m_Name: E-014
   m_EditorClassIdentifier: 
   <ID>k__BackingField: E-014
-  <Icon>k__BackingField: {fileID: 21300000, guid: e3d60ee3edf5f0044a5cb2ab30076847, type: 3}
-  <Name>k__BackingField: Nightdart
-  <Description>k__BackingField: A shadowy flier that launches sharp projectiles at
-    long range. Its high health and precision make it a deadly adversary!
-  <Type>k__BackingField: 5
-  contactDamage: 10
+  <Icon>k__BackingField: {fileID: 21300000, guid: b8019da0bb55616458d9da31a4b2e1e4, type: 3}
+  <Name>k__BackingField: Gnash
+  <Description>k__BackingField: A heavily armored beast with a jagged shell. Gnash
+    tears through defenses and shrugs off damage, forcing players to break its shield
+    before delivering the final blow
+  <Type>k__BackingField: 3
+  <HasEvolution>k__BackingField: 0
+  <EvolutionData>k__BackingField: {fileID: 0}
+  <EvolutionPrefab>k__BackingField: {fileID: 0}
+  contactDamage: 4
   detectionRadius: 6
-  maxHealth: 50
+  maxHealth: 25
+  spawnSize: 1.2
+  spawnTime: 0.3
+  numberOfLoops: 4

@@ -13,15 +13,17 @@ MonoBehaviour:
   m_Name: E-026
   m_EditorClassIdentifier: 
   <ID>k__BackingField: E-026
-  <Icon>k__BackingField: {fileID: 21300000, guid: 655a3748941e5b445a476106c8d7a463, type: 3}
-  <Name>k__BackingField: Pyroclash
-  <Description>k__BackingField: "Wreathed in flame and fury, this berserker doesn\u2019t
-    just chase \u2014 it incinerates. With every wound it takes, it burns hotter
-    and strikes faster. And if it touches you, your life bar might just melt with
-    it."
-  <Type>k__BackingField: 2
-  <HasEvolution>k__BackingField: 0
-  <EvolutionData>k__BackingField: {fileID: 0}
-  contactDamage: 13
-  detectionRadius: 6.5
-  maxHealth: 80
+  <Icon>k__BackingField: {fileID: 21300000, guid: d2b500305d089fd40bcd4d84e0497128, type: 3}
+  <Name>k__BackingField: Swarmite
+  <Description>k__BackingField: A large and menacing bug-like enemy that charges
+    the player. Splits into two smaller versions when defeated.
+  <Type>k__BackingField: 8
+  <HasEvolution>k__BackingField: 1
+  <EvolutionData>k__BackingField: {fileID: 11400000, guid: a9832106457aca14c87132632c2446bf, type: 2}
+  <EvolutionPrefab>k__BackingField: {fileID: 4322561144436053514, guid: 51dcd217c157c0740bd6b8609ecf8cf5, type: 3}
+  contactDamage: 7
+  detectionRadius: 6
+  maxHealth: 55
+  spawnSize: 1.2
+  spawnTime: 0.3
+  numberOfLoops: 4

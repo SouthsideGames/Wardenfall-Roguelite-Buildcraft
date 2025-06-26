@@ -13,12 +13,18 @@ MonoBehaviour:
   m_Name: E-005
   m_EditorClassIdentifier: 
   <ID>k__BackingField: E-005
-  <Icon>k__BackingField: {fileID: 21300000, guid: abcc1e9f6c46f8643b65449526801292, type: 3}
-  <Name>k__BackingField: Spike
-  <Description>k__BackingField: "Spike, <i>Berserker</i>. This enemy becomes faster
-    and angrier as it gets hurt. Watch out \u2013 Spike is most dangerous when it\u2019s
-    almost beaten."
-  <Type>k__BackingField: 2
-  contactDamage: 5
+  <Icon>k__BackingField: {fileID: 21300000, guid: 305ff29e69990304b9f41a43119239e0, type: 3}
+  <Name>k__BackingField: Clobberon
+  <Description>k__BackingField: "A hulking brute with oversized fists, Clobberon
+    smashes anything in its path. It\u2019s slow but relentless, making up for its
+    lack of speed with raw power."
+  <Type>k__BackingField: 0
+  <HasEvolution>k__BackingField: 1
+  <EvolutionData>k__BackingField: {fileID: 11400000, guid: 32a748d5e6dc24f209404a9e41735569, type: 2}
+  <EvolutionPrefab>k__BackingField: {fileID: 2945752355875451433, guid: 8f9e2ece3546447259814481378aaedb, type: 3}
+  contactDamage: 15
   detectionRadius: 6
-  maxHealth: 20
+  maxHealth: 90
+  spawnSize: 1.2
+  spawnTime: 0.3
+  numberOfLoops: 4

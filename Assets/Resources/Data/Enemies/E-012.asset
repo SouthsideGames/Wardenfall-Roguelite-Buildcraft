@@ -13,11 +13,17 @@ MonoBehaviour:
   m_Name: E-012
   m_EditorClassIdentifier: 
   <ID>k__BackingField: E-012
-  <Icon>k__BackingField: {fileID: 21300000, guid: 1eba572dd3d88354e913a8ee9cd61326, type: 3}
-  <Name>k__BackingField: Stinglet
-  <Description>k__BackingField: A tiny buzzing menace that hovers close to the player,
-    firing small projectiles from its stinger-like mouth.
-  <Type>k__BackingField: 5
-  contactDamage: 4
+  <Icon>k__BackingField: {fileID: 21300000, guid: 6b893fd2a6554a94c962a8f0005bc5e9, type: 3}
+  <Name>k__BackingField: Shellunk
+  <Description>k__BackingField: A sluggish but heavily armored foe. Its thick shell
+    absorbs damage, forcing players to crack its defenses before dealing real damage
+  <Type>k__BackingField: 3
+  <HasEvolution>k__BackingField: 0
+  <EvolutionData>k__BackingField: {fileID: 0}
+  <EvolutionPrefab>k__BackingField: {fileID: 0}
+  contactDamage: 6
   detectionRadius: 6
-  maxHealth: 15
+  maxHealth: 45
+  spawnSize: 1.2
+  spawnTime: 0.3
+  numberOfLoops: 4

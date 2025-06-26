@@ -13,13 +13,17 @@ MonoBehaviour:
   m_Name: E-023
   m_EditorClassIdentifier: 
   <ID>k__BackingField: E-023
-  <Icon>k__BackingField: {fileID: 21300000, guid: 786f649030be4084f879f6e688e4c9c3, type: 3}
-  <Name>k__BackingField: Dreadmite
-  <Description>k__BackingField: A large bug-like enemy that splits into a medium
-    form when defeated.
-  <Type>k__BackingField: 0
+  <Icon>k__BackingField: {fileID: 21300000, guid: 13db8eb90e7c4f3488d0f788741fe43d, type: 3}
+  <Name>k__BackingField: Glimp
+  <Description>k__BackingField: A sinister flying entity that shields its allies,
+    rendering them invulnerable until it is destroyed. Prioritize taking it down!
+  <Type>k__BackingField: 6
   <HasEvolution>k__BackingField: 0
   <EvolutionData>k__BackingField: {fileID: 0}
-  contactDamage: 9
-  detectionRadius: 6.5
-  maxHealth: 75
+  <EvolutionPrefab>k__BackingField: {fileID: 0}
+  contactDamage: 0
+  detectionRadius: 6
+  maxHealth: 60
+  spawnSize: 1.2
+  spawnTime: 0.3
+  numberOfLoops: 4

@@ -5,9 +5,10 @@ public class StunMeleeWeapon : MeleeWeapon
     [Header("STUN SETTINGS:")]
     [SerializeField] private float stunDuration = 2.0f;
 
-    protected override void AttackLogic()
+   protected override void AttackLogic()
     {
         base.AttackLogic();
+        damagedEnemies.RemoveAll(e => e == null);
 
         foreach (Enemy enemy in damagedEnemies)
         {
@@ -22,6 +23,7 @@ public class StunMeleeWeapon : MeleeWeapon
             }
         }
     }
+
 
     protected override void StartAttack()
     {

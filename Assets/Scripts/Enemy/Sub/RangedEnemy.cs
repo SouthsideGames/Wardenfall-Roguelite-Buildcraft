@@ -6,17 +6,14 @@ using UnityEngine;
 [RequireComponent(typeof(RangedEnemyAttack))]
 public class RangedEnemy : Enemy
 {
-    [Header("RANGED SPECIFICS:")]
     private RangedEnemyAttack attack;
-    private Animator anim;
-    private EnemyAnimator enemyAnimator;
+    protected EnemyAnimator enemyAnimator;
 
     protected override void Start()
     {
         base.Start();
 
         attack = GetComponent<RangedEnemyAttack>(); 
-        anim = GetComponent<Animator>();  
         attack.StorePlayer(character);
 
         enemyAnimator = GetComponent<EnemyAnimator>();

@@ -13,11 +13,17 @@ MonoBehaviour:
   m_Name: E-020
   m_EditorClassIdentifier: 
   <ID>k__BackingField: E-020
-  <Icon>k__BackingField: {fileID: 21300000, guid: d78f431ee1047a04cbdb311d50c12425, type: 3}
-  <Name>k__BackingField: Mawworm
-  <Description>k__BackingField: A chaotic worm-like enemy that teleports erratically
-    and launches high-damage projectiles at the player.
-  <Type>k__BackingField: 9
-  contactDamage: 10
+  <Icon>k__BackingField: {fileID: 21300000, guid: 818dd1ceda0c1754e808a730d6987295, type: 3}
+  <Name>k__BackingField: Buzzbolt
+  <Description>k__BackingField: A buzzing menace that hovers around the battlefield,
+    firing electric bursts from its stinger to shock distant foes.
+  <Type>k__BackingField: 5
+  <HasEvolution>k__BackingField: 0
+  <EvolutionData>k__BackingField: {fileID: 0}
+  <EvolutionPrefab>k__BackingField: {fileID: 0}
+  contactDamage: 5
   detectionRadius: 6
-  maxHealth: 60
+  maxHealth: 30
+  spawnSize: 1.2
+  spawnTime: 0.3
+  numberOfLoops: 4

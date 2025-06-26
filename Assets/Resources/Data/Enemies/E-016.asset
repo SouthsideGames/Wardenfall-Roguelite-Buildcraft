@@ -13,11 +13,18 @@ MonoBehaviour:
   m_Name: E-016
   m_EditorClassIdentifier: 
   <ID>k__BackingField: E-016
-  <Icon>k__BackingField: {fileID: 21300000, guid: 49cd4030d307d7b41acc284f20860a54, type: 3}
-  <Name>k__BackingField: Creepettle
-  <Description>k__BackingField: A stationary creature that spawns waves of enemies
-    to overwhelm players. Must be destroyed to stop the endless assault.
-  <Type>k__BackingField: 7
-  contactDamage: 0
+  <Icon>k__BackingField: {fileID: 21300000, guid: c78b664a3016aae41a978152f88d1312, type: 3}
+  <Name>k__BackingField: Tuskbolt
+  <Description>k__BackingField: A furious beast that builds up energy before launching
+    itself at its prey. Its sharp tusks and high-speed charge make it a serious threat
+    if not dodged in time.
+  <Type>k__BackingField: 4
+  <HasEvolution>k__BackingField: 1
+  <EvolutionData>k__BackingField: {fileID: 11400000, guid: 573a6abd48cb94d29b9f080bf786e578, type: 2}
+  <EvolutionPrefab>k__BackingField: {fileID: 9200914030672103398, guid: 59bfb213b05c349faaa9abd9e97aa002, type: 3}
+  contactDamage: 12
   detectionRadius: 6
-  maxHealth: 80
+  maxHealth: 40
+  spawnSize: 1.2
+  spawnTime: 0.3
+  numberOfLoops: 4

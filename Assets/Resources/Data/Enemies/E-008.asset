@@ -13,12 +13,17 @@ MonoBehaviour:
   m_Name: E-008
   m_EditorClassIdentifier: 
   <ID>k__BackingField: E-008
-  <Icon>k__BackingField: {fileID: 21300000, guid: b8019da0bb55616458d9da31a4b2e1e4, type: 3}
-  <Name>k__BackingField: Gnash
-  <Description>k__BackingField: A heavily armored beast with a jagged shell. Gnash
-    tears through defenses and shrugs off damage, forcing players to break its shield
-    before delivering the final blow
-  <Type>k__BackingField: 3
-  contactDamage: 4
-  detectionRadius: 6
-  maxHealth: 25
+  <Icon>k__BackingField: {fileID: 21300000, guid: 98035ac73eb4f427f815146966ee1443, type: 3}
+  <Name>k__BackingField: Detonode
+  <Description>k__BackingField: Roams until in range, then charges and explodes.
+    Smarter, deadlier.
+  <Type>k__BackingField: 1
+  <HasEvolution>k__BackingField: 0
+  <EvolutionData>k__BackingField: {fileID: 0}
+  <EvolutionPrefab>k__BackingField: {fileID: 0}
+  contactDamage: 30
+  detectionRadius: 4
+  maxHealth: 40
+  spawnSize: 1.2
+  spawnTime: 0.3
+  numberOfLoops: 4

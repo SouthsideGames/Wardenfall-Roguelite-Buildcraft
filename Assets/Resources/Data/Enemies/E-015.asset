@@ -13,11 +13,18 @@ MonoBehaviour:
   m_Name: E-015
   m_EditorClassIdentifier: 
   <ID>k__BackingField: E-015
-  <Icon>k__BackingField: {fileID: 21300000, guid: 13db8eb90e7c4f3488d0f788741fe43d, type: 3}
-  <Name>k__BackingField: Glimp
-  <Description>k__BackingField: A sinister flying entity that shields its allies,
-    rendering them invulnerable until it is destroyed. Prioritize taking it down!
-  <Type>k__BackingField: 6
-  contactDamage: 0
+  <Icon>k__BackingField: {fileID: 21300000, guid: b56d298ea8267f54e85d930742aa1ffc, type: 3}
+  <Name>k__BackingField: Hornpuff
+  <Description>k__BackingField: A timid-looking creature that suddenly turns into
+    a battering ram. It charges toward its target with surprising force, knocking
+    down anything in its path.
+  <Type>k__BackingField: 4
+  <HasEvolution>k__BackingField: 0
+  <EvolutionData>k__BackingField: {fileID: 0}
+  <EvolutionPrefab>k__BackingField: {fileID: 0}
+  contactDamage: 7
   detectionRadius: 6
-  maxHealth: 60
+  maxHealth: 20
+  spawnSize: 1.2
+  spawnTime: 0.3
+  numberOfLoops: 4

@@ -108,7 +108,7 @@ public enum EnemyType
     Summoner,
     Splitter,
     Teleport,
-    Boss
+    Elite
 }
 
 public enum StatusEffectType

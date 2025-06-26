@@ -16,7 +16,6 @@ public class RangedEnemyAttack : MonoBehaviour
     [SerializeField] private float bulletSpeed;
     private float attackTimer;
 
-    [Header("POOL:")]
     private ObjectPool<EnemyBullet> bulletPool;
 
     void Start()
@@ -56,6 +55,21 @@ public class RangedEnemyAttack : MonoBehaviour
     }
 
     public void ReleaseBullet(EnemyBullet _bullet) => bulletPool.Release(_bullet);
+
+    public void FireCustomDirection(Vector2 direction, float speed)
+    {
+        if (bulletPrefab == null) return;
+
+        EnemyBullet bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
+        Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+        if (rb != null)
+            rb.linearVelocity = direction.normalized * speed;
+
+        // Optional: rotate bullet sprite to face direction
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        bullet.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+    }
+
 
 #region POOLING
     private EnemyBullet CreateFunction()

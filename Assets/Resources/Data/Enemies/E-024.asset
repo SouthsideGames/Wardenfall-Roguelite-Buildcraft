@@ -13,13 +13,17 @@ MonoBehaviour:
   m_Name: E-024
   m_EditorClassIdentifier: 
   <ID>k__BackingField: E-024
-  <Icon>k__BackingField: {fileID: 21300000, guid: d10cfaf67a5e3cd46a3a50365b3c0de4, type: 3}
-  <Name>k__BackingField: Tremorok
-  <Description>k__BackingField: A massive ground-shaker that cannot be knocked back.
-    Each slam sends shockwaves of pure force.
-  <Type>k__BackingField: 0
+  <Icon>k__BackingField: {fileID: 21300000, guid: 49cd4030d307d7b41acc284f20860a54, type: 3}
+  <Name>k__BackingField: Creepettle
+  <Description>k__BackingField: A stationary creature that spawns waves of enemies
+    to overwhelm players. Must be destroyed to stop the endless assault.
+  <Type>k__BackingField: 7
   <HasEvolution>k__BackingField: 0
   <EvolutionData>k__BackingField: {fileID: 0}
-  contactDamage: 22
-  detectionRadius: 6.5
-  maxHealth: 140
+  <EvolutionPrefab>k__BackingField: {fileID: 0}
+  contactDamage: 0
+  detectionRadius: 6
+  maxHealth: 80
+  spawnSize: 1.2
+  spawnTime: 0.3
+  numberOfLoops: 4
