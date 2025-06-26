@@ -9,6 +9,7 @@ public class RangedEnemy : Enemy
     [Header("RANGED SPECIFICS:")]
     private RangedEnemyAttack attack;
     private Animator anim;
+    private EnemyAnimator enemyAnimator;
 
     protected override void Start()
     {
@@ -17,6 +18,9 @@ public class RangedEnemy : Enemy
         attack = GetComponent<RangedEnemyAttack>(); 
         anim = GetComponent<Animator>();  
         attack.StorePlayer(character);
+
+        enemyAnimator = GetComponent<EnemyAnimator>();
+        enemyAnimator?.PlayIdlePulseAnimation();
     }
 
     protected override void Update()
@@ -40,5 +44,6 @@ public class RangedEnemy : Enemy
     protected virtual void TryAttack()
     {
         attack.AutoAim();
+        enemyAnimator?.PlayAttackBurst();
     }
 }
