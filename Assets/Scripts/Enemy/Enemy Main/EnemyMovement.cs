@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour
 {
-       [Header("ELEMENTS:")]
+    [Header("ELEMENTS:")]
     private Transform currentTarget;
     private Vector2 targetPosition;
     private bool isTargetPositionSet = false;
@@ -111,6 +111,7 @@ public class EnemyMovement : MonoBehaviour
             currentTarget = CharacterManager.Instance.transform;
 
         startPosition = transform.position;
+        teleportTimer = 0f;
     }
 
     private void OnDestroy()
@@ -120,6 +121,7 @@ public class EnemyMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        teleportTriggeredThisFrame = false;
         if (!canMove || isKnockedBack || currentTarget == null) return;
 
         // Strafe-around logic
@@ -311,10 +313,10 @@ public class EnemyMovement : MonoBehaviour
 
     private IEnumerator TeleportRoutine()
     {
-         isTeleporting = true;
+        isTeleporting = true;
 
         if (teleportVFX != null)
-            Instantiate(teleportVFX, transform.position, Quaternion.identity);
+            teleportVFX.SetActive(true); 
 
         if (teleportSFX != null)
             AudioManager.Instance.PlaySFX(teleportSFX);
@@ -332,17 +334,16 @@ public class EnemyMovement : MonoBehaviour
 
             Vector2 targetPos = playerPos + teleportOffset;
 
-            if (!Physics2D.OverlapCircle(targetPos, 0.5f))
+            if (!Physics2D.OverlapCircle(targetPos, 0.5f, obstacleLayer))
             {
                 transform.position = targetPos;
-
-                if (teleportVFX != null)
-                    Instantiate(teleportVFX, transform.position, Quaternion.identity);
-
                 teleportTriggeredThisFrame = true;
                 break;
             }
         }
+
+        if (teleportVFX != null)
+            teleportVFX.SetActive(false);
 
         isTeleporting = false;
     }
