@@ -11,6 +11,8 @@ public class UIManager : MonoBehaviour, IGameStateListener
     public static Action<Panel> OnPanelShown;
     public Transform mainCanvas;
 
+
+    [Header("TUTORIAL:")]
     [SerializeField] private GameObject[] mainMenuButtons;
     private int currentTutorialStep = 0;
     [SerializeField] private TutorialDataSO newGameTutorialData;

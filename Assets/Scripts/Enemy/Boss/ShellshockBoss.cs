@@ -40,15 +40,17 @@ public class ShellshockBoss : Boss
         if (!hasSpawned || isAttacking) return;
 
         if (isMoving)
-            MoveToTarget();
+            enemyMovement.MoveToTargetPosition();
     }
+
 
     private void MoveToTarget()
     {
-        enemyMovement.SetTargetPosition(randomTargetPosition);
-
-        if (Vector2.Distance(transform.position, randomTargetPosition) < 0.2f)
+        float distance = Vector2.Distance(transform.position, randomTargetPosition);
+        if (distance < 0.2f)
+        {
             StopAndAttack();
+        }
     }
 
     private void StopAndAttack()

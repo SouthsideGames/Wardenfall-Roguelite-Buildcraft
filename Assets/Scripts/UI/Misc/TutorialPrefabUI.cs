@@ -35,7 +35,7 @@ public class TutorialPrefabUI : MonoBehaviour
         }
     }
 
-    private void OnNextButtonClicked()
+   private void OnNextButtonClicked()
     {
         if (isSingleLine)
         {
@@ -48,7 +48,11 @@ public class TutorialPrefabUI : MonoBehaviour
 
         if (currentDialogueIndex >= currentTutorial.dialogueLines.Length)
         {
+            // Mark this tutorial complete
             TutorialManager.Instance.CompleteTutorial(currentTutorial);
+
+            UIManager.Instance.CompleteIntro();
+
             Destroy(gameObject);
         }
         else
@@ -56,4 +60,5 @@ public class TutorialPrefabUI : MonoBehaviour
             UpdateDialogueText();
         }
     }
+
 }
