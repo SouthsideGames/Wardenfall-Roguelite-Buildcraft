@@ -93,6 +93,7 @@ public class GameManager : MonoBehaviour
     }
 
     public void ManageGameOver() => SceneManager.LoadScene(0);
+    public void ShowProgressionPanel() => SetGameState(GameState.Progression);
 
     public void PauseButtonCallback()
     {

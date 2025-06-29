@@ -259,6 +259,12 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
         }
     }
 
+    public void MarkAsSpawned()
+    {
+        hasSpawned = true;
+        WaveManager.Instance?.NotifyEnemyFullySpawned();
+    }
+
     private IEnumerator ResetInvincibility()
     {
         yield return new WaitForSeconds(0.1f);
@@ -271,7 +277,6 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
             evolutionHandler.Evolve();
     }
 
-    public void MarkAsSpawned() => hasSpawned = true;
 
     private void OnDrawGizmos()
     {

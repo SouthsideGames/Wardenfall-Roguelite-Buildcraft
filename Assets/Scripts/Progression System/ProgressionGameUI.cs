@@ -89,21 +89,8 @@ public class ProgressionGameUI : MonoBehaviour
         int metaXP = ProgressionXPGranter.CalculateMetaXP(waveNumber, difficultyMultiplier, traitCount);
         ProgressionManager.Instance.AddXP(metaXP);
 
-        bool isBossWave = WaveManager.Instance.IsCurrentWaveBoss();
-        bool hasChest = WaveTransitionManager.Instance.HasCollectedChest();
-        bool hasLevelUp = CharacterManager.Instance.HasLeveledUp();
+        GameManager.Instance.ManageGameOver();
 
-        if (hasChest || hasLevelUp)
-        {
-            GameManager.Instance.SetGameState(GameState.WaveTransition);
-        }
-        else if (isBossWave)
-        {
-            GameManager.Instance.SetGameState(GameState.TraitSelection);
-        }
-        else
-        {
-            GameManager.Instance.StartShop();
-        }
+        
     }
 }

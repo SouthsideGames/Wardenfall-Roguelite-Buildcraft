@@ -9,11 +9,11 @@ public class StatisticsManager : MonoBehaviour
 {
     public static StatisticsManager Instance { get; private set; }
     public GameStatistics currentStatistics = new GameStatistics();
-    public int CurrentRunKills {get; private set;}
-    public int CurrentWaveCompleted {get; private set;}
-    public int CurrentMeatCollected {get; private set;}
-    public int CurrentChestCollected {get; private set;}
-    public int CurrentLevelUp {get; private set;}
+    public int CurrentRunKills { get; private set; }
+    public int CurrentWaveCompleted { get; private set; }
+    public int CurrentMeatCollected { get; private set; }
+    public int CurrentChestCollected { get; private set; }
+    public int CurrentLevelUp { get; private set; }
 
     private string statsFilePath;
     private float lastPlayTimeCheck;
@@ -27,9 +27,16 @@ public class StatisticsManager : MonoBehaviour
     [SerializeField] private GameObject recordContainer;
     [SerializeField] private GameObject collectionContainer;
 
+    [Header("WEIGHTS:")]
+    [SerializeField] private int killXPWeight = 2;
+    [SerializeField] private int waveXPWeight = 25;
+    [SerializeField] private int meatXPWeight = 1;
+    [SerializeField] private float viewerScoreMinMultiplier = 0.5f;
+    [SerializeField] private float viewerScoreMaxMultiplier = 2f;
+
     private void Awake()
     {
-        if(Instance == null)
+        if (Instance == null)
             Instance = this;
         else
             Destroy(gameObject);
@@ -44,12 +51,12 @@ public class StatisticsManager : MonoBehaviour
         GameManager.OnGameResumed += OnGameResumedHandler;
 
         collectionContainer.SetActive(false);
-        recordContainer.SetActive(true);    
+        recordContainer.SetActive(true);
 
 
     }
 
-    private void OnDestroy() 
+    private void OnDestroy()
     {
         Meat.OnCollected -= TotalMeatCollectedHandler;
         Chest.OnCollected -= TotalChestCollectedHandler;
@@ -74,7 +81,7 @@ public class StatisticsManager : MonoBehaviour
         if (isTrackingPlayTime)
         {
             float deltaTime = Time.time - lastPlayTimeCheck;
-            currentStatistics.TotalPlayTime += deltaTime; 
+            currentStatistics.TotalPlayTime += deltaTime;
 
             lastPlayTimeCheck = Time.time;
         }
@@ -116,7 +123,7 @@ public class StatisticsManager : MonoBehaviour
             currentStatistics.MostKillsInARun = CurrentRunKills;
 
         if (CurrentLevelUp > currentStatistics.MostLevelUpsInARun)
-            currentStatistics.MostLevelUpsInARun = CurrentLevelUp; 
+            currentStatistics.MostLevelUpsInARun = CurrentLevelUp;
 
         if (CurrentMeatCollected > currentStatistics.MostMeatCollectedInARun)
             currentStatistics.MostMeatCollectedInARun = CurrentMeatCollected;
@@ -125,7 +132,7 @@ public class StatisticsManager : MonoBehaviour
             currentStatistics.MostChestsCollectedInARun = CurrentChestCollected;
 
         if (CurrentWaveCompleted > currentStatistics.MostWavesCompletedInARun)
-            currentStatistics.MostWavesCompletedInARun  = CurrentChestCollected;
+            currentStatistics.MostWavesCompletedInARun = CurrentChestCollected;
 
         SaveStats();
     }
@@ -182,11 +189,11 @@ public class StatisticsManager : MonoBehaviour
     private void TotalCharacterDeathHandler()
     {
         currentStatistics.TotalDeaths++;
-        SaveStats(); 
+        SaveStats();
     }
 
     public void OnGameResumedHandler() => StartTimer();
-    public void OnGamePausedHandler() =>  StopTimer();
+    public void OnGamePausedHandler() => StopTimer();
 
     public void StartTimer()
     {
@@ -219,7 +226,7 @@ public class StatisticsManager : MonoBehaviour
         characterUsageDict[characterID].UsageCount++;
         characterUsageDict[characterID].LastUsed = DateTime.Now;
 
-        ConvertDictionariesToLists(); 
+        ConvertDictionariesToLists();
         SaveStats();
     }
 
@@ -233,7 +240,7 @@ public class StatisticsManager : MonoBehaviour
         weaponUsageDict[weaponID].UsageCount++;
         weaponUsageDict[weaponID].LastUsed = DateTime.Now;
 
-        ConvertDictionariesToLists(); 
+        ConvertDictionariesToLists();
         SaveStats();
     }
 
@@ -246,24 +253,24 @@ public class StatisticsManager : MonoBehaviour
 
         if (characterUsageDict.TryGetValue(characterID, out UsageInfo usageInfo))
         {
-              CharacterUsageEntry characterEntry = currentStatistics.CharacterUsageList.Find(entry => entry.CharacterID == characterID);
+            CharacterUsageEntry characterEntry = currentStatistics.CharacterUsageList.Find(entry => entry.CharacterID == characterID);
 
-            if(characterEntry != null)
+            if (characterEntry != null)
                 characterEntry.WavesCompleted++;
         }
-          
-          ConvertDictionariesToLists();
-          SaveStats();
+
+        ConvertDictionariesToLists();
+        SaveStats();
     }
 
     public void RecordWeaponWavesCompleted(string weaponID)
     {
-          if (!weaponUsageDict.ContainsKey(weaponID))
+        if (!weaponUsageDict.ContainsKey(weaponID))
         {
             weaponUsageDict[weaponID] = new UsageInfo { UsageCount = 0, LastUsed = DateTime.Now };
         }
 
-          if (weaponUsageDict.TryGetValue(weaponID, out UsageInfo usageInfo))
+        if (weaponUsageDict.TryGetValue(weaponID, out UsageInfo usageInfo))
         {
             WeaponUsageEntry weaponEntry = currentStatistics.WeaponUsageList.Find(entry => entry.WeaponID == weaponID);
 
@@ -272,44 +279,77 @@ public class StatisticsManager : MonoBehaviour
         SaveStats();
     }
 
+    public void SetAverageViewerScoreForRun(float averageScore)
+    {
+        currentStatistics.AverageViewerScoreInRun = averageScore;
+
+        if (averageScore > currentStatistics.HighestAverageViewerScore)
+            currentStatistics.HighestAverageViewerScore = averageScore;
+
+        SaveStats();
+    }
+
+
     private void ConvertDictionariesToLists()
     {
         currentStatistics.CharacterUsageList.Clear();
         foreach (var entry in characterUsageDict)
         {
             CharacterUsageEntry characterEntry = new CharacterUsageEntry { CharacterID = entry.Key, UsageInfo = entry.Value };
-            if(characterUsageDict.TryGetValue(entry.Key, out UsageInfo usageInfo))
+            if (characterUsageDict.TryGetValue(entry.Key, out UsageInfo usageInfo))
             {
-                if(currentStatistics.CharacterUsageList.Find(e => e.CharacterID == entry.Key) != null)
+                if (currentStatistics.CharacterUsageList.Find(e => e.CharacterID == entry.Key) != null)
                 {
-                int index = currentStatistics.CharacterUsageList.FindIndex(e => e.CharacterID == entry.Key);
+                    int index = currentStatistics.CharacterUsageList.FindIndex(e => e.CharacterID == entry.Key);
                     characterEntry.WavesCompleted = currentStatistics.CharacterUsageList[index].WavesCompleted;
                 }
                 else
                 {
-                   characterEntry.WavesCompleted = 0;
+                    characterEntry.WavesCompleted = 0;
                 }
-               
+
             }
-             currentStatistics.CharacterUsageList.Add(characterEntry);
+            currentStatistics.CharacterUsageList.Add(characterEntry);
         }
 
         currentStatistics.WeaponUsageList.Clear();
         foreach (var entry in weaponUsageDict)
         {
-           WeaponUsageEntry weaponEntry =  new WeaponUsageEntry { WeaponID = entry.Key, UsageInfo = entry.Value };
+            WeaponUsageEntry weaponEntry = new WeaponUsageEntry { WeaponID = entry.Key, UsageInfo = entry.Value };
 
-            if(weaponUsageDict.TryGetValue(entry.Key, out UsageInfo usageInfo))
+            if (weaponUsageDict.TryGetValue(entry.Key, out UsageInfo usageInfo))
             {
-                if(currentStatistics.WeaponUsageList.Find(e => e.WeaponID == entry.Key) != null)
+                if (currentStatistics.WeaponUsageList.Find(e => e.WeaponID == entry.Key) != null)
                 {
                     int index = currentStatistics.WeaponUsageList.FindIndex(e => e.WeaponID == entry.Key);
                 }
             }
-           
+
             currentStatistics.WeaponUsageList.Add(weaponEntry);
         }
     }
+    
+    public int CalculateEndOfRunXP()
+    {
+        int kills = CurrentRunKills;
+        int waves = CurrentWaveCompleted;
+        int meat = CurrentMeatCollected;
+        float averageViewerScore = currentStatistics.AverageViewerScoreInRun;
+
+        const int KillWeight = 2;    
+        const int WaveWeight = 25;   
+        const int MeatWeight = 1;    
+
+        int baseXP = (kills * KillWeight) + (waves * WaveWeight) + (meat * MeatWeight);
+
+        float viewerMultiplier = Mathf.Lerp(0.5f, 2f, averageViewerScore);
+
+        int finalXP = Mathf.RoundToInt(baseXP * viewerMultiplier);
+
+        return finalXP;
+    }
+
+
 
     #endregion
 
@@ -332,6 +372,7 @@ public class GameStatistics
     public int MostLevelUpsInARun;          // Most level-ups in a single run
     public int MostChestsCollectedInARun;   // Most chests collected in a single run
     public int MostMeatCollectedInARun;    // Most candy collected in a single run
+    public float AverageViewerScoreInRun;
 
     // Cumulative stats across all runs
     public int TotalWavesCompleted;   // Total waves completed
@@ -340,6 +381,7 @@ public class GameStatistics
     public int TotalMeatCollected;         // Total candy collected across all runs
     public float TotalPlayTime;               // Total time played
     public int TotalChestCollected;          //Total chest collected across all runs
+    public float HighestAverageViewerScore;
 
   // Replace dictionaries with lists
     public List<CharacterUsageEntry> CharacterUsageList = new List<CharacterUsageEntry>();

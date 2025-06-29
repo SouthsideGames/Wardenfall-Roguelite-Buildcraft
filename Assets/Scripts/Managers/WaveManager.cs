@@ -38,10 +38,11 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     private float playerPerformanceScore = 1f;
     private int enemiesKilledThisWave = 0;
     private float damageTakenThisWave = 0f;
-    private float timeSinceLastKill = 0f;
     private bool droppedBelow20Triggered = false;
     private List<Vector2> recentSpawnPoints = new List<Vector2>();
     private float lastTickSecond = -1f;
+    private bool hasSpawnedAnyEnemy;
+    private List<float> viewerScoresPerWave = new List<float>();
 
     private void Awake()
     {
@@ -59,26 +60,34 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 
     private void Update()
     {
-        if (!hasWaveStarted) return;
-
-        if (timer < waveDuration)
+       if (hasWaveStarted)
         {
-            HandleWaveProgression();
-            AdjustViewerScore(-0.01f * Time.deltaTime); 
-            ViewerScoreAdjustments();
+            if (timer < waveDuration)
+            {
+                HandleWaveProgression();
+                AdjustViewerScore(-0.01f * Time.deltaTime);
+                ViewerScoreAdjustments();
+
+                if (hasSpawnedAnyEnemy && AllEnemiesDefeated())
+                {
+                    WaveWrapUp();
+                }
+            }
+            else
+            {
+                WaveWrapUp();
+            }
         }
-        else
-            WaveWrapUp();
 
     }
 
-   private void StartWave(int waveIndex)
+    private void StartWave(int waveIndex)
     {
         InitializeWave(waveIndex);
         AudioManager.Instance.PlayCrowdAmbience();
         hasWaveStarted = true;
         timer = 0;
-        timeSinceLastKill = 0f;
+        hasSpawnedAnyEnemy = false;
         FindAnyObjectByType<CardInGameUIManager>()?.ResetAllCooldowns();
 
         UpdateUIForWaveStart();
@@ -96,6 +105,9 @@ public class WaveManager : MonoBehaviour, IGameStateListener
                 UIManager.Instance?.ShowToast(display);
             }
         }
+        
+        if (waveIndex == 0)
+            viewerScoresPerWave.Clear();
     }
 
 
@@ -147,6 +159,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
                 Vector2 spawnPos = GetOptimizedSpawnPosition();
 
                 GameObject enemy = Instantiate(segment.selectedPrefab, spawnPos, Quaternion.identity, transform);
+
 
                 AdjustEnemyDifficulty(enemy.GetComponent<Enemy>());
 
@@ -253,9 +266,14 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     {
         enemiesKilledThisWave++;
         AdjustViewerScore(+0.05f);
-        timeSinceLastKill = 0f;
         
         TrySpawnEvoCrystal();
+    }
+
+
+    public void NotifyEnemyFullySpawned()
+    {
+        hasSpawnedAnyEnemy = true;
     }
 
     public void ReportPlayerHit()
@@ -269,14 +287,6 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         if (character.controller.MoveDirection.sqrMagnitude > 0.01f)
             AdjustViewerScore(0.01f * Time.deltaTime);
 
-        timeSinceLastKill += Time.deltaTime;
-
-        if (timeSinceLastKill >= 5f)
-        {
-            AdjustViewerScore(-0.10f);
-            timeSinceLastKill = 0f;
-        }
-
         float currentHealthRatio = character.health.CurrentHealth / character.stats.GetStatValue(Stat.MaxHealth);
         if (!droppedBelow20Triggered && currentHealthRatio < 0.2f)
         {
@@ -288,7 +298,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     #endregion
 
 
-   private void WaveWrapUp()
+    private void WaveWrapUp()
     {
         OnWaveCompleted?.Invoke();
 
@@ -298,10 +308,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         if (maxHealth > 0 && (currentHealth / maxHealth) < 0.10f)
             AudioManager.Instance?.PlayCrowdReaction(CrowdReactionType.Gasp);
 
-        int baseXP = 100;
-        float bonusMultiplier = Mathf.Lerp(0.5f, 2f, currentViewerScore);
-        int xpEarned = Mathf.RoundToInt(baseXP * bonusMultiplier);
-        ProgressionManager.Instance.AddXP(xpEarned);
+        viewerScoresPerWave.Add(currentViewerScore);
 
         AudioManager.Instance?.StopAmbientLoop();
 
@@ -331,17 +338,39 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 
         currentWaveIndex++;
         Time.timeScale = 1f;
-        GameManager.Instance.SetGameState(GameState.Progression);
+
+        bool isBossWave = IsCurrentWaveBoss();
+        bool hasChest = WaveTransitionManager.Instance.HasCollectedChest();
+        bool hasLevelUp = CharacterManager.Instance.HasLeveledUp();
+        
+        if (hasChest || hasLevelUp)
+            GameManager.Instance.SetGameState(GameState.WaveTransition);
+        else if (isBossWave)
+            GameManager.Instance.SetGameState(GameState.TraitSelection);
+        else
+            GameManager.Instance.StartShop();
+    }
+    
+    public float GetAverageViewerScore()
+    {
+        if (viewerScoresPerWave == null || viewerScoresPerWave.Count == 0)
+            return 0f;
+
+        float sum = 0f;
+        foreach (var score in viewerScoresPerWave)
+            sum += score;
+
+        return sum / viewerScoresPerWave.Count;
     }
 
-    public bool IsCurrentWaveBoss() 
+    public bool IsCurrentWaveBoss()
     {
-        foreach (var segment in currentWave.segments) 
+        foreach (var segment in currentWave.segments)
         {
             if (segment.bossWave)
                 return true;
         }
-            return false;
+        return false;
     }
 
 
@@ -378,12 +407,23 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 
     private void EndGame()
     {
+            float averageViewerScore = GetAverageViewerScore();
+        StatisticsManager.Instance.SetAverageViewerScoreForRun(averageViewerScore);
+
+        int earnedXP = StatisticsManager.Instance.CalculateEndOfRunXP();
+        ProgressionManager.Instance.AddXP(earnedXP);
+
+        AudioManager.Instance?.StopAmbientLoop();
+
         var stats = StatisticsManager.Instance.currentStatistics;
         stats.CurrentRunDuration = Time.time - GameManager.Instance.runStartTime;
         stats.MostEffectiveWeaponInRun = CharacterManager.Instance.weapon.GetMostEffectiveWeapon();
-        
+
+        DefeatAllEnemies();
+
         ui.StageCompleted();
         UIManager.Instance.UpdateStageCompletionPanel();
+
         GameManager.Instance.SetGameState(GameState.StageCompleted);
     }
 
@@ -413,6 +453,21 @@ public class WaveManager : MonoBehaviour, IGameStateListener
             Instantiate(evoCrystalPrefab, spawnPos, Quaternion.identity);
         }
     }
+
+    private bool AllEnemiesDefeated()
+    {
+        var enemies = GetComponentsInChildren<Enemy>();
+
+        if (enemies.Length == 0)
+        {
+            return true;
+        }
+
+        bool allDead = enemies.All(e => !e.IsAlive);
+        return allDead;
+    }
+
+
 
 
     private Vector2 GetFormationSpawnPosition(int enemyIndex)
