@@ -42,6 +42,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     private bool droppedBelow20Triggered = false;
     private List<Vector2> recentSpawnPoints = new List<Vector2>();
     private float lastTickSecond = -1f;
+    private bool hasSpawnedAnyEnemy = false;
 
     private void Awake()
     {
@@ -64,13 +65,19 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         if (timer < waveDuration)
         {
             HandleWaveProgression();
-            AdjustViewerScore(-0.01f * Time.deltaTime); 
+            AdjustViewerScore(-0.01f * Time.deltaTime);
             ViewerScoreAdjustments();
+
+            if (hasSpawnedAnyEnemy && transform.childCount == 0)
+            {
+                Debug.Log("[WaveManager] Ending wave early—no enemies remaining.");
+                WaveWrapUp();
+            }
         }
         else
             WaveWrapUp();
-
     }
+
 
    private void StartWave(int waveIndex)
     {
@@ -79,14 +86,14 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         hasWaveStarted = true;
         timer = 0;
         timeSinceLastKill = 0f;
+        hasSpawnedAnyEnemy = false;
+
         FindAnyObjectByType<CardInGameUIManager>()?.ResetAllCooldowns();
 
         UpdateUIForWaveStart();
 
-        // 🌀 Apply Hyper Mode Trait Effects (supports all tiers)
         ApplyHyperModeEffects();
 
-        // 🧪 Challenge Mode Visual
         if (ChallengeManager.IsActive(ChallengeMode.RogueRoulette))
         {
             if (ChallengeManager.Instance.TryGetLastRouletteEffect(out Stat stat, out float mult))
@@ -147,6 +154,8 @@ public class WaveManager : MonoBehaviour, IGameStateListener
                 Vector2 spawnPos = GetOptimizedSpawnPosition();
 
                 GameObject enemy = Instantiate(segment.selectedPrefab, spawnPos, Quaternion.identity, transform);
+
+                hasSpawnedAnyEnemy = true;
 
                 AdjustEnemyDifficulty(enemy.GetComponent<Enemy>());
 
