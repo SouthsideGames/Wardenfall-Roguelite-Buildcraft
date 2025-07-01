@@ -3,47 +3,67 @@ using UnityEngine;
 
 public class DreadBoss : Boss
 {
-   [Header("STAGE 1")]
+    [Header("STAGE 1 SETTINGS")]
     [SerializeField] private GameObject spikePrefab;
-    [SerializeField] private GameObject webPrefab;
     [SerializeField] private float spikeFallRange = 5f;
     [SerializeField] private int numSpikes = 6;
 
-    [Header("STAGE 2")]
+    [Header("STAGE 2 SETTINGS")]
+    [SerializeField] private GameObject webPrefab;
     [SerializeField] private int numWebs = 3;
     [SerializeField] private float webDuration = 5f;
 
     private bool isAttacking;
     private Vector3 originalScale;
-    
+    private EnemyMovement enemyMovement;
+
     protected override void InitializeBoss()
     {
         base.InitializeBoss();
         originalScale = transform.localScale;
+        enemyMovement = GetComponent<EnemyMovement>();
+        attackTimer = attackCooldown;
     }
 
-    protected override void ExecuteStageOne()
+    protected override void Update()
     {
-        if (!isAttacking)
+        base.Update();
+
+        if (!hasSpawned || isAttacking) return;
+
+        attackTimer -= Time.deltaTime;
+
+        if (attackTimer <= 0)
         {
-            isAttacking = true;
-            GroundSlam();
+            ExecuteStage();
+            attackTimer = attackCooldown;
         }
+        else
+            enemyMovement.FollowCurrentTarget();
     }
 
-    protected override void ExecuteStageTwo()
+    protected override void ExecuteStage()
     {
-        if (!isAttacking)
-        {
-            isAttacking = true;
-            WebTrap();
-        }
+        if (GetHealthPercent() > 0.5f)
+            StartCoroutine(PerformGroundSlam());
+        else
+            StartCoroutine(PerformWebTrap());
     }
 
-    private void GroundSlam()
+    private float GetHealthPercent()
     {
-        
-        transform.localScale = new Vector3(originalScale.x * 1.2f, originalScale.y * 0.8f, originalScale.z);
+        return (float)health / maxHealth;
+    }
+
+    private IEnumerator PerformGroundSlam()
+    {
+        isAttacking = true;
+        enemyMovement.DisableMovement(1.5f);
+
+        LeanTween.color(gameObject, Color.red, 0.2f).setLoopPingPong(2);
+        LeanTween.scale(gameObject, originalScale * 1.2f, 0.2f).setEaseInOutQuad();
+
+        yield return new WaitForSeconds(0.3f);
 
         for (int i = 0; i < numSpikes; i++)
         {
@@ -51,13 +71,22 @@ public class DreadBoss : Boss
             Instantiate(spikePrefab, spawnPosition, Quaternion.identity);
         }
 
-        transform.localScale = originalScale;
+        LeanTween.scale(gameObject, originalScale * 1.05f, 0.1f).setEasePunch();
+        yield return new WaitForSeconds(0.5f);
+
+        LeanTween.scale(gameObject, originalScale, 0.1f);
         isAttacking = false;
     }
 
-    private void WebTrap()
+    private IEnumerator PerformWebTrap()
     {
-        
+        isAttacking = true;
+        enemyMovement.DisableMovement(2f);
+
+        LeanTween.color(gameObject, Color.green, 0.2f).setLoopPingPong(2);
+        LeanTween.scale(gameObject, originalScale * 1.2f, 0.2f).setEaseInOutQuad();
+
+        yield return new WaitForSeconds(0.3f);
 
         for (int i = 0; i < numWebs; i++)
         {
@@ -70,6 +99,10 @@ public class DreadBoss : Boss
             Destroy(web, webDuration);
         }
 
+        LeanTween.scale(gameObject, originalScale * 1.05f, 0.1f).setEasePunch();
+        yield return new WaitForSeconds(0.5f);
+
+        LeanTween.scale(gameObject, originalScale, 0.1f);
         isAttacking = false;
     }
 
