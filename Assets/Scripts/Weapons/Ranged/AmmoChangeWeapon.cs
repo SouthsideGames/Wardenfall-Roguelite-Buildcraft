@@ -5,13 +5,20 @@ public class AmmoChangeWeapon : RangedWeapon
     protected override void Shoot()
     {
         OnBulletFired?.Invoke();
-        anim.Play("Attack");
+        anim?.Play("Attack");
 
         int baseDamage = GetDamage(out bool isCriticalHit);
 
-        AdaptiveBullet bullet = bulletPool.Get() as AdaptiveBullet;
-        bullet.Shoot(baseDamage, transform.up, isCriticalHit);
+        if (bulletPool.Get() is AdaptiveBullet bullet)
+        {
+            bullet.Shoot(baseDamage, transform.up, isCriticalHit);
+        }
+        else
+        {
+            Debug.LogError($"{name}: bulletPool returned non-AdaptiveBullet!");
+        }
 
         PlaySFX();
     }
+
 }
