@@ -1,12 +1,9 @@
 using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class GravulonBoss : Boss
 {
-    [Header("STAGE 1")]
+    [Header("STAGE SETTINGS")]
     [SerializeField] private float slamRange = 3f;
     [SerializeField] private int slamDamage = 25;
     [SerializeField] private float stunDuration = 1.5f;
@@ -39,42 +36,66 @@ public class GravulonBoss : Boss
             slamTimer = slamCooldown;
         }
         else
+        {
             enemyMovement.FollowCurrentTarget();
+        }
     }
 
     protected override void ExecuteStage()
     {
+        if (GetHealthPercent() > 0.5f)
+            ExecuteStageOne();
+        else
+            ExecuteStageTwo();
+    }
 
-        switch (stageToExecute)
-        {
-            case 1:
-                ExecuteStageOne();
-                break;
-            case 2:
-                ExecuteStageTwo();
-                break;
-            default:
-                Debug.LogWarning("Invalid Stage Selected for Gravulon!");
-                break;
-        }
+    private float GetHealthPercent()
+    {
+        return (float)health / maxHealth;
     }
 
     protected override void ExecuteStageOne()
     {
         if (isSlamming) return;
-
         isSlamming = true;
+
         enemyMovement.DisableMovement(1.5f);
 
-        transform.localScale = new Vector3(originalScale.x * 1.2f, originalScale.y * 0.8f, originalScale.z);
+        // Anticipation animation
+        LeanTween.color(gameObject, Color.red, 0.2f).setLoopPingPong(2);
+        LeanTween.scale(gameObject, new Vector3(originalScale.x * 1.5f, originalScale.y * 0.7f, originalScale.z), 0.2f).setEaseInOutQuad();
 
         Invoke(nameof(PerformSlam), 0.5f);
     }
 
     private void PerformSlam()
     {
-        transform.localScale = new Vector3(originalScale.x * 0.8f, originalScale.y * 1.2f, originalScale.z);
-        DealShockwaveDamage();
+        // Impact animation
+        LeanTween.scale(gameObject, originalScale * 1.2f, 0.1f).setEasePunch();
+        DealShockwaveDamage(slamRange, slamDamage, stunDuration);
+
+        Invoke(nameof(ResetAfterSlam), 0.3f);
+    }
+
+    protected override void ExecuteStageTwo()
+    {
+        if (isSlamming) return;
+        isSlamming = true;
+
+        enemyMovement.DisableMovement(2f);
+
+        // Bigger anticipation
+        LeanTween.color(gameObject, Color.yellow, 0.2f).setLoopPingPong(3);
+        LeanTween.scale(gameObject, new Vector3(originalScale.x * 1.7f, originalScale.y * 0.6f, originalScale.z), 0.2f).setEaseInOutQuad();
+
+        Invoke(nameof(PerformEarthquake), 0.5f);
+    }
+
+    private void PerformEarthquake()
+    {
+        // Big impact
+        LeanTween.scale(gameObject, originalScale * 1.3f, 0.1f).setEasePunch();
+        DealShockwaveDamage(slamRange * 1.5f, slamDamage * 2, stunDuration * 1.5f);
 
         Invoke(nameof(ResetAfterSlam), 0.3f);
     }
@@ -86,59 +107,24 @@ public class GravulonBoss : Boss
         enemyMovement.EnableMovement();
     }
 
-    private void DealShockwaveDamage()
+    private void DealShockwaveDamage(float range, int damage, float stun)
     {
-        Collider2D[] hitObjects = Physics2D.OverlapCircleAll(transform.position, slamRange);
+        Collider2D[] hitObjects = Physics2D.OverlapCircleAll(transform.position, range);
 
         foreach (Collider2D hit in hitObjects)
         {
             if (hit.CompareTag("Player"))
-                character.TakeDamage(slamDamage);
+                character.TakeDamage(damage);
             else if (hit.CompareTag("Enemy"))
             {
                 Enemy enemy = hit.GetComponent<Enemy>();
                 if (enemy != null)
                 {
-                    enemy.TakeDamage(slamDamage, false);
-                    enemy.GetComponent<EnemyMovement>().DisableMovement(stunDuration);
+                    enemy.TakeDamage(damage, false);
+                    enemy.GetComponent<EnemyMovement>().DisableMovement(stun);
                 }
             }
         }
-    }
-
-    protected override void ExecuteStageTwo()
-    {
-        if (isSlamming) return;
-
-        isSlamming = true;
-        enemyMovement.DisableMovement(2f);
-
-        transform.localScale = new Vector3(originalScale.x * 1.1f, originalScale.y * 0.9f, originalScale.z);
-        Invoke(nameof(PerformEarthquake), 0.5f);
-    }
-
-    private void PerformEarthquake()
-    {
-        transform.localScale = originalScale;
-
-        Collider2D[] hitObjects = Physics2D.OverlapCircleAll(transform.position, slamRange * 1.5f);
-        foreach (Collider2D hit in hitObjects)
-        {
-            if (hit.CompareTag("Player"))
-                character.TakeDamage(slamDamage * 2);
-            else if (hit.CompareTag("Enemy"))
-            {
-                Enemy enemy = hit.GetComponent<Enemy>();
-                if (enemy != null)
-                {
-                    enemy.TakeDamage(slamDamage, false);
-                    enemy.GetComponent<EnemyMovement>().DisableMovement(stunDuration * 1.5f);
-                }
-            }
-        }
-
-        isSlamming = false;
-        enemyMovement.EnableMovement();
     }
 
     private void OnDrawGizmosSelected()

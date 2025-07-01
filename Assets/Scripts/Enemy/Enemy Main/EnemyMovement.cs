@@ -57,7 +57,7 @@ public class EnemyMovement : MonoBehaviour
     [Space(10)]
     [Header("ADVANCE-THEN-STOP SETTINGS")]
     [Tooltip("Settings for enemies that stop after getting close enough to the player.")]
-    [SerializeField] private float stopDistance = 6f;
+    public float stopDistance = 6f;
 
     [Space(10)]
     [Header("STRAFE SETTINGS")]

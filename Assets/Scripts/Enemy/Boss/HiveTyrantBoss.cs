@@ -5,21 +5,20 @@ using UnityEngine.UI;
 
 public class HiveTyrantBoss : Boss
 {   
-    [Header("STAGE 1")]
+    
+    [Header("DASH SETTINGS")]
     [SerializeField] private float dashCooldown = 3f;
     [SerializeField] private float dashDistance = 3f;
-    
-    [Header("STAGE 2")]
+
+    [Header("SUMMON SETTINGS")]
     [SerializeField] private GameObject stingletPrefab;
-    [SerializeField] private int maxMinions = 3;
-    [SerializeField] private float spawnInterval = 5f;
+    [SerializeField] private int maxMinions = 5;
 
     private int activeMinions = 0;
     private EnemyMovement enemyMovement;
     private Vector3 originalScale;
     private bool isDashing;
     private float dashTimer;
-    private float spawnTimer;
 
     protected override void InitializeBoss()
     {
@@ -28,7 +27,6 @@ public class HiveTyrantBoss : Boss
         originalScale = transform.localScale;
 
         dashTimer = dashCooldown;
-        spawnTimer = spawnInterval;
     }
 
     protected override void Update()
@@ -38,26 +36,36 @@ public class HiveTyrantBoss : Boss
         if (!hasSpawned || isDashing) return;
 
         dashTimer -= Time.deltaTime;
-        spawnTimer -= Time.deltaTime;
 
         if (dashTimer <= 0)
         {
-            ExecuteStage(); 
+            ExecuteStage();
             dashTimer = dashCooldown;
         }
     }
 
-    protected override void ExecuteStageOne() =>  PerformDash();
-    protected override void ExecuteStageTwo() =>  SpawnMinion();
-
-    private void PerformDash()
+    protected override void ExecuteStageOne()
     {
-        if (isDashing) return;
+        if (GetHealthPercent() > 0.5f)
+            StartCoroutine(PerformDash());
+        else
+            StartCoroutine(SpawnMinionPhase());
+    }
 
+    protected override void ExecuteStageTwo()
+    {
+        StartCoroutine(SpawnMinionPhase());
+    }
+
+    private IEnumerator PerformDash()
+    {
         isDashing = true;
         enemyMovement.DisableMovement(0.6f);
 
-        transform.localScale = new Vector3(originalScale.x * 1.5f, originalScale.y * 0.7f, originalScale.z);
+        LeanTween.color(gameObject, Color.red, 0.2f).setLoopPingPong(2);
+        LeanTween.scale(gameObject, new Vector3(originalScale.x * 1.5f, originalScale.y * 0.7f, originalScale.z), 0.2f).setEaseInOutQuad();
+
+        yield return new WaitForSeconds(0.2f);
 
         Vector2 dashDirection = (PlayerTransform.position - transform.position).normalized;
         Vector2 dashTarget = (Vector2)transform.position + dashDirection * dashDistance;
@@ -72,12 +80,32 @@ public class HiveTyrantBoss : Boss
         isDashing = false;
     }
 
-    private void SpawnMinion()
+    private IEnumerator SpawnMinionPhase()
     {
-        if (activeMinions >= maxMinions) return;
+        enemyMovement.canMove = false;
+
+        if (activeMinions >= maxMinions)
+        {
+            yield return new WaitForSeconds(1f);
+            enemyMovement.canMove = true;
+            yield break;
+        }
+
+        LeanTween.scale(gameObject, transform.localScale * 1.2f, 0.2f).setEasePunch();
+        LeanTween.color(gameObject, Color.yellow, 0.2f).setLoopPingPong(2);
+
+        yield return new WaitForSeconds(0.3f);
 
         Instantiate(stingletPrefab, transform.position, Quaternion.identity);
         activeMinions++;
+
+        yield return new WaitForSeconds(1f);
+        enemyMovement.canMove = true;
+    }
+
+    private float GetHealthPercent()
+    {
+        return (float)health / maxHealth;
     }
 
 }

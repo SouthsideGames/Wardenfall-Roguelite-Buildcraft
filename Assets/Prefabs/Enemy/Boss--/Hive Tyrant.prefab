@@ -923,12 +923,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02a2d6aaf370bf64785cb7390826974e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyData: {fileID: 0}
+  enemyData: {fileID: 11400000, guid: 423dfc426a1b766459c4a35d7a428285, type: 2}
   _spriteRenderer: {fileID: 8763528285157772957}
   spawnIndicator: {fileID: 8807373056921413506}
   _collider: {fileID: 7499570923641318118}
   contactDamage: 0
-  playerDetectionRadius: 0
+  playerDetectionRadius: 6
   deathParticles: {fileID: 8248587190768416357}
   showGizmos: 0
   maxHealth: 1000
@@ -943,7 +943,6 @@ MonoBehaviour:
   dashDistance: 3
   stingletPrefab: {fileID: 796357530644533229, guid: 0908c98750083364ea9748500e33ccf2, type: 3}
   maxMinions: 3
-  spawnInterval: 5
 --- !u!114 &2552479246940894905
 MonoBehaviour:
   m_ObjectHideFlags: 0

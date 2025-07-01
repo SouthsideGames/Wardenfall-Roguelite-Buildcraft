@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Feedbacks;
 
 [RequireComponent(typeof(EnemyMovement))]
 [RequireComponent(typeof(RangedEnemyAttack))]
@@ -10,16 +9,11 @@ public class ShellshockBoss : Boss
     [Header("MOVEMENT SETTINGS")]
     [SerializeField] private float stopDuration = 1.5f;
     [SerializeField] private float moveRange = 5f;
-
-    [SerializeField] private MMFeedbacks stage1Feedback;
-    [SerializeField] private MMFeedbacks stage2Feedback;
-    [SerializeField] private MMFeedbacks stage3Feedback;
-
+    
     private EnemyMovement enemyMovement;
     private RangedEnemyAttack rangedAttack;
     private Rigidbody2D rb;
     private Vector2 randomTargetPosition;
-    private bool isMoving = true;
     private bool isAttacking = false;
 
     protected override void InitializeBoss()
@@ -28,7 +22,7 @@ public class ShellshockBoss : Boss
         enemyMovement = GetComponent<EnemyMovement>();
         rangedAttack = GetComponent<RangedEnemyAttack>();
         rb = GetComponent<Rigidbody2D>();
-
+        
         rangedAttack.StorePlayer(character);
         PickNewRandomTarget();
     }
@@ -39,23 +33,13 @@ public class ShellshockBoss : Boss
 
         if (!hasSpawned || isAttacking) return;
 
-        if (isMoving)
-            enemyMovement.MoveToTargetPosition();
-    }
-
-
-    private void MoveToTarget()
-    {
-        float distance = Vector2.Distance(transform.position, randomTargetPosition);
-        if (distance < 0.2f)
-        {
+        enemyMovement.MoveToTargetPosition();
+        if (Vector2.Distance(transform.position, randomTargetPosition) < 0.2f)
             StopAndAttack();
-        }
     }
 
     private void StopAndAttack()
     {
-        isMoving = false;
         isAttacking = true;
         enemyMovement.DisableMovement(stopDuration);
 
@@ -67,7 +51,6 @@ public class ShellshockBoss : Boss
 
     private void ResumeMovement()
     {
-        isMoving = true;
         isAttacking = false;
         PickNewRandomTarget();
     }
@@ -79,46 +62,46 @@ public class ShellshockBoss : Boss
             bossPosition.x + Random.Range(-moveRange, moveRange),
             bossPosition.y + Random.Range(-moveRange, moveRange)
         );
+        enemyMovement.SetTargetPosition(randomTargetPosition);
     }
 
     protected override void ExecuteStageOne()
     {
-        stage1Feedback?.PlayFeedbacks();
-        StartCoroutine(SpiralShoot());
+        StartCoroutine(SpiralShotStage());
     }
 
-    private IEnumerator SpiralShoot()
+    private IEnumerator SpiralShotStage()
     {
         isAttacking = true;
-        enemyMovement.DisableMovement(1.5f);
-
-        float angle = 0f;
-        int shots = 6;
+        enemyMovement.canMove = false;
+        enemyMovement.StopMoving();
 
         LeanTween.rotateZ(gameObject, transform.eulerAngles.z + 360f, 2f).setEaseLinear();
 
+        float angle = 0f;
+        int shots = 6;
         for (int i = 0; i < shots; i++)
         {
-            LeanTween.scale(gameObject, transform.localScale * 1.05f, 0.1f).setLoopPingPong(1);
             Vector2 dir = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad));
             rangedAttack.FireCustomDirection(dir.normalized, 3f);
             angle += 60f;
             yield return new WaitForSeconds(0.15f);
         }
 
+        yield return new WaitForSeconds(0.5f);
+        enemyMovement.canMove = true;
         isAttacking = false;
     }
 
     protected override void ExecuteStageTwo()
     {
-        stage2Feedback?.PlayFeedbacks();
-        StartCoroutine(ChargeWithBounce());
+        StartCoroutine(ShellChargeStage());
     }
 
-    private IEnumerator ChargeWithBounce()
+    private IEnumerator ShellChargeStage()
     {
         isAttacking = true;
-        enemyMovement.DisableMovement(2f);
+        enemyMovement.canMove = false;
 
         LeanTween.scale(gameObject, Vector3.one * 0.7f, 0.2f).setEaseInOutQuad();
         yield return new WaitForSeconds(0.2f);
@@ -129,19 +112,23 @@ public class ShellshockBoss : Boss
         yield return new WaitForSeconds(1.5f);
 
         LeanTween.scale(gameObject, Vector3.one, 0.2f).setEaseInOutQuad();
+        enemyMovement.canMove = true;
         isAttacking = false;
     }
 
     protected override void ExecuteStageThree()
     {
-        stage3Feedback?.PlayFeedbacks();
-        StartCoroutine(ShellBarrage());
+        StartCoroutine(ShellstormStage());
     }
 
-    private IEnumerator ShellBarrage()
+    private IEnumerator ShellstormStage()
     {
         isAttacking = true;
-        enemyMovement.DisableMovement(2f);
+
+        enemyMovement.canMove = true;
+        enemyMovement.chasePlayer = true;
+        enemyMovement.advanceThenStop = true;
+        enemyMovement.stopDistance = 6f;
 
         LeanTween.scale(gameObject, transform.localScale * 1.3f, 0.2f).setEasePunch();
         yield return new WaitForSeconds(0.2f);

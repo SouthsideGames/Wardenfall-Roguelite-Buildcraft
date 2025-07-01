@@ -174,6 +174,14 @@ public enum ChallengeMode
     SingleSlot
 }
 
+public enum RotationMode
+{
+    Instant,
+    SmoothLerp,
+    LeanTween
+}
+
+
 public static class Enums
 {
     public static string FormatStatName(Stat _stat)

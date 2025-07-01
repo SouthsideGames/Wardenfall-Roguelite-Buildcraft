@@ -5935,12 +5935,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7b303ac193cbbc4a9bb078a558bf24e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyData: {fileID: 0}
+  enemyData: {fileID: 11400000, guid: ea050af3caf7ffa4895988b7a7bd9ff7, type: 2}
   _spriteRenderer: {fileID: 8752888432016882076}
   spawnIndicator: {fileID: 7134393198149721410}
   _collider: {fileID: 7912901263690595757}
   contactDamage: 0
-  playerDetectionRadius: 0
+  playerDetectionRadius: 6
   deathParticles: {fileID: 8848179219323530943}
   showGizmos: 0
   maxHealth: 1000
@@ -5953,9 +5953,6 @@ MonoBehaviour:
   numberOfStages: 3
   stopDuration: 1.5
   moveRange: 5
-  stage1Feedback: {fileID: 4248192221189593338}
-  stage2Feedback: {fileID: 5731758141052749850}
-  stage3Feedback: {fileID: 8618345737559742524}
 --- !u!114 &6054851436047455091
 MonoBehaviour:
   m_ObjectHideFlags: 0
