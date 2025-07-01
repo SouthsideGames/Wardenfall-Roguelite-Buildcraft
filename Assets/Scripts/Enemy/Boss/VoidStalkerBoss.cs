@@ -6,7 +6,6 @@ public class VoidStalkerBoss : Boss
 {
     [Header("STAGE 1")]
     [SerializeField] private float teleportCooldown = 5f;
-    private float teleportTimer;
 
     [Header("STAGE 2")]
     [SerializeField] private GameObject voidRiftPrefab;
@@ -18,6 +17,8 @@ public class VoidStalkerBoss : Boss
 
     private bool isAttacking;
     private RangedEnemyAttack rangedEnemyAttack;
+    private EnemyMovement enemyMovement;
+    private float teleportTimer;
 
     protected override void InitializeBoss()
     {
@@ -25,67 +26,53 @@ public class VoidStalkerBoss : Boss
         teleportTimer = teleportCooldown;
         rangedEnemyAttack = GetComponent<RangedEnemyAttack>();
         rangedEnemyAttack.StorePlayer(character);
+        enemyMovement = GetComponent<EnemyMovement>();
     }
 
     protected override void Update()
     {
         base.Update();
+
         if (!hasSpawned || isAttacking) return;
 
         teleportTimer -= Time.deltaTime;
 
         if (teleportTimer <= 0)
         {
-            Teleport();
+            StartCoroutine(TeleportRoutine());
             teleportTimer = teleportCooldown;
+        }
+        else
+        {
+            enemyMovement.FollowCurrentTarget();
         }
     }
 
-    protected override void ExecuteStageOne() => FireHomingOrbs();
-    protected override void ExecuteStageTwo() => TeleportWithVoidRift();
-    protected override void ExecuteStageThree() => SpawnBlackHole();
-
-    private void FireHomingOrbs()
+    private float GetHealthPercent()
     {
-        if (isAttacking) return;
-        isAttacking = true;
-        rangedEnemyAttack.AutoAim();
-        Invoke(nameof(ResetAttack), 1f);
+        return (float)health / maxHealth;
     }
 
-
-    private void TeleportWithVoidRift()
+    private IEnumerator TeleportRoutine()
     {
-        if (isAttacking) return;
         isAttacking = true;
 
-        Vector3 previousPosition = transform.position;
+        LeanTween.color(gameObject, Color.magenta, 0.2f).setLoopPingPong(2);
+        LeanTween.scale(gameObject, transform.localScale * 1.2f, 0.2f).setEasePunch();
+
+        yield return new WaitForSeconds(0.3f);
+
         Teleport();
 
-        GameObject rift = Instantiate(voidRiftPrefab, previousPosition, Quaternion.identity);
-        Destroy(rift, voidRiftDuration);
+        yield return new WaitForSeconds(0.2f);
 
-        Invoke(nameof(ResetAttack), 1.5f);
-    }
-
-    private void SpawnBlackHole()
-    {
-        if (isAttacking) return;
-        isAttacking = true;
-
-        GameObject blackHole = Instantiate(blackHolePrefab, transform.position, Quaternion.identity);
-        Destroy(blackHole, blackHoleDuration);
-
-        Invoke(nameof(ResetAttack), 2f);
+        ExecuteStage();
     }
 
     private void Teleport()
     {
-        Debug.Log("Void Stalker: TELEPORT!");
-        Vector3 randomPosition = GetRandomTeleportPosition();
-        transform.position = randomPosition;
-
-        ExecuteStage(); 
+        Vector3 newPosition = GetRandomTeleportPosition();
+        transform.position = newPosition;
     }
 
     private Vector3 GetRandomTeleportPosition()
@@ -98,5 +85,73 @@ public class VoidStalkerBoss : Boss
         );
     }
 
-    private void ResetAttack() => isAttacking = false;
+    protected override void ExecuteStage()
+    {
+        if (GetHealthPercent() > 0.66f)
+            ExecuteStageOne();
+        else if (GetHealthPercent() > 0.33f)
+            ExecuteStageTwo();
+        else
+            ExecuteStageThree();
+    }
+
+    protected override void ExecuteStageOne()
+    {
+        StartCoroutine(FireHomingOrbs());
+    }
+
+    private IEnumerator FireHomingOrbs()
+    {
+        LeanTween.color(gameObject, Color.cyan, 0.2f).setLoopPingPong(2);
+        LeanTween.scale(gameObject, transform.localScale * 1.1f, 0.2f).setEasePunch();
+
+        yield return new WaitForSeconds(0.2f);
+
+        rangedEnemyAttack.AutoAim();
+
+        yield return new WaitForSeconds(1f);
+        isAttacking = false;
+    }
+
+    protected override void ExecuteStageTwo()
+    {
+        StartCoroutine(TeleportWithVoidRift());
+    }
+
+    private IEnumerator TeleportWithVoidRift()
+    {
+        Vector3 previousPosition = transform.position;
+
+        LeanTween.color(gameObject, Color.black, 0.2f).setLoopPingPong(3);
+        LeanTween.scale(gameObject, transform.localScale * 1.2f, 0.2f).setEasePunch();
+
+        yield return new WaitForSeconds(0.3f);
+
+        Teleport();
+
+        GameObject rift = Instantiate(voidRiftPrefab, previousPosition, Quaternion.identity);
+        Destroy(rift, voidRiftDuration);
+
+        yield return new WaitForSeconds(1.5f);
+        isAttacking = false;
+    }
+
+    protected override void ExecuteStageThree()
+    {
+        StartCoroutine(SpawnBlackHole());
+    }
+
+    private IEnumerator SpawnBlackHole()
+    {
+        LeanTween.color(gameObject, Color.black, 0.2f).setLoopPingPong(4);
+        LeanTween.scale(gameObject, transform.localScale * 1.3f, 0.2f).setEasePunch();
+
+        yield return new WaitForSeconds(0.3f);
+
+        GameObject blackHole = Instantiate(blackHolePrefab, transform.position, Quaternion.identity);
+        Destroy(blackHole, blackHoleDuration);
+
+        yield return new WaitForSeconds(2f);
+        isAttacking = false;
+    }
 }

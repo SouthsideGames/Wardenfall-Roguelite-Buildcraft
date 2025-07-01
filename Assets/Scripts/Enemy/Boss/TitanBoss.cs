@@ -1,33 +1,27 @@
-using UnityEngine;
 using System.Collections;
+using UnityEngine;
 
 public class TitanBoss : Boss
 {
-    [Header("Stage 1")]
+    [Header("Stage 1 Settings")]
     [SerializeField] private GameObject lightningBoltPrefab;
-    [SerializeField] private float detectionRadius = 3f;
-    //[SerializeField] private float lightningDelay = 0.5f;
-    [SerializeField] private float multiAttackDelay = 0.3f;
-    [SerializeField] private int lightningBurstCount = 3;
-    [SerializeField] private float stageOneRotateSpeed = 5f;
-    private int currentBurstCount;
+    [SerializeField] private float lightningDetectionRadius = 4f;
+    [SerializeField] private float lightningDelay = 0.3f;
+    [SerializeField] private int lightningBursts = 3;
 
-    [Header("Stage 2")]
+    [Header("Stage 2 Settings")]
     [SerializeField] private GameObject tidalWavePrefab;
-    private Vector2 centerPosition;
     [SerializeField] private float tidalWaveDuration = 3f;
 
     private EnemyMovement enemyMovement;
     private bool isAttacking;
+    private Vector2 centerPosition;
 
     protected override void InitializeBoss()
     {
         base.InitializeBoss();
-
         enemyMovement = GetComponent<EnemyMovement>();
-
-        Camera mainCamera = Camera.main;
-        centerPosition = mainCamera.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 0f)); 
+        centerPosition = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 0f));
     }
 
     protected override void Update()
@@ -36,46 +30,51 @@ public class TitanBoss : Boss
 
         if (!hasSpawned || isAttacking) return;
 
-        enemyMovement.FollowCurrentTarget();
+        if (GetHealthPercent() > 0.5f)
+        {
+            enemyMovement.FollowCurrentTarget();
+            if (Vector2.Distance(transform.position, PlayerTransform.position) <= lightningDetectionRadius)
+                ExecuteStageOne();
+        }
+        else
+        {
+            ExecuteStageTwo();
+        }
+    }
 
-        if (Vector2.Distance(transform.position, PlayerTransform.position) <= detectionRadius)
-            ExecuteStage();
+    private float GetHealthPercent()
+    {
+        return (float)health / maxHealth;
     }
 
     protected override void ExecuteStageOne()
     {
         if (isAttacking) return;
         isAttacking = true;
-        currentBurstCount = 0;
-
-        // Rotate around player while firing lightning
         StartCoroutine(LightningBurstRoutine());
     }
 
     private IEnumerator LightningBurstRoutine()
     {
-        Vector2 centerPoint = PlayerTransform.position;
-        float angle = 0f;
+        LeanTween.color(gameObject, Color.cyan, 0.2f).setLoopPingPong(2);
+        LeanTween.scale(gameObject, transform.localScale * 1.2f, 0.2f).setEasePunch();
 
-        while (currentBurstCount < lightningBurstCount)
+        int bursts = 0;
+        while (bursts < lightningBursts)
         {
-            // Calculate position in circle around player
-            angle += stageOneRotateSpeed;
-            Vector2 offset = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * 5f;
-            transform.position = centerPoint + offset;
-
             SpawnLightningBolt();
-            currentBurstCount++;
-
-            yield return new WaitForSeconds(multiAttackDelay);
+            bursts++;
+            yield return new WaitForSeconds(lightningDelay);
         }
 
-        ResetAttack();
+        LeanTween.scale(gameObject, transform.localScale * 1.05f, 0.1f).setEasePunch();
+
+        yield return new WaitForSeconds(1f);
+        isAttacking = false;
     }
 
     private void SpawnLightningBolt()
     {
-        // Spawn multiple bolts in a pattern
         for (int i = 0; i < 3; i++)
         {
             Vector2 randomOffset = Random.insideUnitCircle * 2f;
@@ -88,30 +87,31 @@ public class TitanBoss : Boss
     {
         if (isAttacking) return;
         isAttacking = true;
-
-        // More aggressive pattern for stage two
-        StartCoroutine(StageTwoAttackRoutine());
+        StartCoroutine(TidalWavePhase());
     }
 
-    private IEnumerator StageTwoAttackRoutine()
+    private IEnumerator TidalWavePhase()
     {
-        // First dash to center
+        enemyMovement.canMove = false;
+
+        LeanTween.color(gameObject, Color.blue, 0.2f).setLoopPingPong(3);
+        LeanTween.scale(gameObject, transform.localScale * 1.3f, 0.2f).setEasePunch();
+
+        // Move to center position
         enemyMovement.SetTargetPosition(centerPosition);
         yield return new WaitForSeconds(1f);
 
-        // Spawn waves in a cross pattern
         Vector2[] directions = { Vector2.up, Vector2.right, Vector2.down, Vector2.left };
         foreach (Vector2 dir in directions)
         {
             Vector2 spawnPos = centerPosition + dir * 5f;
             Instantiate(tidalWavePrefab, spawnPos, Quaternion.LookRotation(Vector3.forward, dir));
+            LeanTween.scale(gameObject, transform.localScale * 1.1f, 0.1f).setEasePunch();
             yield return new WaitForSeconds(0.5f);
         }
 
         yield return new WaitForSeconds(tidalWaveDuration);
-        ResetAttack();
+        enemyMovement.canMove = true;
+        isAttacking = false;
     }
-
-    private void ResetAttack() => isAttacking = false;
-
 }

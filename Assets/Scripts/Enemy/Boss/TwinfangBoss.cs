@@ -1,11 +1,9 @@
 using System.Collections;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class TwinfangBoss : Boss
 {
-    [Header("STAGE 1")]
+    [Header("STAGE 1 SETTINGS")]
     [SerializeField] private float attackRange = 3f;
 
     private EnemyMovement enemyMovement;
@@ -30,55 +28,73 @@ public class TwinfangBoss : Boss
 
         if (Vector2.Distance(transform.position, PlayerTransform.position) <= attackRange && attackTimer <= 0)
         {
-            ExecuteStage();
+            StartCoroutine(LungeAttack());
             attackTimer = attackCooldown;
         }
         else
             enemyMovement.FollowCurrentTarget();
     }
 
-    protected override void ExecuteStageOne() => LungeAttack();
-
     private IEnumerator LungeAttack()
     {
         if (isAttacking) yield break;
 
         isAttacking = true;
-        enemyMovement.DisableMovement(0.6f);
-        Vector2 attackDirection = (PlayerTransform.position - transform.position).normalized;
+        enemyMovement.DisableMovement(0.8f);
 
-        transform.localScale = new Vector3(originalScale.x * 1.5f, originalScale.y * 0.7f, originalScale.z);
+        // Anticipation animation
+        LeanTween.color(gameObject, Color.red, 0.15f).setLoopPingPong(2);
+        LeanTween.scale(gameObject, originalScale * 1.3f, 0.2f).setEaseInOutQuad();
+
+        yield return new WaitForSeconds(0.3f);
+
+        // Lunge forward
+        Vector2 attackDirection = (PlayerTransform.position - transform.position).normalized;
+        yield return StartCoroutine(PerformLunge(attackDirection));
+
+        // Impact animation
+        LeanTween.scale(gameObject, originalScale * 1.1f, 0.1f).setEasePunch();
+
         yield return new WaitForSeconds(0.2f);
 
-        Vector2 startPos = transform.position;
-        Vector2 lungePos = startPos + attackDirection * attackRange;
+        // Retreat with animation
+        LeanTween.color(gameObject, Color.white, 0.1f);
+        yield return StartCoroutine(PerformRetreat(attackDirection));
 
-        float elapsedTime = 0f;
-        while (elapsedTime < 0.2f)
+        LeanTween.scale(gameObject, originalScale, 0.1f).setEaseOutQuad();
+
+        isAttacking = false;
+    }
+
+    private IEnumerator PerformLunge(Vector2 direction)
+    {
+        Vector2 startPos = transform.position;
+        Vector2 lungePos = startPos + direction * attackRange;
+
+        float elapsed = 0f;
+        while (elapsed < 0.25f)
         {
-            transform.position = Vector2.Lerp(startPos, lungePos, elapsedTime / 0.2f);
-            elapsedTime += Time.deltaTime;
+            transform.position = Vector2.Lerp(startPos, lungePos, elapsed / 0.25f);
+            elapsed += Time.deltaTime;
             yield return null;
         }
 
         transform.position = lungePos;
+    }
 
-        transform.localScale = new Vector3(originalScale.x * 0.7f, originalScale.y * 1.3f, originalScale.z);
-        yield return new WaitForSeconds(0.1f);
+    private IEnumerator PerformRetreat(Vector2 direction)
+    {
+        Vector2 startPos = transform.position;
+        Vector2 retreatPos = startPos - direction * (attackRange * 0.75f);
 
-        Vector2 retreatPos = lungePos - attackDirection * (attackRange * 0.75f);
-
-        elapsedTime = 0f;
-        while (elapsedTime < 0.2f)
+        float elapsed = 0f;
+        while (elapsed < 0.25f)
         {
-            transform.position = Vector2.Lerp(lungePos, retreatPos, elapsedTime / 0.2f);
-            elapsedTime += Time.deltaTime;
+            transform.position = Vector2.Lerp(startPos, retreatPos, elapsed / 0.25f);
+            elapsed += Time.deltaTime;
             yield return null;
         }
 
         transform.position = retreatPos;
-
-        transform.localScale = originalScale;
-        isAttacking = false;
     }
 }

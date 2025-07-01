@@ -336,13 +336,9 @@ public class StatisticsManager : MonoBehaviour
         int meat = CurrentMeatCollected;
         float averageViewerScore = currentStatistics.AverageViewerScoreInRun;
 
-        const int KillWeight = 2;    
-        const int WaveWeight = 25;   
-        const int MeatWeight = 1;    
+        int baseXP = (kills * killXPWeight) + (waves * waveXPWeight) + (meat * meatXPWeight);
 
-        int baseXP = (kills * KillWeight) + (waves * WaveWeight) + (meat * MeatWeight);
-
-        float viewerMultiplier = Mathf.Lerp(0.5f, 2f, averageViewerScore);
+        float viewerMultiplier = Mathf.Lerp(viewerScoreMinMultiplier, viewerScoreMaxMultiplier, averageViewerScore);
 
         int finalXP = Mathf.RoundToInt(baseXP * viewerMultiplier);
 

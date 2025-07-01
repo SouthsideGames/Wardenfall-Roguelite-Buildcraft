@@ -5036,12 +5036,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2962d838f2d74421b971578696abf7f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyData: {fileID: 0}
+  enemyData: {fileID: 11400000, guid: 37259ea7a68efef48be6a27344bd7a4e, type: 2}
   _spriteRenderer: {fileID: 8482349358225695829}
   spawnIndicator: {fileID: 8077718022472785883}
   _collider: {fileID: 8503388652077566643}
   contactDamage: 0
-  playerDetectionRadius: 0
+  playerDetectionRadius: 6
   deathParticles: {fileID: 5040335420889869941}
   showGizmos: 0
   maxHealth: 1000
@@ -5053,10 +5053,9 @@ MonoBehaviour:
   attackCooldown: 3
   numberOfStages: 2
   lightningBoltPrefab: {fileID: 13301048646092075, guid: 334ccdade87a4194b9f1855c484967dc, type: 3}
-  detectionRadius: 3
-  multiAttackDelay: 0.3
-  lightningBurstCount: 3
-  stageOneRotateSpeed: 5
+  lightningDetectionRadius: 4
+  lightningDelay: 0.3
+  lightningBursts: 3
   tidalWavePrefab: {fileID: 5137123306192418792, guid: 5a8d99fb95262ea458a7b580f2a1611c, type: 3}
   tidalWaveDuration: 3
 --- !u!114 &2215412100734325475
