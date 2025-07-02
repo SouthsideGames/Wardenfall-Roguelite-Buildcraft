@@ -70,8 +70,6 @@ public class BulletBase : MonoBehaviour
                 destroyOnHit = true;
                 Release();
             }
-
-            Release();
         }
     }
 

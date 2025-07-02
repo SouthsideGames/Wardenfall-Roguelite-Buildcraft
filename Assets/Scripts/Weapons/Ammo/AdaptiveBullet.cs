@@ -30,7 +30,7 @@ public class AdaptiveBullet : BulletBase
         return adjustedDamage;
     }
 
-    protected virtual void Attack(Enemy enemy, int _damage)
+    private void Attack(Enemy enemy, int _damage)
     {
         enemy.TakeDamage(_damage, isCriticalHit);
     }
