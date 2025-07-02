@@ -96,3 +96,10 @@ public enum CardEffectType
     PhantomLancer
     // Add more as needed
 }
+
+public enum CardType
+{
+    Damage,
+    Support,
+    Utility
+}

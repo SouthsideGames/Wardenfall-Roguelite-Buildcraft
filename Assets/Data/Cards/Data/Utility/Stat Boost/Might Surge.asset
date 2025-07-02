@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01c04db6dc61045148b0ba561a26b5b8, type: 3}
+  m_Name: Might Surge
+  m_EditorClassIdentifier: 
+  cardID: might_surge
+  cardName: Might Surge
+  description: Increases attack by 20%.
+  icon: {fileID: 21300000, guid: e27fa572065324faba5782e3abf04d0c, type: 3}
+  synergyWith:
+  - extended_reach
+  - healing_pulse
+  effectType: 35
+  rarity: 3
+  effectValue: 20
+  activeTime: 8
+  cost: 2
+  cooldown: 20
+  effectPrefab: {fileID: 3593128091077254015, guid: 8637e4d3916f08240ad0a891a094622f, type: 3}
+  cooldownStartsOnUse: 1
+  unlockData:
+    unlocked: 0
+    unlockCost: 4
+    currencyType: 2

@@ -41,21 +41,6 @@ public class CodexManager : MonoBehaviour
     [SerializeField] private Image objectDetailIcon;
     [SerializeField] private TextMeshProUGUI objectDetailName;
     [SerializeField] private Transform objectStatContainersParent;
-
-    [Header("CARD VIEW:")]
-    [SerializeField] private Image cardDetailIcon;
-    [SerializeField] private TextMeshProUGUI cardDetailName;
-    [SerializeField] private GameObject cardDetailContainer;
-    [SerializeField] private TextMeshProUGUI cardDetailCost;
-    [SerializeField] private TextMeshProUGUI cardId;
-    [SerializeField] private TextMeshProUGUI cardDetailDescription;
-    [SerializeField] private TextMeshProUGUI cardDetailRarity;
-    [SerializeField] private TextMeshProUGUI cardDetailCooldown;
-    [SerializeField] private TextMeshProUGUI cardDetailDuration;
-    [SerializeField] private TextMeshProUGUI cardDetailSynergies;
-    [SerializeField] private CardSynergyManager synergyManager;
-    [SerializeField] private Button unlockButton;
-
     [SerializeField] private GameObject statPrefab;
 
     private List<EnemyDataSO> loadedEnemies = new();
@@ -94,92 +79,10 @@ public class CodexManager : MonoBehaviour
             case 1: LoadAndDisplayWeaponCards(); break;
             case 2: LoadAndDisplayObjectCards(); break;
             case 3: LoadAndDisplayEnemyCards(); break;
-            case 4: LoadAndDisplayCardCodex(); break;
             default: Debug.LogWarning("Invalid category selected."); break;
         }
     }
 
-    private void LoadAndDisplayCardCodex()
-    {
-        ClearCards();
-        progressText.gameObject.SetActive(true);
-        var allCards = cardLibrary.allCards;
-
-        loadedCards = cardLibrary.allCards.ToList();
-        currentCardIndex = 0;
-
-        foreach (var card in allCards)
-        {
-            GameObject miniCard = Instantiate(cardPrefab, detailParent);
-            CodexCardUI cardUI = miniCard.GetComponent<CodexCardUI>();
-            cardUI.InitializeCardCodex(card, this);
-        }
-
-        int unlockedCount = allCards.FindAll(c => c.unlockData != null && c.unlockData.unlocked).Count;
-        int total = allCards.Count;
-        progressText.text = $"Unlocked: {unlockedCount} / {total} cards ({(int)((float)unlockedCount / total * 100)}%)";
-    }
-
-    public void OpenCardDetail(CardSO card)
-    {
-        if (card == null) return;
-
-        if (card.unlockData != null && card.unlockData.unlocked)
-        {
-            unlockButton.gameObject.SetActive(false);
-        }
-        else
-        {
-            bool canUnlock = CardUnlockManager.Instance.CanUnlock(card);
-            unlockButton.gameObject.SetActive(true);
-            unlockButton.interactable = canUnlock;
-
-            unlockButton.onClick.RemoveAllListeners();
-            unlockButton.onClick.AddListener(() =>
-            {
-                if (CardUnlockManager.Instance.TryUnlockCard(card))
-                {
-                    LoadAndDisplayCardCodex();
-                    OpenCardDetail(card);
-                }
-            });
-        }
-
-        if (cardId != null) cardId.text = $"ID: {card.cardID}";
-        if (cardDetailIcon != null) cardDetailIcon.sprite = card.icon;
-        if (cardDetailName != null) cardDetailName.text = card.cardName;
-
-        cardDetailDescription.text = card.unlockData != null && card.unlockData.unlocked
-            ? card.description
-            : $"Required Unlock Tickets: {card.unlockData.unlockCost}";
-
-        if (cardDetailCost != null) cardDetailCost.text = $"Cost: {card.cost}";
-        if (cardDetailRarity != null) cardDetailRarity.text = $"Rarity: {card.rarity}";
-        if (cardDetailCooldown != null) cardDetailCooldown.text = card.cooldown > 0 ? $"Cooldown: {card.cooldown}s" : "";
-        if (cardDetailDuration != null) cardDetailDuration.text = card.activeTime > 0 ? $"Duration: {card.activeTime}s" : "";
-
-        if (cardDetailSynergies != null && synergyManager != null)
-        {
-            var cardSynergies = synergyManager.GetSynergiesForCard(card.effectType);
-            if (cardSynergies.Count > 0)
-            {
-                System.Text.StringBuilder sb = new System.Text.StringBuilder("Synergies:\n");
-                foreach (var (partnerType, resultCard) in cardSynergies)
-                {
-                    sb.AppendLine($"+ {partnerType} → {resultCard.cardName}");
-                }
-                cardDetailSynergies.text = sb.ToString();
-            }
-            else
-            {
-                cardDetailSynergies.text = "";
-            }
-        }
-
-        currentCardIndex = loadedCards.IndexOf(card);
-
-        if (cardDetailContainer != null) cardDetailContainer.SetActive(true);
-    }
 
     private void LoadAndDisplayCharacterCards()
     {
@@ -346,7 +249,6 @@ public class CodexManager : MonoBehaviour
     public void CloseDetailView() => detailContainer.SetActive(false);
     public void CloseEnemyDetailView() => enemyDetailContainer.SetActive(false);
     public void CloseObjectDetailView() => objectDetailContainer.SetActive(false);
-    public void CloseCardDetailView() => cardDetailContainer.SetActive(false);
     private void ClearCards() => detailParent.Clear();
 
     public void ShowNextEnemy()
@@ -409,18 +311,6 @@ public class CodexManager : MonoBehaviour
         OpenObjectDetailView(loadedObjects[currentObjectIndex]);
     }
 
-    public void ShowNextCard()
-    {
-        if (loadedCards.Count == 0) return;
-        currentCardIndex = (currentCardIndex + 1) % loadedCards.Count;
-        OpenCardDetail(loadedCards[currentCardIndex]);
-    }
-
-    public void ShowPreviousCard()
-    {
-        if (loadedCards.Count == 0) return;
-        currentCardIndex = (currentCardIndex - 1 + loadedCards.Count) % loadedCards.Count;
-        OpenCardDetail(loadedCards[currentCardIndex]);
-    }
+   
 
 }

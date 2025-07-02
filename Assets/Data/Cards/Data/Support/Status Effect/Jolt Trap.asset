@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01c04db6dc61045148b0ba561a26b5b8, type: 3}
+  m_Name: Jolt Trap
+  m_EditorClassIdentifier: 
+  cardID: jolt_trap
+  cardName: Jolt Trap
+  description: Sends a jolt through nearby enemies, paralyzing their movement and
+    attacks.
+  icon: {fileID: 21300000, guid: 006f09b00039b439893f8261106e56df, type: 3}
+  synergyWith:
+  - frost_field
+  effectType: 60
+  rarity: 3
+  effectValue: 0
+  activeTime: 2.5
+  cost: 3
+  cooldown: 25
+  effectPrefab: {fileID: 3593128091077254015, guid: d24868e7e4aa57b49a51eca7599892be, type: 3}
+  cooldownStartsOnUse: 1
+  unlockData:
+    unlocked: 0
+    unlockCost: 6
+    currencyType: 2
