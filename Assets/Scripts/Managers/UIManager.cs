@@ -296,6 +296,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
     {
         missionPanel.SetActive(true);
         TriggerPanelAction(missionPanel);
+        StatisticsManager.Instance.TurnOnRecordButton();
         menuPanel.SetActive(false);
     }
 

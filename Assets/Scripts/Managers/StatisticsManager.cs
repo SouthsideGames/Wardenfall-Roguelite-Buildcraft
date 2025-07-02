@@ -141,6 +141,7 @@ public class StatisticsManager : MonoBehaviour
     {
         collectionContainer.SetActive(false);
         recordContainer.SetActive(true);
+       
     }
 
     public void SwitchToCollection()
@@ -154,6 +155,8 @@ public class StatisticsManager : MonoBehaviour
         StopTimer();
         EndRun();
     }
+
+    public void TurnOnRecordButton() => EventSystem.current.SetSelectedGameObject(recordButton.gameObject);
 
 
     #region STATISTICS FUNCTIONS
