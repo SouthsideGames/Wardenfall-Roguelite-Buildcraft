@@ -15,7 +15,6 @@ public class CodexCardUI : MonoBehaviour
     private ObjectDataSO objectData;
     private EnemyDataSO enemyData;
     private CodexManager codexManager;
-    private CardSO cardData;
 
     public void InitializeCharacterCard(Sprite _icon, string _name, CharacterDataSO _data, CodexManager _manager)
     {
@@ -43,18 +42,6 @@ public class CodexCardUI : MonoBehaviour
         AssignData(_icon, _name, _manager);
         enemyData = _data;
         cardButton.onClick.AddListener(() => codexManager.OpenEnemyDetailView(enemyData));
-    }
-
-    public void InitializeCardCodex(CardSO card, CodexManager manager)
-    {
-        codexManager = manager;
-        cardData = card;
-
-        icon.sprite = card.icon;
-        cardName.text = card.cardName;
-
-        cardButton.onClick.RemoveAllListeners();
-        cardButton.onClick.AddListener(() => codexManager.OpenCardDetail(card));
     }
 
     private void AssignData(Sprite _icon, string _name, CodexManager _manager)
