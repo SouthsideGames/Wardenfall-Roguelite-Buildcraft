@@ -40,6 +40,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
     [SerializeField] private GameObject progressionTreePanel;
     [SerializeField] private GameObject challengePanel;
     [SerializeField] private GameObject challengeInfoPanel;
+    [SerializeField] private GameObject gearroomPanel;
 
     [Header("ADD. OBJECTS:")]
     [SerializeField] private List<CanvasGroup> blockers = new();
@@ -87,6 +88,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
         pausePanel.SetActive(false);
         statisticsPanel.SetActive(false);
         codexPanel.SetActive(false);
+        gearroomPanel.SetActive(false);
 
         HideConfirmationPanel();
         HideCharacterSelectPanel();
@@ -290,6 +292,20 @@ public class UIManager : MonoBehaviour, IGameStateListener
         codexPanel.SetActive(false);
         menuPanel.SetActive(true);
         TriggerPanelAction(menuPanel);
+    }
+
+    public void ShowGearRoomPanel()
+    {
+        gearroomPanel.SetActive(true);
+        TriggerPanelAction(gearroomPanel);
+        menuPanel.SetActive(false);
+    }
+
+    public void HideGearRoomPanel()
+    {
+        gearroomPanel.SetActive(false);
+        menuPanel.SetActive(true);
+        TriggerPanelAction(gearroomPanel);
     }
 
     public void ShowMissionPanel()

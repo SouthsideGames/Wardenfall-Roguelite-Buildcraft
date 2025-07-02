@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class GearShopManager : MonoBehaviour
 {
@@ -20,13 +21,17 @@ public class GearShopManager : MonoBehaviour
     [SerializeField] private GameObject cardListItemPrefab;
 
     [Header("DETAIL VIEW")]
-    [SerializeField] private GameObject detailContainer;
+    [SerializeField] private RectTransform detailContainer;
     [SerializeField] private Image detailIcon;
+    [SerializeField] private TextMeshProUGUI cardIdText;
+    [SerializeField] private TextMeshProUGUI detailTypeText;
     [SerializeField] private TextMeshProUGUI detailName;
     [SerializeField] private TextMeshProUGUI detailDescription;
     [SerializeField] private TextMeshProUGUI detailCost;
     [SerializeField] private TextMeshProUGUI detailRarity;
     [SerializeField] private TextMeshProUGUI synergyText;
+    [SerializeField] private GameObject detailHolder;
+    [SerializeField] private TextMeshProUGUI unlockText;
 
     [Header("PROGRESSION")]
     [SerializeField] private TextMeshProUGUI progressionText;
@@ -35,18 +40,16 @@ public class GearShopManager : MonoBehaviour
 
     private void Start()
     {
-        // Set up button listeners
         damageButton.onClick.AddListener(() => LoadCardsByType(CardType.Damage));
         supportButton.onClick.AddListener(() => LoadCardsByType(CardType.Support));
         utilityButton.onClick.AddListener(() => LoadCardsByType(CardType.Utility));
 
-        detailContainer.SetActive(false);
+        detailContainer.gameObject.SetActive(false);
         progressionText.gameObject.SetActive(false);
+
+        damageButton.onClick.Invoke();
     }
 
-    /// <summary>
-    /// Loads and displays all cards of the specified type.
-    /// </summary>
     private void LoadCardsByType(CardType type)
     {
         ClearCardList();
@@ -63,54 +66,58 @@ public class GearShopManager : MonoBehaviour
         }
 
         UpdateProgressionText();
-        detailContainer.SetActive(false);
+        detailContainer.gameObject.SetActive(false);
     }
 
-    /// <summary>
-    /// Shows the detailed information for the selected card.
-    /// </summary>
     public void ShowCardDetail(CardSO card)
     {
         if (card == null) return;
 
-        // Icon and name
         detailIcon.sprite = card.icon;
         detailName.text = card.cardName;
-
-        // Description (locked/unlocked)
-        detailDescription.text = card.unlockData != null && card.unlockData.unlocked
-            ? card.description
-            : $"Required Unlock Tickets: {card.unlockData.unlockCost}";
-
-        // Cost and rarity
+        cardIdText.text = $"ID: {card.cardID}";
+        detailTypeText.text = $"Type: {card.cardType}";
         detailCost.text = $"Cost: {card.cost}";
         detailRarity.text = $"Rarity: {card.rarity}";
 
-        // Synergy
-        if (synergyManager != null && synergyText != null)
+        bool isUnlocked = card.unlockData != null && card.unlockData.unlocked;
+
+        if (isUnlocked)
         {
-            var synergies = synergyManager.GetSynergiesForCard(card.effectType);
-            if (synergies.Count > 0)
+            detailHolder.SetActive(true);
+            unlockText.gameObject.SetActive(false);
+            detailDescription.text = card.description;
+
+            if (synergyManager != null && synergyText != null)
             {
-                System.Text.StringBuilder sb = new System.Text.StringBuilder("Synergies:\n");
-                foreach (var (partnerType, resultCard) in synergies)
+                var synergies = synergyManager.GetSynergiesForCard(card.effectType);
+                if (synergies.Count > 0)
                 {
-                    sb.AppendLine($"+ {partnerType} → {resultCard.cardName}");
+                    System.Text.StringBuilder sb = new System.Text.StringBuilder("Synergies:\n");
+                    foreach (var (partnerType, resultCard) in synergies)
+                    {
+                        sb.AppendLine($"+ {partnerType} → {resultCard.cardName}");
+                    }
+                    synergyText.text = sb.ToString();
                 }
-                synergyText.text = sb.ToString();
-            }
-            else
-            {
-                synergyText.text = "";
+                else
+                {
+                    synergyText.text = "";
+                }
             }
         }
+        else
+        {
+            detailHolder.SetActive(false);
+            unlockText.gameObject.SetActive(true);
+            detailDescription.text = "";
+            synergyText.text = "";
+            unlockText.text = $"Requires {card.unlockData.unlockCost} tickets to unlock.";
+        }
 
-        detailContainer.SetActive(true);
+        ShowDetailPanel();
     }
 
-    /// <summary>
-    /// Updates the progression text to show unlock count and percentage.
-    /// </summary>
     private void UpdateProgressionText()
     {
         if (progressionText == null) return;
@@ -131,14 +138,13 @@ public class GearShopManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Clears all spawned card UI elements in the list.
-    /// </summary>
     private void ClearCardList()
     {
         foreach (Transform child in cardListParent)
-        {
             Destroy(child.gameObject);
-        }
     }
+
+    public void ShowDetailPanel() => detailContainer.gameObject.SetActive(true);
+
+    public void CloseDetailPanel() => detailContainer.gameObject.SetActive(false);
 }
