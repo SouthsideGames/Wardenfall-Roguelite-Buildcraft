@@ -3,13 +3,12 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Card Data", menuName = "Scriptable Objects/New Card Data", order = 6)]
 public class CardSO : ScriptableObject
 {
-    [Header("IDENTITY")]
+       [Header("IDENTITY")]
     public string cardID;
     public string cardName;
     [TextArea] public string description;
     public Sprite icon;
     public string[] synergyWith;
-    public CardType cardType;
 
     [Header("TYPE & EFFECT")]
     public CardEffectType effectType;
