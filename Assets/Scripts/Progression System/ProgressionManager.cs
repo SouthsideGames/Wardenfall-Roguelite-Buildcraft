@@ -13,7 +13,7 @@ public class ProgressionManager : MonoBehaviour
     public event Action<int> OnXPGained;
     public event Action<int> OnLevelUp;
 
-    public ProgressionGameUI progressionGameUI { get; private set; }
+    public ProgressionPanelUI progressionPanelUI { get; private set; }
     public ProgressionMenuUI progressionMenuUI { get; private set; }
     public ProgressionEffectManager progressionEffectManager { get; private set; }
     public ProgressionUnlockDatabase progressionUnlockDatabase { get; private set; }
@@ -44,7 +44,7 @@ public class ProgressionManager : MonoBehaviour
 
     void Start()
     {
-        progressionGameUI = GetComponent<ProgressionGameUI>();
+        progressionPanelUI = GetComponent<ProgressionPanelUI>();
         progressionMenuUI = GetComponent<ProgressionMenuUI>();
         progressionEffectManager = GetComponent<ProgressionEffectManager>();
         progressionUnlockDatabase = GetComponent<ProgressionUnlockDatabase>();
@@ -165,6 +165,20 @@ public class ProgressionManager : MonoBehaviour
         SigilsUI[] sigilsUIs = FindObjectsByType<SigilsUI>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         foreach (SigilsUI sigilsUI in sigilsUIs)
             sigilsUI.UpdateText(UnlockPoints.ToString());
+    }
+
+    public bool HasUnlockableNodes()
+    {
+        if (progressionUnlockDatabase == null)
+            return false;
+
+        var allUnlocks = progressionUnlockDatabase.GetAllUnlocks();
+        foreach (var unlock in allUnlocks)
+        {
+            if (!IsUnlockActive(unlock.unlockID) && unlock.cost <= UnlockPoints)
+                return true;
+        }
+        return false;
     }
 
     private void Save()

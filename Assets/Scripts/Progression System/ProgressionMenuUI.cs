@@ -8,6 +8,7 @@ public class ProgressionMenuUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI usernameText;
     [SerializeField] private TextMeshProUGUI levelText;
     [SerializeField] private Slider xpSlider;
+    [SerializeField] private GameObject alertObject;
 
     void Start() => UpdateInfo();
 
@@ -16,6 +17,7 @@ public class ProgressionMenuUI : MonoBehaviour
     {
         unlockTreePanel.SetActive(true);
         unlockTreePanel.GetComponent<ProgressionUnlockTreeUI>()?.Refresh();
+        alertObject.SetActive(false);
     }
 
     public void OnCloseUnlockTree() => unlockTreePanel.SetActive(false);
@@ -24,11 +26,19 @@ public class ProgressionMenuUI : MonoBehaviour
     {
         var progression = ProgressionManager.Instance;
 
-        usernameText.text = UserManager.Instance.Username;  
+        usernameText.text = UserManager.Instance.Username;
         levelText.text = progression.PlayerLevel.ToString();
 
         float currentXP = progression.ProgressionXP;
         float requiredXP = progression.GetXPForNextLevel();
         xpSlider.value = currentXP / requiredXP;
+
+        CheckForUnlockableNodes();
+    }
+    
+    private void CheckForUnlockableNodes()
+    {
+        bool canUnlock = ProgressionManager.Instance.HasUnlockableNodes();
+        alertObject.SetActive(canUnlock);
     }
 }

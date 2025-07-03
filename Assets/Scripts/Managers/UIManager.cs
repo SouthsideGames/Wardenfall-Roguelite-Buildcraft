@@ -189,7 +189,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
                 break;
             case GameState.Progression:
                 ShowPanel(progressionPanel);
-                ProgressionManager.Instance.progressionGameUI.Refresh();
+                ProgressionManager.Instance.progressionPanelUI.Refresh();
                 break;
             case GameState.StageCompleted:
                 ShowPanel(stageCompletePanel);
@@ -341,7 +341,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
     {
         TriggerPanelAction(progressionPanel);
         progressionPanel.SetActive(true);
-        ProgressionManager.Instance.progressionGameUI.Refresh();
+        ProgressionManager.Instance.progressionPanelUI.Refresh();
     }
 
     public void HideCharacterProgressionPanel()

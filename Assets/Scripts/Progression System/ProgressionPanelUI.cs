@@ -2,7 +2,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
-public class ProgressionGameUI : MonoBehaviour
+public class ProgressionPanelUI : MonoBehaviour
 {
     [Header("UI Elements")]
     [SerializeField] private Image characterPortrait;

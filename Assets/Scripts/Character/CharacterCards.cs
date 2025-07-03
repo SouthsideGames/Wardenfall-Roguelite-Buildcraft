@@ -23,7 +23,6 @@ public class CharacterCards : MonoBehaviour
         currentTotalCost += newCard.cost;
         OnDeckChanged?.Invoke();
 
-        // Apply synergies if manager exists
         CardSynergyManager.Instance?.CheckAndApplySynergies(this);
     }
 
@@ -40,6 +39,35 @@ public class CharacterCards : MonoBehaviour
     {
         TemporaryUnlockedCards = new List<CardSO>(characterData.StartingCards);
     }
+
+   public List<CardSO> GetRandomAffordableCards(int count = 2)
+    {
+        int remainingCap = GetEffectiveDeckCap() - currentTotalCost;
+        var affordableCards = TemporaryUnlockedCards
+            .Where(card => card.cost <= remainingCap)
+            .ToList();
+
+        if (affordableCards.Count == 0)
+            return new List<CardSO>();
+
+        for (int i = 0; i < affordableCards.Count; i++)
+        {
+            int swapIndex = UnityEngine.Random.Range(i, affordableCards.Count);
+            (affordableCards[i], affordableCards[swapIndex]) = (affordableCards[swapIndex], affordableCards[i]);
+        }
+
+        return affordableCards.Take(count).ToList();
+    }
+
+    public void AddRandomCardsOnWaveStart(int count = 2)
+    {
+        var randomCards = GetRandomAffordableCards(count);
+
+        foreach (var card in randomCards)
+            AddCard(card);
+    }
+
+
 
     #region For Traits
 

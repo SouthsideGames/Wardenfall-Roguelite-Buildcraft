@@ -22,4 +22,6 @@ public class ProgressionUnlockDatabase : MonoBehaviour
         unlockLookup.TryGetValue(id, out var unlock);
         return unlock;
     }
+
+    public List<ProgressionUnlockDataSO> GetAllUnlocks() => allUnlocks;
 }
