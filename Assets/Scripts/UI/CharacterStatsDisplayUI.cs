@@ -7,6 +7,13 @@ public class CharacterStatsDisplayUI : MonoBehaviour, IStats
 {
     [Header("ELEMENTS:")]
     [SerializeField] private Transform characterStatContainersParent;
+    
+    private void Start()
+    {
+        CharacterStats stats = FindObjectOfType<CharacterStats>();
+        stats?.RegisterStatReceiver(this);
+        UpdateWeaponStats(stats);
+    }
 
     public void UpdateWeaponStats(CharacterStats _statsManager)
     {
@@ -24,8 +31,8 @@ public class CharacterStatsDisplayUI : MonoBehaviour, IStats
 
             index++;
         }
-        
-        for(int i = index; i < characterStatContainersParent.childCount; i++)
+
+        for (int i = index; i < characterStatContainersParent.childCount; i++)
             characterStatContainersParent.GetChild(i).gameObject.SetActive(false);
     }
 }
