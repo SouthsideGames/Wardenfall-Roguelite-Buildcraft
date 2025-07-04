@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public float runStartTime;
 
     public GameState gameState { get; private set; }
+    private AuthActions action = AuthActions.None;
 
     private void Awake()
     {
@@ -133,6 +134,22 @@ public class GameManager : MonoBehaviour
 
     public bool InGameState() => gameState == GameState.Game;
 
+    private void SignInAction()
+    {
+        switch (action)
+        {
+            case AuthActions.StartService:
+                ServiceManager.Instance.StartClientService();
+                break;
+            case AuthActions.SignIn:
+                ServiceManager.Instance.SignInAnonymouslyAsync();
+                break;
+            case AuthActions.OpenAuthMenu:
+                UIManager.Instance.ShowUsernamePanel();
+                break;
+
+        }
+    }
 
 
 }
