@@ -22,8 +22,12 @@ public class RangedWeapon : Weapon
         bulletPool = new ObjectPool<BulletBase>(CreateFunction, ActionOnGet, ActionOnRelease, ActionOnDestroy);
     }
 
-    void Update() => Attack();
-
+    void Update()
+    {
+        if (!isGameplayActive) return;
+        Attack();
+    }
+    
     public override void Attack()
     {
         if (useAutoAim)
@@ -80,8 +84,10 @@ public class RangedWeapon : Weapon
 
     protected virtual void Shoot()
     {
+        if (!isGameplayActive) return;
+
         OnBulletFired?.Invoke();
-        anim.Play("Attack");
+        anim?.Play("Attack");
 
         int damage = GetDamage(out bool isCriticalHit);
 

@@ -33,12 +33,23 @@ public abstract class Weapon : MonoBehaviour, IStats, IWeaponSystem
     protected Enemy closestEnemy;
     protected Vector2 targetUpVector;
     protected AudioSource audioSource;
+    protected bool isGameplayActive = true;
 
     private void Awake()
     {
         audioSource = gameObject.AddComponent<AudioSource>();
         audioSource.playOnAwake = false;
         audioSource.clip = WeaponData.AttackSound;
+    }
+
+    protected virtual void OnEnable()
+    {
+        GameManager.OnGameStateChanged += HandleGameStateChanged;
+    }
+
+    protected virtual void OnDisable()
+    {
+        GameManager.OnGameStateChanged -= HandleGameStateChanged;
     }
 
 
@@ -211,6 +222,26 @@ public abstract class Weapon : MonoBehaviour, IStats, IWeaponSystem
         criticalHitChance = 0;
         criticalHitDamageAmount = 0;
         range = 0;
+    }
+
+    protected virtual void HandleGameStateChanged(GameState newState)
+    {
+        isGameplayActive = (newState == GameState.Game);
+
+        if (!isGameplayActive)
+        {
+            attackTimer = 0f;
+            if (anim != null)
+            {
+                anim.Play("Idle");
+                anim.speed = 0f;
+            }
+        }
+        else
+        {
+            if (anim != null)
+                anim.speed = 1f;
+        }
     }
 
     public float GetUpgradeCost() => WeaponStatCalculator.GetPurchasePrice(WeaponData, Level + 1);
