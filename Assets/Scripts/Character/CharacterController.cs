@@ -16,6 +16,7 @@ public class CharacterController : MonoBehaviour
     private Vector2 moveDirection;
     private Vector2 lastInputDirection = Vector2.down;
     private bool isMovementDisabled = false;
+    private bool isGameplayActive = true;
 
     // Dash fields
     private bool isDashing = false;
@@ -27,6 +28,16 @@ public class CharacterController : MonoBehaviour
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
+    }
+
+    private void OnEnable()
+    {
+        GameManager.OnGameStateChanged += HandleGameStateChanged;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.OnGameStateChanged -= HandleGameStateChanged;
     }
 
     private void Update()
@@ -110,6 +121,14 @@ public class CharacterController : MonoBehaviour
 
         isFrozen = false;
         moveDirection = backup;
+    }
+
+    private void HandleGameStateChanged(GameState newState)
+    {
+        isGameplayActive = (newState == GameState.Game);
+
+        if (!isGameplayActive)
+            _rb.linearVelocity = Vector2.zero;
     }
 
     // Public accessors

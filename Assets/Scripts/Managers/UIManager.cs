@@ -89,6 +89,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
         statisticsPanel.SetActive(false);
         codexPanel.SetActive(false);
         gearroomPanel.SetActive(false);
+        progressionTreePanel.SetActive(false);
 
         HideConfirmationPanel();
         HideCharacterSelectPanel();
@@ -96,6 +97,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
         HideMissionPanel();
         ShowBlockersUpTo(3);
         HideEquipmentSelectPanel();
+        HideChallengePanel();
 
     }
 

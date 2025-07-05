@@ -13,15 +13,41 @@ public class MeleeWeapon : Weapon
     public BoxCollider2D hitCollider;
     public List<Enemy> damagedEnemies = new List<Enemy>();
 
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+    }
+
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+    }
+
+    protected override void HandleGameStateChanged(GameState newState)
+    {
+        base.HandleGameStateChanged(newState);
+
+        if (!isGameplayActive && anim != null)
+        {
+            anim.Play("Idle");
+        }
+    }
+
     void Start()
     {
         state = MeleeWeaponState.Idle;
     }
 
-    void Update() => Attack();
+    void Update()
+    {
+        if (!isGameplayActive) return;
+        Attack();
+    }
 
     public override void Attack()
     {
+        if (!isGameplayActive) return;
+
         if (useAutoAim)
         {
             switch (state)
@@ -38,14 +64,14 @@ public class MeleeWeapon : Weapon
         {
             ManageFreeAttackTimer();
         }
-            
-        
     }
 
     private void AttackState() => AttackLogic();
 
     protected virtual void StartAttack()
     {
+        if (!isGameplayActive) return;
+
         anim.Play("Attack");
         state = MeleeWeaponState.Attack;
 
@@ -62,6 +88,8 @@ public class MeleeWeapon : Weapon
 
     protected virtual void AttackLogic()
     {
+        if (!isGameplayActive) return;
+
         Collider2D[] enemies = Physics2D.OverlapBoxAll
         (
             hitpoint.position,
@@ -89,6 +117,8 @@ public class MeleeWeapon : Weapon
 
     protected override void AutoAimLogic()
     {
+        if (!isGameplayActive) return;
+
         base.AutoAimLogic();
 
         if (closestEnemy != null)
@@ -111,6 +141,8 @@ public class MeleeWeapon : Weapon
 
     private void ManageAttackTimer()
     {
+        if (!isGameplayActive) return;
+
         if (attackTimer >= attackDelay)
         {
             attackTimer = 0;
@@ -120,6 +152,8 @@ public class MeleeWeapon : Weapon
 
     private void ManageFreeAttackTimer()
     {
+        if (!isGameplayActive) return;
+
         AttackLogic();
 
         if (attackTimer >= attackDelay)
@@ -133,7 +167,11 @@ public class MeleeWeapon : Weapon
         }
     }
 
-    private void Wait() => attackTimer += Time.deltaTime;
+    private void Wait()
+    {
+        if (!isGameplayActive) return;
+        attackTimer += Time.deltaTime;
+    }
 
     public override void UpdateWeaponStats(CharacterStats _statsManager)
     {
@@ -144,7 +182,6 @@ public class MeleeWeapon : Weapon
 
         criticalHitChance = Mathf.RoundToInt(criticalHitChance * 91 + _statsManager.GetStatValue(Stat.CritChance) / 100);
         criticalHitDamageAmount += _statsManager.GetStatValue(Stat.CritDamage);
-
     }
 
     private void HitStop(bool criticalHit)
@@ -160,5 +197,4 @@ public class MeleeWeapon : Weapon
     {
         Time.timeScale = 1f;
     }
-
 }
