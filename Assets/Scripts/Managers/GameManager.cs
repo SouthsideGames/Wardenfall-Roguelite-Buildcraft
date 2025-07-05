@@ -11,7 +11,6 @@ public class GameManager : MonoBehaviour
     public static Action OnGamePaused;
     public static Action OnGameResumed; 
     public static Action OnWaveCompleted;
-    public static event Action<GameState> OnGameStateChanged;
 
     [HideInInspector] public float runStartTime;
 
@@ -81,10 +80,9 @@ public class GameManager : MonoBehaviour
     }
 
 
-  public void SetGameState(GameState _gameState)
+    public void SetGameState(GameState _gameState)
     {
         gameState = _gameState;
-        Debug.Log($"[GameState DEBUG] Changed to: {gameState}");
 
         IEnumerable<IGameStateListener> gameStateListeners =
             FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None)
@@ -93,15 +91,11 @@ public class GameManager : MonoBehaviour
         foreach (IGameStateListener gameStateListener in gameStateListeners)
             gameStateListener.GameStateChangedCallback(_gameState);
 
-        // NEW LINE: raise global event
-        OnGameStateChanged?.Invoke(_gameState);
-
         if (_gameState == GameState.Progression)
         {
             UIManager.Instance.ShowCharacterProgressionPanel();
         }
     }
-
 
     public void ManageGameOver() => SceneManager.LoadScene(0);
     public void ShowProgressionPanel() => SetGameState(GameState.Progression);
