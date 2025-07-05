@@ -379,13 +379,6 @@ public class UIManager : MonoBehaviour, IGameStateListener
         ShowPanelInteractability(challengeInfoPanel, true);
     }
 
-    public void ShowUsernamePanel()
-    {
-        usernamePanel.SetActive(true);
-        TriggerPanelAction(usernamePanel);
-        menuPanel.SetActive(false);
-    }
-
     #endregion
 
     #region Traits

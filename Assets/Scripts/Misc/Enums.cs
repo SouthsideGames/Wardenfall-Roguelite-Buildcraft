@@ -26,14 +26,6 @@ public enum ItemRewardType
 
 }
 
-public enum AuthActions
-{
-    None,
-    StartService = 1,
-    SignIn = 2,
-    OpenAuthMenu = 3
-}
-
 
 public enum MeleeWeaponState 
 {
