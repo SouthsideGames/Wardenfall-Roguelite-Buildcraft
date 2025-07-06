@@ -27,6 +27,7 @@ public enum MissionType
     explorationExpert2 = 40,
     explorationExpert3 = 41,
     criticalHitMastery = 14,
+    graveDigger = 15,
     bossHunter = 21,
     bossHunter2 = 39,
     multiKills = 31,

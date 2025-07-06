@@ -3,11 +3,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
-using SouthsideGames.SaveManager;
-using Unity.VisualScripting;
-using System.Linq;
 
-public class CodexManager : MonoBehaviour
+public class IntelManager : MonoBehaviour
 {
     [Header("ELEMENTS:")]
     [SerializeField] private TMP_Dropdown categoryDropdown;
@@ -16,15 +13,15 @@ public class CodexManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI progressText;
     [SerializeField] private CardLibrary cardLibrary;
 
-    [Header("DETAIL VIEW:")]
-    [SerializeField] private GameObject detailContainer;
-    [SerializeField] private Image detailIcon;
-    [SerializeField] private TextMeshProUGUI detailName;
-    [SerializeField] private TextMeshProUGUI detailDescription;
+    [Header("CHARACTER DETAIL VIEW:")]
+    [SerializeField] private GameObject characterDetailContainer;
+    [SerializeField] private Image characterDetailIcon;
+    [SerializeField] private TextMeshProUGUI characterDetailName;
+    [SerializeField] private TextMeshProUGUI characterDetailDescription;
     [SerializeField] private Image abilityIcon;
     [SerializeField] private TextMeshProUGUI abilityName;
     [SerializeField] private TextMeshProUGUI abilityDescription;
-    [SerializeField] private Transform statContainersParent;
+    [SerializeField] private Transform characterStatContainersParent;
 
     [Header("ENEMY VIEW:")]
     [SerializeField] private GameObject enemyDetailContainer;
@@ -43,6 +40,16 @@ public class CodexManager : MonoBehaviour
     [SerializeField] private Transform objectStatContainersParent;
     [SerializeField] private GameObject statPrefab;
 
+    [Header("WEAPON VIEW:")]
+    [SerializeField] private GameObject weaponDetailContainer;
+    [SerializeField] private Image weaponDetailIcon;
+    [SerializeField] private TextMeshProUGUI weaponDetailName;
+    [SerializeField] private TextMeshProUGUI weaponDetailDescription;
+    [SerializeField] private TextMeshProUGUI weaponIdText;
+    [SerializeField] private TextMeshProUGUI recycleValueText;
+    [SerializeField] private Transform weaponStatContainersParent;
+
+
     private List<EnemyDataSO> loadedEnemies = new();
     private int currentEnemyIndex = 0;
     private List<CharacterDataSO> loadedCharacters = new();
@@ -51,8 +58,6 @@ public class CodexManager : MonoBehaviour
     private int currentWeaponIndex = 0;
     private List<ObjectDataSO> loadedObjects = new();
     private int currentObjectIndex = 0;
-    private List<CardSO> loadedCards = new();
-    private int currentCardIndex = 0;
 
     private void Awake() => InitializeDropdown();
 
@@ -66,7 +71,7 @@ public class CodexManager : MonoBehaviour
     private void InitializeDropdown()
     {
         categoryDropdown.ClearOptions();
-        var categories = new List<string> { "Characters", "Weapons", "Objects", "Enemies", "Cards" };
+        var categories = new List<string> { "Characters", "Weapons", "Objects", "Enemies"};
         categoryDropdown.AddOptions(categories);
         categoryDropdown.onValueChanged.AddListener(OnDropdownSelectionChanged);
     }
@@ -83,6 +88,7 @@ public class CodexManager : MonoBehaviour
         }
     }
 
+#region Card Loading and Display
 
     private void LoadAndDisplayCharacterCards()
     {
@@ -146,36 +152,43 @@ public class CodexManager : MonoBehaviour
         }
     }
 
+    #endregion
 
-    public void OpenDetailView(CharacterDataSO _characterData)
+#region Open Detail Views
+    public void OpenCharacterDetailView(CharacterDataSO _characterData)
     {
-        detailIcon.sprite = _characterData.Icon;
-        detailName.text = _characterData.Name;
-        detailDescription.text = _characterData.Description;
+        CloseDetailView();
+
+        characterDetailIcon.sprite = _characterData.Icon;
+        characterDetailName.text = _characterData.Name;
+        characterDetailDescription.text = _characterData.Description;
         abilityIcon.sprite = _characterData.AbilityIcon;
         abilityName.text = _characterData.AbilityName;
         abilityDescription.text = _characterData.AbilityDescription;
         DisplayCharacterStats(_characterData);
-        detailContainer.SetActive(true);
+        characterDetailContainer.SetActive(true);
         currentCharacterIndex = loadedCharacters.IndexOf(_characterData);
     }
 
     public void OpenWeaponDetailView(WeaponDataSO _weaponData)
     {
-        detailIcon.sprite = _weaponData.Icon;
-        detailName.text = _weaponData.Name;
-        detailDescription.text = _weaponData.Description;
-        statContainersParent.Clear();
+        weaponDetailIcon.sprite = _weaponData.Icon;
+        weaponDetailName.text = _weaponData.Name;
+        weaponDetailDescription.text = _weaponData.Description;
+        weaponIdText.text = $"ID: {_weaponData.ID}";
+        recycleValueText.text = $"Recycle Value: {_weaponData.RecyclePrice.ToString()}";
+        weaponStatContainersParent.Clear();
         DisplayWeaponStats(_weaponData);
-        detailContainer.SetActive(true);
+        weaponDetailContainer.SetActive(true);
         currentWeaponIndex = loadedWeapons.IndexOf(_weaponData);
     }
+
 
     public void OpenObjectDetailView(ObjectDataSO _objectData)
     {
         objectDetailIcon.sprite = _objectData.Icon;
         objectDetailName.text = _objectData.Name;
-        statContainersParent.Clear();
+        characterStatContainersParent.Clear();
         DisplayObjectStats(_objectData);
         objectDetailContainer.SetActive(true);
         currentObjectIndex = loadedObjects.IndexOf(_objectData);
@@ -208,26 +221,28 @@ public class CodexManager : MonoBehaviour
         }
     }
 
+    #endregion
 
-
+#region Display Stats
     private void DisplayCharacterStats(CharacterDataSO characterData)
     {
-        statContainersParent.Clear();
+        characterStatContainersParent.Clear();
         foreach (var stat in characterData.NonNeutralStats)
         {
-            GameObject statEntry = Instantiate(statPrefab, statContainersParent);
+            GameObject statEntry = Instantiate(statPrefab, characterStatContainersParent);
             StatContainerUI statContainerUI = statEntry.GetComponent<StatContainerUI>();
             Sprite statIcon = ResourceManager.GetStatIcon(stat.Key);
             statContainerUI.Configure(statIcon, Enums.FormatStatName(stat.Key), stat.Value, true);
         }
     }
 
-    private void DisplayWeaponStats(WeaponDataSO weaponData)
+   private void DisplayWeaponStats(WeaponDataSO weaponData)
     {
-        statContainersParent.Clear();
+        weaponStatContainersParent.Clear();
+
         foreach (var stat in weaponData.BaseStats)
         {
-            GameObject statEntry = Instantiate(statPrefab, statContainersParent);
+            GameObject statEntry = Instantiate(statPrefab, weaponStatContainersParent);
             StatContainerUI statContainerUI = statEntry.GetComponent<StatContainerUI>();
             Sprite statIcon = ResourceManager.GetStatIcon(stat.Key);
             statContainerUI.Configure(statIcon, Enums.FormatStatName(stat.Key), stat.Value, true);
@@ -246,10 +261,23 @@ public class CodexManager : MonoBehaviour
         }
     }
 
-    public void CloseDetailView() => detailContainer.SetActive(false);
+#endregion
+
+    public void CloseCharacterDetailView() => characterDetailContainer.SetActive(false);
     public void CloseEnemyDetailView() => enemyDetailContainer.SetActive(false);
     public void CloseObjectDetailView() => objectDetailContainer.SetActive(false);
+    public void CloseWeaponDetailView() => weaponDetailContainer.SetActive(false);
     private void ClearCards() => detailParent.Clear();
+
+    private void CloseDetailView()
+    {
+        characterDetailContainer.SetActive(false);
+        enemyDetailContainer.SetActive(false);
+        objectDetailContainer.SetActive(false);
+        weaponDetailContainer.SetActive(false);
+    }
+
+#region Navigation Methods
 
     public void ShowNextEnemy()
     {
@@ -269,14 +297,14 @@ public class CodexManager : MonoBehaviour
     {
         if (loadedCharacters.Count == 0) return;
         currentCharacterIndex = (currentCharacterIndex + 1) % loadedCharacters.Count;
-        OpenDetailView(loadedCharacters[currentCharacterIndex]);
+        OpenCharacterDetailView(loadedCharacters[currentCharacterIndex]);
     }
 
     public void ShowPreviousCharacter()
     {
         if (loadedCharacters.Count == 0) return;
         currentCharacterIndex = (currentCharacterIndex - 1 + loadedCharacters.Count) % loadedCharacters.Count;
-        OpenDetailView(loadedCharacters[currentCharacterIndex]);
+        OpenCharacterDetailView(loadedCharacters[currentCharacterIndex]);
     }
 
     public void ShowNextWeapon()
@@ -310,7 +338,7 @@ public class CodexManager : MonoBehaviour
         currentObjectIndex = (currentObjectIndex - 1 + loadedObjects.Count) % loadedObjects.Count;
         OpenObjectDetailView(loadedObjects[currentObjectIndex]);
     }
-
+#endregion
    
 
 }

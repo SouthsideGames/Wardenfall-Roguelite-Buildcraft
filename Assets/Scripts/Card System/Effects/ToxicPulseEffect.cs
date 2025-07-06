@@ -14,7 +14,12 @@ public class ToxicPulseEffect : MonoBehaviour, ICardEffect
             StatusEffectType.Drain,
             StatusEffectType.Slow,
             StatusEffectType.Paralyze,
-            StatusEffectType.Weaken
+            StatusEffectType.Weaken,
+            StatusEffectType.Poison,
+            StatusEffectType.Stun,
+            StatusEffectType.Confuse,
+            StatusEffectType.Fear
+
         };
 
         StatusEffectType selectedType = effectPool[Random.Range(0, effectPool.Length)];

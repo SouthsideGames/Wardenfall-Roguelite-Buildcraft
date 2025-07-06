@@ -5,7 +5,6 @@ public class ThornmawBoss : Boss
 {
     [Header("ATTACK SETTINGS")]
     [SerializeField] private float chargeForce = 15f;
-    [SerializeField] private float attackCooldown = 4f;
     [SerializeField] private int spikeCount = 5;
     [SerializeField] private GameObject spikePrefab;
 

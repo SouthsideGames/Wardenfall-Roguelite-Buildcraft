@@ -272,9 +272,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8902779910852557219}
-  - component: {fileID: 1392284909096632975}
+  - component: {fileID: 6909660654457499571}
   m_Layer: 0
-  m_Name: Status Effect Icon
+  m_Name: Enemy Status Effect Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -298,7 +298,7 @@ Transform:
   - {fileID: 3241864923206739979}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1392284909096632975
+--- !u!114 &6909660654457499571
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -307,12 +307,35 @@ MonoBehaviour:
   m_GameObject: {fileID: 6489860188737460309}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e013dd60eb5b9184e8225648295ed5fa, type: 3}
+  m_Script: {fileID: 11500000, guid: 5f709c25569806045b8b984b793778ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   iconRenderer: {fileID: 1592858058385212119}
   stackText: {fileID: 826309460460448931}
   durationBarTransform: {fileID: 9021552118568672366}
+  statusEffectSprites:
+  - effectType: 0
+    icon: {fileID: 21300000, guid: 1c7b26d154b64784a94e5af94a79f892, type: 3}
+  - effectType: 1
+    icon: {fileID: 21300000, guid: ca581d40b370fb649b85cb0b259778d5, type: 3}
+  - effectType: 2
+    icon: {fileID: 21300000, guid: b76ea359fc13d324f90e27bb218b4e93, type: 3}
+  - effectType: 3
+    icon: {fileID: 21300000, guid: 2bd3e56c2517f144ba069bacefe9660d, type: 3}
+  - effectType: 4
+    icon: {fileID: 21300000, guid: 8b535794069147b43bb0cf76dc52e4f2, type: 3}
+  - effectType: 5
+    icon: {fileID: 21300000, guid: 0b959018d933ee44a9d4fa484acbee95, type: 3}
+  - effectType: 6
+    icon: {fileID: 21300000, guid: 21da099aaf87ea14f8cd711dbaa8eb3b, type: 3}
+  - effectType: 7
+    icon: {fileID: 21300000, guid: e12d811bc2dc8a742bfed5cb9d3beda5, type: 3}
+  - effectType: 8
+    icon: {fileID: 21300000, guid: 4a2632a034444c2438b3d5faa18d0ffb, type: 3}
+  - effectType: 9
+    icon: {fileID: 21300000, guid: 35102a7b54a13e140a5ed5f3cb147d26, type: 3}
+  - effectType: 10
+    icon: {fileID: 3610120033533411646, guid: bad4e217ae1b25947b78d5cff621d5f4, type: 3}
 --- !u!1 &6587749542077246842
 GameObject:
   m_ObjectHideFlags: 0

@@ -8,6 +8,7 @@ public class EnemyModifierHandler : MonoBehaviour
 
     [SerializeField] private bool canPerformCriticalHit;
     private float damageMultiplier = 1f;
+    private float damageTakenMultiplier = 1f;
     private float critChanceModifier = 1f;
 
     private void Awake()
@@ -45,6 +46,13 @@ public class EnemyModifierHandler : MonoBehaviour
         damageMultiplier += modifier;
     }
 
+    public float GetDamageTakenMultiplier() => damageTakenMultiplier;
+
+    public void ModifyDamageTaken(float multiplier)
+    {
+        damageTakenMultiplier *= multiplier;
+    }
+
     public void ModifyCritChance(float multiplier)
     {
         critChanceModifier = multiplier;
@@ -57,6 +65,12 @@ public class EnemyModifierHandler : MonoBehaviour
             return;
 
         movement.moveSpeed *= (1f + modifier);
+    }
+
+    public void ResetSpeed()
+    {
+        if (movement != null)
+            movement.moveSpeed = movement.BaseMoveSpeed;
     }
 
     public float GetDamageMultiplier() => damageMultiplier;

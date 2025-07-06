@@ -123,7 +123,6 @@ public enum StatusEffectType
     Confuse,
     Paralyze,
     Fear,
-    ArmorBreak,
     DeathMark
 }
 

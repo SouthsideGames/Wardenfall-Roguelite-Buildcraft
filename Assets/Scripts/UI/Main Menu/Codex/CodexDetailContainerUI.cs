@@ -7,7 +7,7 @@ public class CodexDetailContainerUI : MonoBehaviour
     [Header("Mini Card Elements")]
     [SerializeField] private GameObject miniCardPrefab;
     [SerializeField] private Transform miniCardParent;     
-    [SerializeField] private CodexManager codexManager;
+    [SerializeField] private IntelManager codexManager;
 
     public void ShowCharacterDetails() => LoadAndDisplayCharacterCards();
     public void ShowWeaponDetails() => LoadAndDisplayWeaponCards();

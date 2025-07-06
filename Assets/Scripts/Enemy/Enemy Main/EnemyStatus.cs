@@ -66,8 +66,7 @@ public class EnemyStatus : MonoBehaviour
                 MissionManager.Increment(MissionType.burnThemDown, (int)effect.Value);
                 break;
             case StatusEffectType.Slow:
-                slowFactor = movement.moveSpeed * (1 - effect.Value);
-                movement.moveSpeed = slowFactor;
+                enemy.modifierHandler?.ModifySpeed(-effect.Value);
                 MissionManager.Increment(MissionType.slowEnemies, 1);
                 break;
             case StatusEffectType.Weaken:
@@ -86,6 +85,10 @@ public class EnemyStatus : MonoBehaviour
             case StatusEffectType.Fear:
                 movement.SetRunAwayFromPlayer();
                 MissionManager.Increment(MissionType.fearEnemies, 1);
+                break;
+            case StatusEffectType.DeathMark:
+                MissionManager.Increment(MissionType.graveDigger, 1);
+                enemy.modifierHandler?.ModifyDamageTaken(effect.Value);
                 break;
         }
 
@@ -148,7 +151,7 @@ public class EnemyStatus : MonoBehaviour
                 // auto handled
                 break;
             case StatusEffectType.Slow:
-                movement.moveSpeed = originalMoveSpeed;
+                enemy.modifierHandler?.ResetSpeed();
                 break;
             case StatusEffectType.Weaken:
                 enemy.modifierHandler?.ModifyDamage(+active.Effect.Value);
@@ -162,6 +165,9 @@ public class EnemyStatus : MonoBehaviour
                 break;
             case StatusEffectType.Fear:
                 movement.ResetMovement();
+                break;
+            case StatusEffectType.DeathMark:
+                enemy.modifierHandler?.ModifyDamageTaken(1f / active.Effect.Value);
                 break;
         }
 

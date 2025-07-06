@@ -381,7 +381,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 3412709124036203915}
   m_Father: {fileID: 6118759569874807039}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &5408568778565169610
@@ -514,6 +515,37 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 3
+--- !u!1 &1583229181648318740
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3412709124036203915}
+  m_Layer: 0
+  m_Name: EffectIconAnchor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3412709124036203915
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1583229181648318740}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 3.2, z: 0}
+  m_LocalScale: {x: 0.29999998, y: 0.29999998, z: 0.19999999}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1811974388175786690}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1769471388699628310
 GameObject:
   m_ObjectHideFlags: 0
@@ -5873,6 +5905,7 @@ GameObject:
   - component: {fileID: 7237132032986764806}
   - component: {fileID: 4478947262612064436}
   - component: {fileID: 2275040638771039687}
+  - component: {fileID: 2620472436067586894}
   m_Layer: 6
   m_Name: Bramblethorn
   m_TagString: Enemy
@@ -6164,6 +6197,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isEvolvable: 0
+--- !u!114 &2620472436067586894
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5424207264188696762}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef35084680c404d46b8f5517ebe1f6bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  iconAnchor: {fileID: 3412709124036203915}
+  iconPrefab: {fileID: 6909660654457499571, guid: f467db2eb45e6534a851dea04057a0f5, type: 3}
 --- !u!1 &5924058133998414470
 GameObject:
   m_ObjectHideFlags: 0

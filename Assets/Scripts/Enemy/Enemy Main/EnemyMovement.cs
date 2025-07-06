@@ -11,6 +11,7 @@ public class EnemyMovement : MonoBehaviour
 
     [Header("SETTINGS:")]
     public float moveSpeed = 3f;
+    [HideInInspector] public float BaseMoveSpeed => moveSpeed;
     public bool canMove = true;
     private bool isKnockedBack = false;
 
@@ -94,7 +95,6 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] private float detectionRange = 5f;
 
     private Vector2 startPosition;
-
     private bool hasAnticipated = false;
 
 
@@ -109,6 +109,7 @@ public class EnemyMovement : MonoBehaviour
 
         if (CharacterManager.Instance != null)
             currentTarget = CharacterManager.Instance.transform;
+
 
         startPosition = transform.position;
         teleportTimer = 0f;

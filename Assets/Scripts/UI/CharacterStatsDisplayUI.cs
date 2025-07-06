@@ -10,7 +10,7 @@ public class CharacterStatsDisplayUI : MonoBehaviour, IStats
     
     private void Start()
     {
-        CharacterStats stats = FindObjectOfType<CharacterStats>();
+        CharacterStats stats = FindFirstObjectByType<CharacterStats>();
         stats?.RegisterStatReceiver(this);
         UpdateWeaponStats(stats);
     }

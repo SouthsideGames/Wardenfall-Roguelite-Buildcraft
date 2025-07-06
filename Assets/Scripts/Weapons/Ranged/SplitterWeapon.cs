@@ -7,8 +7,18 @@ public class SplitterWeapon : RangedWeapon
 
     private bool canFire = true;
 
-    private void OnEnable() => OnAmmoAFinished += ResetFiring;
-    private void OnDisable() => OnAmmoAFinished -= ResetFiring;
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+        OnAmmoAFinished += ResetFiring;
+    } 
+
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+        OnAmmoAFinished -= ResetFiring;
+    }
+    
     protected override void Shoot()
     {
         if (!canFire)
@@ -22,7 +32,7 @@ public class SplitterWeapon : RangedWeapon
         SplitterBullet bullet = bulletPool.Get() as SplitterBullet;
         bullet.Shoot(damage, transform.up, isCriticalHit);
 
-        canFire = false; 
+        canFire = false;
         PlaySFX();
     }
 

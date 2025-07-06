@@ -154,6 +154,9 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyBehavior
     {
         if (isInvincible || !hasSpawned || this == null || gameObject == null) return;
 
+        if (modifierHandler != null)
+            damage = Mathf.CeilToInt(damage * modifierHandler.GetDamageTakenMultiplier());
+
         int realDamage = Mathf.Min(damage, health);
         health -= realDamage;
 

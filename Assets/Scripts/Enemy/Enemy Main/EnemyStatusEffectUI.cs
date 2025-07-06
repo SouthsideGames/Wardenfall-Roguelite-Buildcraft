@@ -1,10 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// Handles persistent status effect icons on enemy units.
-/// Icons are anchored to a world-space transform and update over time.
-/// </summary>
 public class EnemyStatusEffectUI : MonoBehaviour
 {
     [Header("References")]
@@ -16,15 +12,10 @@ public class EnemyStatusEffectUI : MonoBehaviour
 
     private Dictionary<StatusEffectType, StatusEffectIcon> activeIcons = new();
 
-    /// <summary>
-    /// Adds a new status effect icon or updates the existing one.
-    /// </summary>
     public void AddOrUpdateEffect(StatusEffect effect)
     {
         if (activeIcons.TryGetValue(effect.EffectType, out var icon))
-        {
             icon.UpdateEffect(effect);
-        }
         else
         {
             var newIcon = Instantiate(iconPrefab, iconAnchor.position, Quaternion.identity, iconAnchor);
@@ -33,9 +24,6 @@ public class EnemyStatusEffectUI : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Removes the icon for a specific status effect.
-    /// </summary>
     public void RemoveEffect(StatusEffectType type)
     {
         if (activeIcons.TryGetValue(type, out var icon))
@@ -46,31 +34,22 @@ public class EnemyStatusEffectUI : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Clears all active status effect icons.
-    /// </summary>
     public void ClearAll()
     {
         foreach (var icon in activeIcons.Values)
-        {
             Destroy(icon.gameObject);
-        }
+            
         activeIcons.Clear();
     }
 
-    /// <summary>
-    /// (Optional Extension)
-    /// Call this if you want to show a temporary floating icon from a direct hit or area effect.
-    /// </summary>
+
     public void ShowFloatingStatus(StatusEffectType type)
     {
         if (iconPrefab == null) return;
 
-        // Instantiate the floating icon at the anchor or enemy position
         Vector3 spawnPos = iconAnchor != null ? iconAnchor.position : transform.position;
         var icon = Instantiate(iconPrefab, spawnPos, Quaternion.identity);
 
-        // Use temporary visual logic
         icon.SetupTemporary(type);
     }
 }

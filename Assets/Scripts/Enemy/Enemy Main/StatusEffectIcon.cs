@@ -1,17 +1,17 @@
 using UnityEngine;
 using TMPro;
+using System.Collections.Generic;
 
 public class StatusEffectIcon : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer iconRenderer;
     [SerializeField] private TextMeshPro stackText;
     [SerializeField] private Transform durationBarTransform;
+    [SerializeField]
+    private List<StatusEffectSprite> statusEffectSprites = new List<StatusEffectSprite>();
 
     private StatusEffect currentEffect;
     private Vector3 initialBarScale;
-
-    private ParticleSystem effectParticles;
-    private Color effectColor;
 
     private void Awake()
     {
@@ -19,14 +19,6 @@ public class StatusEffectIcon : MonoBehaviour
             initialBarScale = durationBarTransform.localScale;
     }
 
-    private void Start()
-    {
-        effectParticles = GetComponentInChildren<ParticleSystem>();
-        if (currentEffect != null)
-        {
-            UpdateEffectColor(currentEffect.EffectType);
-        }
-    }
 
     private void Update()
     {
@@ -42,7 +34,6 @@ public class StatusEffectIcon : MonoBehaviour
         currentEffect = effect;
         stackText.text = $"x{effect.StackCount}";
         UpdateIcon(effect.EffectType);
-        UpdateEffectColor(effect.EffectType);
         if (durationBarTransform != null)
             durationBarTransform.localScale = initialBarScale;
     }
@@ -51,7 +42,6 @@ public class StatusEffectIcon : MonoBehaviour
     {
         currentEffect = effect;
         stackText.text = $"x{effect.StackCount}";
-        UpdateEffectColor(effect.EffectType);
     }
 
     public void PlayDispelAnimation()
@@ -59,59 +49,22 @@ public class StatusEffectIcon : MonoBehaviour
         // Scale pop
         LeanTween.scale(gameObject, Vector3.one * 1.2f, 0.1f).setEasePunch();
 
-        // Particle burst
-        if (effectParticles != null)
-        {
-            var main = effectParticles.main;
-            main.startColor = effectColor;
-            effectParticles.Play();
-        }
     }
 
     private void UpdateIcon(StatusEffectType type)
     {
-        string iconPath = $"Icons/Effects/{type.ToString().ToLower()}";
-        Sprite loadedSprite = Resources.Load<Sprite>(iconPath);
-        if (loadedSprite != null)
+        foreach (var entry in statusEffectSprites)
         {
-            iconRenderer.sprite = loadedSprite;
+            if (entry.effectType == type && entry.icon != null)
+            {
+                iconRenderer.sprite = entry.icon;
+                return;
+            }
         }
+
+        Debug.LogWarning($"No icon found for StatusEffectType {type} on {gameObject.name}");
     }
 
-    private void UpdateEffectColor(StatusEffectType type)
-    {
-        switch (type)
-        {
-            case StatusEffectType.Burn:
-                effectColor = new Color(1f, 0.5f, 0f, 1f);
-                break;
-            case StatusEffectType.Poison:
-                effectColor = new Color(0f, 1f, 0f, 1f);
-                break;
-            case StatusEffectType.Freeze:
-                effectColor = new Color(0f, 1f, 1f, 1f);
-                break;
-            case StatusEffectType.Drain:
-                effectColor = new Color(0.6f, 0f, 0.9f, 1f);
-                break;
-            default:
-                effectColor = Color.white;
-                break;
-        }
-
-        if (effectParticles != null)
-        {
-            var main = effectParticles.main;
-            main.startColor = effectColor;
-        }
-
-        if (iconRenderer != null)
-            iconRenderer.color = effectColor;
-    }
-
-    /// <summary>
-    /// Sets up the icon as a temporary visual (e.g. from a corruption pulse), floating upward and fading out.
-    /// </summary>
     public void SetupTemporary(StatusEffectType type)
     {
         stackText.gameObject.SetActive(false);
@@ -119,10 +72,16 @@ public class StatusEffectIcon : MonoBehaviour
             durationBarTransform.gameObject.SetActive(false);
 
         UpdateIcon(type);
-        UpdateEffectColor(type);
 
         LeanTween.moveY(gameObject, transform.position.y + 1.2f, 1f).setEaseOutQuad();
         LeanTween.alpha(gameObject, 0f, 1f).setOnComplete(() => Destroy(gameObject));
         LeanTween.scale(gameObject, Vector3.one * 1.3f, 0.2f).setEaseOutBack();
     }
+}
+
+[System.Serializable]
+public struct StatusEffectSprite
+{
+    public StatusEffectType effectType;
+    public Sprite icon;
 }

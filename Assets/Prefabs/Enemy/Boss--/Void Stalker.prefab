@@ -5210,6 +5210,7 @@ GameObject:
   - component: {fileID: 3377877440069722164}
   - component: {fileID: 5112837619694391332}
   - component: {fileID: 8487707814272577328}
+  - component: {fileID: -9139063380635431051}
   m_Layer: 6
   m_Name: Void Stalker
   m_TagString: Enemy
@@ -5495,6 +5496,20 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   detectionRange: 5
+--- !u!114 &-9139063380635431051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1642122531957677840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef35084680c404d46b8f5517ebe1f6bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  iconAnchor: {fileID: 6474620855247164689}
+  iconPrefab: {fileID: 6909660654457499571, guid: f467db2eb45e6534a851dea04057a0f5, type: 3}
 --- !u!1 &2339487112804129158
 GameObject:
   m_ObjectHideFlags: 0
@@ -5980,7 +5995,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 6474620855247164689}
   m_Father: {fileID: 2033642948668387052}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &8452575307785106558
@@ -6038,3 +6054,34 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
+--- !u!1 &8810677617597890051
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6474620855247164689}
+  m_Layer: 0
+  m_Name: EffectIconAnchor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6474620855247164689
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8810677617597890051}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 3.2, z: 0}
+  m_LocalScale: {x: 0.29999998, y: 0.29999998, z: 0.19999999}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 629739075350390227}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
