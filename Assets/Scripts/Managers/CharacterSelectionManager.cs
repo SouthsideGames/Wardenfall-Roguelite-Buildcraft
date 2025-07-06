@@ -38,8 +38,8 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
 
     private void Start()
     {
-        characterInfo.Button.onClick.RemoveAllListeners();
-        characterInfo.Button.onClick.AddListener(PurchaseSelectedCharacter);
+        characterInfo.purchasedButton.onClick.RemoveAllListeners();
+        characterInfo.purchasedButton.onClick.AddListener(PurchaseSelectedCharacter);
 
         if (characterDatas != null && characterDatas.Length > 0)
         {
@@ -124,7 +124,7 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
         if (characterUnlockStates[_index])
         {
             lastSelectedCharacterIndex = _index;
-            characterInfo.Button.interactable = false;
+            characterInfo.purchasedButton.interactable = false;
             characterSelectImage.sprite = characterData.Icon;
             Save();
             OnCharacterSelected?.Invoke(characterData);
@@ -133,9 +133,9 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
         {
             // Check if CurrencyManager is initialized before accessing it
             if (CurrencyManager.Instance != null)
-                characterInfo.Button.interactable = CurrencyManager.Instance.HasEnoughPremiumCurrency(characterData.PurchasePrice);
+                characterInfo.purchasedButton.interactable = CurrencyManager.Instance.HasEnoughPremiumCurrency(characterData.PurchasePrice);
             else
-                characterInfo.Button.interactable = false;
+                characterInfo.purchasedButton.interactable = false;
         }
 
         CrowdReactionType reaction = UnityEngine.Random.value < 0.7f
@@ -144,6 +144,7 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
 
         AudioManager.Instance?.PlayCrowdReaction(reaction);
 
+        characterInfo.SetCards(CharacterManager.Instance.cards.TemporaryUnlockedCards);
         characterInfo.ConfigureInfoPanel(characterData, characterUnlockStates[_index]);
     }
 

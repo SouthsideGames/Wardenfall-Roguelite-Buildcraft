@@ -14,8 +14,7 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
     public static Action<bool> onSFXStateChanged;
     public static Action<bool> onMusicStateChanged;
     public static Action<bool> onVibrateStateChanged;
-    public static Action<bool> onColorblindSupportChanged;
-    public static Action<bool> onJoystickPositionChanged;
+
 
     [Header("ELEMENTS:")]
     [SerializeField] private Sprite offImage;
@@ -37,20 +36,14 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
     [Header("Reset")]
     [SerializeField] private GameObject resetConfirmationPanel;
 
-    [Header("ACCESSIBILITY")]
-    [SerializeField] private Button colorblindSupportButton;
 
     public bool sfxState;
     public bool musicState;
     public bool vibrateState;
-    public bool colorblindSupport;
-    public bool joystickOnRight; // true = right side, false = left side
 
     private const string sfxKey = "SFX";
     private const string musicKey = "Music";
     private const string vibrateKey = "Vibrate";
-    private const string colorblindKey = "ColorblindSupport";
-    private const string joystickPositionKey = "JoystickPosition";
     private const string postProcessingKey = "PostProcessing";
     public bool postProcessingEnabled = true;
 
@@ -81,9 +74,6 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
 
         creditsButton.onClick.RemoveAllListeners();
         creditsButton.onClick.AddListener(CreditsButtonCallback);
-
-        colorblindSupportButton.onClick.RemoveAllListeners();
-        colorblindSupportButton.onClick.AddListener(ColorblindSupportButtonCallback);
         
         postProcessingButton.onClick.RemoveAllListeners();
         postProcessingButton.onClick.AddListener(PostProcessingButtonCallback);
@@ -97,8 +87,6 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
         onSFXStateChanged?.Invoke(sfxState);
         onMusicStateChanged?.Invoke(musicState);    
         onVibrateStateChanged?.Invoke(vibrateState);
-        onColorblindSupportChanged?.Invoke(colorblindSupport);
-        onJoystickPositionChanged?.Invoke(joystickOnRight);
     }
 
     private void AskButtonCallback()
@@ -150,20 +138,6 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
         onVibrateStateChanged?.Invoke(vibrateState);
     }
 
-    private void ColorblindSupportButtonCallback()
-    {
-        if (Time.time - lastButtonPressTime < buttonCooldown) return;
-        lastButtonPressTime = Time.time;
-
-        colorblindSupport = !colorblindSupport;
-
-        UpdateColorblindSupportVisuals();
-
-        Save();
-
-        onColorblindSupportChanged?.Invoke(colorblindSupport);
-    }
-
     private void UpdateSFXVisuals()
     {
         if(sfxState)
@@ -206,20 +180,6 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
         }
     }
 
-    private void UpdateColorblindSupportVisuals()
-    {
-        if(colorblindSupport)
-        {
-            colorblindSupportButton.image.sprite = onImage;
-            colorblindSupportButton.GetComponentInChildren<TextMeshProUGUI>().text = "ON";
-        }
-        else 
-        {
-            colorblindSupportButton.image.sprite = offImage;
-            colorblindSupportButton.GetComponentInChildren<TextMeshProUGUI>().text = "OFF";
-        }
-    }
-
     private void PostProcessingButtonCallback()
     {
         if (Time.time - lastButtonPressTime < buttonCooldown) return;
@@ -231,7 +191,7 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
         Camera.main.GetUniversalAdditionalCameraData().renderPostProcessing = postProcessingEnabled;
 
         UpdatePostProcessingVisuals();
-        postProcessingVolume.enabled = postProcessingEnabled; // Optional if you use Volume blending
+        postProcessingVolume.enabled = postProcessingEnabled; 
         Save();
     }
 
@@ -277,8 +237,6 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
         sfxState = true;
         musicState = true;
         vibrateState = true;
-        colorblindSupport = false;
-        joystickOnRight = false; 
 
         if (SaveManager.TryLoad(this, sfxKey, out object sfxStateObject))
             sfxState = (bool)sfxStateObject;
@@ -296,22 +254,13 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
         UpdatePostProcessingVisuals();
 
 
-        // Don't load colorblind setting - always start with false
-        // if (SaveManager.TryLoad(this, colorblindKey, out object colorblindStateObject))
-        //     colorblindSupport = (bool)colorblindStateObject;
-
-        if (SaveManager.TryLoad(this, joystickPositionKey, out object joystickPositionObject))
-            joystickOnRight = (bool)joystickPositionObject;
-
         UpdateMusicVisuals();
         UpdateSFXVisuals();
         UpdateVibrateVisuals();
-        UpdateColorblindSupportVisuals();
  
          if(!SaveManager.TryLoad(this, sfxKey, out _) || 
            !SaveManager.TryLoad(this, musicKey, out _) || 
-           !SaveManager.TryLoad(this, vibrateKey, out _) ||
-           !SaveManager.TryLoad(this, joystickPositionKey, out _))
+           !SaveManager.TryLoad(this, vibrateKey, out _))
         {
             Save();
         }
@@ -322,8 +271,6 @@ public class SettingManager : MonoBehaviour, IWantToBeSaved
         SaveManager.Save(this, sfxKey, sfxState);
         SaveManager.Save(this, musicKey, musicState);
         SaveManager.Save(this, vibrateKey, vibrateState);
-        SaveManager.Save(this, colorblindKey, colorblindSupport);
-        SaveManager.Save(this, joystickPositionKey, joystickOnRight);
         SaveManager.Save(this, postProcessingKey, postProcessingEnabled);
     }
 }
