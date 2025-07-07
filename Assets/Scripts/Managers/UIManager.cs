@@ -8,7 +8,6 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour, IGameStateListener
 {
     public static UIManager Instance;
-    public static Action<Panel> OnPanelShown;
     public Transform mainCanvas;
 
 
@@ -121,38 +120,16 @@ public class UIManager : MonoBehaviour, IGameStateListener
             foreach (GameObject p in panels)
             {
                 p.SetActive(p == panel);
-                if (p == panel)
-                {
-                    TriggerPanelAction(panel);
-                    CheckPanelTutorial(panel);
-                }
             }
         }
         else
         {
             panel.SetActive(true);
-            CheckPanelTutorial(panel);
         }
     }
 
-
-
-    private void CheckPanelTutorial(GameObject panel)
-    {
-        if (panel.TryGetComponent<Panel>(out var panelComponent) && panelComponent.TutorialData != null)
-        {
-            TutorialManager.Instance.CheckForTutorial(panelComponent.TutorialData);
-        }
-    }
 
     private void UpdateCounterText() => killCounterText.text = StatisticsManager.Instance.CurrentRunKills.ToString();
-
-
-    private void TriggerPanelAction(GameObject _panelObject)
-    {
-        if (_panelObject.TryGetComponent(out Panel panelComponent))
-            OnPanelShown?.Invoke(panelComponent);
-    }
 
     public static void ShowPanelInteractability(GameObject _gameObject, bool _interactable)
     {
@@ -165,7 +142,6 @@ public class UIManager : MonoBehaviour, IGameStateListener
         if (fromPanel != null) fromPanel.SetActive(false);
         if (toPanel != null) toPanel.SetActive(true);
 
-        TriggerPanelAction(toPanel);
     }
 
     #region Callback Functions
@@ -213,7 +189,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
     {
         AudioManager.Instance.DecreaseMusicVolume();
         pausePanel.SetActive(true);
-        TriggerPanelAction(pausePanel);
+  
     }
 
     private void ResumeGameCallback()
@@ -229,21 +205,21 @@ public class UIManager : MonoBehaviour, IGameStateListener
     public void ShowConfirmationPanel()
     {
         confirmationPanel.SetActive(true);
-        TriggerPanelAction(confirmationPanel);
+      
         ShowPanelInteractability(pausePanel, false);
     }
 
     public void HideConfirmationPanel()
     {
         confirmationPanel.SetActive(false);
-        TriggerPanelAction(pausePanel);
+        
         ShowPanelInteractability(pausePanel, true);
     }
 
     public void ShowCharacterSelectPanel()
     {
         characterSelectPanel.SetActive(true);
-        TriggerPanelAction(characterSelectPanel);
+   
         menuPanel.SetActive(false);
     }
 
@@ -251,13 +227,13 @@ public class UIManager : MonoBehaviour, IGameStateListener
     {
         characterSelectPanel.SetActive(false);
         menuPanel.SetActive(true);
-        TriggerPanelAction(menuPanel);
+    
     }
 
     public void ShowStatisticsPanel()
     {
         statisticsPanel.SetActive(true);
-        TriggerPanelAction(statisticsPanel);
+
         menuPanel.SetActive(false);
     }
 
@@ -265,13 +241,13 @@ public class UIManager : MonoBehaviour, IGameStateListener
     {
         statisticsPanel.SetActive(false);
         menuPanel.SetActive(true);
-        TriggerPanelAction(menuPanel);
+    
     }
 
     public void ShowSettingsPanel()
     {
         settingPanel.SetActive(true);
-        TriggerPanelAction(settingPanel);
+
         menuPanel.SetActive(false);
     }
 
@@ -279,13 +255,13 @@ public class UIManager : MonoBehaviour, IGameStateListener
     {
         settingPanel.SetActive(false);
         menuPanel.SetActive(true);
-        TriggerPanelAction(menuPanel);
+
     }
 
     public void ShowCodexPanel()
     {
         codexPanel.SetActive(true);
-        TriggerPanelAction(codexPanel);
+
         menuPanel.SetActive(false);
     }
 
@@ -293,13 +269,11 @@ public class UIManager : MonoBehaviour, IGameStateListener
     {
         codexPanel.SetActive(false);
         menuPanel.SetActive(true);
-        TriggerPanelAction(menuPanel);
     }
 
     public void ShowGearRoomPanel()
     {
         gearroomPanel.SetActive(true);
-        TriggerPanelAction(gearroomPanel);
         menuPanel.SetActive(false);
     }
 
@@ -307,13 +281,13 @@ public class UIManager : MonoBehaviour, IGameStateListener
     {
         gearroomPanel.SetActive(false);
         menuPanel.SetActive(true);
-        TriggerPanelAction(gearroomPanel);
+
     }
 
     public void ShowMissionPanel()
     {
         missionPanel.SetActive(true);
-        TriggerPanelAction(missionPanel);
+
         StatisticsManager.Instance.TurnOnRecordButton();
         menuPanel.SetActive(false);
     }
@@ -322,13 +296,11 @@ public class UIManager : MonoBehaviour, IGameStateListener
     {
         missionPanel.SetActive(false);
         menuPanel.SetActive(true);
-        TriggerPanelAction(menuPanel);
     }
 
     public void ShowEquipmentSelectPanel()
     {
         equipmentPanel.SetActive(true);
-        TriggerPanelAction(equipmentPanel);
         menuPanel.SetActive(false);
     }
 
@@ -336,26 +308,22 @@ public class UIManager : MonoBehaviour, IGameStateListener
     {
         equipmentPanel.SetActive(false);
         menuPanel.SetActive(true);
-        TriggerPanelAction(equipmentPanel);
     }
 
     public void ShowCharacterProgressionPanel()
     {
-        TriggerPanelAction(progressionPanel);
-        progressionPanel.SetActive(true);
         ProgressionManager.Instance.progressionPanelUI.Refresh();
     }
 
     public void HideCharacterProgressionPanel()
     {
-        TriggerPanelAction(progressionPanel);
         progressionPanel.SetActive(false);
+        menuPanel.SetActive(true);
     }
 
     public void ShowChallengePanel()
     {
         challengePanel.SetActive(true);
-        TriggerPanelAction(challengePanel);
         menuPanel.SetActive(false);
     }
 
@@ -363,21 +331,18 @@ public class UIManager : MonoBehaviour, IGameStateListener
     {
         challengePanel.SetActive(false);
         menuPanel.SetActive(true);
-        TriggerPanelAction(menuPanel);
         UpdateChallengeStatusUI();
     }
 
     public void ShowChallengeInfoPanel()
     {
         challengeInfoPanel.SetActive(true);
-        TriggerPanelAction(challengeInfoPanel);
         ShowPanelInteractability(challengeInfoPanel, false);
     }
 
     public void HideChallengeInfoPanel()
     {
         challengeInfoPanel.SetActive(false);
-        TriggerPanelAction(challengeInfoPanel);
         ShowPanelInteractability(challengeInfoPanel, true);
     }
 
