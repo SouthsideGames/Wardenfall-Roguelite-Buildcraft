@@ -6,7 +6,7 @@ public class TutorialManager : MonoBehaviour, IGameStateListener
     public static TutorialManager Instance { get; private set; }
 
     public GameObject tutorialPrefab;
-    [SerializeField] private GameObject firstTimeTutorialPrefab;
+    [SerializeField] private GameObject imageTutorialPrefab;
     [SerializeField] private TutorialDataSO[] tutorials;
     [SerializeField] private ImageTutorialDataSO imageTutorialData;
     [SerializeField] private Transform tutorialSpawnPoint;
@@ -96,7 +96,7 @@ private void ShowFirstTimeTutorial()
 {
     GameManager.Instance.PauseGame();
 
-    GameObject tutorialInstance = Instantiate(firstTimeTutorialPrefab, tutorialSpawnPoint);
+    GameObject tutorialInstance = Instantiate(imageTutorialPrefab, tutorialSpawnPoint);
     var tutorialUI = tutorialInstance.GetComponent<ImageTutorialPrefabUI>();
 
     if (tutorialUI != null)

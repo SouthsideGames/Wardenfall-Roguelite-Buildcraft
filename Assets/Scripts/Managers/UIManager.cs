@@ -29,6 +29,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
     [SerializeField] private GameObject progressionPanel;
     [SerializeField] private GameObject shopPanel;
     [SerializeField] private GameObject pausePanel;
+    [SerializeField] private GameObject notificationPanel;
     [SerializeField] private GameObject confirmationPanel;
     [SerializeField] private GameObject characterSelectPanel;
     [SerializeField] private GameObject statisticsPanel;
@@ -85,20 +86,13 @@ public class UIManager : MonoBehaviour, IGameStateListener
         GameManager.OnGameResumed += ResumeGameCallback;
 
         pausePanel.SetActive(false);
-        statisticsPanel.SetActive(false);
-        codexPanel.SetActive(false);
-        gearroomPanel.SetActive(false);
-        progressionTreePanel.SetActive(false);
 
-        HideConfirmationPanel();
-        HideCharacterSelectPanel();
-        HideSettingsPanel();
-        HideMissionPanel();
         ShowBlockersUpTo(3);
-        HideEquipmentSelectPanel();
-        HideChallengePanel();
+
+        HideAllPanels();
 
     }
+
 
     private void Start()
     {
@@ -244,6 +238,20 @@ public class UIManager : MonoBehaviour, IGameStateListener
     
     }
 
+    public void ShowNotificationPanel()
+    {
+        notificationPanel.SetActive(true);
+
+        menuPanel.SetActive(false);
+    }
+
+    public void HideNotificationPanel()
+    {
+        notificationPanel.SetActive(false);
+        menuPanel.SetActive(true);
+    
+    }
+
     public void ShowSettingsPanel()
     {
         settingPanel.SetActive(true);
@@ -344,6 +352,21 @@ public class UIManager : MonoBehaviour, IGameStateListener
     {
         challengeInfoPanel.SetActive(false);
         ShowPanelInteractability(challengeInfoPanel, true);
+    }
+
+    private void HideAllPanels()
+    {
+        HideConfirmationPanel();
+        HideCharacterSelectPanel();
+        HideSettingsPanel();
+        HideMissionPanel();
+        HideEquipmentSelectPanel();
+        HideChallengePanel();
+        HideNotificationPanel();
+        HideGearRoomPanel();
+        HideCharacterProgressionPanel();
+        HideCodexPanel();
+        HideStatisticsPanel();
     }
 
     #endregion
