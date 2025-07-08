@@ -7,6 +7,9 @@ public class UserManager : MonoBehaviour, IWantToBeSaved
     private const string USERNAME_KEY = "username";
     private string username;
     public string Username => username;
+    private bool hasSeenFirstTimeTutorial;
+    public bool HasSeenFirstTimeTutorial => hasSeenFirstTimeTutorial;
+
 
     private void Awake()
     {
@@ -36,17 +39,34 @@ public class UserManager : MonoBehaviour, IWantToBeSaved
         GameManager.Instance.Restart();
     }
 
-    public void Save() => SaveManager.Save(this, USERNAME_KEY, username);
+    public void Save()
+    {
+        SaveManager.Save(this, USERNAME_KEY, username);
+        SaveManager.Save(this, "firstTimeTutorial", hasSeenFirstTimeTutorial);
+    }
 
-    public void Load()
+
+   public void Load()
     {
         if (SaveManager.TryLoad(this, USERNAME_KEY, out object usernameObj))
-        {
             username = (string)usernameObj;
-        }
         else
-        {
             username = "";
-        }
+
+        if (SaveManager.TryLoad(this, "firstTimeTutorial", out object tutorialObj))
+            hasSeenFirstTimeTutorial = (bool)tutorialObj;
+        else
+            hasSeenFirstTimeTutorial = false;
     }
+
+
+    public bool NeedsFirstTimeTutorial() => string.IsNullOrEmpty(username) && !hasSeenFirstTimeTutorial;
+
+    public void MarkFirstTimeTutorialSeen()
+    {
+        hasSeenFirstTimeTutorial = true;
+        Save();
+    }
+
+
 }

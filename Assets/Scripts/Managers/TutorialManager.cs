@@ -6,14 +6,18 @@ public class TutorialManager : MonoBehaviour, IGameStateListener
     public static TutorialManager Instance { get; private set; }
 
     public GameObject tutorialPrefab;
+    [SerializeField] private GameObject firstTimeTutorialPrefab;
     [SerializeField] private TutorialDataSO[] tutorials;
+    [SerializeField] private ImageTutorialDataSO imageTutorialData;
+    [SerializeField] private Transform tutorialSpawnPoint;
+
 
     private Dictionary<GameState, TutorialDataSO> stateToTutorialMap;
     private HashSet<TutorialDataSO> completedTutorials;
 
     private void Awake()
     {
-        if(Instance == null)
+        if (Instance == null)
             Instance = this;
         else
             Destroy(gameObject);
@@ -64,13 +68,13 @@ public class TutorialManager : MonoBehaviour, IGameStateListener
         completedTutorials.Add(tutorial);
     }
 
-    private void ShowTutorial(TutorialDataSO tutorial)
+   private void ShowTutorial(TutorialDataSO tutorial)
     {
         GameObject tutorialInstance = Instantiate(tutorialPrefab, UIManager.Instance.mainCanvas.transform);
         var tutorialUI = tutorialInstance.GetComponent<TutorialPrefabUI>();
+
         if (tutorialUI != null)
             tutorialUI.Initialize(tutorial);
-
     }
 
     public void CompleteTutorial(TutorialDataSO tutorial)
@@ -78,4 +82,36 @@ public class TutorialManager : MonoBehaviour, IGameStateListener
         PlayerPrefs.SetInt($"Tutorial_{tutorial.name}", 1);
         completedTutorials.Add(tutorial);
     }
+
+    public void CheckAndShowFirstTimeTutorial()
+    {
+        if (!UserManager.Instance.NeedsFirstTimeTutorial())
+            return;
+
+        ShowFirstTimeTutorial();
+    }
+
+    // First-time tutorial
+private void ShowFirstTimeTutorial()
+{
+    GameManager.Instance.PauseGame();
+
+    GameObject tutorialInstance = Instantiate(firstTimeTutorialPrefab, tutorialSpawnPoint);
+    var tutorialUI = tutorialInstance.GetComponent<ImageTutorialPrefabUI>();
+
+    if (tutorialUI != null)
+        tutorialUI.InitializeSlides(new List<TutorialSlideData>(imageTutorialData.slides), OnFirstTimeTutorialComplete);
+}
+
+
+   
+
+
+    
+    private void OnFirstTimeTutorialComplete()
+    {
+        UserManager.Instance.MarkFirstTimeTutorialSeen();
+        GameManager.Instance.ResumeGame();
+    }
+
 }

@@ -107,19 +107,19 @@ public class GameManager : MonoBehaviour
 
     public void PauseButtonCallback()
     {
-        Time.timeScale = 0;
+        PauseGame();
         OnGamePaused?.Invoke();
     }
 
     public void ResumeButtonCallback()
     {
-        Time.timeScale = 1;
+        ResumeGame();
         OnGameResumed?.Invoke();    
     }
 
     public void Restart()
     {
-        Time.timeScale = 1;
+        ResumeGame();
         ManageGameOver();
     }
 
@@ -130,6 +130,9 @@ public class GameManager : MonoBehaviour
         OnWaveCompleted = null;
     }
 
+    public void PauseGame() => Time.timeScale = 0f;
+
+    public void ResumeGame() => Time.timeScale = 1f;
 
     public bool InGameState() => gameState == GameState.Game;
 
