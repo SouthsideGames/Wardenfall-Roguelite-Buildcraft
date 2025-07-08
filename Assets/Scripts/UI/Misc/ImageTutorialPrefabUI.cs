@@ -13,8 +13,11 @@ public class ImageTutorialPrefabUI : MonoBehaviour
     [SerializeField] private CanvasGroup slideCanvasGroup;
     [SerializeField] private Button nextButton;
 
+    // Data
     private List<TutorialSlideData> slides;
     private int currentSlideIndex;
+    private int currentDialogueIndex;
+
     private Action onComplete;
 
     private void Awake()
@@ -26,40 +29,63 @@ public class ImageTutorialPrefabUI : MonoBehaviour
     {
         slides = slideDataList;
         currentSlideIndex = 0;
+        currentDialogueIndex = 0;
         onComplete = onCompleteCallback;
 
         slideCanvasGroup.alpha = 1f;
-        ShowSlide(currentSlideIndex);
+
+        ShowCurrentLine();
     }
 
-    private void ShowSlide(int index)
+    private void ShowCurrentLine()
     {
-        if (index < slides.Count)
+        if (currentSlideIndex >= slides.Count)
         {
-            slideImage.sprite = slides[index].slideImage;
-            dialogueText.text = slides[index].dialogueLine;
+            // No more slides - tutorial complete
+            onComplete?.Invoke();
+            Destroy(gameObject);
+            return;
         }
+
+        var currentSlide = slides[currentSlideIndex];
+
+        if (currentDialogueIndex >= currentSlide.dialogueLines.Length)
+            currentDialogueIndex = 0;
+
+        slideImage.sprite = currentSlide.slideImage;
+
+        dialogueText.text = currentSlide.dialogueLines[currentDialogueIndex];
     }
 
     private void OnNextButtonClicked()
     {
-        currentSlideIndex++;
+        var currentSlide = slides[currentSlideIndex];
 
-        if (currentSlideIndex >= slides.Count)
-        {
-            onComplete?.Invoke();
-            Destroy(gameObject);
-        }
+        currentDialogueIndex++;
+
+        if (currentDialogueIndex < currentSlide.dialogueLines.Length)
+            ShowCurrentLine();
         else
         {
-            StartCoroutine(FadeToNextSlide());
+            currentSlideIndex++;
+            currentDialogueIndex = 0;
+
+            if (currentSlideIndex >= slides.Count)
+            {
+                onComplete?.Invoke();
+                Destroy(gameObject);
+            }
+            else
+                StartCoroutine(FadeToNextSlide());
         }
     }
 
     private IEnumerator FadeToNextSlide()
     {
         yield return StartCoroutine(FadeCanvasGroup(1f, 0f, 0.3f));
-        ShowSlide(currentSlideIndex);
+
+        ShowCurrentLine();
+
         yield return StartCoroutine(FadeCanvasGroup(0f, 1f, 0.3f));
     }
 

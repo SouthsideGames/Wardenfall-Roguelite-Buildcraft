@@ -1,7 +1,7 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Tutorial Data", menuName = "Scriptable Objects/Tutorials/New Image Tutorial Data", order = 2)]
-public class ImageTutorialDataSO : MonoBehaviour
+[CreateAssetMenu(fileName = "Image Tutorial Data", menuName = "Scriptable Objects/Tutorials/New Image Tutorial Data", order = 2)]
+public class ImageTutorialDataSO : ScriptableObject
 {
     public TutorialSlideData[] slides;
 }
@@ -11,5 +11,5 @@ public class TutorialSlideData
 {
     public Sprite slideImage;
     [TextArea]
-    public string dialogueLine;
+    public string[] dialogueLines;
 }

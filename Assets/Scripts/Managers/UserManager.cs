@@ -60,7 +60,12 @@ public class UserManager : MonoBehaviour, IWantToBeSaved
     }
 
 
-    public bool NeedsFirstTimeTutorial() => string.IsNullOrEmpty(username) && !hasSeenFirstTimeTutorial;
+   public bool NeedsFirstTimeTutorial()
+    {
+        Debug.Log($"[UserManager] Checking NeedsFirstTimeTutorial: hasSeenFirstTimeTutorial={hasSeenFirstTimeTutorial}");
+        return !hasSeenFirstTimeTutorial;
+    }
+
 
     public void MarkFirstTimeTutorialSeen()
     {

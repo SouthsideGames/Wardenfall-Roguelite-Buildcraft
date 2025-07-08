@@ -40,10 +40,7 @@ public class GameManager : MonoBehaviour
         SetGameState(GameState.Menu);
     }
 
-    public void StartIntro()
-    {
-        SetGameState(GameState.Intro);
-    }
+    public void StartIntro() => SetGameState(GameState.Intro);
 
     public void StartGame()
     {
@@ -69,7 +66,6 @@ public class GameManager : MonoBehaviour
 
     public void StartGameOver()
     {
-        // Update final statistics
         var stats = StatisticsManager.Instance.currentStatistics;
         stats.CurrentRunDuration = Time.time - runStartTime;
         stats.MostUsedCardInRun = CardDraftManager.Instance.cardEffectManager.GetMostUsedCard();
@@ -83,7 +79,6 @@ public class GameManager : MonoBehaviour
   public void SetGameState(GameState _gameState)
     {
         gameState = _gameState;
-        Debug.Log($"[GameState DEBUG] Changed to: {gameState}");
 
         IEnumerable<IGameStateListener> gameStateListeners =
             FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None)
@@ -92,7 +87,6 @@ public class GameManager : MonoBehaviour
         foreach (IGameStateListener gameStateListener in gameStateListeners)
             gameStateListener.GameStateChangedCallback(_gameState);
 
-        // NEW LINE: raise global event
         OnGameStateChanged?.Invoke(_gameState);
 
         if (_gameState == GameState.Progression)

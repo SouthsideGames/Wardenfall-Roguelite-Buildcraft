@@ -85,6 +85,7 @@ public class TutorialManager : MonoBehaviour, IGameStateListener
 
     public void CheckAndShowFirstTimeTutorial()
     {
+        Debug.Log("[TutorialManager] CheckAndShowFirstTimeTutorial CALLED!");
         if (!UserManager.Instance.NeedsFirstTimeTutorial())
             return;
 
@@ -92,16 +93,36 @@ public class TutorialManager : MonoBehaviour, IGameStateListener
     }
 
     // First-time tutorial
-private void ShowFirstTimeTutorial()
-{
-    GameManager.Instance.PauseGame();
+    private void ShowFirstTimeTutorial()
+    {
+        Debug.Log("[TutorialManager] In ShowFirstTimeTutorial!");
 
-    GameObject tutorialInstance = Instantiate(imageTutorialPrefab, tutorialSpawnPoint);
-    var tutorialUI = tutorialInstance.GetComponent<ImageTutorialPrefabUI>();
+        GameManager.Instance.PauseGame();
 
-    if (tutorialUI != null)
+        Debug.Log($"Instantiating: {imageTutorialPrefab} under {tutorialSpawnPoint}");
+
+        GameObject tutorialInstance = Instantiate(imageTutorialPrefab, tutorialSpawnPoint);
+
+        if (tutorialInstance == null)
+        {
+            Debug.LogError("[TutorialManager] Instantiation FAILED!");
+            return;
+        }
+
+        Debug.Log("[TutorialManager] Instantiated successfully!");
+
+        var tutorialUI = tutorialInstance.GetComponent<ImageTutorialPrefabUI>();
+
+        if (tutorialUI == null)
+        {
+            Debug.LogError("[TutorialManager] ImageTutorialPrefabUI component NOT found on prefab!");
+            return;
+        }
+
+        Debug.Log("[TutorialManager] Initializing slides!");
+
         tutorialUI.InitializeSlides(new List<TutorialSlideData>(imageTutorialData.slides), OnFirstTimeTutorialComplete);
-}
+    }
 
 
    

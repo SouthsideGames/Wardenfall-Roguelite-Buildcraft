@@ -26,7 +26,7 @@ public class ShopManager : MonoBehaviour, IGameStateListener
     [SerializeField] private CharacterWeapon characterWeapon;
     [SerializeField] private CharacterObjects characterObject;
 
-    private void Awake()
+    private void Start()
     {
         ShopItemContainerUI.onPurchased += ItemPurchasedCallback;
         CurrencyManager.onCurrencyUpdate += CurrencyUpdatedCallback;
