@@ -110,7 +110,7 @@ public class ItemManager : MonoBehaviour
             itemToDrop.transform.position = _enemyPosition;
         }
 
-        if (CharacterManager.Instance.cards.HasCard("double_drop"))
+        if (CharacterManager.Instance.cards.HasCard("S-066"))
         {
             float chance = 0.25f; // 25% chance
             if (Random.value < chance)

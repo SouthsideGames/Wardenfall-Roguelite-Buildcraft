@@ -19,7 +19,7 @@ public abstract class Item : MonoBehaviour, ICollectable
 
         collected = true;
 
-        if (_character.cards.HasCard("vital_bloom"))
+        if (_character.cards.HasCard("S-009"))
         {
             float healAmount = _character.health.maxHealth * 0.03f;
             _character.health.Heal((int)healAmount);

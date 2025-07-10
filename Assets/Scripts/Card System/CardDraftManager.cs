@@ -43,7 +43,6 @@ public class CardDraftManager : MonoBehaviour, IGameStateListener
             Destroy(gameObject);
 
         cardEffectManager = GetComponent<CardEffectManager>();
-
     }
 
     private void Update()
@@ -92,8 +91,7 @@ public class CardDraftManager : MonoBehaviour, IGameStateListener
 
     private int GetMiniDraftChance()
     {
-        int baseChance = 30;
-        return baseChance; // future modifiers can be added here
+        return 30;
     }
 
     private void ShowDraft(DraftType type)
@@ -109,7 +107,7 @@ public class CardDraftManager : MonoBehaviour, IGameStateListener
     {
         List<CardSO> lockedCards = new List<CardSO>();
 
-        // Preserve locked cards and remove the rest
+        // Remove non-locked slots and collect locked cards
         for (int i = cardContainer.childCount - 1; i >= 0; i--)
         {
             Transform child = cardContainer.GetChild(i);
@@ -125,38 +123,61 @@ public class CardDraftManager : MonoBehaviour, IGameStateListener
             }
         }
 
-        // Generate pool of available cards for the current character
-        List<string> characterPool = CharacterManager.Instance.CurrentCharacter.StartingCards
-            .Select(card => card.cardID)
-            .ToList();
+        bool isFallbackDraft = false;
 
-        string currentCharacterID = CharacterManager.Instance.CurrentCharacter.ID;
+        // 1️⃣ Get user-unlocked pool from CardLibrary
+        List<CardSO> unlockedPool = cardLibrary.GetUnlockedUserCards();
 
-        List<CardSO> pool = cardLibrary.GetCardsByRarityAndID(
-            CardDraftRarityConfig.Pools[currentDraftType],
-            characterPool,
-            currentCharacterID
-        );
+        // 2️⃣ Check if we have enough
+        if (unlockedPool.Count < 3)
+        {
+            isFallbackDraft = true;
+            Debug.Log("[CardDraftManager] Not enough unlocked cards! Using fallback Free Use draft.");
+        }
 
+        // 3️⃣ Build pool to draw from
+        List<CardSO> pool;
+        if (isFallbackDraft)
+        {
+            // Use entire database
+            pool = cardLibrary.allCards;
+        }
+        else
+        {
+            // Apply rarity + character filters
+            List<string> characterPool = CharacterManager.Instance.CurrentCharacter.StartingCards
+                .Select(card => card.cardID)
+                .ToList();
+
+            string currentCharacterID = CharacterManager.Instance.CurrentCharacter.ID;
+
+            pool = cardLibrary.GetCardsByRarityAndID(
+                CardDraftRarityConfig.Pools[currentDraftType],
+                characterPool,
+                currentCharacterID
+            ).Where(card => UserManager.Instance.HasCardUnlocked(card.cardID)).ToList();
+        }
+
+        // 4️⃣ How many do we need?
         cardsNeeded = (currentDraftType == DraftType.Major ? 3 : 2) + bonusDraftOptions - lockedCards.Count;
 
         List<CardSO> randomCards = cardLibrary.PickRandomCards(pool, cardsNeeded);
 
-        // Re-add locked cards first and reapply lock visuals
+        // 5️⃣ Add locked cards
         foreach (CardSO card in lockedCards)
         {
             CardOptionUI slot = Instantiate(GetOptionPrefab(card.rarity), cardContainer);
-            slot.SetCard(card, () => OnCardSelected(card), true); // Pass true to re-lock the card
+            slot.SetCard(card, () => OnCardSelected(card, false), true, false);
         }
 
-        // Add newly drawn cards
+        // 6️⃣ Add new draft cards
         foreach (CardSO card in randomCards)
         {
             CardOptionUI slot = Instantiate(GetOptionPrefab(card.rarity), cardContainer);
-            slot.SetCard(card, () => OnCardSelected(card), false);
+            slot.SetCard(card, () => OnCardSelected(card, isFallbackDraft), false, isFallbackDraft);
         }
 
-        // Reroll button setup
+        // 7️⃣ Reroll button setup
         if (currentDraftType == DraftType.Major && rerollButton != null)
         {
             int effectiveRerollLimit = maxRerolls - rerollSuppression;
@@ -166,7 +187,6 @@ public class CardDraftManager : MonoBehaviour, IGameStateListener
             rerollButton.onClick.AddListener(RerollDraft);
         }
     }
-
 
     public void RerollDraft()
     {
@@ -183,8 +203,14 @@ public class CardDraftManager : MonoBehaviour, IGameStateListener
         rerollSuppression = suppressRerolls;
     }
 
-    private void OnCardSelected(CardSO card)
+    private void OnCardSelected(CardSO card, bool wasFallback)
     {
+        // Only unlock if it's not a Free Use fallback
+        if (!wasFallback)
+        {
+            UserManager.Instance.UnlockCard(card.cardID);
+        }
+
         CharacterCards cardSystem = CharacterManager.Instance.cards;
 
         if (cardSystem.currentTotalCost + card.cost <= cardSystem.GetEffectiveDeckCap())
@@ -218,10 +244,7 @@ public class CardDraftManager : MonoBehaviour, IGameStateListener
     public void SkipDraft()
     {
         AudioManager.Instance.PlayCrowdReaction(CrowdReactionType.Boo);
-            panel.SetActive(false);
-
+        panel.SetActive(false);
         GameManager.Instance.StartShop();
- 
     }
-
-} 
+}

@@ -67,12 +67,12 @@ public class InGameCardSlotUI : MonoBehaviour
 
     public void TriggerCooldown(float duration)
     {
-        if (CharacterManager.Instance.cards.HasCard("card_cycle"))
+        if (CharacterManager.Instance.cards.HasCard("S-006"))
         {
             duration *= 0.5f;
         }
 
-        if (CharacterManager.Instance.cards.HasCard("paradox_core") && CharacterManager.Instance.health != null && CharacterManager.Instance.health.maxHealth == CharacterManager.Instance.health.CurrentHealth)
+        if (CharacterManager.Instance.cards.HasCard("S-020") && CharacterManager.Instance.health != null && CharacterManager.Instance.health.maxHealth == CharacterManager.Instance.health.CurrentHealth)
         {
             duration *= 0.75f;
         }

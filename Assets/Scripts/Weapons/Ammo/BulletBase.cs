@@ -79,7 +79,7 @@ public class BulletBase : MonoBehaviour
         int finalDamage = damage;
         
         var cm = CharacterManager.Instance;
-        if (cm.cards.HasCard("radiant_core"))
+        if (cm.cards.HasCard("S-023"))
         {
             EnemyStatus status = enemy.GetComponent<EnemyStatus>();
             if (status != null && status.HasAnyEffect())
@@ -96,7 +96,7 @@ public class BulletBase : MonoBehaviour
 
         if (status == null) return;
 
-        if (cm.cards.HasCard("burnwake"))
+        if (cm.cards.HasCard("S-024"))
         {
             float chance = 0.15f;
             if (Random.value < chance)
@@ -106,13 +106,13 @@ public class BulletBase : MonoBehaviour
             }
         }
 
-        if (cm.cards.HasCard("toxic_spray"))
+        if (cm.cards.HasCard("S-081"))
         {
             StatusEffect poison = new StatusEffect(StatusEffectType.Poison, 2f, 5f, 1f, 3);
             status.ApplyEffect(poison);
         }
 
-        if (cm.cards.HasCard("fearmonger"))
+        if (cm.cards.HasCard("S-026"))
         {
             float chance = 0.35f;
             if (Random.value < chance)

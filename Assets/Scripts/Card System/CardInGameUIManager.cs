@@ -9,7 +9,7 @@ public class CardInGameUIManager : MonoBehaviour
 
     private bool enduranceBuffActive = false;
 
-    private const string EnduranceCardID = "endurance_core";
+    private const string EnduranceCardID = "S-011";
     private const float EnduranceAbsorbPercent = .1f;
 
     private void OnEnable()

@@ -15,40 +15,72 @@ public class CardOptionUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI descriptionText;
     [SerializeField] private Button selectButton;
 
+    [Header("Free Use Badge")]
+    [SerializeField] private GameObject freeUseBadge;
+
     [HideInInspector] public CardSO card;
     private Action onSelected;
     private bool isLocked = false;
     public bool IsLocked => isLocked;
 
-    public void SetCard(CardSO cardData, Action onClick, bool locked = false)
+    private bool isFreeUse = false;
+    public bool IsFreeUse => isFreeUse;
+
+    /// <summary>
+    /// Sets up the card option UI.
+    /// </summary>
+    /// <param name="cardData">Card data for display.</param>
+    /// <param name="onClick">Callback for selection.</param>
+    /// <param name="locked">If this card is locked between rerolls.</param>
+    /// <param name="freeUse">If this card is from the fallback pool.</param>
+    public void SetCard(CardSO cardData, Action onClick, bool locked = false, bool freeUse = false)
     {
         card = cardData;
         onSelected = onClick;
         isLocked = locked;
+        isFreeUse = freeUse;
 
-        iconImage.sprite = card.icon;
-        nameText.text = card.cardName;
-        descriptionText.text = card.description;
-        costText.text = $"Cost: {card.cost}";
+        // Set main UI elements
+        if (iconImage != null)
+            iconImage.sprite = card.icon;
 
-        selectButton.onClick.RemoveAllListeners();
-        selectButton.onClick.AddListener(() => onSelected?.Invoke());
+        if (nameText != null)
+            nameText.text = card.cardName;
 
-        lockButton.onClick.RemoveAllListeners();
-        lockButton.onClick.AddListener(ToggleLockState);
+        if (descriptionText != null)
+            descriptionText.text = card.description;
 
-        SetLockVisual(isLocked);
+        if (costText != null)
+            costText.text = $"Cost: {card.cost}";
 
-        if (cardData.cost + CharacterManager.Instance.cards.currentTotalCost > CharacterManager.Instance.cards.GetEffectiveDeckCap())
+        // Select button
+        if (selectButton != null)
         {
-            costText.color = Color.red;
-            selectButton.interactable = false;
+            selectButton.onClick.RemoveAllListeners();
+            selectButton.onClick.AddListener(() => onSelected?.Invoke());
         }
-        else
+
+        // Lock button
+        if (lockButton != null)
         {
-            costText.color = Color.white; 
-            selectButton.interactable = true; 
+            lockButton.onClick.RemoveAllListeners();
+            lockButton.onClick.AddListener(ToggleLockState);
+            SetLockVisual(isLocked);
         }
+
+        // Show or hide Free Use badge
+        if (freeUseBadge != null)
+            freeUseBadge.SetActive(isFreeUse);
+
+        // Check if this card would exceed deck cost cap
+        bool wouldExceedCap = cardData.cost + CharacterManager.Instance.cards.currentTotalCost
+                              > CharacterManager.Instance.cards.GetEffectiveDeckCap();
+
+        if (costText != null)
+            costText.color = wouldExceedCap ? Color.red : Color.white;
+
+        if (selectButton != null)
+            selectButton.interactable = !wouldExceedCap;
     }
 
     public void ToggleLockState()

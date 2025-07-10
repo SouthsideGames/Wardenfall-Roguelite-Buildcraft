@@ -21,7 +21,7 @@ public class PulseWardTracker : MonoBehaviour
 
     public void OnDamageTaken()
     {
-        if (!character.cards.HasCard("pulse_ward")) return;
+        if (!character.cards.HasCard("S-025")) return;
         if (cooldownTimer > 0f) return;
 
         TriggerPulse();

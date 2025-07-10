@@ -93,7 +93,8 @@ public enum CardEffectType
     Doomnut,
     QuickReflexes,
     Detonabot,
-    PhantomLancer
+    PhantomLancer,
+    OversizeModifier
     // Add more as needed
 }
 

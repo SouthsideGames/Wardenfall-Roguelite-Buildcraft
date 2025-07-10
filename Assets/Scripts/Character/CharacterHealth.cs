@@ -122,7 +122,7 @@ public class CharacterHealth : MonoBehaviour, IStats, IDamageable
     public void Die()
     {
 
-        if (!hasRebornTriggered && CharacterManager.Instance.cards.HasCard("reborn"))
+        if (!hasRebornTriggered && CharacterManager.Instance.cards.HasCard("S-027"))
         {
             hasRebornTriggered = true;
             health = maxHealth;

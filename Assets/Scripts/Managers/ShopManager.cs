@@ -30,19 +30,13 @@ public class ShopManager : MonoBehaviour, IGameStateListener
     {
         ShopItemContainerUI.onPurchased += ItemPurchasedCallback;
         CurrencyManager.onCurrencyUpdate += CurrencyUpdatedCallback;
+        AdsManager.RewardedAdCompleted += AdReroll;
     }
-
-    private void OnEnable()
-    {
-        // Ensure we don't double-subscribe
-        CurrencyManager.onCurrencyUpdate -= CurrencyUpdatedCallback;
-        CurrencyManager.onCurrencyUpdate += CurrencyUpdatedCallback;
-    }
-
     private void OnDestroy()
     {
         ShopItemContainerUI.onPurchased -= ItemPurchasedCallback;
         CurrencyManager.onCurrencyUpdate -= CurrencyUpdatedCallback;
+        AdsManager.RewardedAdCompleted -= AdReroll;
  
     }
 
@@ -100,6 +94,8 @@ public class ShopManager : MonoBehaviour, IGameStateListener
         ConfigureShop();
     }
 
+    private void AdReroll() => ConfigureShop();
+
     private void UpdateRerollVisuals()
     {
         if (rerollPriceText == null || rerollButton == null)
@@ -108,8 +104,8 @@ public class ShopManager : MonoBehaviour, IGameStateListener
             return;
         }
 
-        int effectiveRerollCost = ProgressionManager.Instance.progressionEffectManager.HasFreeOrDiscountReroll 
-            ? Mathf.Max(0, rerollPrice - 1) 
+        int effectiveRerollCost = ProgressionManager.Instance.progressionEffectManager.HasFreeOrDiscountReroll
+            ? Mathf.Max(0, rerollPrice - 1)
             : rerollPrice;
 
         rerollPriceText.text = effectiveRerollCost.ToString();

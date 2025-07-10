@@ -63,6 +63,12 @@ public class CardLibrary : ScriptableObject, IWantToBeSaved
         }
     }
 
+    public List<CardSO> GetUnlockedUserCards()
+    {
+        var userUnlockedIDs = UserManager.Instance.UnlockedCards;
+        return allCards.Where(card => userUnlockedIDs.Contains(card.cardID)).ToList();
+    }
+
     public void Save() { }
     public void Load() { }
 }
