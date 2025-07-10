@@ -292,6 +292,18 @@ public class StatisticsManager : MonoBehaviour
         SaveStats();
     }
 
+    public void RecordFastestRunTime(float runTime)
+{
+    if (runTime <= 0f) return;
+
+    if (currentStatistics.FastestRunTime < 0f || runTime < currentStatistics.FastestRunTime)
+    {
+        currentStatistics.FastestRunTime = runTime;
+        Debug.Log($"[StatisticsManager] New fastest run time recorded: {runTime:F2} seconds!");
+        SaveStats();
+    }
+}
+
 
     private void ConvertDictionariesToLists()
     {
@@ -360,7 +372,6 @@ public class GameStatistics
     // Current run statistics
     public float CurrentRunDuration;
     public string MostUsedCardInRun;
-    public int HighestComboInRun;
     public float PeakDamageInRun;
     public int TotalXPInRun;
     public string MostEffectiveWeaponInRun;
@@ -381,6 +392,7 @@ public class GameStatistics
     public float TotalPlayTime;               // Total time played
     public int TotalChestCollected;          //Total chest collected across all runs
     public float HighestAverageViewerScore;
+    public float FastestRunTime = -1f;
 
   // Replace dictionaries with lists
     public List<CharacterUsageEntry> CharacterUsageList = new List<CharacterUsageEntry>();

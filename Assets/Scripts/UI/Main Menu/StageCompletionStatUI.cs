@@ -12,7 +12,6 @@ public class StageCompletionStatsUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI peakDamageText;
     [SerializeField] private TextMeshProUGUI chestsOpenedText;
     [SerializeField] private TextMeshProUGUI bestWeaponText;
-    [SerializeField] private TextMeshProUGUI highestComboText;
     [SerializeField] private TextMeshProUGUI totalXPText;
 
      public void UpdateStats()
@@ -27,7 +26,6 @@ public class StageCompletionStatsUI : MonoBehaviour
         peakDamageText.text = $"Peak Damage: {stats.PeakDamageInRun:F0}";
         chestsOpenedText.text = $"Chests Opened: {StatisticsManager.Instance.CurrentChestCollected}";
         bestWeaponText.text = $"Best Weapon: {stats.MostEffectiveWeaponInRun}";
-        highestComboText.text = $"Highest Combo: {stats.HighestComboInRun}";
         totalXPText.text = $"Total XP: {stats.TotalXPInRun}";
     }
 

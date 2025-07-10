@@ -23,26 +23,91 @@ public class UserManager : MonoBehaviour, IWantToBeSaved
     private List<string> unlockedCards = new List<string>();
     public IReadOnlyList<string> UnlockedCards => unlockedCards;
 
+    // Track if we have a username we want to push after login
+    private string pendingUsernameForPlayfab = null;
+
     private void Awake()
     {
         if (Instance == null)
+        {
             Instance = this;
+            DontDestroyOnLoad(gameObject);
+            Load();
+
+            // Hook PlayfabManager login event
+            if (PlayfabManager.Instance != null)
+                PlayfabManager.Instance.OnLoginComplete += HandlePlayfabLoginComplete;
+        }
         else
         {
             Destroy(gameObject);
+        }
+    }
+
+    private void Start()
+    {
+        if (isFirstLaunch)
+        {
+            GrantStarterRewards();
+            isFirstLaunch = false;
+            Save();
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (PlayfabManager.Instance != null)
+            PlayfabManager.Instance.OnLoginComplete -= HandlePlayfabLoginComplete;
+    }
+
+    /// <summary>
+    /// User manually sets or changes username
+    /// </summary>
+    public void SetUsername(string newUsername)
+    {
+        if (string.IsNullOrWhiteSpace(newUsername))
+            return;
+
+        username = newUsername;
+        Save();
+
+        if (PlayfabManager.Instance != null)
+        {
+            // If Playfab is already logged in, set immediately
+            PlayfabManager.Instance.SetUserDisplayName(newUsername);
+        }
+        else
+        {
+            // Otherwise remember it until Playfab logs in
+            pendingUsernameForPlayfab = newUsername;
+        }
+    }
+
+    /// <summary>
+    /// Called automatically when Playfab login completes
+    /// </summary>
+    private void HandlePlayfabLoginComplete(bool success)
+    {
+        if (!success)
+        {
+            Debug.LogWarning("[UserManager] Playfab login failed, won't push username.");
             return;
         }
 
-        Load();
+        if (!string.IsNullOrEmpty(username))
+        {
+            Debug.Log("[UserManager] Playfab login complete, pushing saved username.");
+            PlayfabManager.Instance.SetUserDisplayName(username);
+        }
+        else if (!string.IsNullOrEmpty(pendingUsernameForPlayfab))
+        {
+            Debug.Log("[UserManager] Pushing pending username to Playfab.");
+            PlayfabManager.Instance.SetUserDisplayName(pendingUsernameForPlayfab);
+            pendingUsernameForPlayfab = null;
+        }
     }
 
     public bool IsFirstTimePlayer() => string.IsNullOrEmpty(username);
-
-    public void SetUsername(string newUsername)
-    {
-        username = newUsername;
-        Save();
-    }
 
     public bool NeedsFirstTimeTutorial()
     {
@@ -74,13 +139,11 @@ public class UserManager : MonoBehaviour, IWantToBeSaved
     {
         Debug.Log("[UserManager] Granting starter rewards!");
 
-        // Grant 20 Card Points via CurrencyManager
         if (CurrencyManager.Instance != null)
             CurrencyManager.Instance.AdjustCardCurrency(20);
         else
             Debug.LogError("[UserManager] CurrencyManager.Instance is null! Card Points not granted.");
 
-        // Unlock starter cards
         string[] starterCardIDs = new string[]
         {
             "S-007",
@@ -98,7 +161,6 @@ public class UserManager : MonoBehaviour, IWantToBeSaved
         }
 
         Debug.Log("[UserManager] Starter rewards granted: 20 Card Points and starter cards.");
-
         Save();
     }
 
@@ -113,7 +175,7 @@ public class UserManager : MonoBehaviour, IWantToBeSaved
 
         Save();
 
-        GameManager.Instance.Restart();
+        GameManager.Instance?.Restart();
     }
 
     public void Save()
@@ -146,12 +208,5 @@ public class UserManager : MonoBehaviour, IWantToBeSaved
         else
             unlockedCards = new List<string>();
 
-        // Check if this is first launch and grant rewards if so
-        if (isFirstLaunch)
-        {
-            GrantStarterRewards();
-            isFirstLaunch = false;
-            Save();
-        }
     }
 }

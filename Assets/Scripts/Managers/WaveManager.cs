@@ -60,7 +60,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 
     private void Update()
     {
-       if (hasWaveStarted)
+        if (hasWaveStarted)
         {
             if (timer < waveDuration)
             {
@@ -77,7 +77,15 @@ public class WaveManager : MonoBehaviour, IGameStateListener
             {
                 WaveWrapUp();
             }
+
+              // Add this keyboard check at the end:
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                Debug.Log("[WaveManager] End key pressed — triggering EndGame()");
+                EndGame();
+            }
         }
+    
 
     }
 
@@ -407,7 +415,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 
     private void EndGame()
     {
-            float averageViewerScore = GetAverageViewerScore();
+        float averageViewerScore = GetAverageViewerScore();
         StatisticsManager.Instance.SetAverageViewerScoreForRun(averageViewerScore);
 
         int earnedXP = StatisticsManager.Instance.CalculateEndOfRunXP();
@@ -419,6 +427,12 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         stats.CurrentRunDuration = Time.time - GameManager.Instance.runStartTime;
         stats.MostEffectiveWeaponInRun = CharacterManager.Instance.weapon.GetMostEffectiveWeapon();
 
+
+        float totalTime = Time.time - GameManager.Instance.runStartTime;
+        int totalTimeSeconds = Mathf.RoundToInt(totalTime);
+        StatisticsManager.Instance.RecordFastestRunTime(totalTimeSeconds);
+        PlayfabManager.Instance?.PostHighScore(totalTimeSeconds);
+
         DefeatAllEnemies();
 
         ui.StageCompleted();
@@ -426,6 +440,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 
         GameManager.Instance.SetGameState(GameState.StageCompleted);
     }
+
 
 
     private Vector2 GetSpawnPosition()

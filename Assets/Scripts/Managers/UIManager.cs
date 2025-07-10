@@ -41,6 +41,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
     [SerializeField] private GameObject challengePanel;
     [SerializeField] private GameObject challengeInfoPanel;
     [SerializeField] private GameObject gearroomPanel;
+    [SerializeField] private GameObject leaderboardPanel;
 
     [Header("ADD. OBJECTS:")]
     [SerializeField] private List<CanvasGroup> blockers = new();
@@ -354,6 +355,19 @@ public class UIManager : MonoBehaviour, IGameStateListener
         ShowPanelInteractability(challengeInfoPanel, true);
     }
 
+    public void ShowLeaderboardPanel()
+    {
+        leaderboardPanel.SetActive(true);
+        PlayfabManager.Instance.GetHighScores();
+        menuPanel.SetActive(false);
+    }
+
+    public void HideLeaderboardPanel()
+    {
+        leaderboardPanel.SetActive(false);
+        menuPanel.SetActive(true);
+    }
+
     private void HideAllPanels()
     {
         HideConfirmationPanel();
@@ -367,6 +381,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
         HideCharacterProgressionPanel();
         HideCodexPanel();
         HideStatisticsPanel();
+        HideLeaderboardPanel();
     }
 
     #endregion
