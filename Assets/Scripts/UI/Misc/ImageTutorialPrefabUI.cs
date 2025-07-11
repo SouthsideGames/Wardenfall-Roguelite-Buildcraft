@@ -73,6 +73,7 @@ public class ImageTutorialPrefabUI : MonoBehaviour
             if (currentSlideIndex >= slides.Count)
             {
                 onComplete?.Invoke();
+                 GameManager.Instance.ResumeButtonCallback();
                 Destroy(gameObject);
             }
             else

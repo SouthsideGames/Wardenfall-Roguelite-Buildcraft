@@ -7,7 +7,11 @@ using UnityEngine;
 public class TraitDataSO : ScriptableObject
 {
     [field: SerializeField] public string TraitID;
+    [field: SerializeField] public string DisplayName;
+    [field: SerializeField, TextArea] public string Description;
+    [field: SerializeField] public Sprite Icon;
     [field: SerializeField] public List<TraitTier> Tiers;
+
 
     public TraitTier GetTier(int stackCount) {
         int index = Mathf.Clamp(stackCount - 1, 0, Tiers.Count - 1);

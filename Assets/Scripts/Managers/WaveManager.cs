@@ -11,9 +11,13 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 {
     public static WaveManager Instance;
     public static Action OnWaveCompleted;
+    public static Action<List<(TraitDataSO trait, int stack)>> OnWaveIntroRequested;
+    public static Action OnWaveIntroCompleted;
+    
 
     [Header("ELEMENTS:")]
     [SerializeField] private CharacterManager character;
+    [SerializeField] private List<(TraitDataSO trait, int stack)> activeTraitsThisWave;
     private WaveUI ui;
 
     [Header("SETTINGS:")]
@@ -56,6 +60,18 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     }
 
     private void OnDestroy() => CharacterHealth.OnCharacterDeath -= CharacterDeathCallback;
+    
+    private void OnEnable()
+    {
+        OnWaveIntroCompleted += HandleWaveIntroCompleted;
+        CharacterHealth.OnCharacterDeath += CharacterDeathCallback;
+    }
+
+    private void OnDisable()
+    {
+        OnWaveIntroCompleted -= HandleWaveIntroCompleted;
+        CharacterHealth.OnCharacterDeath -= CharacterDeathCallback;
+    }
 
 
     private void Update()
@@ -78,32 +94,40 @@ public class WaveManager : MonoBehaviour, IGameStateListener
                 WaveWrapUp();
             }
 
-              // Add this keyboard check at the end:
+            // Add this keyboard check at the end:
             if (Input.GetKeyDown(KeyCode.W))
             {
                 Debug.Log("[WaveManager] End key pressed — triggering EndGame()");
                 EndGame();
             }
         }
-    
+
 
     }
 
     private void StartWave(int waveIndex)
     {
         InitializeWave(waveIndex);
-        AudioManager.Instance.PlayCrowdAmbience();
+        currentWaveIndex = waveIndex;
+
+        activeTraitsThisWave = TraitManager.Instance.GetAllActiveTraits();
+
+        OnWaveIntroRequested?.Invoke(activeTraitsThisWave);
+    }
+    
+    private void HandleWaveIntroCompleted()
+    {
         hasWaveStarted = true;
         timer = 0;
         hasSpawnedAnyEnemy = false;
-        FindAnyObjectByType<CardInGameUIManager>()?.ResetAllCooldowns();
 
+        AudioManager.Instance.PlayCrowdAmbience();
+
+        FindAnyObjectByType<CardInGameUIManager>()?.ResetAllCooldowns();
         UpdateUIForWaveStart();
 
-        // 🌀 Apply Hyper Mode Trait Effects (supports all tiers)
         ApplyHyperModeEffects();
 
-        // 🧪 Challenge Mode Visual
         if (ChallengeManager.IsActive(ChallengeMode.RogueRoulette))
         {
             if (ChallengeManager.Instance.TryGetLastRouletteEffect(out Stat stat, out float mult))
@@ -113,17 +137,19 @@ public class WaveManager : MonoBehaviour, IGameStateListener
                 UIManager.Instance?.ShowToast(display);
             }
         }
-        
-        if (waveIndex == 0)
+
+        if (currentWaveIndex == 0)
             viewerScoresPerWave.Clear();
     }
+
+
 
 
 
     private void InitializeWave(int waveIndex)
     {
         localCounters.Clear();
-        recentSpawnPoints.Clear(); 
+        recentSpawnPoints.Clear();
         currentWave = wave[waveIndex];
 
         for (int i = 0; i < currentWave.segments.Count; i++)

@@ -52,7 +52,7 @@ public class TutorialPrefabUI : MonoBehaviour
             TutorialManager.Instance.CompleteTutorial(currentTutorial);
 
             UIManager.Instance.CompleteIntro();
-
+            
             Destroy(gameObject);
         }
         else
