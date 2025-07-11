@@ -27,6 +27,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
     [SerializeField] private GameObject waveTransitionPanel;
     [SerializeField] private GameObject traitSelectTransitionPanel;
     [SerializeField] private GameObject progressionPanel;
+    [SerializeField] private GameObject progressionInfoPanel;
     [SerializeField] private GameObject shopPanel;
     [SerializeField] private GameObject pausePanel;
     [SerializeField] private GameObject notificationPanel;
@@ -330,6 +331,18 @@ public class UIManager : MonoBehaviour, IGameStateListener
         menuPanel.SetActive(true);
     }
 
+    public void ShowProgressionInfoPanel()
+    {
+        progressionInfoPanel.SetActive(true);
+        ShowPanelInteractability(progressionInfoPanel, false);
+    }
+
+    public void HideProgressionInfoPanel()
+    {
+        progressionInfoPanel.SetActive(false);
+        ShowPanelInteractability(progressionInfoPanel, true);
+    }
+
     public void ShowChallengePanel()
     {
         challengePanel.SetActive(true);
@@ -382,6 +395,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
         HideCodexPanel();
         HideStatisticsPanel();
         HideLeaderboardPanel();
+        HideProgressionInfoPanel();
     }
 
     #endregion

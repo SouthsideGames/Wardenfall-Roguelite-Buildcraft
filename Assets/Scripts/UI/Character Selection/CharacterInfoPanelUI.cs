@@ -27,7 +27,7 @@ public class CharacterInfoPanelUI : MonoBehaviour
     [SerializeField] private GameObject cardButtonPrefab;
 
     [Header("DETAIL PANEL")]
-    [SerializeField] private GameObject cardDetailPanel;
+    [SerializeField] private GameObject characterDetailPanel;
     [SerializeField] private Image detailIcon;
     [SerializeField] private TextMeshProUGUI detailName;
     [SerializeField] private TextMeshProUGUI detailDescription;
@@ -37,11 +37,19 @@ public class CharacterInfoPanelUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI detailActiveTime;
     [SerializeField] private TextMeshProUGUI detailEffectValue;
     [SerializeField] private TextMeshProUGUI detailEffectType;
+    [SerializeField] private Image detailBackgroundImage;
+
+    [Header("RARITY COLORS")]
+    [SerializeField] private Color commonColor;
+    [SerializeField] private Color uncommonColor;
+    [SerializeField] private Color rareColor;
+    [SerializeField] private Color epicColor;
+    [SerializeField] private Color legendaryColor;
 
     private bool showingStats = true;
     private List<CardSO> currentCards = new List<CardSO>();
 
-    public void ConfigureInfoPanel(CharacterDataSO _characterDataSO, bool unlocked)
+    public void ConfigureInfoPanel(CharacterDataSO _characterDataSO, bool unlocked, List<CardSO> cards)
     {
         // Always default to stats view
         showingStats = true;
@@ -64,8 +72,12 @@ public class CharacterInfoPanelUI : MonoBehaviour
 
         ChangeBackgrounds(_characterDataSO);
 
-        cardDetailPanel.SetActive(false);
+        characterDetailPanel.SetActive(false);
+
+        // Store the character's cards
+        SetCharacterCards(cards);
     }
+
 
 
     private void ChangeBackgrounds(CharacterDataSO _characterDataSO)
@@ -91,14 +103,14 @@ public class CharacterInfoPanelUI : MonoBehaviour
         cardsContainer.SetActive(!showingStats);
 
         if (!showingStats)
-            PopulateCards();
+            PopulateCharacterCards();
     }
 
 
-    public void SetCards(List<CardSO> cards) => currentCards = cards;
+    public void SetCharacterCards(List<CardSO> cards) => currentCards = cards;
 
 
-    private void PopulateCards()
+    private void PopulateCharacterCards()
     {
         foreach (Transform child in cardsContentRoot)
             Destroy(child.gameObject);
@@ -106,26 +118,70 @@ public class CharacterInfoPanelUI : MonoBehaviour
         foreach (var card in currentCards)
         {
             var newButton = Instantiate(cardButtonPrefab, cardsContentRoot);
-            newButton.GetComponent<CharacterCardButtonUI>().Initialize(card, ShowCardDetail);
+            newButton.GetComponent<CharacterCardButtonUI>().Initialize(card, ShowCharacterCardDetail);
         }
     }
 
 
-    public void ShowCardDetail(CardSO card)
+    public void ShowCharacterCardDetail(CardSO card)
     {
-        cardDetailPanel.SetActive(true);
+        characterDetailPanel.SetActive(true);
         detailIcon.sprite = card.icon;
         detailName.text = card.cardName;
         detailDescription.text = card.description;
         detailCost.text = $"Cost: {card.cost}";
-        detailRarity.text = $"Rarity: card.rarity.ToString()";
+        detailRarity.text = $"Rarity: {card.rarity.ToString()}";
         detailCooldown.text = $"Cooldown: {card.cooldown} seconds";
         detailActiveTime.text = $"Active Time: {card.activeTime}";
         detailEffectValue.text = $"Effect Value: {card.effectValue}";
         detailEffectType.text = $"Effect Type: {card.effectType.ToString()}";
 
+        SetDetailBackgroundColor(card.rarity);
     }
 
-    public void HideCardDetail() => cardDetailPanel.SetActive(false);
+    public void CloseCharacterCardDetail()
+    {
+        characterDetailPanel.SetActive(false);
+
+        detailIcon.sprite = null;
+        detailName.text = "";
+        detailDescription.text = "";
+        detailCost.text = "";
+        detailRarity.text = "";
+        detailCooldown.text = "";
+        detailActiveTime.text = "";
+        detailEffectValue.text = "";
+        detailEffectType.text = "";
+
+        detailBackgroundImage.color = Color.white;
+    }
+
+    public void HideCardDetail() => characterDetailPanel.SetActive(false);
+
+    private void SetDetailBackgroundColor(CardRarity rarity)
+    {
+        switch (rarity)
+        {
+            case CardRarity.Common:
+                detailBackgroundImage.color = commonColor;
+                break;
+            case CardRarity.Uncommon:
+                detailBackgroundImage.color = uncommonColor;
+                break;
+            case CardRarity.Rare:
+                detailBackgroundImage.color = rareColor;
+                break;
+            case CardRarity.Epic:
+                detailBackgroundImage.color = epicColor;
+                break;
+            case CardRarity.Legendary:
+                detailBackgroundImage.color = legendaryColor;
+                break;
+            default:
+                detailBackgroundImage.color = Color.white;
+                break;
+        }
+    }
+
 
 }

@@ -82,7 +82,7 @@ public enum RewardType
 
 public enum DeviceType
 {
-     Mobile,
+    Mobile,
     Tablet,
     Desktop
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using SouthsideGames.SaveManager;
 using System;
+using UnityEditor.U2D.Animation;
 
 public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
 {
@@ -96,12 +97,11 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
         characterButtonInstance.Button.onClick.AddListener(() => CharacterSelectCallback(_index));
     }
 
-   private void CharacterSelectCallback(int _index)
+    private void CharacterSelectCallback(int _index)
     {
         selectedCharacterIndex = _index;
         CharacterDataSO characterData = characterDatas[_index];
 
-        // Reset all card unlocks (temporary)
         if (CardLibrary.Instance != null && CardLibrary.Instance.allCards != null)
         {
             foreach (var card in CardLibrary.Instance.allCards)
@@ -131,7 +131,6 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
         }
         else
         {
-            // Check if CurrencyManager is initialized before accessing it
             if (CurrencyManager.Instance != null)
                 characterInfo.purchasedButton.interactable = CurrencyManager.Instance.HasEnoughPremiumCurrency(characterData.PurchasePrice);
             else
@@ -144,9 +143,13 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
 
         AudioManager.Instance?.PlayCrowdReaction(reaction);
 
-        characterInfo.SetCards(CharacterManager.Instance.cards.TemporaryUnlockedCards);
-        characterInfo.ConfigureInfoPanel(characterData, characterUnlockStates[_index]);
+        characterInfo.ConfigureInfoPanel(
+            characterData,
+            characterUnlockStates[_index],
+            characterData.StartingCards);
     }
+
+
 
     private void PurchaseSelectedCharacter()
     {
@@ -154,7 +157,7 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
         CurrencyManager.Instance.UsePremiumCurrency(price);
 
         characterUnlockStates[selectedCharacterIndex] = true;
-        
+
         characterButtonParent.GetChild(selectedCharacterIndex).GetComponent<CharacterContainerUI>().Unlock();
         CharacterSelectCallback(selectedCharacterIndex);
 

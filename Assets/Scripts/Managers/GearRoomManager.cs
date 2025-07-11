@@ -30,8 +30,9 @@ public class GearShopManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI detailCost;
     [SerializeField] private TextMeshProUGUI detailRarity;
     [SerializeField] private TextMeshProUGUI synergyText;
-    [SerializeField] private GameObject detailHolder;
+    [SerializeField] private GameObject statsHolder;
     [SerializeField] private TextMeshProUGUI unlockText;
+    [SerializeField] private Button unlockButton;
 
     [Header("PROGRESSION")]
     [SerializeField] private TextMeshProUGUI progressionText;
@@ -84,7 +85,7 @@ public class GearShopManager : MonoBehaviour
 
         if (isUnlocked)
         {
-            detailHolder.SetActive(true);
+            statsHolder.SetActive(true);
             unlockText.gameObject.SetActive(false);
             detailDescription.text = card.description;
 
@@ -108,11 +109,22 @@ public class GearShopManager : MonoBehaviour
         }
         else
         {
-            detailHolder.SetActive(false);
+            statsHolder.SetActive(false);
             unlockText.gameObject.SetActive(true);
             detailDescription.text = "";
             synergyText.text = "";
             unlockText.text = $"Requires {card.unlockData.unlockCost} tickets to unlock.";
+        }
+
+        if (isUnlocked)
+        {
+            unlockButton.gameObject.SetActive(false);
+        }
+        else
+        {
+            unlockButton.gameObject.SetActive(true);
+            unlockButton.onClick.RemoveAllListeners();
+            unlockButton.onClick.AddListener(() => AttemptUnlock(card));
         }
 
         ShowDetailPanel();
@@ -142,6 +154,19 @@ public class GearShopManager : MonoBehaviour
     {
         foreach (Transform child in cardListParent)
             Destroy(child.gameObject);
+    }
+
+    private void AttemptUnlock(CardSO card)
+    {
+        if (CardUnlockManager.Instance.TryUnlockCard(card))
+        {
+            ShowCardDetail(card); // Refresh UI
+            UpdateProgressionText(); // Update progression %
+        }
+        else
+        {
+            Debug.Log("Unlock failed. Not enough tickets?");
+        }
     }
 
     public void ShowDetailPanel() => detailContainer.gameObject.SetActive(true);

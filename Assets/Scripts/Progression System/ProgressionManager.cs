@@ -153,6 +153,7 @@ public class ProgressionManager : MonoBehaviour
 
     public void ClearLastGainedXP() => LastGainedXP = 0;
 
+    
     public void AdjustUnlockCurrency(int _amount)
     {
         UnlockPoints += _amount;
